@@ -572,6 +572,7 @@ function ApplyConfirm({ job, onClose }: { job: Job; onClose: () => void }) {
     }
     const t = setTimeout(() => setCountdown((c) => c - 1), 1000)
     return () => clearTimeout(t)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countdown])
 
   return (

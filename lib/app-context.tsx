@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useCallback } from "react"
-import { Job, Resume, DEFAULT_RESUMES, MOCK_JOBS } from "@/lib/mock-data"
+import { Job, Resume, DEFAULT_RESUMES } from "@/lib/mock-data"
 
 export type Screen =
   | "dashboard"

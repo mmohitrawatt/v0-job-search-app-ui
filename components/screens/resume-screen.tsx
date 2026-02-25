@@ -243,15 +243,15 @@ function TemplatePicker({ onBack, onSelect }: { onBack: () => void; onSelect: (i
 
 // ─── Resume Form ──────────────────────────────────────────────────────────────
 
-type FormData = {
+type ResumeFormData = {
   name: string; email: string; phone: string; location: string
   jobTitle: string; company: string; years: string; description: string
   skills: string; summary: string; targetRole: string
 }
 
-function ResumeForm({ onBack, onDone, template }: { onBack: () => void; onDone: (data: FormData) => void; template: string }) {
+function ResumeForm({ onBack, onDone, template }: { onBack: () => void; onDone: (data: ResumeFormData) => void; template: string }) {
   const [step, setStep] = useState(0)
-  const [data, setData] = useState<FormData>({
+  const [data, setData] = useState<ResumeFormData>({
     name: "Mohit Rawat", email: "mohit@example.com", phone: "+1 415-555-0192", location: "San Francisco, CA",
     jobTitle: "AI Engineer", company: "Scale AI", years: "3",
     description: "Built and deployed NLP pipelines serving 10M+ requests/day. Reduced inference latency by 5x.",
@@ -259,7 +259,7 @@ function ResumeForm({ onBack, onDone, template }: { onBack: () => void; onDone: 
     targetRole: "AI Engineer",
   })
 
-  const set = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const set = (key: keyof ResumeFormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setData((d) => ({ ...d, [key]: e.target.value }))
 
   const inputCls = "w-full bg-background border border-border rounded-[10px] px-3.5 py-2.5 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"
@@ -349,7 +349,7 @@ function ResumePreview({
   onBack: () => void
   onOptimize: () => void
   template: string
-  formData: Partial<FormData> | null
+  formData: Partial<ResumeFormData> | null
 }) {
   const { showToast } = useApp()
   const [atsVisible, setAtsVisible] = useState(false)
@@ -658,7 +658,7 @@ export function ResumeScreen() {
   const [subScreen, setSubScreen] = useState<SubScreen>("list")
   const [activeResume, setActiveResume] = useState<Resume | null>(null)
   const [selectedTemplate, setSelectedTemplate] = useState("classic")
-  const [lastFormData, setLastFormData] = useState<Partial<FormData> | null>(null)
+  const [lastFormData, setLastFormData] = useState<Partial<ResumeFormData> | null>(null)
 
   useEffect(() => {
     if (screen === "resume-form") setSubScreen("form")
@@ -676,7 +676,7 @@ export function ResumeScreen() {
     setSubScreen("form")
   }
 
-  function handleFormDone(data: FormData) {
+  function handleFormDone(data: ResumeFormData) {
     setLastFormData(data)
     const newResume: Resume = {
       id: `r-${Date.now()}`,

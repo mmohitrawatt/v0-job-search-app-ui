@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { AppProvider, useApp, Tab } from "@/lib/app-context"
 import { DashboardScreen } from "@/components/screens/dashboard-screen"
 import { ResumeScreen } from "@/components/screens/resume-screen"
