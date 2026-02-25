@@ -20,116 +20,73 @@ export default function App() {
 function AppShell() {
   const { activeTab, setActiveTab, screen, toasts } = useApp()
 
-  // Screens that hide the bottom tab bar
   const hideTabBar = ["job-detail", "smart-apply", "resume-form", "resume-preview", "resume-optimize", "prep-detail"].includes(screen)
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-muted/60 font-sans">
-      {/* iPhone 14 frame */}
-      <div
-        className="relative bg-background overflow-hidden flex flex-col"
-        style={{
-          width: 390,
-          height: 844,
-          borderRadius: 44,
-          boxShadow:
-            "0 0 0 8px #1a1a1a, 0 0 0 10px #3a3a3a, 0 32px 80px rgba(0,0,0,0.35), 0 8px 32px rgba(0,0,0,0.18)",
-        }}
-      >
-        {/* Status Bar */}
-        <div className="flex-shrink-0 flex items-center justify-between px-8 pt-3 pb-1 bg-background z-20 relative">
-          <span className="text-[12px] font-semibold text-foreground">9:41</span>
-          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full" />
-          <div className="flex items-center gap-1.5">
-            <svg width="16" height="10" viewBox="0 0 16 10" fill="currentColor" className="text-foreground">
-              <rect x="0" y="7" width="3" height="3" rx="0.5" />
-              <rect x="4.5" y="5" width="3" height="5" rx="0.5" />
-              <rect x="9" y="2.5" width="3" height="7.5" rx="0.5" />
-              <rect x="13.5" y="0" width="2.5" height="10" rx="0.5" />
-            </svg>
-            <svg width="15" height="11" viewBox="0 0 15 11" fill="none" className="text-foreground">
-              <path d="M1 3.5C3.2 1.3 6.2 0 7.5 0C8.8 0 11.8 1.3 14 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-              <path d="M3 6C4.4 4.6 5.9 3.8 7.5 3.8C9.1 3.8 10.6 4.6 12 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-              <path d="M5.5 8.5C6.2 7.8 6.8 7.5 7.5 7.5C8.2 7.5 8.8 7.8 9.5 8.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-              <circle cx="7.5" cy="10.5" r="0.8" fill="currentColor" />
-            </svg>
-            <div className="flex items-center gap-0.5">
-              <div className="w-6 h-3 border border-foreground rounded-[3px] relative flex items-center px-0.5">
-                <div className="h-1.5 w-[70%] bg-foreground rounded-[1.5px]" />
-              </div>
-              <div className="w-0.5 h-1.5 bg-foreground rounded-full" />
-            </div>
+    <main className="relative flex flex-col w-full min-h-screen max-w-lg mx-auto bg-background font-sans">
+
+      {/* Screen Content */}
+      <div className={cn("flex-1 flex flex-col overflow-y-auto", hideTabBar ? "pb-0" : "pb-[68px]")}>
+        <ScreenRouter />
+      </div>
+
+      {/* Bottom Nav — fixed to bottom of the centered column */}
+      {!hideTabBar && (
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-card/95 backdrop-blur-md border-t border-border z-50">
+          <div className="flex items-center justify-around px-2 pt-2 pb-safe pb-3">
+            {(
+              [
+                { id: "dashboard" as Tab, label: "Dashboard", icon: dashboardIcon },
+                { id: "resume" as Tab, label: "Resume", icon: resumeIcon },
+                { id: "jobs" as Tab, label: "Jobs", icon: jobsIcon },
+                { id: "preparation" as Tab, label: "Prep", icon: prepIcon },
+                { id: "profile" as Tab, label: "Profile", icon: profileIcon },
+              ] as const
+            ).map((tab) => {
+              const isActive = activeTab === tab.id
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className="flex flex-col items-center gap-0.5 flex-1 py-1 tap-highlight-none transition-all duration-200 active:scale-90"
+                  aria-label={tab.label}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  <span className={isActive ? "text-primary" : "text-muted-foreground"}>
+                    {tab.icon(isActive)}
+                  </span>
+                  <span className={`text-[10px] font-semibold tracking-tight ${isActive ? "text-primary" : "text-muted-foreground"}`}>
+                    {tab.label}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
+      )}
 
-        {/* Screen Content */}
-        <div className="flex-1 overflow-hidden flex flex-col relative">
-          <ScreenRouter />
-        </div>
-
-        {/* Bottom Nav */}
-        {!hideTabBar && (
-          <div className="flex-shrink-0 bg-card border-t border-border z-50">
-            <div className="flex items-center justify-around px-2 pt-2 pb-3">
-              {(
-                [
-                  { id: "dashboard" as Tab, label: "Dashboard", icon: dashboardIcon },
-                  { id: "resume" as Tab, label: "Resume", icon: resumeIcon },
-                  { id: "jobs" as Tab, label: "Jobs", icon: jobsIcon },
-                  { id: "preparation" as Tab, label: "Prep", icon: prepIcon },
-                  { id: "profile" as Tab, label: "Profile", icon: profileIcon },
-                ] as const
-              ).map((tab) => {
-                const isActive = activeTab === tab.id
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className="flex flex-col items-center gap-0.5 flex-1 py-1 tap-highlight-none transition-all duration-200 active:scale-90"
-                    aria-label={tab.label}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    <span className={isActive ? "text-primary" : "text-muted-foreground"}>
-                      {tab.icon(isActive)}
-                    </span>
-                    <span className={`text-[9.5px] font-semibold tracking-tight ${isActive ? "text-primary" : "text-muted-foreground"}`}>
-                      {tab.label}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
+      {/* Toast layer */}
+      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-lg px-4 z-[100] pointer-events-none flex flex-col gap-2">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={cn(
+              "w-full px-4 py-3 rounded-[12px] shadow-card-hover text-[13px] font-semibold text-white flex items-center gap-2.5 animate-in slide-in-from-bottom-4 fade-in duration-300",
+              toast.type === "error" ? "bg-destructive" :
+              toast.type === "info" ? "bg-foreground" :
+              "bg-emerald-600"
+            )}
+          >
+            {toast.type === "error" ? (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M8 5V8.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="11" r="0.75" fill="white"/></svg>
+            ) : toast.type === "info" ? (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M8 7V11" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="5" r="0.75" fill="white"/></svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M5 8L7 10L11 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            )}
+            {toast.message}
           </div>
-        )}
-
-        {/* Home indicator */}
-        <div className="flex-shrink-0 flex justify-center pb-2 bg-card">
-          <div className="w-28 h-1 bg-foreground/20 rounded-full" />
-        </div>
-
-        {/* Toast layer */}
-        <div className="absolute bottom-24 left-4 right-4 z-[100] pointer-events-none flex flex-col gap-2">
-          {toasts.map((toast) => (
-            <div
-              key={toast.id}
-              className={cn(
-                "w-full px-4 py-3 rounded-[12px] shadow-card-hover text-[13px] font-semibold text-white flex items-center gap-2.5 animate-in slide-in-from-bottom-4 fade-in duration-300",
-                toast.type === "error" ? "bg-destructive" :
-                toast.type === "info" ? "bg-foreground" :
-                "bg-emerald-600"
-              )}
-            >
-              {toast.type === "error" ? (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M8 5V8.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="11" r="0.75" fill="white"/></svg>
-              ) : toast.type === "info" ? (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M8 7V11" stroke="white" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="5" r="0.75" fill="white"/></svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.4"/><path d="M5 8L7 10L11 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              )}
-              {toast.message}
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </main>
   )
