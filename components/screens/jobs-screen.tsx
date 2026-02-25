@@ -3,7 +3,44 @@
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { useApp } from "@/lib/app-context"
-import { MOCK_JOBS, Job } from "@/lib/mock-data"
+import { MOCK_JOBS, Job, JobPortal } from "@/lib/mock-data"
+
+// ─── Portal Badge ─────────────────────────────────────────────────────────────
+
+const PORTAL_META: Record<JobPortal, { label: string; bg: string; text: string; dot: string }> = {
+  linkedin:    { label: "in",        bg: "bg-[#0A66C2]",   text: "text-white",        dot: "#0A66C2" },
+  naukri:      { label: "Naukri",    bg: "bg-[#FF7555]",   text: "text-white",        dot: "#FF7555" },
+  indeed:      { label: "Indeed",    bg: "bg-[#003A9B]",   text: "text-white",        dot: "#003A9B" },
+  foundit:     { label: "foundit",   bg: "bg-[#6941C6]",   text: "text-white",        dot: "#6941C6" },
+  internshala: { label: "Intern…",   bg: "bg-[#19A7CE]",   text: "text-white",        dot: "#19A7CE" },
+}
+
+function PortalBadge({ portal }: { portal: JobPortal }) {
+  const meta = PORTAL_META[portal]
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-[5px] text-[9px] font-bold tracking-tight leading-none select-none",
+        meta.bg, meta.text
+      )}
+      title={`Posted on ${portal}`}
+    >
+      {portal === "linkedin" ? (
+        <svg width="8" height="8" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+        </svg>
+      ) : portal === "naukri" ? (
+        <svg width="8" height="8" viewBox="0 0 20 20" fill="currentColor">
+          <circle cx="10" cy="10" r="10" fill="white" fillOpacity="0.2"/>
+          <path d="M5 14l3-5 2 3 2-4 3 6H5z" fill="currentColor"/>
+        </svg>
+      ) : (
+        <span className="w-1.5 h-1.5 rounded-full bg-white/70 inline-block" />
+      )}
+      {meta.label}
+    </span>
+  )
+}
 
 type SubScreen = "list" | "detail" | "apply-detail" | "apply-confirm"
 
@@ -196,23 +233,26 @@ function JobCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2 mb-0.5">
               <p className="text-[14px] font-bold text-foreground leading-tight">{job.title}</p>
-              {/* Save button */}
-              <button
-                onClick={handleBookmark}
-                className={cn(
-                  "flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none -mt-0.5",
-                  heartAnim ? "scale-125" : "scale-100",
-                  bookmarked ? "bg-primary/10" : "bg-transparent"
-                )}
-              >
-                <svg
-                  width="16" height="16" viewBox="0 0 16 16"
-                  fill={bookmarked ? "currentColor" : "none"}
-                  className={bookmarked ? "text-primary" : "text-muted-foreground"}
+              {/* Portal badge + Save button stacked */}
+              <div className="flex flex-col items-end gap-1.5 flex-shrink-0 -mt-0.5">
+                <PortalBadge portal={job.portal} />
+                <button
+                  onClick={handleBookmark}
+                  className={cn(
+                    "w-7 h-7 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none",
+                    heartAnim ? "scale-125" : "scale-100",
+                    bookmarked ? "bg-primary/10" : "bg-transparent"
+                  )}
                 >
-                  <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-                </svg>
-              </button>
+                  <svg
+                    width="16" height="16" viewBox="0 0 16 16"
+                    fill={bookmarked ? "currentColor" : "none"}
+                    className={bookmarked ? "text-primary" : "text-muted-foreground"}
+                  >
+                    <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             <p className="text-[12px] text-muted-foreground font-semibold mb-2">

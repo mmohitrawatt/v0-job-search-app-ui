@@ -1,3 +1,5 @@
+export type JobPortal = "naukri" | "linkedin" | "indeed" | "foundit" | "internshala"
+
 export type Job = {
   id: string
   title: string
@@ -12,6 +14,7 @@ export type Job = {
   color: string
   description: string
   isRemote: boolean
+  portal: JobPortal
 }
 
 export const MOCK_JOBS: Job[] = [
@@ -30,6 +33,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Build real-time ML systems powering Zepto's 10-minute delivery recommendation and demand forecasting engine. Own the full model lifecycle from experimentation to production deployment on AWS.",
     isRemote: false,
+    portal: "linkedin",
   },
   {
     id: "2",
@@ -46,6 +50,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Design and deploy large-scale ML pipelines for Flipkart's personalisation and search ranking systems serving 400M+ users. Collaborate with research teams on next-gen retrieval models.",
     isRemote: false,
+    portal: "naukri",
   },
   {
     id: "3",
@@ -62,6 +67,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Use data to power CRED's credit underwriting, rewards personalisation, and member experience decisions. Build experimentation frameworks and predictive models for India's premium credit card user base.",
     isRemote: false,
+    portal: "linkedin",
   },
   {
     id: "4",
@@ -78,6 +84,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Build the payment infrastructure processing billions of rupees daily. Own high-throughput microservices, improve settlement pipelines, and harden the reliability of India's leading payments platform.",
     isRemote: true,
+    portal: "indeed",
   },
   {
     id: "5",
@@ -94,6 +101,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Define the AI product roadmap for PhonePe's Smart Money Management suite. Partner with data science and engineering to ship intelligent financial features for 500M+ users across India.",
     isRemote: false,
+    portal: "foundit",
   },
   {
     id: "6",
@@ -110,6 +118,7 @@ export const MOCK_JOBS: Job[] = [
     description:
       "Operate the infrastructure behind India's largest sports gaming platform during IPL peak loads of 100M+ concurrent users. Automate deployments, build runbooks, and ensure 99.99% uptime.",
     isRemote: false,
+    portal: "naukri",
   },
 ]
 
