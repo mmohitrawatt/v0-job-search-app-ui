@@ -39,7 +39,7 @@ function Skeleton({ className }: { className?: string }) {
 }
 
 export function DashboardScreen() {
-  const { setSelectedJob, navigate, setActiveTab, profileName } = useApp()
+  const { setSelectedJob, navigate, setActiveTab, profile } = useApp()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function DashboardScreen() {
     return () => clearTimeout(timer)
   }, [])
 
-  const displayName = profileName.split(" ")[0]
+  const displayName = profile.name.split(" ")[0]
 
   function handleJobClick(job: Job) {
     setSelectedJob(job)
