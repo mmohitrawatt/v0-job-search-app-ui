@@ -12,21 +12,28 @@ function getGreeting() {
   return "Good Evening"
 }
 
+// 4 distinct, non-redundant stats
 const summaryCards = [
-  { label: "Applications Sent", value: "24", color: "text-primary", bg: "bg-accent" },
-  { label: "Interview Calls", value: "6", color: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Resume Score", value: "82%", color: "text-amber-600", bg: "bg-amber-50" },
-  { label: "Active Prep", value: "Day 3", color: "text-violet-600", bg: "bg-violet-50" },
+  { label: "Applications", value: "24", sub: "this month", color: "text-primary", bg: "bg-accent" },
+  { label: "Resume Score", value: "92%", sub: "ATS optimized", color: "text-emerald-600", bg: "bg-emerald-50" },
+  { label: "Prep Streak", value: "Day 3", sub: "keep going", color: "text-amber-600", bg: "bg-amber-50" },
+  { label: "Jobs Saved", value: "11", sub: "in watchlist", color: "text-violet-600", bg: "bg-violet-50" },
 ]
 
 const cardIcons = [
-  <svg key="a" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 14.5L9 3.5L15.5 14.5H2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M9 10V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="9" cy="12" r="0.75" fill="currentColor"/></svg>,
-  <svg key="b" width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M6 15.5H12M9 13V15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  <svg key="c" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M5.5 9L8 11.5L12.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  <svg key="d" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L10.8 6.4L15.5 6.9L12 10.1L13.1 14.8L9 12.3L4.9 14.8L6 10.1L2.5 6.9L7.2 6.4L9 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+  <svg key="a" width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M6 6.5H12M6 9.5H10M6 12.5H11" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+  <svg key="b" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M5.5 9L8 11.5L12.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  <svg key="c" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L10.5 6H15L11.3 8.6L12.8 13L9 10.4L5.2 13L6.7 8.6L3 6H7.5L9 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+  <svg key="d" width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 2H13C13.55 2 14 2.45 14 3V16L9 13L4 16V3C4 2.45 4.45 2 5 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
 ]
 
-// Skeleton pulse component
+// Application funnel — 3 distinct pipeline stages
+const pipelineStages = [
+  { label: "Screening", count: 14, max: 24, color: "bg-primary" },
+  { label: "Interviews", count: 6, max: 24, color: "bg-emerald-500" },
+  { label: "Offers", count: 1, max: 24, color: "bg-amber-500" },
+]
+
 function Skeleton({ className }: { className?: string }) {
   return <div className={cn("bg-muted animate-pulse rounded-[10px]", className)} />
 }
@@ -36,7 +43,7 @@ export function DashboardScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200)
+    const timer = setTimeout(() => setLoading(false), 1000)
     return () => clearTimeout(timer)
   }, [])
 
@@ -54,12 +61,12 @@ export function DashboardScreen() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight text-balance">
-              {getGreeting()}, {displayName}
+            <p className="text-[13px] font-medium text-muted-foreground">{getGreeting()}</p>
+            <h1 className="text-[22px] font-bold text-foreground tracking-tight leading-tight text-balance">
+              {displayName} 👋
             </h1>
-            <p className="text-sm text-muted-foreground mt-0.5 font-medium">Track your career progress</p>
           </div>
-          <button className="w-10 h-10 rounded-full bg-card shadow-card flex items-center justify-center text-foreground btn-press relative">
+          <button className="w-10 h-10 rounded-full bg-card shadow-card flex items-center justify-center text-foreground btn-press relative tap-highlight-none">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M10 2.5C6.69 2.5 4 5.19 4 8.5V13L2.5 14.5V15.5H17.5V14.5L16 13V8.5C16 5.19 13.31 2.5 10 2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
               <path d="M8 15.5C8 16.6 8.9 17.5 10 17.5C11.1 17.5 12 16.6 12 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -68,8 +75,8 @@ export function DashboardScreen() {
           </button>
         </div>
 
-        {/* Summary Cards 2x2 */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        {/* 4 Stat Cards */}
+        <div className="grid grid-cols-2 gap-3 mb-5">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="bg-card rounded-[14px] p-4 shadow-card">
@@ -79,38 +86,35 @@ export function DashboardScreen() {
                 </div>
               ))
             : summaryCards.map((card, i) => (
-                <div key={card.label} className="bg-card rounded-[14px] p-4 shadow-card card-tap">
+                <div key={card.label} className="bg-card rounded-[14px] p-4 shadow-card">
                   <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-3", card.bg, card.color)}>
                     {cardIcons[i]}
                   </div>
-                  <p className="text-[22px] font-bold text-foreground leading-none mb-1">{card.value}</p>
-                  <p className="text-[11px] text-muted-foreground font-medium tracking-tight">{card.label}</p>
+                  <p className="text-[22px] font-bold text-foreground leading-none mb-0.5">{card.value}</p>
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">{card.label}</p>
+                  <p className="text-[10px] text-muted-foreground/70 mt-0.5">{card.sub}</p>
                 </div>
               ))}
         </div>
 
-        {/* Application Progress Bar */}
+        {/* Application Funnel */}
         {!loading && (
-          <div className="bg-card rounded-[14px] p-4 shadow-card mb-6 border border-border">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-[13px] font-semibold text-foreground">Application Pipeline</p>
-              <span className="text-[11px] font-bold text-primary">24 total</span>
+          <div className="bg-card rounded-[14px] p-4 shadow-card mb-5 border border-border">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[13px] font-bold text-foreground">Application Funnel</p>
+              <span className="text-[11px] font-semibold text-muted-foreground">24 applied</span>
             </div>
-            <div className="space-y-2">
-              {[
-                { label: "Applied", count: 24, max: 24, color: "bg-primary" },
-                { label: "Interview", count: 6, max: 24, color: "bg-emerald-500" },
-                { label: "Offer", count: 1, max: 24, color: "bg-amber-500" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3">
-                  <span className="text-[10px] text-muted-foreground font-medium w-12 flex-shrink-0">{item.label}</span>
+            <div className="space-y-2.5">
+              {pipelineStages.map((stage) => (
+                <div key={stage.label} className="flex items-center gap-3">
+                  <span className="text-[10px] text-muted-foreground font-semibold w-16 flex-shrink-0">{stage.label}</span>
                   <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                     <div
-                      className={cn("h-full rounded-full transition-all duration-700", item.color)}
-                      style={{ width: `${(item.count / item.max) * 100}%` }}
+                      className={cn("h-full rounded-full transition-all duration-700", stage.color)}
+                      style={{ width: `${(stage.count / stage.max) * 100}%` }}
                     />
                   </div>
-                  <span className="text-[11px] font-bold text-foreground w-4 text-right">{item.count}</span>
+                  <span className="text-[11px] font-bold text-foreground w-4 text-right">{stage.count}</span>
                 </div>
               ))}
             </div>
@@ -119,9 +123,9 @@ export function DashboardScreen() {
 
         {/* Recommended Jobs */}
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-semibold text-foreground">Recommended Jobs</h2>
+          <h2 className="text-[15px] font-bold text-foreground">Recommended for You</h2>
           <button
-            className="text-xs text-primary font-semibold btn-press"
+            className="text-[12px] text-primary font-semibold btn-press tap-highlight-none"
             onClick={() => setActiveTab("jobs")}
           >
             See all
@@ -149,37 +153,35 @@ export function DashboardScreen() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            {MOCK_JOBS.slice(0, 4).map((job) => (
-              <button
-                key={job.id}
-                onClick={() => handleJobClick(job)}
-                className="bg-card rounded-[14px] p-3.5 shadow-card border border-border card-tap text-left w-full"
-              >
-                <div className="flex items-start justify-between mb-2.5">
-                  <div className="flex-1 min-w-0 pr-2">
-                    <p className="text-[13px] font-semibold text-foreground leading-tight text-balance">{job.title}</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5 font-medium">{job.company}</p>
-                  </div>
-                  <div className={cn("w-8 h-8 rounded-[8px] flex items-center justify-center text-[10px] font-bold flex-shrink-0", job.color)}>
-                    {job.initials}
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 mb-2.5">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-muted-foreground flex-shrink-0">
-                    <path d="M5 1C3.34 1 2 2.34 2 4C2 6.5 5 9 5 9C5 9 8 6.5 8 4C8 2.34 6.66 1 5 1Z" stroke="currentColor" strokeWidth="1.2" />
-                    <circle cx="5" cy="4" r="1" fill="currentColor" />
-                  </svg>
-                  <p className="text-[10px] text-muted-foreground font-medium truncate">{job.location}</p>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {job.skills.slice(0, 2).map((skill) => (
-                    <span key={skill} className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
-                      {skill}
+            {MOCK_JOBS.slice(0, 4).map((job) => {
+              const matchColor = job.matchScore >= 85 ? "text-emerald-600 bg-emerald-50" : job.matchScore >= 70 ? "text-amber-600 bg-amber-50" : "text-orange-600 bg-orange-50"
+              return (
+                <button
+                  key={job.id}
+                  onClick={() => handleJobClick(job)}
+                  className="bg-card rounded-[14px] p-3.5 shadow-card border border-border card-tap text-left w-full"
+                >
+                  {/* Logo + bookmark row */}
+                  <div className="flex items-start justify-between mb-2.5">
+                    <div className={cn("w-9 h-9 rounded-[10px] flex items-center justify-center text-[11px] font-extrabold flex-shrink-0", job.color)}>
+                      {job.initials}
+                    </div>
+                    <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded-full", matchColor)}>
+                      {job.matchScore}%
                     </span>
-                  ))}
-                </div>
-              </button>
-            ))}
+                  </div>
+                  <p className="text-[12px] font-bold text-foreground leading-tight text-balance mb-0.5">{job.title}</p>
+                  <p className="text-[10.5px] text-muted-foreground font-medium mb-2">{job.company}</p>
+                  <div className="flex items-center gap-1">
+                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none" className="text-muted-foreground flex-shrink-0">
+                      <path d="M4.5 1C3.12 1 2 2.12 2 3.5C2 5.5 4.5 8 4.5 8S7 5.5 7 3.5C7 2.12 5.88 1 4.5 1Z" stroke="currentColor" strokeWidth="1.1"/>
+                      <circle cx="4.5" cy="3.5" r="0.8" fill="currentColor"/>
+                    </svg>
+                    <p className="text-[9.5px] text-muted-foreground font-medium truncate">{job.isRemote ? "Remote" : job.location}</p>
+                  </div>
+                </button>
+              )
+            })}
           </div>
         )}
       </div>
