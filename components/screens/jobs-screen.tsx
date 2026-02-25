@@ -231,33 +231,34 @@ function JobCard({
 
           {/* Main info */}
           <div className="flex-1 min-w-0">
+            {/* Title row — title left, bookmark right */}
             <div className="flex items-start justify-between gap-2 mb-0.5">
-              <p className="text-[14px] font-bold text-foreground leading-tight">{job.title}</p>
-              {/* Portal badge + Save button stacked */}
-              <div className="flex flex-col items-end gap-1.5 flex-shrink-0 -mt-0.5">
-                <PortalBadge portal={job.portal} />
-                <button
-                  onClick={handleBookmark}
-                  className={cn(
-                    "w-7 h-7 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none",
-                    heartAnim ? "scale-125" : "scale-100",
-                    bookmarked ? "bg-primary/10" : "bg-transparent"
-                  )}
+              <p className="text-[14px] font-bold text-foreground leading-tight flex-1">{job.title}</p>
+              <button
+                onClick={handleBookmark}
+                className={cn(
+                  "flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none -mt-0.5",
+                  heartAnim ? "scale-125" : "scale-100",
+                  bookmarked ? "bg-primary/10" : "bg-transparent"
+                )}
+              >
+                <svg
+                  width="16" height="16" viewBox="0 0 16 16"
+                  fill={bookmarked ? "currentColor" : "none"}
+                  className={bookmarked ? "text-primary" : "text-muted-foreground"}
                 >
-                  <svg
-                    width="16" height="16" viewBox="0 0 16 16"
-                    fill={bookmarked ? "currentColor" : "none"}
-                    className={bookmarked ? "text-primary" : "text-muted-foreground"}
-                  >
-                    <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
+                  <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                </svg>
+              </button>
             </div>
 
-            <p className="text-[12px] text-muted-foreground font-semibold mb-2">
-              {job.company} · {job.isRemote ? "Remote" : job.location}
-            </p>
+            {/* Company + portal badge on same line */}
+            <div className="flex items-center gap-1.5 mb-2">
+              <p className="text-[12px] text-muted-foreground font-semibold leading-none">
+                {job.company} · {job.isRemote ? "Remote" : job.location}
+              </p>
+              <PortalBadge portal={job.portal} />
+            </div>
 
             <div className="flex items-center gap-2 flex-wrap">
               <span className={cn("text-[10.5px] font-bold px-2 py-0.5 rounded-full border", matchColor)}>
