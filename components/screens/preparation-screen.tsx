@@ -587,44 +587,64 @@ export function PreparationScreen() {
 
       {/* Header */}
       <div className="flex-shrink-0">
-        {/* Gradient banner */}
-        <div className="relative overflow-hidden px-4 lg:px-8 pt-12 lg:pt-6 pb-4"
-          style={{ background: "linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(124,58,237,0.06) 100%)" }}>
-          <div className="absolute inset-0 opacity-20"
-            style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(79,70,229,0.3) 1px, transparent 0)", backgroundSize: "20px 20px" }} />
 
-          <div className="relative flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-primary">5-Day AI Prep Plan</span>
-                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">AI</span>
+        {/* Rich gradient banner */}
+        <div className="relative overflow-hidden px-4 lg:px-8 pt-12 lg:pt-6 pb-5"
+          style={{ background: "linear-gradient(135deg, #312e81 0%, #4c1d95 55%, #5b21b6 100%)" }}>
+
+          {/* Dot grid overlay */}
+          <div className="absolute inset-0 opacity-[0.12]"
+            style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)", backgroundSize: "18px 18px" }} />
+          {/* Glow blobs */}
+          <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl"
+            style={{ background: "radial-gradient(circle, #a78bfa, transparent)" }} />
+          <div className="absolute bottom-0 left-8 w-32 h-24 rounded-full opacity-15 blur-2xl"
+            style={{ background: "radial-gradient(circle, #818cf8, transparent)" }} />
+
+          <div className="relative">
+            {/* Top row */}
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-200">5-Day AI Prep Plan</span>
+                  <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/15 text-white border border-white/25">AI</span>
+                </div>
+                <h1 className="text-[20px] font-bold text-white tracking-tight leading-tight">{job.title}</h1>
+                <p className="text-[12px] text-indigo-200 font-medium mt-0.5">{job.company} · {job.isRemote ? "Remote" : job.location}</p>
               </div>
-              <h1 className="text-[19px] font-bold text-foreground tracking-tight leading-tight">{job.title}</h1>
-              <p className="text-[12px] text-muted-foreground font-medium mt-0.5">{job.company} · {job.isRemote ? "Remote" : job.location}</p>
+              <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                <div className={cn("w-11 h-11 rounded-[10px] flex items-center justify-center text-[12px] font-bold shadow-lg", job.color)}>
+                  {job.initials}
+                </div>
+                <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30">
+                  🗓 Interview in 3d
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-              <div className={cn("w-11 h-11 rounded-[10px] flex items-center justify-center text-[12px] font-bold", job.color)}>
-                {job.initials}
+
+            {/* Progress bar row */}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-1.5 bg-white/15 rounded-full overflow-hidden">
+                <div className="h-full bg-white/70 rounded-full transition-all duration-700" style={{ width: "40%" }} />
               </div>
-              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-                Interview in 3d
-              </span>
+              <span className="text-[11px] font-bold text-white/80 flex-shrink-0">Day 3 of 5</span>
+              <span className="text-[11px] font-semibold text-indigo-200 flex-shrink-0">40%</span>
             </div>
           </div>
         </div>
 
-        {/* Tab bar */}
-        <div className="px-4 lg:px-8 pb-3 border-b border-border">
-          <div className="flex bg-muted rounded-[12px] p-1 gap-1">
+        {/* Tab bar — clearly separated on bg-background */}
+        <div className="bg-background px-4 lg:px-8 pt-0 border-b border-border">
+          <div className="flex">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[9px] text-[11px] font-bold transition-all duration-200 btn-press",
+                  "flex-1 flex items-center justify-center gap-1.5 py-3.5 text-[12px] font-semibold border-b-2 transition-all duration-200",
                   activeTab === tab.id
-                    ? "bg-card text-foreground shadow-card"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
                 )}
               >
                 {tab.icon}
