@@ -95,7 +95,7 @@ export function DashboardScreen() {
 
 
   return (
-    <div className="flex-1 overflow-y-auto bg-background">
+    <div className="flex-1 overflow-y-auto min-h-0 bg-background">
       {/* Header Banner */}
       <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3 bg-card border-b border-border">
 

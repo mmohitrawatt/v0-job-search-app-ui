@@ -55,7 +55,7 @@ function ResumeList({ onCreate, onPreview, onTailor }: { onCreate: () => void; o
   const { resumes } = useApp()
 
   return (
-    <div className="flex-1 overflow-y-auto bg-background">
+    <div className="flex-1 overflow-y-auto min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3">
         <div className="mb-4">
           <h1 className="text-[19px] font-bold text-foreground tracking-tight">Resume Builder</h1>
@@ -165,7 +165,7 @@ function TemplatePicker({ onBack, onSelect }: { onBack: () => void; onSelect: (i
   const [selected, setSelected] = useState("classic")
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <h1 className="text-[19px] font-bold text-foreground mt-2">Choose Template</h1>
@@ -287,7 +287,7 @@ function ResumeForm({ onBack, onDone, template }: { onBack: () => void; onDone: 
   const templateMeta = TEMPLATES.find((t) => t.id === template)
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <div className="flex items-center justify-between mt-2">
@@ -394,7 +394,7 @@ function ResumePreview({
   const skills = formData?.skills?.split(",").map((s) => s.trim()).filter(Boolean) ?? ["Python", "PyTorch", "LLMs", "SQL"]
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <div className="flex items-center justify-between mt-2">
@@ -606,7 +606,7 @@ function ResumeOptimize({ resume, onBack }: { resume: Resume; onBack: () => void
   const projected = Math.min(resume.score + gained, 99)
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <h1 className="text-[19px] font-bold text-foreground mt-2">AI Optimize</h1>
@@ -711,7 +711,7 @@ function ResumeTailor({ onBack }: { onBack: () => void }) {
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} label="Resume" />
         <h1 className="text-[19px] font-bold text-foreground mt-2">AI Tailor</h1>

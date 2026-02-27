@@ -113,7 +113,7 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
   }
 
   return (
-    <div className="flex-1 overflow-y-auto bg-background">
+    <div className="flex-1 overflow-y-auto min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3">
         <div className="mb-3">
           <h1 className="text-[19px] font-bold text-foreground tracking-tight">Job Companion</h1>
@@ -287,24 +287,20 @@ function JobCard({
         </div>
       </div>
 
-      {/* Prep promotion banner */}
-      <div className="mx-3 mb-3 rounded-[10px] bg-accent border border-primary/15 px-3 py-2 flex items-center gap-2.5">
-        <div className="w-6 h-6 rounded-[6px] bg-primary/10 flex items-center justify-center flex-shrink-0">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="text-primary">
-            <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" strokeWidth="1.3"/>
-            <path d="M4.5 6.5L6 8L8.5 5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        <p className="text-[11px] text-primary font-semibold flex-1 leading-tight">
-          5-day AI prep plan available for this role
+      {/* Prep strip */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onApplyNow() }}
+        className="w-full px-3 py-2 flex items-center gap-2 tap-highlight-none border-t border-indigo-100 dark:border-indigo-900/40"
+        style={{ background: "rgba(79,70,229,0.06)" }}
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0 text-indigo-500">
+          <path d="M6.5 1L7.5 4.5H11L8.5 6.5L9.5 10L6.5 8L3.5 10L4.5 6.5L2 4.5H5.5L6.5 1Z" fill="currentColor"/>
+        </svg>
+        <p className="flex-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 leading-none">
+          5-Day AI Prep Plan — tailored to this role
         </p>
-        <button
-          onClick={(e) => { e.stopPropagation(); onApplyNow() }}
-          className="text-[10px] font-bold text-primary underline underline-offset-2 tap-highlight-none"
-        >
-          View
-        </button>
-      </div>
+        <span className="text-[11px] font-bold text-indigo-500 flex-shrink-0">View →</span>
+      </button>
 
       {/* Action buttons */}
       <div className="flex border-t border-border">
@@ -677,7 +673,7 @@ function JobDetail({ job, onBack, onApplyNow }: { job: Job; onBack: () => void; 
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-background min-h-0 relative">
+    <div className="flex-1 flex flex-col bg-background min-h-0">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 flex-shrink-0">
         <BackButton onBack={onBack} label="Jobs" />
         <div className="flex items-start justify-between mt-3">
@@ -702,7 +698,7 @@ function JobDetail({ job, onBack, onApplyNow }: { job: Job; onBack: () => void; 
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto min-h-0 px-4 lg:px-8 pb-32">
+      <div className="flex-1 overflow-y-auto min-h-0 px-4 lg:px-8 pb-6">
         <div className="bg-card rounded-[14px] border border-border shadow-card p-4 mb-3">
           <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">About the Role</p>
           <p className="text-[13px] text-foreground leading-relaxed">{job.description}</p>
@@ -977,7 +973,7 @@ function JobDetail({ job, onBack, onApplyNow }: { job: Job; onBack: () => void; 
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-3 bg-background border-t border-border z-10">
+      <div className="flex-shrink-0 px-4 pb-5 pt-3 bg-background border-t border-border">
         <div className="flex gap-3">
           <button
             onClick={() => navigate("resume-tailor")}

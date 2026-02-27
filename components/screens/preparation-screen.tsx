@@ -271,7 +271,7 @@ export function PreparationScreen() {
   ]
 
   return (
-    <div className="flex-1 flex flex-col bg-background overflow-hidden">
+    <div className="flex-1 flex flex-col min-h-0 bg-background overflow-hidden">
       {/* Header */}
       <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-0 flex-shrink-0">
         <div className="flex items-start justify-between mb-3">

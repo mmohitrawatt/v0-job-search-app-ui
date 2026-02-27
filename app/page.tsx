@@ -145,7 +145,7 @@ function AppShell() {
   ].includes(screen)
 
   return (
-    <main className="flex flex-col lg:flex-row w-full min-h-screen lg:h-screen bg-background font-sans">
+    <main className="flex flex-col lg:flex-row w-full h-[100dvh] bg-background font-sans overflow-hidden">
 
       {/* Desktop Sidebar */}
       <DesktopSidebar
@@ -157,11 +157,11 @@ function AppShell() {
       />
 
       {/* Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 lg:overflow-hidden relative">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden relative">
 
         {/* Screen Content */}
         <div className={cn(
-          "flex-1 flex flex-col lg:overflow-hidden",
+          "flex-1 flex flex-col min-h-0 overflow-hidden",
           !hideTabBar && "pb-[68px] lg:pb-0"
         )}>
           <ScreenRouter />
