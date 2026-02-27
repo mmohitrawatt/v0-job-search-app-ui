@@ -141,99 +141,128 @@ export function DashboardScreen() {
 
       <div className="px-4 lg:px-8 pt-5 pb-6">
 
-        {/* AI Interview Card */}
+        {/* Vibe AI Career Strategist Card */}
         {!loading && (
           <button
             onClick={() => navigate("ai-interview")}
-            className="w-full rounded-[16px] p-4 mb-5 text-left tap-highlight-none btn-press overflow-hidden relative"
-            style={{ background: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)" }}
+            className="w-full rounded-[20px] mb-5 text-left tap-highlight-none btn-press overflow-hidden relative"
+            style={{ background: "linear-gradient(135deg, #312E81 0%, #4F46E5 45%, #7C3AED 100%)" }}
           >
-            {/* Decorative circles */}
-            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10" />
-            <div className="absolute -bottom-4 -right-2 w-14 h-14 rounded-full bg-white/8" />
+            {/* Decorative blobs */}
+            <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.3), transparent 70%)" }} />
+            <div className="absolute -bottom-6 left-10 w-24 h-24 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.4), transparent 70%)" }} />
+            {/* Dot grid */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.07]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
 
-            <div className="relative flex items-center gap-3">
-              {/* Icon */}
-              <div className="relative flex-shrink-0">
-                <div className="w-12 h-12 rounded-[14px] bg-white/20 flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="8" r="4" stroke="white" strokeWidth="1.8"/>
-                    <path d="M4 20C4 16.69 7.58 14 12 14C16.42 14 20 16.69 20 20" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-                    <circle cx="19" cy="7" r="3" fill="white" fillOpacity="0.3" stroke="white" strokeWidth="1.4"/>
-                    <path d="M18 7H20M19 6V8" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
-                  </svg>
+            <div className="relative p-4 pb-3.5">
+              {/* Top row: avatar + name + online badge */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="relative flex-shrink-0">
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-extrabold text-[15px] tracking-tight" style={{ background: "linear-gradient(135deg, #818CF8, #A78BFA)" }}>
+                    Vi
+                  </div>
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-indigo-900" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white/30 flex items-center justify-center">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="2" fill="white"/></svg>
-                </span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-[16px] font-extrabold text-white leading-none tracking-tight">Vibe</p>
+                    <span className="text-[9px] font-bold text-emerald-300 bg-emerald-400/20 border border-emerald-400/30 px-1.5 py-0.5 rounded-full uppercase tracking-wide">Online</span>
+                    <span className="text-[9px] font-semibold text-violet-200 bg-violet-400/20 px-1.5 py-0.5 rounded-full">AI</span>
+                  </div>
+                  <p className="text-[11px] text-white/55 font-medium mt-0.5">Your AI Career Strategist</p>
+                </div>
+                <div className="flex-shrink-0 bg-white text-indigo-700 rounded-[10px] px-3.5 py-1.5">
+                  <p className="text-[12px] font-extrabold whitespace-nowrap">Chat Now →</p>
+                </div>
               </div>
 
-              <div className="flex-1">
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <p className="text-[15px] font-extrabold text-white">AI Interview Coach</p>
-                </div>
-                <p className="text-[11px] text-white/80 font-medium">Practice 5 questions tailored to your profile</p>
-              </div>
-
-              <div className="flex-shrink-0 bg-white/20 rounded-[10px] px-3 py-1.5">
-                <p className="text-[11px] font-bold text-white whitespace-nowrap">Start →</p>
+              {/* What Vibe can do */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {[
+                  { icon: "🎯", label: "Interview Prep" },
+                  { icon: "📄", label: "Resume Review" },
+                  { icon: "💰", label: "Salary Script" },
+                  { icon: "🗺️", label: "Career Path" },
+                ].map((item) => (
+                  <span key={item.label} className="flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 px-2 py-0.5 rounded-full">
+                    <span>{item.icon}</span>
+                    {item.label}
+                  </span>
+                ))}
               </div>
             </div>
           </button>
         )}
 
         {loading && (
-          <div className="w-full h-[76px] rounded-[16px] mb-5 bg-muted animate-pulse" />
+          <div className="w-full h-[102px] rounded-[20px] mb-5 bg-muted animate-pulse" />
         )}
 
         {/* Bootcamp Banner */}
         {!loading && (
-          <div className="w-full rounded-[16px] mb-5 overflow-hidden relative" style={{ background: "linear-gradient(135deg, #F97316 0%, #EF4444 60%, #DC2626 100%)" }}>
-            {/* Decorative shapes */}
-            <div className="absolute -top-5 -right-5 w-28 h-28 rounded-full bg-white/10" />
-            <div className="absolute bottom-0 right-16 w-10 h-10 rounded-full bg-white/8" />
-            <div className="absolute top-3 right-10 w-5 h-5 rounded-full bg-yellow-300/30" />
+          <div className="w-full rounded-[20px] mb-5 overflow-hidden relative" style={{ background: "linear-gradient(135deg, #0D0D1A 0%, #1A0A2E 55%, #0D1520 100%)" }}>
+            {/* Glow blobs */}
+            <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.22), transparent 70%)" }} />
+            <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%)" }} />
+            {/* Dot grid */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
 
             <div className="relative p-4">
-              {/* Top row: badge + price */}
-              <div className="flex items-start justify-between mb-2.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="bg-white/25 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-widest">
-                    🔥 Bootcamp
+              {/* Top row: LIVE badge + price */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1.5 border border-orange-500/40 bg-orange-500/15 text-orange-400 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                    LIVE
                   </span>
-                  <span className="bg-yellow-400/30 text-yellow-100 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
-                    2 Days
-                  </span>
+                  <span className="text-white/50 text-[10px] font-semibold">⏰ Ends in 2 days</span>
                 </div>
-                <div className="text-right">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-[22px] font-extrabold text-white leading-none">₹99</span>
-                    <span className="text-[11px] text-white/50 line-through font-medium">₹999</span>
-                  </div>
-                  <p className="text-[9px] text-white/70 font-semibold">only</p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-[26px] font-extrabold text-white leading-none">₹99</span>
+                  <span className="text-[12px] text-white/30 line-through font-medium">₹999</span>
                 </div>
               </div>
 
-              {/* Title + subtitle */}
-              <p className="text-[16px] font-extrabold text-white leading-tight mb-0.5">
-                Sprint AI &amp; Interactive Hackathon
-              </p>
-              <p className="text-[11px] text-white/75 font-medium mb-3">
-                Build real AI projects · Compete · Get certified
+              {/* Title */}
+              <p className="text-[18px] font-extrabold text-white leading-snug mb-2.5">
+                Sprint AI &amp; Interactive<br />Hackathon
               </p>
 
-              {/* CTA */}
+              {/* Feature chips */}
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                {["🤖 AI Projects", "🏆 Compete", "📜 Certificate"].map((f) => (
+                  <span key={f} className="text-[10px] font-semibold text-white/65 bg-white/10 px-2.5 py-0.5 rounded-full">
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              {/* Seats progress */}
+              <div className="mb-3.5">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[10px] text-white/40 font-medium">Seats filling fast</span>
+                  <span className="text-[10px] text-orange-400 font-bold">73 seats left</span>
+                </div>
+                <div className="w-full h-[3px] bg-white/10 rounded-full">
+                  <div className="h-[3px] rounded-full" style={{ width: "63%", background: "linear-gradient(90deg, #F97316, #EF4444)" }} />
+                </div>
+              </div>
+
+              {/* Bottom: avatars + CTA */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <div className="flex -space-x-1">
-                    {["bg-yellow-400", "bg-green-400", "bg-blue-400"].map((c, i) => (
-                      <div key={i} className={cn("w-5 h-5 rounded-full border-2 border-white/30", c)} />
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {["#FBBF24", "#34D399", "#60A5FA", "#F472B6"].map((color, i) => (
+                      <div key={i} className="w-6 h-6 rounded-full border-2 flex-shrink-0" style={{ backgroundColor: color, borderColor: "#1A0A2E" }} />
                     ))}
                   </div>
-                  <span className="text-[10px] text-white/70 font-semibold">500+ joined</span>
+                  <span className="text-[11px] text-white/55 font-semibold">500+ joined</span>
                 </div>
-                <button className="bg-white rounded-[10px] px-4 py-1.5 tap-highlight-none btn-press">
-                  <span className="text-[12px] font-extrabold text-orange-600">Reserve Seat →</span>
+                <button
+                  className="btn-press tap-highlight-none px-4 py-2 rounded-[12px] text-[13px] font-extrabold text-white"
+                  style={{ background: "linear-gradient(135deg, #F97316 0%, #EF4444 100%)" }}
+                >
+                  Reserve Seat →
                 </button>
               </div>
             </div>
@@ -241,7 +270,7 @@ export function DashboardScreen() {
         )}
 
         {loading && (
-          <div className="w-full h-[110px] rounded-[16px] mb-5 bg-muted animate-pulse" />
+          <div className="w-full h-[148px] rounded-[20px] mb-5 bg-muted animate-pulse" />
         )}
 
         {/* 4 Stat Cards */}
