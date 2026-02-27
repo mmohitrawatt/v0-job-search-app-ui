@@ -622,14 +622,6 @@ export function PreparationScreen() {
               </div>
             </div>
 
-            {/* Progress bar row */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-1.5 bg-white/15 rounded-full overflow-hidden">
-                <div className="h-full bg-white/70 rounded-full transition-all duration-700" style={{ width: "40%" }} />
-              </div>
-              <span className="text-[11px] font-bold text-white/80 flex-shrink-0">Day 3 of 5</span>
-              <span className="text-[11px] font-semibold text-indigo-200 flex-shrink-0">40%</span>
-            </div>
           </div>
         </div>
 
