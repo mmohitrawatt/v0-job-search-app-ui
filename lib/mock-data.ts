@@ -194,26 +194,73 @@ export const MOCK_JOBS: Job[] = [
   },
 ]
 
-export const MOCK_QUESTIONS = [
+export type QuestionCategory = "technical" | "behavioral" | "system-design" | "debugging"
+export type QuestionDifficulty = "medium" | "hard"
+
+export type MockQuestion = {
+  q: string
+  a: string
+  category: QuestionCategory
+  difficulty: QuestionDifficulty
+  tip?: string
+}
+
+export const MOCK_QUESTIONS: MockQuestion[] = [
   {
     q: "Describe a situation where you improved model performance under tight latency constraints.",
     a: "Start by quantifying the initial latency (e.g., 'inference took 450ms'). Describe the specific optimization — quantization, pruning, ONNX export, or caching. Show the result numerically ('reduced to 80ms, 5x improvement'). Conclude with learnings and how you'd generalize the approach.",
+    category: "behavioral",
+    difficulty: "medium",
+    tip: "Use the STAR format: Situation → Task → Action → Result. Always quantify the outcome.",
   },
   {
     q: "How do you handle data drift in a production ML system?",
     a: "Describe your monitoring stack (Evidently AI, custom dashboards). Discuss drift detection metrics — PSI, KS-test, feature distribution shifts. Walk through retraining triggers and rollback strategy. Mention A/B testing for new model versions.",
+    category: "technical",
+    difficulty: "medium",
+    tip: "Interviewers want to hear about real tooling you've used. Mention specific libraries if possible.",
   },
   {
     q: "Design a real-time recommendation system for 100 million daily active users.",
     a: "Divide into retrieval and ranking stages. Retrieval: two-tower model + ANN index (Faiss). Ranking: lightweight neural ranker with feature store. Serving: Redis for pre-computed candidates, sub-50ms SLA. Cover data pipelines, feature freshness, and cold-start handling.",
+    category: "system-design",
+    difficulty: "hard",
+    tip: "Always clarify scale and requirements first. Structure: candidates → ranking → serving → monitoring.",
   },
   {
     q: "Explain the attention mechanism and why it was transformative.",
     a: "Attention allows each token to dynamically weigh all other tokens in context, rather than relying on fixed-length hidden states. Key insight: scaled dot-product attention enables O(n²) long-range dependencies. This replaced RNNs for sequence tasks. Multi-head attention learns diverse relationship types in parallel.",
+    category: "technical",
+    difficulty: "medium",
+    tip: "Draw the Q/K/V diagram mentally. Be ready to discuss computational complexity trade-offs.",
   },
   {
     q: "Your model regressed after a data pipeline change — how do you debug it?",
     a: "Bisect the problem — compare model outputs before and after the pipeline change on a held-out slice. Check input distributions for schema drift, null rate changes, or encoding differences. Validate labels independently. Use SHAP/LIME to check for feature importance shifts. Run ablations to isolate the root cause.",
+    category: "debugging",
+    difficulty: "hard",
+    tip: "Show systematic thinking. Start broad (data vs. model vs. infra) then narrow down.",
+  },
+  {
+    q: "Tell me about a time you disagreed with your team on a technical decision. How did you resolve it?",
+    a: "Describe the disagreement clearly (e.g., model architecture choice). Explain how you presented data to support your view, listened to counter-arguments, and ultimately either reached a consensus or deferred to the team with clear documentation of trade-offs. Emphasize collaboration over winning.",
+    category: "behavioral",
+    difficulty: "medium",
+    tip: "Show that you can disagree professionally. Avoid making it sound like you always won the argument.",
+  },
+  {
+    q: "Design a feature store for a large-scale ML platform.",
+    a: "Feature stores decouple feature engineering from model training and serving. Cover offline store (Hive/Delta Lake for batch training), online store (Redis/DynamoDB for low-latency serving), and the feature registry. Discuss point-in-time correctness to prevent data leakage, versioning, and consistency between training and serving.",
+    category: "system-design",
+    difficulty: "hard",
+    tip: "The key insight is training-serving skew prevention. Show you understand point-in-time joins.",
+  },
+  {
+    q: "What is the difference between bagging and boosting? When would you use each?",
+    a: "Bagging (Random Forest): trains models in parallel on random subsets, reduces variance, good for high-variance models like deep trees. Boosting (XGBoost, LightGBM): sequential, each model corrects previous errors, reduces bias, often outperforms on tabular data. Use bagging when you have a noisy dataset or need robustness; use boosting when you need maximum accuracy on clean data.",
+    category: "technical",
+    difficulty: "medium",
+    tip: "Give concrete examples: Random Forest for noisy data, XGBoost for Kaggle-style tabular problems.",
   },
 ]
 
