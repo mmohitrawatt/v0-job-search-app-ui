@@ -114,10 +114,10 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
 
   return (
     <div className="flex-1 overflow-y-auto bg-background">
-      <div className="px-4 lg:px-8 pt-14 lg:pt-8 pb-6">
-        <div className="mb-4">
-          <h1 className="text-[22px] font-bold text-foreground tracking-tight">Job Companion</h1>
-          <p className="text-[13px] text-muted-foreground mt-0.5 font-medium">Curated for your profile</p>
+      <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3">
+        <div className="mb-3">
+          <h1 className="text-[19px] font-bold text-foreground tracking-tight">Job Companion</h1>
+          <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Curated for your profile</p>
         </div>
 
         {/* Search */}

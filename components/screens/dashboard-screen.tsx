@@ -97,16 +97,16 @@ export function DashboardScreen() {
   return (
     <div className="flex-1 overflow-y-auto bg-background">
       {/* Header Banner */}
-      <div className="px-4 lg:px-8 pt-14 lg:pt-8 pb-5 bg-card border-b border-border">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3 bg-card border-b border-border">
 
         {/* Row 1: Avatar + Greeting + Actions */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[14px] font-bold flex-shrink-0 shadow-sm ring-2 ring-primary/20">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[12px] font-bold flex-shrink-0 shadow-sm ring-2 ring-primary/20">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-semibold text-muted-foreground">{getGreeting()}</p>
-            <h1 className="text-[20px] font-extrabold text-foreground tracking-tight leading-tight truncate">
+            <p className="text-[10px] font-semibold text-muted-foreground leading-none mb-0.5">{getGreeting()}</p>
+            <h1 className="text-[17px] font-extrabold text-foreground tracking-tight leading-none truncate">
               {displayName} 👋
             </h1>
           </div>

@@ -273,11 +273,11 @@ export function PreparationScreen() {
   return (
     <div className="flex-1 flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <div className="px-4 lg:px-8 pt-14 lg:pt-8 pb-0 flex-shrink-0">
-        <div className="flex items-start justify-between mb-4">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-0 flex-shrink-0">
+        <div className="flex items-start justify-between mb-3">
           <div>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">Preparation</h1>
-            <p className="text-sm text-muted-foreground mt-0.5 font-medium">AI-personalized roadmap</p>
+            <h1 className="text-[19px] font-bold text-foreground tracking-tight">Preparation</h1>
+            <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">AI-personalized roadmap</p>
           </div>
           <div className={cn("w-10 h-10 rounded-[10px] flex items-center justify-center text-[12px] font-bold flex-shrink-0", job.color)}>
             {job.initials}
