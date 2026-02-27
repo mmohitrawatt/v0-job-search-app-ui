@@ -55,7 +55,7 @@ function SavedJobsScreen({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="flex-1 flex flex-col bg-background">
-      <div className="px-4 pt-12 pb-4 border-b border-border">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border">
         <button onClick={onBack} className="flex items-center gap-1.5 text-primary text-[13px] font-semibold btn-press mb-2">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9L11 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Profile
@@ -242,7 +242,7 @@ export function ProfileScreen() {
           </button>
         </div>
 
-        <div className="pt-12 px-4 pb-8 space-y-4">
+        <div className="pt-12 px-4 lg:px-8 pb-8 space-y-4 lg:max-w-3xl">
           {/* Name + headline */}
           <div>
             <div className="flex items-start justify-between">

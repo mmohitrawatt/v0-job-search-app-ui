@@ -1,12 +1,15 @@
 "use client"
 
 import React, { useEffect } from "react"
-import { AppProvider, useApp, Tab } from "@/lib/app-context"
+import { AppProvider, useApp, Tab, Screen } from "@/lib/app-context"
 import { DashboardScreen } from "@/components/screens/dashboard-screen"
 import { ResumeScreen } from "@/components/screens/resume-screen"
 import { JobsScreen } from "@/components/screens/jobs-screen"
 import { PreparationScreen } from "@/components/screens/preparation-screen"
 import { ProfileScreen } from "@/components/screens/profile-screen"
+import { AiInterviewScreen } from "@/components/screens/ai-interview-screen"
+import { SalaryIntelScreen } from "@/components/screens/salary-intel-screen"
+import { JobAlertsScreen } from "@/components/screens/job-alerts-screen"
 import { cn } from "@/lib/utils"
 
 export default function App() {
@@ -17,56 +20,191 @@ export default function App() {
   )
 }
 
-function AppShell() {
-  const { activeTab, setActiveTab, screen, toasts } = useApp()
+// ─── Desktop Sidebar ──────────────────────────────────────────────────────────
 
-  const hideTabBar = ["job-detail", "smart-apply", "resume-form", "resume-preview", "resume-optimize", "prep-detail"].includes(screen)
+function DesktopSidebar({
+  activeTab,
+  setActiveTab,
+  notificationCount,
+  navigate,
+  profile,
+}: {
+  activeTab: Tab
+  setActiveTab: (t: Tab) => void
+  notificationCount: number
+  navigate: (s: Screen) => void
+  profile: { name: string }
+}) {
+  const initials = profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
+  const firstName = profile.name.split(" ")[0]
+
+  const navItems: { id: Tab; label: string; icon: (active: boolean) => React.ReactNode }[] = [
+    { id: "dashboard", label: "Dashboard", icon: dashboardIcon },
+    { id: "resume",    label: "Resume",    icon: resumeIcon },
+    { id: "jobs",      label: "Jobs",      icon: jobsIcon },
+    { id: "preparation", label: "Preparation", icon: prepIcon },
+    { id: "profile",   label: "Profile",   icon: profileIcon },
+  ]
 
   return (
-    <main className="relative flex flex-col w-full min-h-screen max-w-lg mx-auto bg-background font-sans">
-
-      {/* Screen Content */}
-      <div className={cn("flex-1 flex flex-col overflow-y-auto", hideTabBar ? "pb-0" : "pb-[68px]")}>
-        <ScreenRouter />
-      </div>
-
-      {/* Bottom Nav — fixed to bottom of the centered column */}
-      {!hideTabBar && (
-        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg bg-card/95 backdrop-blur-md border-t border-border z-50">
-          <div className="flex items-center justify-around px-2 pt-2 pb-safe pb-3">
-            {(
-              [
-                { id: "dashboard" as Tab, label: "Dashboard", icon: dashboardIcon },
-                { id: "resume" as Tab, label: "Resume", icon: resumeIcon },
-                { id: "jobs" as Tab, label: "Jobs", icon: jobsIcon },
-                { id: "preparation" as Tab, label: "Prep", icon: prepIcon },
-                { id: "profile" as Tab, label: "Profile", icon: profileIcon },
-              ] as const
-            ).map((tab) => {
-              const isActive = activeTab === tab.id
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className="flex flex-col items-center gap-0.5 flex-1 py-1 tap-highlight-none transition-all duration-200 active:scale-90"
-                  aria-label={tab.label}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  <span className={isActive ? "text-primary" : "text-muted-foreground"}>
-                    {tab.icon(isActive)}
-                  </span>
-                  <span className={`text-[10px] font-semibold tracking-tight ${isActive ? "text-primary" : "text-muted-foreground"}`}>
-                    {tab.label}
-                  </span>
-                </button>
-              )
-            })}
+    <aside className="hidden lg:flex flex-col w-60 xl:w-64 h-screen bg-card border-r border-border flex-shrink-0 sticky top-0 z-40">
+      {/* Logo */}
+      <div className="px-5 py-5 border-b border-border flex-shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-[10px] bg-primary flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2.5" y="3" width="13" height="12" rx="2" stroke="white" strokeWidth="1.5"/>
+              <path d="M5.5 7.5H12.5M5.5 10.5H10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+              <circle cx="14" cy="4.5" r="2.5" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <p className="text-[15px] font-bold text-foreground leading-tight">JobComp</p>
+            <p className="text-[10px] text-muted-foreground font-medium">AI Job Companion</p>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Nav items */}
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold transition-all duration-150 text-left",
+                isActive
+                  ? "bg-accent text-primary"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <span className={isActive ? "text-primary" : "text-muted-foreground"}>
+                {item.icon(isActive)}
+              </span>
+              {item.label}
+            </button>
+          )
+        })}
+
+        {/* Divider */}
+        <div className="h-px bg-border my-2" />
+
+        {/* Alerts link */}
+        <button
+          onClick={() => navigate("job-alerts")}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150 text-left"
+        >
+          <span className="relative">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2.5C6.69 2.5 4 5.19 4 8.5V13L2.5 14.5V15.5H17.5V14.5L16 13V8.5C16 5.19 13.31 2.5 10 2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path d="M8 15.5C8 16.6 8.9 17.5 10 17.5C11.1 17.5 12 16.6 12 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            {notificationCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[14px] h-3.5 bg-red-500 rounded-full flex items-center justify-center text-[8px] font-bold text-white px-0.5">
+                {notificationCount}
+              </span>
+            )}
+          </span>
+          Job Alerts
+          {notificationCount > 0 && (
+            <span className="ml-auto bg-red-500/10 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              {notificationCount}
+            </span>
+          )}
+        </button>
+      </nav>
+
+      {/* User info at bottom */}
+      <div className="px-4 py-4 border-t border-border flex-shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[13px] font-bold flex-shrink-0">
+            {initials}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-semibold text-foreground truncate">{firstName}</p>
+            <p className="text-[10px] text-muted-foreground">Pro Member</p>
+          </div>
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 flex-shrink-0">Pro</span>
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+// ─── App Shell ────────────────────────────────────────────────────────────────
+
+function AppShell() {
+  const { activeTab, setActiveTab, screen, toasts, navigate, profile, notificationCount } = useApp()
+
+  const hideTabBar = [
+    "job-detail", "smart-apply", "resume-form", "resume-preview",
+    "resume-optimize", "prep-detail", "ai-interview", "salary-intel",
+    "job-alerts", "resume-tailor",
+  ].includes(screen)
+
+  return (
+    <main className="flex flex-col lg:flex-row w-full min-h-screen lg:h-screen bg-background font-sans">
+
+      {/* Desktop Sidebar */}
+      <DesktopSidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        notificationCount={notificationCount}
+        navigate={navigate}
+        profile={profile}
+      />
+
+      {/* Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 lg:overflow-hidden relative">
+
+        {/* Screen Content */}
+        <div className={cn(
+          "flex-1 flex flex-col lg:overflow-hidden",
+          !hideTabBar && "pb-[68px] lg:pb-0"
+        )}>
+          <ScreenRouter />
+        </div>
+
+        {/* Mobile Bottom Nav */}
+        {!hideTabBar && (
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border z-50">
+            <div className="flex items-center justify-around px-2 pt-2 pb-safe pb-3">
+              {(
+                [
+                  { id: "dashboard" as Tab, label: "Dashboard", icon: dashboardIcon },
+                  { id: "resume" as Tab, label: "Resume", icon: resumeIcon },
+                  { id: "jobs" as Tab, label: "Jobs", icon: jobsIcon },
+                  { id: "preparation" as Tab, label: "Prep", icon: prepIcon },
+                  { id: "profile" as Tab, label: "Profile", icon: profileIcon },
+                ] as const
+              ).map((tab) => {
+                const isActive = activeTab === tab.id
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className="flex flex-col items-center gap-0.5 flex-1 py-1 tap-highlight-none transition-all duration-200 active:scale-90"
+                    aria-label={tab.label}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    <span className={isActive ? "text-primary" : "text-muted-foreground"}>
+                      {tab.icon(isActive)}
+                    </span>
+                    <span className={`text-[10px] font-semibold tracking-tight ${isActive ? "text-primary" : "text-muted-foreground"}`}>
+                      {tab.label}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Toast layer */}
-      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-lg px-4 z-[100] pointer-events-none flex flex-col gap-2">
+      <div className="fixed bottom-20 lg:bottom-6 left-0 right-0 lg:left-auto lg:right-6 lg:w-80 px-4 lg:px-0 z-[100] pointer-events-none flex flex-col gap-2">
         {toasts.map((toast) => (
           <div
             key={toast.id}
@@ -107,7 +245,11 @@ function ScreenRouter() {
     "resume-form": <ResumeScreen />,
     "resume-preview": <ResumeScreen />,
     "resume-optimize": <ResumeScreen />,
+    "resume-tailor": <ResumeScreen />,
     "prep-detail": <PreparationScreen />,
+    "ai-interview": <AiInterviewScreen />,
+    "salary-intel": <SalaryIntelScreen />,
+    "job-alerts": <JobAlertsScreen />,
   }
 
   return <>{screens[screen] ?? <DashboardScreen />}</>

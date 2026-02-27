@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { useApp } from "@/lib/app-context"
 import { Resume } from "@/lib/mock-data"
 
-type SubScreen = "list" | "template-pick" | "form" | "preview" | "optimize"
+type SubScreen = "list" | "template-pick" | "form" | "preview" | "optimize" | "tailor"
 
 const STEP_LABELS = ["Personal Info", "Experience", "Skills & Summary"]
 
@@ -51,12 +51,12 @@ function BackButton({ onBack, label = "Back" }: { onBack: () => void; label?: st
 
 // ─── Resume List ──────────────────────────────────────────────────────────────
 
-function ResumeList({ onCreate, onPreview }: { onCreate: () => void; onPreview: (r: Resume) => void }) {
+function ResumeList({ onCreate, onPreview, onTailor }: { onCreate: () => void; onPreview: (r: Resume) => void; onTailor: () => void }) {
   const { resumes } = useApp()
 
   return (
     <div className="flex-1 overflow-y-auto bg-background">
-      <div className="px-4 pt-14 pb-6">
+      <div className="px-4 lg:px-8 pt-14 lg:pt-8 pb-6">
         <div className="mb-5">
           <h1 className="text-[22px] font-bold text-foreground tracking-tight">Resume Builder</h1>
           <p className="text-[13px] text-muted-foreground mt-0.5 font-medium">LaTeX-quality resumes in seconds</p>
@@ -80,6 +80,25 @@ function ResumeList({ onCreate, onPreview }: { onCreate: () => void; onPreview: 
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M5 3L9 7L5 11" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
+          </div>
+        </button>
+
+        {/* AI Tailor for JD */}
+        <button
+          onClick={onTailor}
+          className="w-full bg-card rounded-[14px] p-4 mb-3 border border-primary/30 shadow-card card-tap text-left"
+        >
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-[10px] bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L12 7H17L13 10.5L14.5 16L10 13L5.5 16L7 10.5L3 7H8L10 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-[14px] font-semibold text-foreground">AI Tailor for a JD</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Paste job description — get a tailored resume</p>
+            </div>
+            <span className="text-[9px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full flex-shrink-0">AI</span>
           </div>
         </button>
 
@@ -147,7 +166,7 @@ function TemplatePicker({ onBack, onSelect }: { onBack: () => void; onSelect: (i
 
   return (
     <div className="flex-1 flex flex-col bg-background">
-      <div className="px-4 pt-12 pb-4 border-b border-border flex-shrink-0">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <h1 className="text-[19px] font-bold text-foreground mt-2">Choose Template</h1>
         <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">LaTeX-rendered, recruiter-approved</p>
@@ -269,7 +288,7 @@ function ResumeForm({ onBack, onDone, template }: { onBack: () => void; onDone: 
 
   return (
     <div className="flex-1 flex flex-col bg-background">
-      <div className="px-4 pt-12 pb-4 border-b border-border flex-shrink-0">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <div className="flex items-center justify-between mt-2">
           <h1 className="text-[19px] font-bold text-foreground">Create Resume</h1>
@@ -376,7 +395,7 @@ function ResumePreview({
 
   return (
     <div className="flex-1 flex flex-col bg-background">
-      <div className="px-4 pt-12 pb-4 border-b border-border flex-shrink-0">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <div className="flex items-center justify-between mt-2">
           <h1 className="text-[19px] font-bold text-foreground">{resume.name}</h1>
@@ -588,7 +607,7 @@ function ResumeOptimize({ resume, onBack }: { resume: Resume; onBack: () => void
 
   return (
     <div className="flex-1 flex flex-col bg-background">
-      <div className="px-4 pt-12 pb-4 border-b border-border flex-shrink-0">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} />
         <h1 className="text-[19px] font-bold text-foreground mt-2">AI Optimize</h1>
         <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Tailored for {resume.name}</p>
@@ -651,6 +670,183 @@ function ResumeOptimize({ resume, onBack }: { resume: Resume; onBack: () => void
   )
 }
 
+// ─── AI Resume Tailor ─────────────────────────────────────────────────────────
+
+function ResumeTailor({ onBack }: { onBack: () => void }) {
+  const { showToast, profile } = useApp()
+  const [jd, setJd] = useState("")
+  const [phase, setPhase] = useState<"input" | "analyzing" | "results">("input")
+
+  const existingKeywords = profile.skills
+  const missingKeywords = ["Transformer Fine-tuning", "RAG Pipelines", "LangChain", "MLflow", "Feature Store"]
+  const suggestedHeadlineBefore = profile.headline
+  const suggestedHeadlineAfter = "Senior ML Engineer — LLMs & Production AI | IIT Delhi '22"
+  const bulletImprovements = [
+    {
+      label: "Swiggy — Demand Forecasting",
+      before: "Built real-time demand forecasting model reducing inventory waste by 23%",
+      after: "Built transformer-based demand forecasting model (Kafka + Flink) reducing inventory waste 23% across 500+ dark stores; reduced latency from 15min → 30sec",
+    },
+    {
+      label: "Meesho — Product Ranking",
+      before: "Developed product ranking model boosting GMV by ₹8Cr/month",
+      after: "Engineered XGBoost + deep feature ranking model; directly increased GMV ₹8Cr/month through 40+ simultaneous A/B experiments using custom experimentation framework",
+    },
+    {
+      label: "Skills Section",
+      before: "Python, PyTorch, LLMs, FastAPI, SQL",
+      after: "Python, PyTorch, LLMs, FastAPI, SQL, LangChain, MLflow, RAG Pipelines, Transformer Fine-tuning",
+    },
+  ]
+
+  function handleAnalyze() {
+    if (!jd.trim()) return
+    setPhase("analyzing")
+    setTimeout(() => setPhase("results"), 1500)
+  }
+
+  function handleApply() {
+    showToast("Resume tailored for the JD ✨", "success")
+    onBack()
+  }
+
+  return (
+    <div className="flex-1 flex flex-col bg-background">
+      <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
+        <BackButton onBack={onBack} label="Resume" />
+        <h1 className="text-[19px] font-bold text-foreground mt-2">AI Tailor</h1>
+        <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Paste a job description to optimize your resume</p>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 py-5">
+
+        {/* Input Phase */}
+        {phase === "input" && (
+          <div>
+            <div className="bg-card rounded-[14px] border border-border p-3 shadow-card mb-4">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">Paste Job Description *</p>
+              <textarea
+                value={jd}
+                onChange={(e) => setJd(e.target.value)}
+                placeholder="Paste the full job description here... (job title, responsibilities, required skills, etc.)"
+                className="w-full text-[12.5px] text-foreground bg-transparent resize-none outline-none placeholder:text-muted-foreground/60 leading-relaxed"
+                rows={8}
+              />
+            </div>
+            <div className="bg-primary/8 rounded-[12px] px-4 py-3 flex items-center gap-2 mb-4">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-primary flex-shrink-0"><circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3"/><path d="M7 6V10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="7" cy="4.5" r="0.6" fill="currentColor"/></svg>
+              <p className="text-[11px] text-primary font-medium">AI will match keywords, suggest edits, and generate a tailored version</p>
+            </div>
+            <button
+              onClick={handleAnalyze}
+              disabled={!jd.trim()}
+              className={cn(
+                "w-full py-3.5 rounded-[14px] text-[14px] font-bold transition-all btn-press",
+                jd.trim() ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground cursor-not-allowed"
+              )}
+            >
+              Analyze JD
+            </button>
+          </div>
+        )}
+
+        {/* Analyzing Phase */}
+        {phase === "analyzing" && (
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 relative">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-primary animate-spin" style={{ animationDuration: "1.5s" }}>
+                <circle cx="14" cy="14" r="11" stroke="currentColor" strokeWidth="2" strokeDasharray="40 30" strokeLinecap="round"/>
+              </svg>
+              <span className="absolute text-[12px] font-extrabold text-primary">AI</span>
+            </div>
+            <p className="text-[15px] font-bold text-foreground mb-1">Analyzing JD...</p>
+            <p className="text-[12px] text-muted-foreground text-center">Extracting keywords, matching skills, drafting improvements</p>
+
+            <div className="w-full mt-6 space-y-2">
+              {["Extracting required keywords...", "Matching against your profile...", "Generating improvement suggestions..."].map((step, i) => (
+                <div key={i} className="flex items-center gap-2.5 bg-card rounded-[10px] p-3 border border-border">
+                  <div className="w-4 h-4 rounded-full border-2 border-primary/40 border-t-primary animate-spin flex-shrink-0" style={{ animationDuration: `${0.8 + i * 0.3}s` }} />
+                  <p className="text-[11.5px] text-muted-foreground">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Results Phase */}
+        {phase === "results" && (
+          <div>
+            {/* Found / Missing keywords */}
+            <div className="bg-card rounded-[14px] border border-border shadow-card p-4 mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-2">Found in Your Resume ✓</p>
+              <div className="flex flex-wrap gap-1.5">
+                {existingKeywords.slice(0, 6).map((kw) => (
+                  <span key={kw} className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-card rounded-[14px] border border-amber-200 shadow-card p-4 mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-2">Missing Keywords — Add These</p>
+              <div className="flex flex-wrap gap-1.5">
+                {missingKeywords.map((kw) => (
+                  <span key={kw} className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">{kw}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Headline suggestion */}
+            <div className="bg-card rounded-[14px] border border-border shadow-card p-4 mb-3">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Suggested Headline</p>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="text-[9px] font-bold bg-red-100 text-red-700 px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5">Before</span>
+                  <p className="text-[11.5px] text-muted-foreground line-through leading-relaxed">{suggestedHeadlineBefore}</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-[9px] font-bold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5">After</span>
+                  <p className="text-[11.5px] text-foreground font-semibold leading-relaxed">{suggestedHeadlineAfter}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bullet improvements */}
+            <div className="bg-card rounded-[14px] border border-border shadow-card p-4 mb-5">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-3">Top 3 Bullet Improvements</p>
+              <div className="space-y-4">
+                {bulletImprovements.map((b, i) => (
+                  <div key={i}>
+                    <p className="text-[10px] font-bold text-muted-foreground mb-1.5">{i + 1}. {b.label}</p>
+                    <div className="bg-red-50 rounded-[8px] p-2.5 mb-1.5">
+                      <p className="text-[11px] text-red-700 leading-relaxed">{b.before}</p>
+                    </div>
+                    <div className="bg-emerald-50 rounded-[8px] p-2.5">
+                      <p className="text-[11px] text-emerald-800 font-medium leading-relaxed">{b.after}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={handleApply}
+              className="w-full py-3.5 rounded-[14px] bg-primary text-primary-foreground text-[14px] font-bold btn-press mb-3"
+            >
+              Apply All Changes ✨
+            </button>
+            <button
+              onClick={() => setPhase("input")}
+              className="w-full py-3 rounded-[14px] bg-muted text-foreground text-[13px] font-semibold btn-press"
+            >
+              Try Another JD
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
 export function ResumeScreen() {
@@ -664,6 +860,7 @@ export function ResumeScreen() {
     if (screen === "resume-form") setSubScreen("form")
     else if (screen === "resume-preview") setSubScreen("preview")
     else if (screen === "resume-optimize") setSubScreen("optimize")
+    else if (screen === "resume-tailor") setSubScreen("tailor")
   }, [screen])
 
   function handleCreate() {
@@ -698,6 +895,11 @@ export function ResumeScreen() {
     navigate("resume-preview")
   }
 
+  function handleTailor() {
+    setSubScreen("tailor")
+    navigate("resume-tailor")
+  }
+
   function handleBack() {
     goBack()
     if (subScreen === "optimize") {
@@ -718,7 +920,7 @@ export function ResumeScreen() {
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {subScreen === "list" && <ResumeList onCreate={handleCreate} onPreview={handlePreview} />}
+      {subScreen === "list" && <ResumeList onCreate={handleCreate} onPreview={handlePreview} onTailor={handleTailor} />}
       {subScreen === "template-pick" && <TemplatePicker onBack={handleBack} onSelect={handleTemplateSelect} />}
       {subScreen === "form" && <ResumeForm onBack={handleBack} onDone={handleFormDone} template={selectedTemplate} />}
       {subScreen === "preview" && (
@@ -733,6 +935,7 @@ export function ResumeScreen() {
       {subScreen === "optimize" && (
         <ResumeOptimize resume={activeResume ?? fallbackResume} onBack={handleBack} />
       )}
+      {subScreen === "tailor" && <ResumeTailor onBack={handleBack} />}
     </div>
   )
 }

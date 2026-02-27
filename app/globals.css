@@ -129,10 +129,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    background-color: oklch(0.94 0.008 255); /* matches --muted, prevents edge white flash */
+    overscroll-behavior: none;
+  }
   body {
     @apply bg-muted text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
   }
   html, body {
     height: 100%;

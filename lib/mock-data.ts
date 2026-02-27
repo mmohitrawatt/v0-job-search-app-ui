@@ -1,5 +1,13 @@
 export type JobPortal = "naukri" | "linkedin" | "indeed" | "foundit" | "internshala"
 
+export type PortalListing = {
+  portal: JobPortal
+  benefit: string
+  recommended: boolean
+  salaryMin?: number   // in LPA
+  salaryMax?: number   // in LPA
+}
+
 export type Job = {
   id: string
   title: string
@@ -15,6 +23,40 @@ export type Job = {
   description: string
   isRemote: boolean
   portal: JobPortal
+  portalListings?: PortalListing[]
+}
+
+export type ApplicationStatus = "applied" | "screening" | "interview" | "offer" | "rejected"
+
+export type Application = {
+  id: string
+  jobId: string
+  jobTitle: string
+  company: string
+  color: string
+  initials: string
+  status: ApplicationStatus
+  appliedDate: string
+  salary: string
+}
+
+export type SalaryData = {
+  role: string
+  min: number
+  median: number
+  max: number
+  trend: "up" | "down" | "stable"
+  companies: number
+}
+
+export type JobAlert = {
+  id: string
+  keyword: string
+  location: string
+  minSalaryLPA: number
+  portals: JobPortal[]
+  active: boolean
+  matchCount: number
 }
 
 export const MOCK_JOBS: Job[] = [
@@ -34,6 +76,11 @@ export const MOCK_JOBS: Job[] = [
       "Build real-time ML systems powering Zepto's 10-minute delivery recommendation and demand forecasting engine. Own the full model lifecycle from experimentation to production deployment on AWS.",
     isRemote: false,
     portal: "linkedin",
+    portalListings: [
+      { portal: "linkedin", benefit: "Easy Apply",    recommended: true,  salaryMin: 32, salaryMax: 44 },
+      { portal: "naukri",   benefit: "Direct Apply",  recommended: false, salaryMin: 35, salaryMax: 52 },
+      { portal: "indeed",   benefit: "3-click Apply", recommended: false, salaryMin: 28, salaryMax: 40 },
+    ],
   },
   {
     id: "2",
@@ -51,6 +98,11 @@ export const MOCK_JOBS: Job[] = [
       "Design and deploy large-scale ML pipelines for Flipkart's personalisation and search ranking systems serving 400M+ users. Collaborate with research teams on next-gen retrieval models.",
     isRemote: false,
     portal: "naukri",
+    portalListings: [
+      { portal: "naukri",   benefit: "Direct Hiring",  recommended: false, salaryMin: 28, salaryMax: 40 },
+      { portal: "linkedin", benefit: "Easy Apply",      recommended: true,  salaryMin: 32, salaryMax: 45 },
+      { portal: "indeed",   benefit: "Fast Response",  recommended: false, salaryMin: 25, salaryMax: 38 },
+    ],
   },
   {
     id: "3",
@@ -68,6 +120,11 @@ export const MOCK_JOBS: Job[] = [
       "Use data to power CRED's credit underwriting, rewards personalisation, and member experience decisions. Build experimentation frameworks and predictive models for India's premium credit card user base.",
     isRemote: false,
     portal: "linkedin",
+    portalListings: [
+      { portal: "linkedin", benefit: "Easy Apply",       recommended: true,  salaryMin: 28, salaryMax: 40 },
+      { portal: "foundit",  benefit: "Salary disclosed", recommended: false, salaryMin: 24, salaryMax: 36 },
+      { portal: "naukri",   benefit: "Direct Apply",     recommended: false, salaryMin: 22, salaryMax: 38 },
+    ],
   },
   {
     id: "4",
@@ -85,6 +142,11 @@ export const MOCK_JOBS: Job[] = [
       "Build the payment infrastructure processing billions of rupees daily. Own high-throughput microservices, improve settlement pipelines, and harden the reliability of India's leading payments platform.",
     isRemote: true,
     portal: "indeed",
+    portalListings: [
+      { portal: "indeed",   benefit: "Fast Response",  recommended: false, salaryMin: 22, salaryMax: 32 },
+      { portal: "linkedin", benefit: "Easy Apply",     recommended: true,  salaryMin: 25, salaryMax: 38 },
+      { portal: "naukri",   benefit: "Direct Hiring",  recommended: false, salaryMin: 20, salaryMax: 34 },
+    ],
   },
   {
     id: "5",
@@ -102,6 +164,11 @@ export const MOCK_JOBS: Job[] = [
       "Define the AI product roadmap for PhonePe's Smart Money Management suite. Partner with data science and engineering to ship intelligent financial features for 500M+ users across India.",
     isRemote: false,
     portal: "foundit",
+    portalListings: [
+      { portal: "foundit",  benefit: "Salary disclosed", recommended: false, salaryMin: 30, salaryMax: 50 },
+      { portal: "linkedin", benefit: "Easy Apply",       recommended: true,  salaryMin: 35, salaryMax: 55 },
+      { portal: "naukri",   benefit: "Direct Apply",     recommended: false, salaryMin: 28, salaryMax: 45 },
+    ],
   },
   {
     id: "6",
@@ -119,29 +186,34 @@ export const MOCK_JOBS: Job[] = [
       "Operate the infrastructure behind India's largest sports gaming platform during IPL peak loads of 100M+ concurrent users. Automate deployments, build runbooks, and ensure 99.99% uptime.",
     isRemote: false,
     portal: "naukri",
+    portalListings: [
+      { portal: "naukri",      benefit: "Direct Hiring",   recommended: false, salaryMin: 18, salaryMax: 28 },
+      { portal: "linkedin",    benefit: "Easy Apply",      recommended: true,  salaryMin: 22, salaryMax: 32 },
+      { portal: "internshala", benefit: "Fresher Friendly", recommended: false, salaryMin: 15, salaryMax: 24 },
+    ],
   },
 ]
 
 export const MOCK_QUESTIONS = [
   {
-    q: "Kisi aisi situation ke baare mein batao jab tumne tight latency constraints mein model performance improve ki ho.",
-    a: "Pehle initial latency ko quantify karo (e.g., 'inference 450ms le raha tha'). Specific optimization batao — quantization, pruning, ONNX export, ya caching. Result numerically dikhao ('80ms tak laya, 5x improvement'). Aakhir mein learnings aur approach ko generalise karne ka tarika batao.",
+    q: "Describe a situation where you improved model performance under tight latency constraints.",
+    a: "Start by quantifying the initial latency (e.g., 'inference took 450ms'). Describe the specific optimization — quantization, pruning, ONNX export, or caching. Show the result numerically ('reduced to 80ms, 5x improvement'). Conclude with learnings and how you'd generalize the approach.",
   },
   {
-    q: "Production ML system mein data drift kaise handle karte ho?",
-    a: "Apna monitoring stack explain karo (Evidently AI, custom dashboards). Drift detection metrics discuss karo — PSI, KS-test, feature distribution shifts. Retraining triggers aur rollback strategy walk through karo. Naye model versions ke liye A/B testing mention karo.",
+    q: "How do you handle data drift in a production ML system?",
+    a: "Describe your monitoring stack (Evidently AI, custom dashboards). Discuss drift detection metrics — PSI, KS-test, feature distribution shifts. Walk through retraining triggers and rollback strategy. Mention A/B testing for new model versions.",
   },
   {
-    q: "10 crore daily active users ke liye real-time recommendation system design karo.",
-    a: "Retrieval aur ranking stages mein divide karo. Retrieval: two-tower model + ANN index (Faiss). Ranking: lightweight neural ranker with feature store. Serving: Redis for pre-computed candidates, sub-50ms SLA. Data pipelines, feature freshness, aur cold-start handling cover karo.",
+    q: "Design a real-time recommendation system for 100 million daily active users.",
+    a: "Divide into retrieval and ranking stages. Retrieval: two-tower model + ANN index (Faiss). Ranking: lightweight neural ranker with feature store. Serving: Redis for pre-computed candidates, sub-50ms SLA. Cover data pipelines, feature freshness, and cold-start handling.",
   },
   {
-    q: "Attention mechanism explain karo aur ye kyun transformative tha?",
-    a: "Attention har token ko dynamically baaki tokens ('context') ke saath weigh karne deta hai rather than fixed-length hidden states. Key insight: scaled dot-product attention O(n²) long-range dependencies enable karta hai. Isse RNNs replace hue sequence tasks mein. Multi-head attention parallel mein diverse relationship types seekhta hai.",
+    q: "Explain the attention mechanism and why it was transformative.",
+    a: "Attention allows each token to dynamically weigh all other tokens in context, rather than relying on fixed-length hidden states. Key insight: scaled dot-product attention enables O(n²) long-range dependencies. This replaced RNNs for sequence tasks. Multi-head attention learns diverse relationship types in parallel.",
   },
   {
-    q: "Data pipeline change ke baad model regress ho gayi — debug kaise karoge?",
-    a: "Bisect karo — pipeline change se pehle aur baad ke model outputs compare karo held-out slice pe. Input distributions check karo schema drift, null rates, ya encoding changes ke liye. Labels ko independently validate karo. SHAP/LIME use karo feature importances shift check karne ke liye. Root cause isolate karne ke liye ablations run karo.",
+    q: "Your model regressed after a data pipeline change — how do you debug it?",
+    a: "Bisect the problem — compare model outputs before and after the pipeline change on a held-out slice. Check input distributions for schema drift, null rate changes, or encoding differences. Validate labels independently. Use SHAP/LIME to check for feature importance shifts. Run ablations to isolate the root cause.",
   },
 ]
 
@@ -155,8 +227,31 @@ export type Resume = {
 }
 
 export const DEFAULT_RESUMES: Resume[] = [
-  { id: "r1", name: "SDE II — AI/ML Resume", edited: "2 din pehle", score: 92, scoreColor: "text-emerald-600 bg-emerald-50", targetJob: "1" },
-  { id: "r2", name: "ML Engineer CV", edited: "1 hafte pehle", score: 78, scoreColor: "text-amber-600 bg-amber-50", targetJob: "2" },
-  { id: "r3", name: "Backend Dev Resume", edited: "2 hafte pehle", score: 65, scoreColor: "text-orange-600 bg-orange-50", targetJob: "4" },
-  { id: "r4", name: "Full Stack Resume", edited: "1 mahine pehle", score: 71, scoreColor: "text-blue-600 bg-blue-50" },
+  { id: "r1", name: "SDE II — AI/ML Resume", edited: "2 days ago", score: 92, scoreColor: "text-emerald-600 bg-emerald-50", targetJob: "1" },
+  { id: "r2", name: "ML Engineer CV", edited: "1 week ago", score: 78, scoreColor: "text-amber-600 bg-amber-50", targetJob: "2" },
+  { id: "r3", name: "Backend Dev Resume", edited: "2 weeks ago", score: 65, scoreColor: "text-orange-600 bg-orange-50", targetJob: "4" },
+  { id: "r4", name: "Full Stack Resume", edited: "1 month ago", score: 71, scoreColor: "text-blue-600 bg-blue-50" },
+]
+
+export const MOCK_APPLICATIONS: Application[] = [
+  { id: "a1", jobId: "1", jobTitle: "SDE II — AI/ML", company: "Zepto", color: "bg-violet-100 text-violet-700", initials: "ZP", status: "interview", appliedDate: "3 days ago", salary: "₹32–52 LPA" },
+  { id: "a2", jobId: "2", jobTitle: "ML Engineer", company: "Flipkart", color: "bg-yellow-100 text-yellow-700", initials: "FK", status: "screening", appliedDate: "5 days ago", salary: "₹28–45 LPA" },
+  { id: "a3", jobId: "3", jobTitle: "Data Scientist", company: "CRED", color: "bg-zinc-800 text-zinc-100", initials: "CR", status: "applied", appliedDate: "1 day ago", salary: "₹24–40 LPA" },
+  { id: "a4", jobId: "5", jobTitle: "AI Product Manager", company: "PhonePe", color: "bg-indigo-100 text-indigo-700", initials: "PP", status: "offer", appliedDate: "2 weeks ago", salary: "₹30–55 LPA" },
+  { id: "a5", jobId: "4", jobTitle: "Backend Engineer", company: "Razorpay", color: "bg-blue-100 text-blue-700", initials: "RZ", status: "rejected", appliedDate: "3 weeks ago", salary: "₹22–38 LPA" },
+  { id: "a6", jobId: "6", jobTitle: "DevOps / SRE", company: "Dream11", color: "bg-red-100 text-red-700", initials: "D1", status: "screening", appliedDate: "1 week ago", salary: "₹18–32 LPA" },
+]
+
+export const MOCK_SALARY_DATA: SalaryData[] = [
+  { role: "ML Engineer", min: 22, median: 38, max: 65, trend: "up", companies: 142 },
+  { role: "Data Scientist", min: 18, median: 32, max: 55, trend: "up", companies: 189 },
+  { role: "SDE II", min: 25, median: 42, max: 75, trend: "stable", companies: 312 },
+  { role: "SDE III", min: 40, median: 65, max: 110, trend: "up", companies: 198 },
+  { role: "AI/ML Lead", min: 50, median: 85, max: 140, trend: "up", companies: 87 },
+  { role: "Backend Engineer", min: 20, median: 35, max: 60, trend: "stable", companies: 267 },
+]
+
+export const MOCK_ALERTS: JobAlert[] = [
+  { id: "al1", keyword: "ML Engineer", location: "Bengaluru", minSalaryLPA: 25, portals: ["linkedin", "naukri"], active: true, matchCount: 4 },
+  { id: "al2", keyword: "Data Scientist", location: "Remote", minSalaryLPA: 20, portals: ["linkedin", "indeed", "foundit"], active: true, matchCount: 2 },
 ]

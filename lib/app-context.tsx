@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useCallback } from "react"
-import { Job, Resume, DEFAULT_RESUMES } from "@/lib/mock-data"
+import { Job, Resume, DEFAULT_RESUMES, Application, JobAlert, MOCK_APPLICATIONS, MOCK_ALERTS } from "@/lib/mock-data"
 
 export type Screen =
   | "dashboard"
@@ -15,6 +15,10 @@ export type Screen =
   | "resume-preview"
   | "resume-optimize"
   | "prep-detail"
+  | "ai-interview"
+  | "salary-intel"
+  | "job-alerts"
+  | "resume-tailor"
 
 export type Tab = "dashboard" | "resume" | "jobs" | "preparation" | "profile"
 
@@ -64,6 +68,7 @@ export type ProfileData = {
   education: Education[]
   certifications: Certification[]
   languages: string[]
+  isPro: boolean
 }
 
 type AppContextType = {
@@ -90,6 +95,17 @@ type AppContextType = {
   setSkills: (skills: string[]) => void
   profile: ProfileData
   setProfile: (data: ProfileData) => void
+  applications: Application[]
+  updateApplicationStatus: (id: string, status: import("@/lib/mock-data").ApplicationStatus) => void
+  alerts: JobAlert[]
+  addAlert: (alert: Omit<JobAlert, "id">) => void
+  toggleAlert: (id: string) => void
+  deleteAlert: (id: string) => void
+  notificationCount: number
+  salaryRole: string | null
+  setSalaryRole: (role: string | null) => void
+  isPro: boolean
+  setIsPro: (v: boolean) => void
 }
 
 const DEFAULT_PROFILE: ProfileData = {
@@ -167,6 +183,7 @@ const DEFAULT_PROFILE: ProfileData = {
     { id: "c3", name: "Google Cloud Professional Data Engineer", issuer: "Google Cloud", year: "2023" },
   ],
   languages: ["Hindi (Native)", "English (Fluent)", "Kannada (Basic)"],
+  isPro: true,
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -181,6 +198,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
   const [prepJobId, setPrepJobId] = useState<string | null>("1")
   const [profile, setProfile] = useState<ProfileData>(DEFAULT_PROFILE)
+  const [applications, setApplications] = useState<Application[]>(MOCK_APPLICATIONS)
+  const [alerts, setAlerts] = useState<JobAlert[]>(MOCK_ALERTS)
+  const [salaryRole, setSalaryRole] = useState<string | null>(null)
+  const [isPro, setIsPro] = useState(true)
 
   const profileName = profile.name
   const skills = profile.skills
@@ -232,6 +253,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }, 3000)
   }, [])
 
+  const updateApplicationStatus = useCallback((id: string, status: import("@/lib/mock-data").ApplicationStatus) => {
+    setApplications((prev) => prev.map((a) => a.id === id ? { ...a, status } : a))
+  }, [])
+
+  const addAlert = useCallback((alert: Omit<JobAlert, "id">) => {
+    const id = Math.random().toString(36).slice(2)
+    setAlerts((prev) => [{ ...alert, id }, ...prev])
+  }, [])
+
+  const toggleAlert = useCallback((id: string) => {
+    setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, active: !a.active } : a))
+  }, [])
+
+  const deleteAlert = useCallback((id: string) => {
+    setAlerts((prev) => prev.filter((a) => a.id !== id))
+  }, [])
+
+  const notificationCount = alerts.filter((a) => a.active).reduce((sum, a) => sum + a.matchCount, 0)
+
   return (
     <AppContext.Provider
       value={{
@@ -258,6 +298,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setSkills,
         profile,
         setProfile,
+        applications,
+        updateApplicationStatus,
+        alerts,
+        addAlert,
+        toggleAlert,
+        deleteAlert,
+        notificationCount,
+        salaryRole,
+        setSalaryRole,
+        isPro,
+        setIsPro,
       }}
     >
       {children}
