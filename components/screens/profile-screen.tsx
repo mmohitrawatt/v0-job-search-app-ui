@@ -108,8 +108,8 @@ function SavedJobsScreen({ onBack }: { onBack: () => void }) {
 function EditAboutModal({ value, onSave, onClose }: { value: string; onSave: (v: string) => void; onClose: () => void }) {
   const [text, setText] = useState(value)
   return (
-    <div className="absolute inset-0 bg-black/40 z-50 flex items-end">
-      <div className="w-full bg-card rounded-t-[22px] p-5 animate-in slide-in-from-bottom-8 duration-300">
+    <div className="absolute inset-0 bg-black/40 z-50 flex items-end lg:items-center lg:justify-center">
+      <div className="w-full lg:w-[520px] bg-card rounded-t-[22px] lg:rounded-[20px] p-5 animate-in slide-in-from-bottom-8 lg:zoom-in-95 duration-300">
         <h3 className="text-[15px] font-bold text-foreground mb-3">Edit About</h3>
         <textarea
           autoFocus
@@ -134,8 +134,8 @@ function EditHeaderModal({ profile, onSave, onClose }: { profile: ProfileData; o
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   return (
-    <div className="absolute inset-0 bg-black/40 z-50 flex items-end overflow-hidden">
-      <div className="w-full bg-card rounded-t-[22px] animate-in slide-in-from-bottom-8 duration-300 max-h-[85vh] flex flex-col">
+    <div className="absolute inset-0 bg-black/40 z-50 flex items-end lg:items-center lg:justify-center overflow-hidden">
+      <div className="w-full lg:w-[520px] bg-card rounded-t-[22px] lg:rounded-[20px] animate-in slide-in-from-bottom-8 lg:zoom-in-95 duration-300 max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-border flex-shrink-0">
           <h3 className="text-[15px] font-bold text-foreground">Edit Profile</h3>
           <button onClick={onClose} className="text-muted-foreground text-[12px] font-semibold">Cancel</button>
@@ -173,8 +173,8 @@ function EditSkillsModal({ skills, onSave, onClose }: { skills: string[]; onSave
   }
 
   return (
-    <div className="absolute inset-0 bg-black/40 z-50 flex items-end">
-      <div className="w-full bg-card rounded-t-[22px] p-5 animate-in slide-in-from-bottom-8 duration-300 max-h-[80vh] flex flex-col">
+    <div className="absolute inset-0 bg-black/40 z-50 flex items-end lg:items-center lg:justify-center">
+      <div className="w-full lg:w-[520px] bg-card rounded-t-[22px] lg:rounded-[20px] p-5 animate-in slide-in-from-bottom-8 lg:zoom-in-95 duration-300 max-h-[80vh] flex flex-col">
         <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <h3 className="text-[15px] font-bold text-foreground">Edit Skills</h3>
           <button onClick={onClose} className="text-muted-foreground text-[12px] font-semibold">Cancel</button>
@@ -224,208 +224,441 @@ export function ProfileScreen() {
 
   if (subScreen === "saved-jobs") return <SavedJobsScreen onBack={() => setSubScreen("main")} />
 
+  const statsData = [
+    { label: "Applications", value: "24", icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-primary"><path d="M2 3H14C14.55 3 15 3.45 15 4V12C15 12.55 14.55 13 14 13H2C1.45 13 1 12.55 1 12V4C1 3.45 1.45 3 2 3Z" stroke="currentColor" strokeWidth="1.3" /><path d="M1 6H15M4 10H8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>
+    )},
+    { label: "Saved Jobs", value: String(savedJobIds.length), icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-violet-500"><path d="M3 2H13C13.55 2 14 2.45 14 3V15L8 12L2 15V3C2 2.45 2.45 2 3 2Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" /></svg>
+    )},
+    { label: "Resumes", value: String(resumes.length), icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-emerald-500"><path d="M3 1H10L14 5V15H3V1Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" /><path d="M10 1V5H14M5 8H11M5 11H9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" /></svg>
+    )},
+  ]
+
+  const quickLinks = [
+    { label: "Saved Jobs", desc: `${savedJobIds.length} bookmarked`, bg: "bg-violet-50 text-violet-600", badge: String(savedJobIds.length), onClick: () => setSubScreen("saved-jobs"), icon: <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 3H14C14.55 3 15 3.45 15 4V16L9 13L3 16V4C3 3.45 3.45 3 4 3Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg> },
+    { label: "Subscription Plan", desc: "Pro — Renews 15 Mar", bg: "bg-emerald-50 text-emerald-600", badge: "Pro", onClick: () => showToast("Subscription — coming soon", "info"), icon: <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.4" /><path d="M2 7.5H16" stroke="currentColor" strokeWidth="1.4" /></svg> },
+    { label: "Notifications", desc: "Alerts & reminders", bg: "bg-blue-50 text-blue-600", badge: undefined, onClick: () => showToast("Notifications — coming soon", "info"), icon: <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2C6.24 2 4 4.24 4 7V11L2.5 12.5V13.5H15.5V12.5L14 11V7C14 4.24 11.76 2 9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /><path d="M7 13.5C7 14.6 7.9 15.5 9 15.5C10.1 15.5 11 14.6 11 13.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg> },
+    { label: "Privacy & Security", desc: "Password, accounts", bg: "bg-muted text-muted-foreground", badge: undefined, onClick: () => showToast("Privacy — coming soon", "info"), icon: <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M9 2L3 5V9C3 12.31 5.69 15.16 9 16C12.31 15.16 15 12.31 15 9V5L9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg> },
+  ]
+
   return (
-    <div className="flex-1 flex flex-col bg-background overflow-hidden relative">
-      <div className="flex-1 overflow-y-auto">
-        {/* Cover + Avatar */}
-        <div className="relative bg-primary/10 h-28 flex-shrink-0">
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background/20 to-transparent" />
-          <div className="absolute left-4 -bottom-10 flex items-end gap-3">
-            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-card-hover border-4 border-card">
-              <span className="text-[26px] font-bold text-primary-foreground select-none">{initials}</span>
+    <div className="flex-1 flex flex-col bg-background overflow-hidden relative min-h-0">
+      <div className="flex-1 overflow-y-auto min-h-0">
+
+        {/* ═══════════════════════════════════════
+            DESKTOP LAYOUT (hidden on mobile)
+        ═══════════════════════════════════════ */}
+        <div className="hidden lg:flex gap-7 p-8 items-start">
+
+          {/* ── Left Panel ──────────────────────────────── */}
+          <div className="w-[300px] flex-shrink-0 space-y-4">
+
+            {/* Profile Card */}
+            <div className="bg-card rounded-[20px] border border-border shadow-card overflow-hidden">
+              {/* Cover */}
+              <div className="relative h-24 overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(79,70,229,0.18) 0%, rgba(124,58,237,0.12) 50%, rgba(167,139,250,0.1) 100%)" }}>
+                <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, rgba(79,70,229,0.15) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(167,139,250,0.2) 0%, transparent 50%)" }} />
+                <button
+                  onClick={() => setModal("header")}
+                  className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-white/60 shadow-sm text-[11px] font-semibold text-foreground hover:bg-white transition-colors"
+                >
+                  <EditIcon size={11} />
+                  Edit Profile
+                </button>
+              </div>
+
+              {/* Avatar + Info */}
+              <div className="px-5 pb-5">
+                <div className="-mt-9 mb-3 flex items-end justify-between">
+                  <div className="w-[68px] h-[68px] rounded-full bg-primary flex items-center justify-center shadow-lg border-4 border-card">
+                    <span className="text-[22px] font-bold text-primary-foreground select-none">{initials}</span>
+                  </div>
+                  <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 mb-1">PRO</span>
+                </div>
+
+                <h2 className="text-[16px] font-bold text-foreground leading-tight">{profile.name}</h2>
+                <p className="text-[12px] text-muted-foreground mt-0.5 leading-snug">{profile.headline}</p>
+
+                <div className="flex items-center gap-1.5 mt-2">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none" className="text-muted-foreground flex-shrink-0">
+                    <path d="M6 1C4.07 1 2.5 2.57 2.5 4.5C2.5 7.25 6 11 6 11S9.5 7.25 9.5 4.5C9.5 2.57 7.93 1 6 1Z" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="6" cy="4.5" r="1.2" fill="currentColor" />
+                  </svg>
+                  <span className="text-[11px] text-muted-foreground">{profile.location}</span>
+                </div>
+
+                {/* Contact */}
+                <div className="mt-3 pt-3 border-t border-border/60 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-[6px] bg-muted flex items-center justify-center flex-shrink-0">
+                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="text-muted-foreground">
+                        <rect x="1.5" y="3" width="11" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+                        <path d="M1.5 4.5L7 8.5L12.5 4.5" stroke="currentColor" strokeWidth="1.2" />
+                      </svg>
+                    </div>
+                    <span className="text-[11px] text-muted-foreground truncate">{profile.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-[6px] bg-muted flex items-center justify-center flex-shrink-0">
+                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="text-muted-foreground">
+                        <path d="M2 2.5H5L6.5 6L5 7C5.8 8.6 6.4 9.2 8 10L9 8.5L12 10V13C9 13.5 2 10 2 2.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <span className="text-[11px] text-muted-foreground">{profile.phone}</span>
+                  </div>
+                </div>
+
+                {/* Social links */}
+                <div className="flex gap-2 mt-3">
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-blue-100 bg-blue-50 text-[10px] font-semibold text-blue-600">{profile.linkedIn}</span>
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-border bg-muted text-[10px] font-semibold text-foreground">{profile.github}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-2.5">
+              {statsData.map((s) => (
+                <div key={s.label} className="bg-card rounded-[14px] p-3 shadow-card border border-border text-center">
+                  <div className="flex justify-center mb-1">{s.icon}</div>
+                  <p className="text-[20px] font-bold text-foreground leading-none">{s.value}</p>
+                  <p className="text-[9px] text-muted-foreground font-semibold uppercase tracking-wide mt-1 leading-tight">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Quick Links */}
+            <div className="bg-card rounded-[20px] border border-border shadow-card overflow-hidden">
+              <div className="px-4 pt-4 pb-2.5 border-b border-border/60">
+                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Account</p>
+              </div>
+              <div className="p-2">
+                {quickLinks.map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={item.onClick}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] hover:bg-accent transition-colors text-left group"
+                  >
+                    <div className={cn("w-8 h-8 rounded-[8px] flex items-center justify-center flex-shrink-0", item.bg)}>
+                      {item.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[12px] font-semibold text-foreground truncate">{item.label}</p>
+                      <p className="text-[10px] text-muted-foreground">{item.desc}</p>
+                    </div>
+                    {item.badge && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary flex-shrink-0">{item.badge}</span>
+                    )}
+                    <ChevronRight />
+                  </button>
+                ))}
+              </div>
+              <div className="px-4 pb-4 pt-1">
+                <button
+                  onClick={() => showToast("Signed out successfully", "info")}
+                  className="w-full py-2.5 rounded-[12px] border border-destructive/20 text-[12px] font-semibold text-destructive hover:bg-destructive/5 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
             </div>
           </div>
-          {/* Edit button top-right */}
-          <button onClick={() => setModal("header")} className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-card text-[11px] font-semibold text-foreground btn-press">
-            <EditIcon size={12} />
-            Edit Profile
-          </button>
+
+          {/* ── Right Panel ─────────────────────────────── */}
+          <div className="flex-1 min-w-0 space-y-4">
+            {/* Page header */}
+            <div className="flex items-center justify-between mb-1">
+              <div>
+                <h1 className="text-[22px] font-bold text-foreground">Profile Details</h1>
+                <p className="text-[12px] text-muted-foreground mt-0.5">Keep your profile up to date</p>
+              </div>
+              <button
+                onClick={() => setModal("header")}
+                className="flex items-center gap-2 px-4 py-2 rounded-[10px] border border-border bg-card hover:bg-accent transition-colors text-[12px] font-semibold text-foreground"
+              >
+                <EditIcon size={13} />
+                Edit Info
+              </button>
+            </div>
+
+            {/* About */}
+            <SectionCard title="About" onEdit={() => setModal("about")}>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{profile.about}</p>
+            </SectionCard>
+
+            {/* Work Experience */}
+            <SectionCard title="Work Experience">
+              <div className="space-y-4">
+                {profile.experience.map((exp, i) => (
+                  <div key={exp.id} className={cn("relative pl-4", i < profile.experience.length - 1 && "pb-4 border-b border-border/50")}>
+                    <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-bold text-foreground leading-tight">{exp.role}</p>
+                        <p className="text-[12px] font-semibold text-primary mt-0.5">{exp.company}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">{exp.location} · {exp.duration}</p>
+                        {exp.current && (
+                          <span className="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">Current</span>
+                        )}
+                      </div>
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {exp.points.map((pt, j) => (
+                        <li key={j} className="text-[11.5px] text-muted-foreground leading-relaxed flex gap-1.5">
+                          <span className="text-primary mt-1 flex-shrink-0">•</span>
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+
+            {/* Education */}
+            <SectionCard title="Education">
+              <div className="space-y-4">
+                {profile.education.map((ed, i) => (
+                  <div key={ed.id} className={cn("relative pl-4", i < profile.education.length - 1 && "pb-4 border-b border-border/50")}>
+                    <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
+                    <p className="text-[13px] font-bold text-foreground leading-tight">{ed.degree}</p>
+                    <p className="text-[12px] font-semibold text-primary mt-0.5">{ed.institution}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{ed.location} · {ed.year}</p>
+                    <p className="text-[11px] font-semibold text-foreground mt-1">CGPA / Score: {ed.cgpa}</p>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+
+            {/* Desktop: two-col grid for Skills + Certifications */}
+            <div className="grid grid-cols-2 gap-4">
+              <SectionCard title="Skills" onEdit={() => setModal("skills")}>
+                <div className="flex flex-wrap gap-2">
+                  {profile.skills.map((skill) => (
+                    <span key={skill} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-accent text-accent-foreground border border-border">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </SectionCard>
+
+              <div className="space-y-4">
+                <SectionCard title="Certifications">
+                  <div className="space-y-3">
+                    {profile.certifications.map((cert) => (
+                      <div key={cert.id} className="flex items-start gap-3">
+                        <div className="w-7 h-7 rounded-[7px] bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="text-primary">
+                            <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[12px] font-bold text-foreground leading-tight">{cert.name}</p>
+                          <p className="text-[10.5px] text-muted-foreground mt-0.5">{cert.issuer} · {cert.year}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </SectionCard>
+
+                <SectionCard title="Languages">
+                  <div className="flex flex-wrap gap-2">
+                    {profile.languages.map((lang) => (
+                      <span key={lang} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-muted text-foreground border border-border">
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
+                </SectionCard>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="pt-12 px-4 lg:px-8 pb-8 space-y-4 lg:max-w-3xl">
-          {/* Name + headline */}
-          <div>
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-[22px] font-bold text-foreground tracking-tight leading-none">{profile.name}</h1>
-                <p className="text-[13px] text-muted-foreground font-medium mt-1">{profile.headline}</p>
+        {/* ═══════════════════════════════════════
+            MOBILE LAYOUT (hidden on desktop)
+        ═══════════════════════════════════════ */}
+        <div className="lg:hidden">
+          {/* Cover + Avatar */}
+          <div className="relative bg-primary/10 h-28 flex-shrink-0">
+            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background/20 to-transparent" />
+            <div className="absolute left-4 -bottom-10 flex items-end gap-3">
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-card-hover border-4 border-card">
+                <span className="text-[26px] font-bold text-primary-foreground select-none">{initials}</span>
               </div>
-              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 mt-1 flex-shrink-0">Pro</span>
             </div>
-            <div className="flex items-center gap-1.5 mt-2">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground flex-shrink-0"><path d="M6 1C4.07 1 2.5 2.57 2.5 4.5C2.5 7.25 6 11 6 11S9.5 7.25 9.5 4.5C9.5 2.57 7.93 1 6 1Z" stroke="currentColor" strokeWidth="1.2" /><circle cx="6" cy="4.5" r="1.2" fill="currentColor" /></svg>
-              <span className="text-[12px] text-muted-foreground font-medium">{profile.location}</span>
+            <button onClick={() => setModal("header")} className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-card text-[11px] font-semibold text-foreground btn-press">
+              <EditIcon size={12} />
+              Edit Profile
+            </button>
+          </div>
+
+          <div className="pt-12 px-4 pb-8 space-y-4">
+            {/* Name + headline */}
+            <div>
+              <div className="flex items-start justify-between">
+                <div>
+                  <h1 className="text-[22px] font-bold text-foreground tracking-tight leading-none">{profile.name}</h1>
+                  <p className="text-[13px] text-muted-foreground font-medium mt-1">{profile.headline}</p>
+                </div>
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 mt-1 flex-shrink-0">Pro</span>
+              </div>
+              <div className="flex items-center gap-1.5 mt-2">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground flex-shrink-0"><path d="M6 1C4.07 1 2.5 2.57 2.5 4.5C2.5 7.25 6 11 6 11S9.5 7.25 9.5 4.5C9.5 2.57 7.93 1 6 1Z" stroke="currentColor" strokeWidth="1.2" /><circle cx="6" cy="4.5" r="1.2" fill="currentColor" /></svg>
+                <span className="text-[12px] text-muted-foreground font-medium">{profile.location}</span>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {[
+                  { icon: <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="3" width="11" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" /><path d="M1.5 4.5L7 8.5L12.5 4.5" stroke="currentColor" strokeWidth="1.2" /></svg>, label: profile.email },
+                  { icon: <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2.5H5L6.5 6L5 7C5.8 8.6 6.4 9.2 8 10L9 8.5L12 10V13C9 13.5 2 10 2 2.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" /></svg>, label: profile.phone },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-muted border border-border">
+                    <span className="text-muted-foreground">{item.icon}</span>
+                    <span className="text-[10.5px] text-muted-foreground font-medium">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 mt-2">
+                {[
+                  { label: profile.linkedIn, color: "text-blue-600 bg-blue-50 border-blue-100" },
+                  { label: profile.github, color: "text-foreground bg-muted border-border" },
+                ].map((item) => (
+                  <div key={item.label} className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-[10.5px] font-semibold", item.color)}>
+                    {item.label}
+                  </div>
+                ))}
+              </div>
             </div>
-            {/* Contact links */}
-            <div className="flex flex-wrap gap-2 mt-3">
-              {[
-                { icon: <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="3" width="11" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2" /><path d="M1.5 4.5L7 8.5L12.5 4.5" stroke="currentColor" strokeWidth="1.2" /></svg>, label: profile.email },
-                { icon: <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2.5H5L6.5 6L5 7C5.8 8.6 6.4 9.2 8 10L9 8.5L12 10V13C9 13.5 2 10 2 2.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" /></svg>, label: profile.phone },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-muted border border-border">
-                  <span className="text-muted-foreground">{item.icon}</span>
-                  <span className="text-[10.5px] text-muted-foreground font-medium">{item.label}</span>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-2.5">
+              {statsData.map((s) => (
+                <div key={s.label} className="bg-card rounded-[14px] p-3 shadow-card border border-border text-center">
+                  <p className="text-[22px] font-bold text-foreground leading-none">{s.value}</p>
+                  <p className="text-[9.5px] text-muted-foreground font-semibold uppercase tracking-wide mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
-            <div className="flex gap-2 mt-2">
-              {[
-                { label: profile.linkedIn, color: "text-blue-600 bg-blue-50 border-blue-100" },
-                { label: profile.github, color: "text-foreground bg-muted border-border" },
-              ].map((item) => (
-                <div key={item.label} className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-[10.5px] font-semibold", item.color)}>
-                  {item.label}
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-2.5">
-            {[
-              { label: "Applications", value: "24" },
-              { label: "Saved Jobs", value: String(savedJobIds.length) },
-              { label: "Resumes", value: String(resumes.length) },
-            ].map((s) => (
-              <div key={s.label} className="bg-card rounded-[14px] p-3 shadow-card border border-border text-center">
-                <p className="text-[22px] font-bold text-foreground leading-none">{s.value}</p>
-                <p className="text-[9.5px] text-muted-foreground font-semibold uppercase tracking-wide mt-1">{s.label}</p>
+            {/* About */}
+            <SectionCard title="About" onEdit={() => setModal("about")}>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{profile.about}</p>
+            </SectionCard>
+
+            {/* Work Experience */}
+            <SectionCard title="Work Experience">
+              <div className="space-y-4">
+                {profile.experience.map((exp, i) => (
+                  <div key={exp.id} className={cn("relative pl-4", i < profile.experience.length - 1 && "pb-4 border-b border-border/50")}>
+                    <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-bold text-foreground leading-tight">{exp.role}</p>
+                        <p className="text-[12px] font-semibold text-primary mt-0.5">{exp.company}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">{exp.location} · {exp.duration}</p>
+                        {exp.current && (
+                          <span className="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">Current</span>
+                        )}
+                      </div>
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {exp.points.map((pt, j) => (
+                        <li key={j} className="text-[11.5px] text-muted-foreground leading-relaxed flex gap-1.5">
+                          <span className="text-primary mt-1 flex-shrink-0">•</span>
+                          {pt}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </SectionCard>
 
-          {/* About */}
-          <SectionCard title="About" onEdit={() => setModal("about")}>
-            <p className="text-[13px] text-muted-foreground leading-relaxed">{profile.about}</p>
-          </SectionCard>
+            {/* Education */}
+            <SectionCard title="Education">
+              <div className="space-y-4">
+                {profile.education.map((ed, i) => (
+                  <div key={ed.id} className={cn("relative pl-4", i < profile.education.length - 1 && "pb-4 border-b border-border/50")}>
+                    <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
+                    <p className="text-[13px] font-bold text-foreground leading-tight">{ed.degree}</p>
+                    <p className="text-[12px] font-semibold text-primary mt-0.5">{ed.institution}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{ed.location} · {ed.year}</p>
+                    <p className="text-[11px] font-semibold text-foreground mt-1">CGPA / Score: {ed.cgpa}</p>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
 
-          {/* Work Experience */}
-          <SectionCard title="Work Experience">
-            <div className="space-y-4">
-              {profile.experience.map((exp, i) => (
-                <div key={exp.id} className={cn("relative pl-4", i < profile.experience.length - 1 && "pb-4 border-b border-border/50")}>
-                  <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                  <div className="flex items-start justify-between gap-2">
+            {/* Skills */}
+            <SectionCard title="Skills" onEdit={() => setModal("skills")}>
+              <div className="flex flex-wrap gap-2">
+                {profile.skills.map((skill) => (
+                  <span key={skill} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-accent text-accent-foreground border border-border">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </SectionCard>
+
+            {/* Certifications */}
+            <SectionCard title="Certifications">
+              <div className="space-y-3">
+                {profile.certifications.map((cert) => (
+                  <div key={cert.id} className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-[8px] bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-primary">
+                        <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                      </svg>
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-bold text-foreground leading-tight">{exp.role}</p>
-                      <p className="text-[12px] font-semibold text-primary mt-0.5">{exp.company}</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{exp.location} · {exp.duration}</p>
-                      {exp.current && (
-                        <span className="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">Current</span>
-                      )}
+                      <p className="text-[12.5px] font-bold text-foreground leading-tight">{cert.name}</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">{cert.issuer} · {cert.year}</p>
                     </div>
                   </div>
-                  <ul className="mt-2 space-y-1">
-                    {exp.points.map((pt, j) => (
-                      <li key={j} className="text-[11.5px] text-muted-foreground leading-relaxed flex gap-1.5">
-                        <span className="text-primary mt-1 flex-shrink-0">•</span>
-                        {pt}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </SectionCard>
+                ))}
+              </div>
+            </SectionCard>
 
-          {/* Education */}
-          <SectionCard title="Education">
-            <div className="space-y-4">
-              {profile.education.map((ed, i) => (
-                <div key={ed.id} className={cn("relative pl-4", i < profile.education.length - 1 && "pb-4 border-b border-border/50")}>
-                  <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
-                  <p className="text-[13px] font-bold text-foreground leading-tight">{ed.degree}</p>
-                  <p className="text-[12px] font-semibold text-primary mt-0.5">{ed.institution}</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">{ed.location} · {ed.year}</p>
-                  <p className="text-[11px] font-semibold text-foreground mt-1">CGPA / Score: {ed.cgpa}</p>
-                </div>
-              ))}
-            </div>
-          </SectionCard>
+            {/* Languages */}
+            <SectionCard title="Languages">
+              <div className="flex flex-wrap gap-2">
+                {profile.languages.map((lang) => (
+                  <span key={lang} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-muted text-foreground border border-border">
+                    {lang}
+                  </span>
+                ))}
+              </div>
+            </SectionCard>
 
-          {/* Skills */}
-          <SectionCard title="Skills" onEdit={() => setModal("skills")}>
-            <div className="flex flex-wrap gap-2">
-              {profile.skills.map((skill) => (
-                <span key={skill} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-accent text-accent-foreground border border-border">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </SectionCard>
-
-          {/* Certifications */}
-          <SectionCard title="Certifications">
-            <div className="space-y-3">
-              {profile.certifications.map((cert) => (
-                <div key={cert.id} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-[8px] bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-primary">
-                      <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-                    </svg>
-                  </div>
+            {/* Quick links */}
+            <div className="space-y-2">
+              {quickLinks.map((item) => (
+                <button key={item.label} onClick={item.onClick} className="w-full bg-card rounded-[14px] px-4 py-3.5 shadow-card border border-border card-tap flex items-center gap-3.5 text-left">
+                  <div className={cn("w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0", item.bg)}>{item.icon}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12.5px] font-bold text-foreground leading-tight">{cert.name}</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">{cert.issuer} · {cert.year}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[13px] font-semibold text-foreground">{item.label}</p>
+                      {item.badge && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">{item.badge}</span>}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">{item.desc}</p>
                   </div>
-                </div>
+                  <ChevronRight />
+                </button>
               ))}
             </div>
-          </SectionCard>
 
-          {/* Languages */}
-          <SectionCard title="Languages">
-            <div className="flex flex-wrap gap-2">
-              {profile.languages.map((lang) => (
-                <span key={lang} className="text-[12px] font-semibold px-3 py-1.5 rounded-full bg-muted text-foreground border border-border">
-                  {lang}
-                </span>
-              ))}
-            </div>
-          </SectionCard>
-
-          {/* Quick links */}
-          <div className="space-y-2">
-            <button onClick={() => setSubScreen("saved-jobs")} className="w-full bg-card rounded-[14px] px-4 py-3.5 shadow-card border border-border card-tap flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-[10px] bg-violet-50 text-violet-600 flex items-center justify-center flex-shrink-0">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 3H14C14.55 3 15 3.45 15 4V16L9 13L3 16V4C3 3.45 3.45 3 4 3Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
-              </div>
-              <div className="flex-1 text-left">
-                <div className="flex items-center gap-2">
-                  <p className="text-[13px] font-semibold text-foreground">Saved Jobs</p>
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">{savedJobIds.length}</span>
-                </div>
-                <p className="text-[11px] text-muted-foreground">{savedJobIds.length} jobs bookmarked</p>
-              </div>
-              <ChevronRight />
+            {/* Sign out */}
+            <button onClick={() => showToast("Signed out successfully", "info")} className="w-full mt-2 py-3.5 rounded-[14px] border border-destructive/20 bg-card text-[13px] font-semibold text-destructive btn-press active:bg-destructive/5">
+              Sign Out
             </button>
-            {[
-              { label: "Subscription Plan", desc: "Pro — Renews 15 Mar", bg: "bg-emerald-50 text-emerald-600", icon: <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.4" /><path d="M2 7.5H16" stroke="currentColor" strokeWidth="1.4" /></svg>, badge: "Pro" },
-              { label: "Notifications", desc: "Job alerts, interview reminders", bg: "bg-blue-50 text-blue-600", icon: <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C6.24 2 4 4.24 4 7V11L2.5 12.5V13.5H15.5V12.5L14 11V7C14 4.24 11.76 2 9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /><path d="M7 13.5C7 14.6 7.9 15.5 9 15.5C10.1 15.5 11 14.6 11 13.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg> },
-              { label: "Privacy & Security", desc: "Password, linked accounts", bg: "bg-muted text-muted-foreground", icon: <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L3 5V9C3 12.31 5.69 15.16 9 16C12.31 15.16 15 12.31 15 9V5L9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg> },
-            ].map((item) => (
-              <button key={item.label} onClick={() => showToast(`${item.label} — coming soon`, "info")} className="w-full bg-card rounded-[14px] px-4 py-3.5 shadow-card border border-border card-tap flex items-center gap-3.5 text-left">
-                <div className={cn("w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0", item.bg)}>{item.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-[13px] font-semibold text-foreground">{item.label}</p>
-                    {item.badge && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">{item.badge}</span>}
-                  </div>
-                  <p className="text-[11px] text-muted-foreground">{item.desc}</p>
-                </div>
-                <ChevronRight />
-              </button>
-            ))}
           </div>
-
-          {/* Sign out */}
-          <button onClick={() => showToast("Signed out successfully", "info")} className="w-full mt-2 py-3.5 rounded-[14px] border border-destructive/20 bg-card text-[13px] font-semibold text-destructive btn-press active:bg-destructive/5">
-            Sign Out
-          </button>
         </div>
+
       </div>
 
-      {/* Modals */}
+      {/* ─── Modals ──────────────────────────────────── */}
       {modal === "about" && (
         <EditAboutModal
           value={profile.about}

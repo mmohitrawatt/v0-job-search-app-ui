@@ -112,87 +112,261 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
     setActiveFilters((prev) => prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f])
   }
 
+  const MATCH_OPTIONS = ["Any", "70%+", "80%+", "90%+"]
+  const TYPE_OPTIONS = ["Full-time", "Part-time", "Internship", "Contract"]
+  const SALARY_OPTIONS = ["Any", "₹10+ LPA", "₹20+ LPA", "₹30+ LPA"]
+  const [matchFilter, setMatchFilter] = useState("Any")
+  const [typeFilter, setTypeFilter] = useState("Any")
+  const [salaryFilter, setSalaryFilter] = useState("Any")
+
+  const fullyFiltered = filtered.filter((j) => {
+    const minMatch = matchFilter === "90%+" ? 90 : matchFilter === "80%+" ? 80 : matchFilter === "70%+" ? 70 : 0
+    const matchOk = j.matchScore >= minMatch
+    const typeOk = typeFilter === "Any" || j.type.toLowerCase().includes(typeFilter.toLowerCase())
+    const salaryOk = salaryFilter === "Any" || (() => {
+      const num = parseInt(salaryFilter)
+      const parts = j.salary.replace(/[₹\s]/g, "").split("–")
+      return parts.some((p) => parseInt(p) >= num)
+    })()
+    return matchOk && typeOk && salaryOk
+  })
+
+  function resetAll() {
+    setActiveFilters([])
+    setMatchFilter("Any")
+    setTypeFilter("Any")
+    setSalaryFilter("Any")
+    setQuery("")
+  }
+
+  const hasActiveFilter = activeFilters.length > 0 || matchFilter !== "Any" || typeFilter !== "Any" || salaryFilter !== "Any" || query !== ""
+  const activeFilterCount = activeFilters.length + (matchFilter !== "Any" ? 1 : 0) + (typeFilter !== "Any" ? 1 : 0) + (salaryFilter !== "Any" ? 1 : 0)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
   return (
-    <div className="flex-1 overflow-y-auto min-h-0 bg-background">
-      <div className="px-4 lg:px-8 pt-12 lg:pt-5 pb-3">
-        <div className="mb-3">
-          <h1 className="text-[19px] font-bold text-foreground tracking-tight">Job Companion</h1>
-          <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Curated for your profile</p>
-        </div>
+    <div className="flex-1 flex min-h-0 bg-background">
 
-        {/* Search */}
-        <div className="relative mb-3">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-muted-foreground">
-              <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M10 10L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </div>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search jobs, companies, skills…"
-            className="w-full bg-card border border-border rounded-full pl-10 pr-12 py-2.5 text-[13.5px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all duration-200 shadow-card"
-          />
-          <button
-            onClick={() => setShowFilterSheet(true)}
-            className="absolute inset-y-0 right-2 flex items-center justify-center w-8 h-8 my-auto rounded-full bg-primary/10 text-primary btn-press tap-highlight-none"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1.5 3.5H12.5M3.5 7H10.5M6 10.5H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Filter chips */}
-        <div className="flex gap-2 overflow-x-auto pb-2.5 mb-4 -mx-4 px-4" style={{ scrollbarWidth: "none" }}>
-          {FILTERS.map((f) => {
-            const active = activeFilters.includes(f)
-            return (
-              <button
-                key={f}
-                onClick={() => toggleFilter(f)}
-                className={cn(
-                  "flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11.5px] font-semibold transition-all duration-200 btn-press tap-highlight-none",
-                  active ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground border border-border"
-                )}
-              >
-                {f}
+      {/* ── Desktop Filter Sidebar (collapsible) ── */}
+      <aside
+        className={cn(
+          "hidden lg:flex flex-col flex-shrink-0 border-r border-border bg-card overflow-hidden",
+          "transition-[width] duration-300 ease-in-out"
+        )}
+        style={{ width: sidebarOpen ? 256 : 0 }}
+      >
+        {/* Inner wrapper keeps fixed width so content doesn't squish during animation */}
+        <div className="w-64 flex flex-col flex-1 overflow-y-auto">
+          <div className="px-5 pt-5 pb-4 border-b border-border flex items-center justify-between flex-shrink-0">
+            <p className="text-[13px] font-bold text-foreground">Filters</p>
+            {hasActiveFilter && (
+              <button onClick={resetAll} className="text-[11px] font-semibold text-primary hover:underline">
+                Reset all
               </button>
-            )
-          })}
+            )}
+          </div>
+
+          <div className="px-5 py-4 space-y-5">
+
+            {/* Search */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Search</p>
+              <div className="relative">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                  <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" strokeWidth="1.4"/>
+                  <path d="M9 9L11.5 11.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                </svg>
+                <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Role, company, skill…"
+                  className="w-full bg-background border border-border rounded-[8px] pl-8 pr-3 py-2 text-[12px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                />
+              </div>
+            </div>
+
+            {/* Quick filters */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Quick Filters</p>
+              <div className="flex flex-wrap gap-1.5">
+                {FILTERS.map((f) => {
+                  const active = activeFilters.includes(f)
+                  return (
+                    <button key={f} onClick={() => toggleFilter(f)}
+                      className={cn("px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors",
+                        active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-accent"
+                      )}
+                    >{f}</button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Match Score */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">Match Score</p>
+              <div className="space-y-0.5">
+                {MATCH_OPTIONS.map((o) => (
+                  <button key={o} onClick={() => setMatchFilter(o)}
+                    className={cn("w-full text-left px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-colors flex items-center justify-between",
+                      matchFilter === o ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {o}
+                    {matchFilter === o && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Job Type */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">Job Type</p>
+              <div className="space-y-0.5">
+                {["Any", ...TYPE_OPTIONS].map((o) => (
+                  <button key={o} onClick={() => setTypeFilter(o)}
+                    className={cn("w-full text-left px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-colors flex items-center justify-between",
+                      typeFilter === o ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {o}
+                    {typeFilter === o && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Salary */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">Min Salary</p>
+              <div className="space-y-0.5">
+                {SALARY_OPTIONS.map((o) => (
+                  <button key={o} onClick={() => setSalaryFilter(o)}
+                    className={cn("w-full text-left px-3 py-1.5 rounded-[8px] text-[12px] font-medium transition-colors flex items-center justify-between",
+                      salaryFilter === o ? "bg-primary/10 text-primary font-semibold" : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    {o}
+                    {salaryFilter === o && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
+      </aside>
 
-        {/* Result count */}
-        <p className="text-[11px] text-muted-foreground font-medium mb-3">{filtered.length} positions found</p>
+      {/* ── Main Content ── */}
+      <div className="flex-1 overflow-y-auto min-h-0">
 
-        {/* Job cards */}
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
-                <circle cx="11" cy="11" r="7.5" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M17 17L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        {/* Mobile header */}
+        <div className="lg:hidden px-4 pt-12 pb-3">
+          <div className="mb-3">
+            <h1 className="text-[19px] font-bold text-foreground tracking-tight">Job Companion</h1>
+            <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Curated for your profile</p>
+          </div>
+          <div className="relative mb-3">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-muted-foreground">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M10 10L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="text-[14px] font-semibold text-foreground">No jobs found</p>
-            <p className="text-[12px] text-muted-foreground mt-1">Try adjusting your filters</p>
+            <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search jobs, companies, skills…"
+              className="w-full bg-card border border-border rounded-full pl-10 pr-12 py-2.5 text-[13.5px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all shadow-card"
+            />
+            <button onClick={() => setShowFilterSheet(true)}
+              className="absolute inset-y-0 right-2 flex items-center justify-center w-8 h-8 my-auto rounded-full bg-primary/10 text-primary btn-press tap-highlight-none">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1.5 3.5H12.5M3.5 7H10.5M6 10.5H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-            {filtered.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                bookmarked={bookmarks.has(job.id)}
-                onToggleBookmark={() => toggleBookmark(job.id)}
-                onClick={() => onJobClick(job)}
-                onApplyNow={() => onApplyNow(job)}
-              />
-            ))}
+          <div className="flex gap-2 overflow-x-auto pb-2.5 -mx-4 px-4" style={{ scrollbarWidth: "none" }}>
+            {FILTERS.map((f) => {
+              const active = activeFilters.includes(f)
+              return (
+                <button key={f} onClick={() => toggleFilter(f)}
+                  className={cn("flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none",
+                    active ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground border border-border"
+                  )}>{f}</button>
+              )
+            })}
           </div>
-        )}
+        </div>
+
+        {/* Desktop top bar */}
+        <div className="hidden lg:flex items-center gap-3 px-6 pt-5 pb-4 border-b border-border">
+          {/* Toggle sidebar button */}
+          <button
+            onClick={() => setSidebarOpen((v) => !v)}
+            className={cn(
+              "relative flex items-center gap-2 px-3 py-2 rounded-[10px] border text-[12px] font-semibold transition-all flex-shrink-0",
+              sidebarOpen
+                ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                : "bg-card border-border text-muted-foreground hover:bg-muted hover:text-foreground"
+            )}
+          >
+            {/* Panel split icon */}
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" strokeWidth="1.4"/>
+              <path d="M5.5 1V14" stroke="currentColor" strokeWidth="1.4"/>
+            </svg>
+            <span>{sidebarOpen ? "Hide Filters" : "Filters"}</span>
+            {!sidebarOpen && activeFilterCount > 0 && (
+              <span className="w-4 h-4 bg-primary rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+
+          <div className="flex-1">
+            <h1 className="text-[17px] font-bold text-foreground tracking-tight leading-none">Job Companion</h1>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{fullyFiltered.length} positions found</p>
+          </div>
+
+          {hasActiveFilter && (
+            <button onClick={resetAll} className="text-[11px] font-semibold text-muted-foreground hover:text-foreground border border-border rounded-[8px] px-2.5 py-1.5 hover:bg-muted transition-colors">
+              Clear filters
+            </button>
+          )}
+
+          <div className="flex items-center gap-2">
+            <span className="text-[12px] text-muted-foreground">Sort:</span>
+            <select className="bg-card border border-border rounded-[8px] px-2 py-1.5 text-[12px] text-foreground focus:outline-none focus:ring-1 focus:ring-primary/30">
+              <option>Best Match</option>
+              <option>Latest</option>
+              <option>Highest Salary</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Cards */}
+        <div className="px-4 lg:px-6 py-4">
+          <p className="lg:hidden text-[11px] text-muted-foreground font-medium mb-3">{fullyFiltered.length} positions found</p>
+          {fullyFiltered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+                  <circle cx="11" cy="11" r="7.5" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M17 17L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <p className="text-[14px] font-semibold text-foreground">No jobs found</p>
+              <p className="text-[12px] text-muted-foreground mt-1">Try adjusting your filters</p>
+            </div>
+          ) : (
+            <div className={cn("grid grid-cols-1 gap-3 transition-all duration-300", sidebarOpen ? "lg:grid-cols-2" : "lg:grid-cols-3")}>
+              {fullyFiltered.map((job) => (
+                <JobCard key={job.id} job={job}
+                  bookmarked={bookmarks.has(job.id)}
+                  onToggleBookmark={() => toggleBookmark(job.id)}
+                  onClick={() => onJobClick(job)}
+                  onApplyNow={() => onApplyNow(job)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {showFilterSheet && (

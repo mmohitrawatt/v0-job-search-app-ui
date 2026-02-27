@@ -35,68 +35,99 @@ function DesktopSidebar({
   navigate: (s: Screen) => void
   profile: { name: string }
 }) {
+  const [collapsed, setCollapsed] = React.useState(false)
   const initials = profile.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
   const firstName = profile.name.split(" ")[0]
 
   const navItems: { id: Tab; label: string; icon: (active: boolean) => React.ReactNode }[] = [
-    { id: "dashboard", label: "Dashboard", icon: dashboardIcon },
-    { id: "resume",    label: "Resume",    icon: resumeIcon },
-    { id: "jobs",      label: "Jobs",      icon: jobsIcon },
+    { id: "dashboard",   label: "Dashboard",   icon: dashboardIcon },
+    { id: "resume",      label: "Resume",      icon: resumeIcon },
+    { id: "jobs",        label: "Jobs",        icon: jobsIcon },
     { id: "preparation", label: "Preparation", icon: prepIcon },
-    { id: "profile",   label: "Profile",   icon: profileIcon },
+    { id: "profile",     label: "Profile",     icon: profileIcon },
   ]
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 xl:w-64 h-screen bg-card border-r border-border flex-shrink-0 sticky top-0 z-40">
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-border flex-shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-[10px] bg-primary flex items-center justify-center flex-shrink-0">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <rect x="2.5" y="3" width="13" height="12" rx="2" stroke="white" strokeWidth="1.5"/>
-              <path d="M5.5 7.5H12.5M5.5 10.5H10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-              <circle cx="14" cy="4.5" r="2.5" fill="white"/>
-            </svg>
-          </div>
-          <div>
-            <p className="text-[15px] font-bold text-foreground leading-tight">JobComp</p>
-            <p className="text-[10px] text-muted-foreground font-medium">AI Job Companion</p>
-          </div>
+    <aside
+      className="hidden lg:flex flex-col h-screen bg-card border-r border-border flex-shrink-0 sticky top-0 z-40 overflow-hidden transition-[width] duration-300 ease-in-out"
+      style={{ width: collapsed ? 64 : 240 }}
+    >
+      {/* Logo row */}
+      <div className={cn("flex items-center border-b border-border flex-shrink-0 h-[65px]", collapsed ? "justify-center px-0" : "px-4 gap-2.5")}>
+        <div className="w-9 h-9 rounded-[10px] bg-primary flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="2.5" y="3" width="13" height="12" rx="2" stroke="white" strokeWidth="1.5"/>
+            <path d="M5.5 7.5H12.5M5.5 10.5H10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+            <circle cx="14" cy="4.5" r="2.5" fill="white"/>
+          </svg>
         </div>
+        {!collapsed && (
+          <>
+            <div className="flex-1 min-w-0">
+              <p className="text-[15px] font-bold text-foreground leading-tight">JobComp</p>
+              <p className="text-[10px] text-muted-foreground font-medium">AI Job Companion</p>
+            </div>
+            <button
+              onClick={() => setCollapsed(true)}
+              className="w-7 h-7 rounded-[8px] flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors flex-shrink-0"
+              title="Collapse sidebar"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </>
+        )}
       </div>
 
+      {/* Expand button (shown only when collapsed) */}
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          className="mx-auto mt-3 w-8 h-8 rounded-[8px] flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors flex-shrink-0"
+          title="Expand sidebar"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 2L10 7L5 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      )}
+
       {/* Nav items */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = activeTab === item.id
           return (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
+              title={collapsed ? item.label : undefined}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold transition-all duration-150 text-left",
-                isActive
-                  ? "bg-accent text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                "w-full flex items-center rounded-[10px] transition-all duration-150",
+                collapsed ? "justify-center px-0 py-2.5" : "gap-3 px-3 py-2.5",
+                isActive ? "bg-accent text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
-              <span className={isActive ? "text-primary" : "text-muted-foreground"}>
+              <span className={cn("flex-shrink-0", isActive ? "text-primary" : "text-muted-foreground")}>
                 {item.icon(isActive)}
               </span>
-              {item.label}
+              {!collapsed && <span className="text-[13px] font-semibold truncate">{item.label}</span>}
             </button>
           )
         })}
 
-        {/* Divider */}
         <div className="h-px bg-border my-2" />
 
-        {/* Alerts link */}
+        {/* Alerts */}
         <button
           onClick={() => navigate("job-alerts")}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-[13px] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150 text-left"
+          title={collapsed ? "Job Alerts" : undefined}
+          className={cn(
+            "w-full flex items-center rounded-[10px] text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150",
+            collapsed ? "justify-center px-0 py-2.5" : "gap-3 px-3 py-2.5"
+          )}
         >
-          <span className="relative">
+          <span className="relative flex-shrink-0">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M10 2.5C6.69 2.5 4 5.19 4 8.5V13L2.5 14.5V15.5H17.5V14.5L16 13V8.5C16 5.19 13.31 2.5 10 2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               <path d="M8 15.5C8 16.6 8.9 17.5 10 17.5C11.1 17.5 12 16.6 12 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -107,27 +138,37 @@ function DesktopSidebar({
               </span>
             )}
           </span>
-          Job Alerts
-          {notificationCount > 0 && (
-            <span className="ml-auto bg-red-500/10 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              {notificationCount}
-            </span>
+          {!collapsed && (
+            <>
+              <span className="text-[13px] font-semibold flex-1">Job Alerts</span>
+              {notificationCount > 0 && (
+                <span className="bg-red-500/10 text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                  {notificationCount}
+                </span>
+              )}
+            </>
           )}
         </button>
       </nav>
 
-      {/* User info at bottom */}
-      <div className="px-4 py-4 border-t border-border flex-shrink-0">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[13px] font-bold flex-shrink-0">
+      {/* User info */}
+      <div className={cn("py-4 border-t border-border flex-shrink-0", collapsed ? "flex justify-center px-0" : "px-3")}>
+        {collapsed ? (
+          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[13px] font-bold" title={firstName}>
             {initials}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-foreground truncate">{firstName}</p>
-            <p className="text-[10px] text-muted-foreground">Pro Member</p>
+        ) : (
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-[13px] font-bold flex-shrink-0">
+              {initials}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[12px] font-semibold text-foreground truncate">{firstName}</p>
+              <p className="text-[10px] text-muted-foreground">Pro Member</p>
+            </div>
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 flex-shrink-0">Pro</span>
           </div>
-          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700 flex-shrink-0">Pro</span>
-        </div>
+        )}
       </div>
     </aside>
   )
