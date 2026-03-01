@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 // ─── CSS ────────────────────────────────────────────────────────
 const CSS = `
@@ -253,6 +253,33 @@ const CSS = `
 
 /* ── Feature card colored glow ───────────── */
   .feat-card { transition: transform .28s var(--spring), box-shadow .28s ease; }
+
+  /* ── Responsive ─────────────────────────── */
+  @media (max-width:768px) {
+    .nav-inner { padding: 0 18px !important; }
+    .hero-grid { grid-template-columns: 1fr !important; padding: 80px 20px 48px !important; gap: 0 !important; }
+    .hero-left { display: flex !important; flex-direction: column !important; align-items: center !important; }
+    .hero-h1  { text-align: center !important; }
+    .hero-desc { text-align: center !important; max-width: 100% !important; }
+    .hero-ctas { justify-content: center !important; }
+    .hero-proof { flex-direction: column !important; align-items: center !important; gap: 10px !important; padding-bottom: 16px !important; }
+    .hero-mini-stats { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 10px; justify-content: center !important; }
+    .hero-live { justify-content: center !important; }
+    .hero-right { display: none !important; }
+    .problems-grid { grid-template-columns: 1fr !important; }
+    .bootcamp-body { grid-template-columns: 1fr !important; padding: 20px !important; }
+    .bootcamp-cols { grid-template-columns: 1fr !important; }
+    .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+    .footer-brand { grid-column: 1 / -1 !important; }
+    .cta-inner { padding: 48px 20px !important; border-radius: 20px !important; }
+    .section-pad { padding: 56px 20px !important; }
+  }
+  @media (max-width:480px) {
+    .nav-inner { padding: 0 14px !important; }
+    .hero-grid { padding: 72px 16px 40px !important; }
+    .footer-grid { grid-template-columns: 1fr !important; }
+    .cta-inner { padding: 40px 16px !important; }
+  }
 `
 
 // ─── Navbar ────────────────────────────────────────────────────
@@ -266,7 +293,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
       boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none",
       transition: "all .35s ease",
     }}>
-      <div style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:24 }}>
+      <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:24 }}>
         <a href="/" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none" }}>
           <div style={{ width:36, height:36, borderRadius:11, background:"linear-gradient(135deg,#4f46e5,#7c3aed)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16, fontWeight:900, color:"white", boxShadow:"0 4px 16px rgba(79,70,229,0.3)" }}>V</div>
           <span style={{ fontSize:18, fontWeight:900, color:"var(--ink)", letterSpacing:"-.025em" }}>VibeonJob</span>
@@ -326,10 +353,10 @@ function Hero() {
         </div>
       ))}
 
-      <div style={{ maxWidth:1240, margin:"0 auto", padding:"80px 32px", width:"100%", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:80, alignItems:"center" }}>
+      <div className="hero-grid" style={{ maxWidth:1240, margin:"0 auto", padding:"80px 32px", width:"100%", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:80, alignItems:"center" }}>
 
         {/* ── LEFT ── */}
-        <div style={{ animation:"reveal-up .8s var(--ease-out) both" }}>
+        <div className="hero-left" style={{ animation:"reveal-up .8s var(--ease-out) both" }}>
 
           {/* Badge */}
           <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px 6px 8px", borderRadius:99, background:"var(--ind-l)", border:"1px solid rgba(79,70,229,.22)", marginBottom:28 }}>
@@ -338,19 +365,19 @@ function Hero() {
           </div>
 
           {/* H1 */}
-          <h1 style={{ fontSize:"clamp(44px,5.2vw,68px)", fontWeight:900, lineHeight:1.06, letterSpacing:"-.036em", color:"var(--ink)", margin:"0 0 22px" }}>
+          <h1 className="hero-h1" style={{ fontSize:"clamp(44px,5.2vw,68px)", fontWeight:900, lineHeight:1.06, letterSpacing:"-.036em", color:"var(--ink)", margin:"0 0 22px" }}>
             Get Hired at<br />
             India&apos;s Best<br />
             <span className="shimmer">Tech Companies.</span>
           </h1>
 
           {/* Description */}
-          <p style={{ fontSize:"clamp(15px,1.4vw,17px)", lineHeight:1.72, color:"var(--ink2)", margin:"0 0 34px", maxWidth:460 }}>
+          <p className="hero-desc" style={{ fontSize:"clamp(15px,1.4vw,17px)", lineHeight:1.72, color:"var(--ink2)", margin:"0 0 34px", maxWidth:460 }}>
             AI resume tailoring, real ₹ LPA salary benchmarks, smart job match scoring, and Vibe AI interview coaching — everything built for India&apos;s tech market.
           </p>
 
           {/* CTAs */}
-          <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:36 }}>
+          <div className="hero-ctas" style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:36 }}>
             <a href="/register" className="btn btn-primary" style={{ fontSize:15, fontWeight:800, padding:"14px 28px", borderRadius:16, color:"white", gap:8, display:"inline-flex", alignItems:"center" }}>
               Start Free — No Card
               <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -362,7 +389,7 @@ function Hero() {
           </div>
 
           {/* Social proof */}
-          <div style={{ display:"flex", alignItems:"center", gap:16, paddingBottom:22, borderBottom:"1px solid var(--border)", marginBottom:22 }}>
+          <div className="hero-proof" style={{ display:"flex", alignItems:"center", gap:16, paddingBottom:22, borderBottom:"1px solid var(--border)", marginBottom:22 }}>
             <div style={{ display:"flex" }}>
               {["#4f46e5","#10b981","#f59e0b","#f43f5e","#8b5cf6"].map((c,i) => (
                 <div key={i} style={{ width:32, height:32, borderRadius:"50%", background:c, border:"2.5px solid white", marginLeft:i?-10:0, fontSize:10, fontWeight:900, color:"white", display:"flex", alignItems:"center", justifyContent:"center", zIndex:5-i }}>
@@ -376,7 +403,7 @@ function Hero() {
               </div>
               <div style={{ fontSize:12, color:"var(--ink3)" }}><strong style={{ color:"var(--ink)" }}>50,000+</strong> hired · <strong style={{ color:"var(--ind)" }}>4.9★</strong> rating</div>
             </div>
-            <div style={{ display:"flex", gap:20, paddingLeft:16, borderLeft:"1px solid var(--border)" }}>
+            <div className="hero-mini-stats" style={{ display:"flex", gap:20, paddingLeft:16, borderLeft:"1px solid var(--border)" }}>
               {[{ v:"12d", l:"avg. to offer" }, { v:"94%", l:"interview pass" }].map(m => (
                 <div key={m.l}>
                   <div style={{ fontSize:20, fontWeight:900, color:"var(--ind)", lineHeight:1 }}>{m.v}</div>
@@ -387,7 +414,7 @@ function Hero() {
           </div>
 
           {/* Live ticker */}
-          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <div className="hero-live" style={{ display:"flex", alignItems:"center", gap:10 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
               <div style={{ position:"relative", width:8, height:8 }}>
                 <div style={{ width:8, height:8, borderRadius:"50%", background:"var(--grn)" }} />
@@ -402,7 +429,7 @@ function Hero() {
         </div>
 
         {/* ── RIGHT ── */}
-        <div style={{ position:"relative", height:560, animation:"reveal-up .8s var(--ease-out) .22s both" }}>
+        <div className="hero-right" style={{ position:"relative", height:560, animation:"reveal-up .8s var(--ease-out) .22s both" }}>
 
           {/* Glow */}
           <div style={{ position:"absolute", top:"50%", left:"50%", translate:"-50% -50%", width:420, height:420, borderRadius:"50%", background:"radial-gradient(circle, rgba(79,70,229,0.2) 0%, transparent 70%)", filter:"blur(56px)", pointerEvents:"none" }} />
@@ -603,7 +630,7 @@ function Problems() {
     },
   ]
   return (
-    <section id="problems" style={{ background:"var(--white)", padding:"80px 28px" }}>
+    <section id="problems" className="section-pad" style={{ background:"var(--white)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
 
         {/* Header */}
@@ -619,7 +646,7 @@ function Problems() {
         </div>
 
         {/* Grid */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
+        <div className="problems-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
           {problems.map((p,i) => (
             <div key={i} className={`card sr d${(i%3)+1}`} style={{ padding:0, overflow:"hidden" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform="translateY(-7px)"; (e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-lg), 0 0 0 1px rgba(79,70,229,0.07)" }}
@@ -667,7 +694,7 @@ function Features() {
     { icon:"◆", bg:"#fdf4ff",      ic:"#a855f7",     title:"Vibe AI Strategist",    desc:"Your AI career coach. Weekly action plans, application feedback, negotiation scripts." },
   ]
   return (
-    <section id="features" style={{ background:"var(--cream)", padding:"80px 28px" }}>
+    <section id="features" className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
         <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
           <div className="dot-divider"><span/><span/><span/></div>
@@ -705,7 +732,7 @@ function HowItWorks() {
     { n:3, clr:"var(--grn)", bg:"var(--grn-l)", title:"Prep, Apply & Win",  desc:"5-day interview roadmap + one-tap Smart Apply with a JD-tailored resume. Land the offer.", chip:"Avg. 12 days to offer" },
   ]
   return (
-    <section id="how-it-works" style={{ background:"var(--white)", padding:"80px 28px" }}>
+    <section id="how-it-works" className="section-pad" style={{ background:"var(--white)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
         <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
           <div className="dot-divider"><span/><span/><span/></div>
@@ -745,7 +772,7 @@ function Testimonials() {
     { quote:"Saw 94% match on Swiggy, knew exactly what to highlight. Offer in 12 days. VibeonJob ran my whole job search for me. 100% worth it.", name:"Arjun K.", role:"Backend @ Swiggy", initials:"AK", clr:"var(--grn)", bg:"var(--grn-l)" },
   ]
   return (
-    <section style={{ background:"var(--cream)", padding:"80px 28px" }}>
+    <section className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
         <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
           <div className="dot-divider"><span/><span/><span/></div>
@@ -826,7 +853,7 @@ function Bootcamp() {
           </div>
 
           {/* ── Body ── */}
-          <div style={{ padding:"22px 28px", display:"grid", gridTemplateColumns:"220px 1fr", gap:24, background:"white" }}>
+          <div className="bootcamp-body" style={{ padding:"22px 28px", display:"grid", gridTemplateColumns:"220px 1fr", gap:24, background:"white" }}>
 
             {/* Left: meta + speakers */}
             <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
@@ -874,7 +901,7 @@ function Bootcamp() {
             </div>
 
             {/* Right: 3 info columns */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14 }}>
+            <div className="bootcamp-cols" style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14 }}>
 
               {/* Day 1 */}
               <div style={{ padding:"16px 16px", borderRadius:16, background:"var(--cream)", border:"1px solid var(--border)" }}>
@@ -953,9 +980,9 @@ function Bootcamp() {
 function CTA() {
   const avatars = ["#818cf8","#34d399","#fb7185","#fbbf24","#60a5fa"]
   return (
-    <section className="sr" style={{ background:"var(--cream)", padding:"80px 28px" }}>
+    <section className="sr section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
-        <div style={{
+        <div className="cta-inner" style={{
           borderRadius:32, padding:"72px 48px", textAlign:"center", position:"relative", overflow:"hidden",
           background:"linear-gradient(145deg,#4f46e5 0%,#6d28d9 100%)",
           boxShadow:"0 32px 100px rgba(79,70,229,0.28), 0 8px 32px rgba(79,70,229,0.14)",
@@ -1034,8 +1061,8 @@ function Footer() {
   return (
     <footer style={{ background:"white", borderTop:"1px solid var(--border)" }}>
       <div style={{ maxWidth:1120, margin:"0 auto", padding:"56px 28px 32px" }}>
-        <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:48 }}>
-          <div>
+        <div className="footer-grid" style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:48 }}>
+          <div className="footer-brand">
             <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
               <div style={{ width:34, height:34, borderRadius:10, background:"linear-gradient(135deg,#4f46e5,#7c3aed)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:900, color:"white", boxShadow:"0 4px 14px rgba(79,70,229,0.28)" }}>V</div>
               <span style={{ fontSize:18, fontWeight:900, color:"var(--ink)", letterSpacing:"-.025em" }}>VibeonJob</span>
