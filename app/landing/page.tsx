@@ -254,31 +254,63 @@ const CSS = `
 /* ── Feature card colored glow ───────────── */
   .feat-card { transition: transform .28s var(--spring), box-shadow .28s ease; }
 
+  /* ── Nav short text ──────────────────────── */
+  .nav-cta-short { display: none; }
+
   /* ── Responsive ─────────────────────────── */
   @media (max-width:768px) {
+    /* Navbar */
     .nav-inner { padding: 0 18px !important; }
-    .hero-grid { grid-template-columns: 1fr !important; padding: 80px 20px 48px !important; gap: 0 !important; }
+    .nav-cta-main { font-size: 12px !important; padding: 8px 14px !important; border-radius: 10px !important; }
+    .nav-cta-full  { display: none; }
+    .nav-cta-short { display: inline; }
+
+    /* Hero */
+    .hero-grid { grid-template-columns: 1fr !important; padding: 76px 20px 44px !important; gap: 0 !important; }
     .hero-left { display: flex !important; flex-direction: column !important; align-items: center !important; }
-    .hero-h1  { text-align: center !important; }
-    .hero-desc { text-align: center !important; max-width: 100% !important; }
+    .hero-h1  { text-align: center !important; font-size: clamp(36px,9vw,52px) !important; margin-bottom: 16px !important; }
+    .hero-desc { text-align: center !important; max-width: 100% !important; font-size: 15px !important; margin-bottom: 22px !important; }
     .hero-ctas { justify-content: center !important; }
-    .hero-proof { flex-direction: column !important; align-items: center !important; gap: 10px !important; padding-bottom: 16px !important; }
+    .hero-proof { flex-direction: column !important; align-items: center !important; gap: 10px !important; padding-bottom: 14px !important; margin-bottom: 14px !important; }
     .hero-mini-stats { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 10px; justify-content: center !important; }
-    .hero-live { justify-content: center !important; }
+    .hero-live { justify-content: center !important; flex-wrap: wrap !important; gap: 6px !important; }
     .hero-right { display: none !important; }
-    .problems-grid { grid-template-columns: 1fr !important; }
-    .bootcamp-body { grid-template-columns: 1fr !important; padding: 20px !important; }
+
+    /* Bootcamp */
+    .bootcamp-head { padding: 16px !important; gap: 12px !important; }
+    .bootcamp-left-group { flex-wrap: wrap !important; gap: 8px !important; }
+    .bootcamp-title { font-size: 17px !important; }
+    .bootcamp-body { grid-template-columns: 1fr !important; padding: 18px 16px !important; gap: 16px !important; }
     .bootcamp-cols { grid-template-columns: 1fr !important; }
+
+    /* Problems */
+    .problems-grid { grid-template-columns: 1fr !important; }
+
+    /* Testimonials */
+    .testimonial-feat { transform: scale(1) !important; }
+
+    /* CTA */
+    .cta-inner { padding: 44px 20px !important; border-radius: 20px !important; }
+    .cta-h2   { font-size: clamp(28px,7.5vw,40px) !important; margin-bottom: 12px !important; }
+    .cta-sub  { font-size: 15px !important; margin-bottom: 28px !important; max-width: 100% !important; }
+    .cta-pills { flex-direction: column !important; align-items: center !important; gap: 6px !important; }
+
+    /* Footer */
     .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
     .footer-brand { grid-column: 1 / -1 !important; }
-    .cta-inner { padding: 48px 20px !important; border-radius: 20px !important; }
-    .section-pad { padding: 56px 20px !important; }
+    .footer-bottom { flex-direction: column !important; align-items: center !important; gap: 10px !important; text-align: center !important; }
+
+    /* Sections */
+    .section-pad { padding: 52px 20px !important; }
   }
   @media (max-width:480px) {
     .nav-inner { padding: 0 14px !important; }
-    .hero-grid { padding: 72px 16px 40px !important; }
+    .hero-grid { padding: 70px 16px 36px !important; }
+    .hero-h1  { font-size: clamp(32px,8.5vw,42px) !important; }
+    .hero-ctas a { width: 100% !important; justify-content: center !important; }
     .footer-grid { grid-template-columns: 1fr !important; }
-    .cta-inner { padding: 40px 16px !important; }
+    .cta-inner { padding: 36px 16px !important; }
+    .cta-pills { flex-direction: column !important; }
   }
 `
 
@@ -310,7 +342,10 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <a href="/app" className="btn btn-outline hidden sm:inline-flex" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
-          <a href="/register" className="btn btn-primary" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>Get Started Free</a>
+          <a href="/register" className="btn btn-primary nav-cta-main" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>
+            <span className="nav-cta-full">Get Started Free</span>
+            <span className="nav-cta-short">Join Free</span>
+          </a>
         </div>
       </div>
     </nav>
@@ -783,7 +818,7 @@ function Testimonials() {
         </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:16, alignItems:"center" }}>
           {cards.map((t,i) => (
-            <div key={i} className={`sr d${i+1}`} style={{
+            <div key={i} className={`sr d${i+1}${t.featured ? " testimonial-feat" : ""}`} style={{
               borderRadius:24, padding:"28px 26px", display:"flex", flexDirection:"column", gap:16,
               background: t.featured ? "linear-gradient(145deg,#4f46e5,#6d28d9)" : "white",
               border: t.featured ? "none" : "1.5px solid var(--border)",
@@ -830,13 +865,13 @@ function Bootcamp() {
         <div className="sr card" style={{ overflow:"hidden", padding:0, borderRadius:24 }}>
 
           {/* ── Header band ── */}
-          <div style={{ background:"linear-gradient(135deg,#4f46e5 0%,#6d28d9 100%)", padding:"18px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+          <div className="bootcamp-head" style={{ background:"linear-gradient(135deg,#4f46e5 0%,#6d28d9 100%)", padding:"18px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
+            <div className="bootcamp-left-group" style={{ display:"flex", alignItems:"center", gap:14 }}>
               <div style={{ display:"flex", alignItems:"center", gap:7, padding:"4px 12px", borderRadius:99, background:"rgba(255,255,255,0.15)", border:"1px solid rgba(255,255,255,0.25)", fontSize:10, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em", whiteSpace:"nowrap" }}>
                 <div style={{ width:6, height:6, borderRadius:"50%", background:"#f87171", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
                 Live · 14–15 March 2026
               </div>
-              <div style={{ fontSize:20, fontWeight:900, color:"white", letterSpacing:"-.025em", lineHeight:1.2 }}>
+              <div className="bootcamp-title" style={{ fontSize:20, fontWeight:900, color:"white", letterSpacing:"-.025em", lineHeight:1.2 }}>
                 2-Day AI Bootcamp <span style={{ opacity:.7 }}>+</span> Hackathon
               </div>
             </div>
@@ -1001,12 +1036,12 @@ function CTA() {
             </div>
 
             {/* Headline */}
-            <h2 style={{ fontSize:"clamp(32px,4.2vw,54px)", fontWeight:900, letterSpacing:"-.035em", color:"white", margin:"0 0 18px", lineHeight:1.05 }}>
+            <h2 className="cta-h2" style={{ fontSize:"clamp(32px,4.2vw,54px)", fontWeight:900, letterSpacing:"-.035em", color:"white", margin:"0 0 18px", lineHeight:1.05 }}>
               Your next offer is<br />closer than you think.
             </h2>
 
             {/* Subtext */}
-            <p style={{ fontSize:17, color:"rgba(255,255,255,0.72)", margin:"0 auto 40px", maxWidth:500, lineHeight:1.7 }}>
+            <p className="cta-sub" style={{ fontSize:17, color:"rgba(255,255,255,0.72)", margin:"0 auto 40px", maxWidth:500, lineHeight:1.7 }}>
               AI resume tailor, salary intel, 5-day prep, and Vibe AI coaching — everything built for India&apos;s tech market.
             </p>
 
@@ -1037,7 +1072,7 @@ function CTA() {
             </div>
 
             {/* Micro-stat pills */}
-            <div style={{ display:"flex", justifyContent:"center", gap:8, flexWrap:"wrap" }}>
+            <div className="cta-pills" style={{ display:"flex", justifyContent:"center", gap:8, flexWrap:"wrap" }}>
               {["⚡ 12 days avg. to offer","📄 3× more interview calls","🎯 93% success with Vibe AI"].map((s,i) => (
                 <div key={i} style={{ padding:"5px 14px", borderRadius:99, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.18)", fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.75)" }}>
                   {s}
@@ -1091,7 +1126,7 @@ function Footer() {
             </div>
           ))}
         </div>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, paddingTop:24, borderTop:"1px solid var(--border)", flexWrap:"wrap" }}>
+        <div className="footer-bottom" style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, paddingTop:24, borderTop:"1px solid var(--border)", flexWrap:"wrap" }}>
           <span style={{ fontSize:12, color:"var(--ink3)" }}>© 2026 VibeonJob. Built with ❤️ for India&apos;s job seekers.</span>
           <div style={{ display:"flex", alignItems:"center", gap:6, padding:"5px 12px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.15)" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 2s ease-in-out infinite" }} />
