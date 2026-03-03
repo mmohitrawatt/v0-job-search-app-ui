@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { JobngenLogo } from "@/components/jobngen-logo"
 
 // ─── CSS ────────────────────────────────────────────────────────
 const CSS = `
@@ -264,9 +265,8 @@ export default function RegisterPage() {
 
         {/* Navbar */}
         <nav style={{ background:"rgba(247,247,251,0.9)", backdropFilter:"blur(20px)", borderBottom:"1px solid var(--border)", padding:"0 28px", height:60, display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
-          <a href="/landing" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none" }}>
-            <div style={{ width:32, height:32, borderRadius:10, background:"linear-gradient(135deg,#4f46e5,#7c3aed)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, fontWeight:900, color:"white" }}>V</div>
-            <span style={{ fontSize:16, fontWeight:900, color:"var(--ink)", letterSpacing:"-.02em" }}>VibeonJob</span>
+          <a href="/landing" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
+            <JobngenLogo height={26} />
           </a>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--rose-l)", border:"1px solid rgba(244,63,94,0.22)", fontSize:11, fontWeight:800, color:"var(--rose)", textTransform:"uppercase", letterSpacing:".06em" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--rose)", animation:"pulse-s 1.5s ease-in-out infinite" }} />

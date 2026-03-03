@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'CareerAI — Job Search & Preparation',
+  title: 'Jobngen — Job Search & Preparation',
   description: 'AI-powered job search, resume builder, and interview preparation platform.',
   generator: 'v0.app',
 }

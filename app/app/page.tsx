@@ -11,6 +11,7 @@ import { AiInterviewScreen } from "@/components/screens/ai-interview-screen"
 import { SalaryIntelScreen } from "@/components/screens/salary-intel-screen"
 import { JobAlertsScreen } from "@/components/screens/job-alerts-screen"
 import { cn } from "@/lib/utils"
+import { JobngenLogo } from "@/components/jobngen-logo"
 
 export default function App() {
   return (
@@ -54,18 +55,14 @@ function DesktopSidebar({
     >
       {/* Logo row */}
       <div className={cn("flex items-center border-b border-border flex-shrink-0 h-[65px]", collapsed ? "justify-center px-0" : "px-4 gap-2.5")}>
-        <div className="w-9 h-9 rounded-[10px] bg-primary flex items-center justify-center flex-shrink-0">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <rect x="2.5" y="3" width="13" height="12" rx="2" stroke="white" strokeWidth="1.5"/>
-            <path d="M5.5 7.5H12.5M5.5 10.5H10" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-            <circle cx="14" cy="4.5" r="2.5" fill="white"/>
-          </svg>
+        <div className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #0d1b45 0%, #1d3a8f 50%, #3b52f0 100%)" }}>
+          <span style={{ fontSize: 18, fontWeight: 900, color: "white", letterSpacing: "-0.5px", lineHeight: 1 }}>J</span>
         </div>
         {!collapsed && (
           <>
-            <div className="flex-1 min-w-0">
-              <p className="text-[15px] font-bold text-foreground leading-tight">JobComp</p>
-              <p className="text-[10px] text-muted-foreground font-medium">AI Job Companion</p>
+            <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+              <JobngenLogo height={18} />
+              <p className="text-[10px] text-muted-foreground font-medium">AI Career Platform</p>
             </div>
             <button
               onClick={() => setCollapsed(true)}
