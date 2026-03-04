@@ -278,9 +278,12 @@ const CSS = `
     .hero-right { display: none !important; }
 
     /* Bootcamp */
-    .bootcamp-head { padding: 16px !important; gap: 12px !important; }
-    .bootcamp-left-group { flex-wrap: wrap !important; gap: 8px !important; }
-    .bootcamp-title { font-size: 17px !important; }
+    .bootcamp-head { padding: 18px 16px !important; gap: 14px !important; flex-direction: column !important; align-items: stretch !important; }
+    .bootcamp-left-group { flex-wrap: wrap !important; gap: 8px !important; flex-direction: column !important; align-items: flex-start !important; }
+    .bootcamp-title { font-size: 17px !important; line-height: 1.25 !important; }
+    .bootcamp-price-group { flex-direction: column !important; align-items: flex-start !important; width: 100% !important; gap: 10px !important; }
+    .bootcamp-price { text-align: left !important; }
+    .bootcamp-reg-btn { width: 100% !important; justify-content: center !important; }
     .bootcamp-body { grid-template-columns: 1fr !important; padding: 18px 16px !important; gap: 16px !important; }
     .bootcamp-cols { grid-template-columns: 1fr !important; }
 
@@ -343,8 +346,8 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <a href="/app" className="btn btn-outline hidden sm:inline-flex" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
           <a href="/register" className="btn btn-primary nav-cta-main" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>
-            <span className="nav-cta-full">Get Started Free</span>
-            <span className="nav-cta-short">Join Free</span>
+            <span className="nav-cta-full">Get Started</span>
+            <span className="nav-cta-short">Join Now</span>
           </a>
         </div>
       </div>
@@ -367,7 +370,7 @@ function Hero() {
   }, [])
 
   return (
-    <section style={{ minHeight:"100vh", display:"flex", alignItems:"center", paddingTop:64, background:"var(--white)", position:"relative", overflow:"hidden" }}>
+    <section style={{ minHeight:"100vh", display:"flex", alignItems:"center", paddingTop:64, background:"linear-gradient(170deg,#eef2ff 0%,#f8f9ff 35%,#fff 65%,#f0f4ff 100%)", position:"relative", overflow:"hidden" }}>
 
       {/* Dot grid */}
       <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(29,58,143,0.09) 1px, transparent 1px)", backgroundSize:"32px 32px", maskImage:"radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 100%)", pointerEvents:"none" }} />
@@ -414,7 +417,7 @@ function Hero() {
           {/* CTAs */}
           <div className="hero-ctas" style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:36 }}>
             <a href="/register" className="btn btn-primary" style={{ fontSize:15, fontWeight:800, padding:"14px 28px", borderRadius:16, color:"white", gap:8, display:"inline-flex", alignItems:"center" }}>
-              Start Free — No Card
+              Get Started Now
               <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
             <a href="/" className="btn btn-outline" style={{ fontSize:15, fontWeight:700, padding:"14px 22px", borderRadius:16, color:"var(--ink)", border:"1.5px solid var(--borderM)", gap:8, display:"inline-flex", alignItems:"center" }}>
@@ -875,12 +878,12 @@ function Bootcamp() {
                 2-Day AI Bootcamp <span style={{ opacity:.7 }}>+</span> Hackathon
               </div>
             </div>
-            <div style={{ display:"flex", alignItems:"center", gap:16, flexShrink:0 }}>
-              <div style={{ textAlign:"right" }}>
+            <div className="bootcamp-price-group" style={{ display:"flex", alignItems:"center", gap:16, flexShrink:0 }}>
+              <div className="bootcamp-price" style={{ textAlign:"right" }}>
                 <div style={{ fontSize:30, fontWeight:900, color:"white", lineHeight:1 }}>₹29</div>
                 <div style={{ fontSize:10, color:"rgba(255,255,255,0.55)", marginTop:1 }}>Online · Limited seats</div>
               </div>
-              <a href="/register" className="btn" style={{ fontSize:13, fontWeight:900, padding:"11px 24px", borderRadius:14, color:"#1d3a8f", background:"white", boxShadow:"0 4px 20px rgba(0,0,0,0.18)", display:"inline-flex", alignItems:"center", gap:8, whiteSpace:"nowrap" }}>
+              <a href="/register" className="btn bootcamp-reg-btn" style={{ fontSize:13, fontWeight:900, padding:"11px 24px", borderRadius:14, color:"#1d3a8f", background:"white", boxShadow:"0 4px 20px rgba(0,0,0,0.18)", display:"inline-flex", alignItems:"center", gap:8, whiteSpace:"nowrap" }}>
                 Register Now
                 <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
@@ -1032,7 +1035,7 @@ function CTA() {
           <div style={{ position:"relative" }}>
             {/* Badge */}
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px", borderRadius:99, background:"rgba(255,255,255,0.14)", border:"1px solid rgba(255,255,255,0.22)", fontSize:12, fontWeight:700, color:"white", marginBottom:28 }}>
-              ✦ Free to get started · No card required
+              ✦ Join 1,200+ job seekers · Launching March 2026
             </div>
 
             {/* Headline */}
@@ -1048,7 +1051,7 @@ function CTA() {
             {/* CTAs */}
             <div style={{ display:"flex", justifyContent:"center", gap:12, flexWrap:"wrap", marginBottom:48 }}>
               <a href="/register" className="btn" style={{ fontSize:15, fontWeight:900, padding:"15px 32px", borderRadius:16, color:"#1d3a8f", background:"white", boxShadow:"0 8px 32px rgba(0,0,0,0.18)", gap:8, display:"inline-flex", alignItems:"center" }}>
-                Start Free Today
+                Get Started Now
                 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
               <a href="/" className="btn" style={{ fontSize:14, fontWeight:700, padding:"15px 24px", borderRadius:16, color:"rgba(255,255,255,0.88)", background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.22)", gap:8, display:"inline-flex", alignItems:"center" }}>
@@ -1099,7 +1102,7 @@ function Footer() {
         <div className="footer-grid" style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:48 }}>
           <div className="footer-brand">
             <div style={{ marginBottom:16 }}>
-              <JobingenLogo height={26} />
+              <JobingenLogo height={80} />
             </div>
             <p style={{ fontSize:13, color:"var(--ink3)", lineHeight:1.72, maxWidth:200, margin:"0 0 20px" }}>AI-powered job search for India&apos;s tech job market.</p>
             <div style={{ display:"flex", gap:8 }}>
