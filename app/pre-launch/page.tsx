@@ -66,7 +66,7 @@ export default function PreLaunchPage() {
         .pl-nav-cta:active{transform:translateY(0) scale(.97)}
 
         /* ═══ HERO ═══ */
-        .pl-hero{position:relative;padding:180px 32px 120px;text-align:center;overflow:hidden;background:linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%)}
+        .pl-hero{position:relative;padding:96px 32px 64px;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;background:linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%)}
         .pl-hero-orb1{position:absolute;top:-120px;left:-8%;width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.14) 0%,rgba(59,82,240,.06) 40%,transparent 70%);pointer-events:none;animation:pl-float-1 22s ease-in-out infinite;filter:blur(60px)}
         .pl-hero-orb2{position:absolute;bottom:-100px;right:-6%;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.12) 0%,rgba(42,78,207,.04) 40%,transparent 70%);pointer-events:none;animation:pl-float-2 28s ease-in-out infinite;filter:blur(50px)}
         .pl-hero-orb3{position:absolute;top:35%;left:55%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 60%);pointer-events:none;animation:pl-float-3 18s ease-in-out infinite;filter:blur(40px)}
