@@ -14,9 +14,9 @@ const CSS = `
     --cream2: #f0f0f8;
     --border: rgba(10,10,20,0.08);
     --borderM:rgba(10,10,20,0.14);
-    --ind:    #4f46e5;
-    --ind-l:  #eef2ff;
-    --vio:    #7c3aed;
+    --ind:    #1d3a8f;
+    --ind-l:  #e8edfe;
+    --vio:    #3b52f0;
     --grn:    #10b981;
     --grn-l:  #ecfdf5;
     --amb:    #f59e0b;
@@ -57,7 +57,7 @@ const CSS = `
   }
 
   .shimmer {
-    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 28%, #a855f7 48%, #7c3aed 68%, #4f46e5 100%);
+    background: linear-gradient(90deg, #1d3a8f 0%, #3b52f0 28%, #5a6ef4 48%, #3b52f0 68%, #1d3a8f 100%);
     background-size: 300% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -67,7 +67,7 @@ const CSS = `
 
   .top-bar {
     height: 3px;
-    background: linear-gradient(90deg, #4f46e5, #7c3aed, #a855f7, #ec4899, #a855f7, #7c3aed, #4f46e5);
+    background: linear-gradient(90deg, #1d3a8f, #3b52f0, #5a6ef4, #5a6ef4, #5a6ef4, #3b52f0, #1d3a8f);
     background-size: 200% auto;
     animation: shimmer 4s linear infinite;
   }
@@ -87,11 +87,11 @@ const CSS = `
   .btn:hover  { transform: translateY(-2px) scale(1.025); }
   .btn:active { transform: translateY(0) scale(.97); }
   .btn-primary {
-    background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%);
-    box-shadow: 0 6px 28px rgba(79,70,229,.32);
+    background: linear-gradient(135deg, #1d3a8f 0%, #2548c5 100%);
+    box-shadow: 0 6px 28px rgba(29,58,143,.32);
     color: white;
   }
-  .btn-primary:hover { box-shadow: 0 12px 40px rgba(79,70,229,.45); }
+  .btn-primary:hover { box-shadow: 0 12px 40px rgba(29,58,143,.45); }
 
   /* Input fields */
   .field-input {
@@ -111,7 +111,7 @@ const CSS = `
   .field-input:focus {
     border-color: var(--ind);
     background: white;
-    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+    box-shadow: 0 0 0 3px rgba(29,58,143,0.1);
   }
   .field-input::placeholder { color: var(--ink3); font-weight: 400; }
 
@@ -130,7 +130,7 @@ const CSS = `
     color: var(--ink2);
     user-select: none;
   }
-  .radio-card:hover { border-color: rgba(79,70,229,0.3); background: var(--ind-l); color: var(--ind); }
+  .radio-card:hover { border-color: rgba(29,58,143,0.3); background: var(--ind-l); color: var(--ind); }
   .radio-card.selected { border-color: var(--ind); background: var(--ind-l); color: var(--ind); font-weight: 700; }
 
   /* Success */
@@ -154,7 +154,7 @@ const INIT: FormData = { name:"", email:"", phone:"", org:"", status:"", level:"
 
 // ─── Success Screen ──────────────────────────────────────────────
 function SuccessScreen({ name }: { name: string }) {
-  const dots = ["#818cf8","#34d399","#fb7185","#fbbf24","#60a5fa","#a78bfa","#f472b6"]
+  const dots = ["#6074f3","#34d399","#fb7185","#fbbf24","#60a5fa","#8c9df6","#f472b6"]
   return (
     <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", background:"var(--cream)", padding:"40px 24px", position:"relative", overflow:"hidden" }}>
       {/* Confetti dots */}
@@ -175,7 +175,7 @@ function SuccessScreen({ name }: { name: string }) {
 
       <div style={{ maxWidth:480, width:"100%", textAlign:"center" }} className="fade-up">
         {/* Check circle */}
-        <div className="success-check" style={{ width:88, height:88, borderRadius:"50%", background:"linear-gradient(135deg,#4f46e5,#6d28d9)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 28px", boxShadow:"0 16px 48px rgba(79,70,229,0.32)" }}>
+        <div className="success-check" style={{ width:88, height:88, borderRadius:"50%", background:"linear-gradient(135deg,#1d3a8f,#2548c5)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 28px", boxShadow:"0 16px 48px rgba(29,58,143,0.32)" }}>
           <svg width="40" height="40" fill="none" viewBox="0 0 40 40">
             <path d="M10 21L17 28L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -266,7 +266,7 @@ export default function RegisterPage() {
         {/* Navbar */}
         <nav style={{ background:"rgba(247,247,251,0.9)", backdropFilter:"blur(20px)", borderBottom:"1px solid var(--border)", padding:"0 28px", height:60, display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <a href="/landing" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-            <JobngenLogo height={26} />
+            <JobngenLogo height={110} />
           </a>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--rose-l)", border:"1px solid rgba(244,63,94,0.22)", fontSize:11, fontWeight:800, color:"var(--rose)", textTransform:"uppercase", letterSpacing:".06em" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--rose)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
@@ -394,7 +394,7 @@ export default function RegisterPage() {
             {/* Main summary card */}
             <div style={{ borderRadius:24, overflow:"hidden", boxShadow:"var(--shadow-lg)" }}>
               {/* Gradient header */}
-              <div style={{ background:"linear-gradient(135deg,#4f46e5,#6d28d9)", padding:"24px 24px 20px", position:"relative", overflow:"hidden" }}>
+              <div style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", padding:"24px 24px 20px", position:"relative", overflow:"hidden" }}>
                 <div style={{ position:"absolute", top:-30, right:-30, width:120, height:120, borderRadius:"50%", background:"rgba(255,255,255,0.07)", pointerEvents:"none" }} />
                 <div style={{ position:"absolute", bottom:-20, left:-20, width:80, height:80, borderRadius:"50%", background:"rgba(255,255,255,0.05)", pointerEvents:"none" }} />
                 <div style={{ position:"relative" }}>

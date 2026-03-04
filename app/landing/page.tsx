@@ -14,9 +14,9 @@ const CSS = `
     --cream2: #f0f0f8;
     --border: rgba(10,10,20,0.08);
     --borderM:rgba(10,10,20,0.14);
-    --ind:    #4f46e5;
-    --ind-l:  #eef2ff;
-    --vio:    #7c3aed;
+    --ind:    #1d3a8f;
+    --ind-l:  #e8edfe;
+    --vio:    #3b52f0;
     --grn:    #10b981;
     --grn-l:  #ecfdf5;
     --amb:    #f59e0b;
@@ -27,8 +27,8 @@ const CSS = `
     --shadow-md:  0 4px 24px rgba(10,10,20,0.08);
     --shadow-lg:  0 12px 48px rgba(10,10,20,0.1);
     --shadow-xl:  0 24px 80px rgba(10,10,20,0.12);
-    --ind-glow:   0 8px 32px rgba(79,70,229,0.28);
-    --ind-glow-l: 0 4px 16px rgba(79,70,229,0.16);
+    --ind-glow:   0 8px 32px rgba(29,58,143,0.28);
+    --ind-glow-l: 0 4px 16px rgba(29,58,143,0.16);
     --spring: cubic-bezier(.34,1.56,.64,1);
     --ease-out: cubic-bezier(.16,1,.3,1);
   }
@@ -126,7 +126,7 @@ const CSS = `
 
   /* ── Shimmer gradient text ──────────────── */
   .shimmer {
-    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 28%, #a855f7 48%, #7c3aed 68%, #4f46e5 100%);
+    background: linear-gradient(90deg, #1d3a8f 0%, #3b52f0 28%, #5a6ef4 48%, #3b52f0 68%, #1d3a8f 100%);
     background-size: 300% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -151,11 +151,11 @@ const CSS = `
   .btn:hover  { transform: translateY(-3px) scale(1.035); }
   .btn:active { transform: translateY(0) scale(.97); }
   .btn-primary {
-    background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%);
-    box-shadow: 0 6px 28px rgba(79,70,229,.32), 0 2px 6px rgba(79,70,229,.2);
+    background: linear-gradient(135deg, #1d3a8f 0%, #2548c5 100%);
+    box-shadow: 0 6px 28px rgba(29,58,143,.32), 0 2px 6px rgba(29,58,143,.2);
   }
   .btn-primary:hover {
-    box-shadow: 0 12px 40px rgba(79,70,229,.45), 0 4px 12px rgba(79,70,229,.25);
+    box-shadow: 0 12px 40px rgba(29,58,143,.45), 0 4px 12px rgba(29,58,143,.25);
   }
   .btn-outline {
     background: white;
@@ -175,11 +175,11 @@ const CSS = `
   .card::before {
     content: '';
     position: absolute; top:0; left:0; right:0; height:1px;
-    background: linear-gradient(90deg, transparent, rgba(79,70,229,.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(29,58,143,.15), transparent);
     opacity: 0;
     transition: opacity .28s ease;
   }
-  .card:hover { transform: translateY(-7px) scale(1.008); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(79,70,229,.06); }
+  .card:hover { transform: translateY(-7px) scale(1.008); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(29,58,143,.06); }
   .card:hover::before { opacity: 1; }
 
   /* ── Feature card icon bounce ── */
@@ -219,7 +219,7 @@ const CSS = `
     content: '';
     position: absolute; inset: -1px;
     border-radius: 21px;
-    background: linear-gradient(135deg, rgba(79,70,229,.35), rgba(139,92,246,.15), transparent);
+    background: linear-gradient(135deg, rgba(29,58,143,.35), rgba(59,82,240,.15), transparent);
     z-index: -1;
     opacity: 0;
     transition: opacity .28s ease;
@@ -228,7 +228,7 @@ const CSS = `
 
   /* ── Pricing popular glow ───────────────── */
   .pricing-popular {
-    box-shadow: 0 0 0 2px #4f46e5, 0 28px 80px rgba(79,70,229,.22), 0 8px 24px rgba(79,70,229,.12);
+    box-shadow: 0 0 0 2px #1d3a8f, 0 28px 80px rgba(29,58,143,.22), 0 8px 24px rgba(29,58,143,.12);
   }
 
   /* ── Section divider dots ───────────────── */
@@ -240,13 +240,13 @@ const CSS = `
     width: 4px; height: 4px; border-radius:50%; background: var(--ind-l);
     display: inline-block;
   }
-  .dot-divider span:nth-child(2) { background: rgba(79,70,229,.3); }
-  .dot-divider span:nth-child(3) { background: rgba(79,70,229,.15); }
+  .dot-divider span:nth-child(2) { background: rgba(29,58,143,.3); }
+  .dot-divider span:nth-child(3) { background: rgba(29,58,143,.15); }
 
   /* ── Shimmer top bar ─────────────────────── */
   .top-bar {
     height: 3px;
-    background: linear-gradient(90deg, #4f46e5, #7c3aed, #a855f7, #ec4899, #a855f7, #7c3aed, #4f46e5);
+    background: linear-gradient(90deg, #1d3a8f, #3b52f0, #5a6ef4, #5a6ef4, #5a6ef4, #3b52f0, #1d3a8f);
     background-size: 200% auto;
     animation: shimmer 4s linear infinite;
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -328,7 +328,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
     }}>
       <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:24 }}>
         <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-          <JobngenLogo height={30} />
+          <JobngenLogo height={110} />
         </a>
         <div className="hidden md:flex" style={{ display:"flex", alignItems:"center", gap:36 }}>
           {[["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"]].map(([l,href]) => (
@@ -370,11 +370,11 @@ function Hero() {
     <section style={{ minHeight:"100vh", display:"flex", alignItems:"center", paddingTop:64, background:"var(--white)", position:"relative", overflow:"hidden" }}>
 
       {/* Dot grid */}
-      <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(79,70,229,0.09) 1px, transparent 1px)", backgroundSize:"32px 32px", maskImage:"radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 100%)", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(29,58,143,0.09) 1px, transparent 1px)", backgroundSize:"32px 32px", maskImage:"radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 100%)", pointerEvents:"none" }} />
 
       {/* Orbs */}
-      <div style={{ position:"absolute", top:"5%", left:"-8%", width:560, height:560, borderRadius:"50%", background:"radial-gradient(circle, rgba(79,70,229,0.1) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:"5%", right:"-5%", width:440, height:440, borderRadius:"50%", background:"radial-gradient(circle, rgba(124,58,237,0.09) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", top:"5%", left:"-8%", width:560, height:560, borderRadius:"50%", background:"radial-gradient(circle, rgba(29,58,143,0.1) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
+      <div style={{ position:"absolute", bottom:"5%", right:"-5%", width:440, height:440, borderRadius:"50%", background:"radial-gradient(circle, rgba(59,82,240,0.09) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
 
       {/* Sparkles */}
       {[
@@ -384,7 +384,7 @@ function Hero() {
         { top:"85%", right:"5%", size:10, anim:"sparkle-2 4.5s ease-in-out 1.5s infinite" },
       ].map((s,i) => (
         <div key={i} style={{ position:"absolute", ...s, width:s.size, height:s.size, pointerEvents:"none", animation:s.anim }}>
-          <svg viewBox="0 0 24 24"><path d="M12 2L13.5 10L22 12L13.5 14L12 22L10.5 14L2 12L10.5 10Z" fill="#4f46e5" /></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2L13.5 10L22 12L13.5 14L12 22L10.5 14L2 12L10.5 10Z" fill="#1d3a8f" /></svg>
         </div>
       ))}
 
@@ -394,8 +394,8 @@ function Hero() {
         <div className="hero-left" style={{ animation:"reveal-up .8s var(--ease-out) both" }}>
 
           {/* Badge */}
-          <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px 6px 8px", borderRadius:99, background:"var(--ind-l)", border:"1px solid rgba(79,70,229,.22)", marginBottom:28 }}>
-            <div style={{ background:"linear-gradient(135deg,#4f46e5,#7c3aed)", borderRadius:99, padding:"3px 10px", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em" }}>✦ NEW</div>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px 6px 8px", borderRadius:99, background:"var(--ind-l)", border:"1px solid rgba(29,58,143,.22)", marginBottom:28 }}>
+            <div style={{ background:"linear-gradient(135deg,#1d3a8f,#3b52f0)", borderRadius:99, padding:"3px 10px", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em" }}>✦ NEW</div>
             <span style={{ fontSize:12, fontWeight:700, color:"var(--ind)" }}>Vibe AI mock interviews are live 🎤</span>
           </div>
 
@@ -426,7 +426,7 @@ function Hero() {
           {/* Social proof */}
           <div className="hero-proof" style={{ display:"flex", alignItems:"center", gap:16, paddingBottom:22, borderBottom:"1px solid var(--border)", marginBottom:22 }}>
             <div style={{ display:"flex" }}>
-              {["#4f46e5","#10b981","#f59e0b","#f43f5e","#8b5cf6"].map((c,i) => (
+              {["#1d3a8f","#10b981","#f59e0b","#f43f5e","#3b52f0"].map((c,i) => (
                 <div key={i} style={{ width:32, height:32, borderRadius:"50%", background:c, border:"2.5px solid white", marginLeft:i?-10:0, fontSize:10, fontWeight:900, color:"white", display:"flex", alignItems:"center", justifyContent:"center", zIndex:5-i }}>
                   {["A","P","R","S","M"][i]}
                 </div>
@@ -467,15 +467,15 @@ function Hero() {
         <div className="hero-right" style={{ position:"relative", height:560, animation:"reveal-up .8s var(--ease-out) .22s both" }}>
 
           {/* Glow */}
-          <div style={{ position:"absolute", top:"50%", left:"50%", translate:"-50% -50%", width:420, height:420, borderRadius:"50%", background:"radial-gradient(circle, rgba(79,70,229,0.2) 0%, transparent 70%)", filter:"blur(56px)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", top:"50%", left:"50%", translate:"-50% -50%", width:420, height:420, borderRadius:"50%", background:"radial-gradient(circle, rgba(29,58,143,0.2) 0%, transparent 70%)", filter:"blur(56px)", pointerEvents:"none" }} />
 
           {/* ── MAIN MATCH CARD ── */}
           <div style={{
             position:"absolute", top:"50%", left:"50%", translate:"-50% -50%",
             width:330, borderRadius:28,
-            background:"linear-gradient(148deg, #4338ca 0%, #6d28d9 100%)",
+            background:"linear-gradient(148deg, #142a6a 0%, #2548c5 100%)",
             padding:"26px 24px",
-            boxShadow:"0 40px 100px rgba(79,70,229,0.38), 0 8px 24px rgba(79,70,229,0.22)",
+            boxShadow:"0 40px 100px rgba(29,58,143,0.38), 0 8px 24px rgba(29,58,143,0.22)",
             overflow:"hidden",
             animation:"float-phone 8s ease-in-out infinite",
             zIndex:2,
@@ -513,7 +513,7 @@ function Hero() {
             </div>
 
             <div style={{ display:"flex", gap:8, position:"relative" }}>
-              <div style={{ flex:1, height:42, borderRadius:14, background:"rgba(255,255,255,0.95)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, color:"#4f46e5", cursor:"pointer", gap:6 }}>
+              <div style={{ flex:1, height:42, borderRadius:14, background:"rgba(255,255,255,0.95)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, color:"#1d3a8f", cursor:"pointer", gap:6 }}>
                 <span>✦</span> Smart Apply
               </div>
               <div style={{ width:42, height:42, borderRadius:14, background:"rgba(255,255,255,0.14)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
@@ -550,7 +550,7 @@ function Hero() {
           </div>
 
           {/* ── Interview badge — mid left ── */}
-          <div style={{ position:"absolute", top:146, left:-12, background:"var(--ind-l)", borderRadius:18, padding:"10px 14px", boxShadow:"0 12px 36px rgba(79,70,229,0.16)", animation:"badge-c 6s ease-in-out infinite", display:"flex", alignItems:"center", gap:8, border:"1.5px solid rgba(79,70,229,0.2)", zIndex:3 }}>
+          <div style={{ position:"absolute", top:146, left:-12, background:"var(--ind-l)", borderRadius:18, padding:"10px 14px", boxShadow:"0 12px 36px rgba(29,58,143,0.16)", animation:"badge-c 6s ease-in-out infinite", display:"flex", alignItems:"center", gap:8, border:"1.5px solid rgba(29,58,143,0.2)", zIndex:3 }}>
             <span style={{ fontSize:18 }}>📩</span>
             <div>
               <div style={{ fontSize:11, fontWeight:800, color:"var(--ind)" }}>Interview Invite!</div>
@@ -580,11 +580,11 @@ function Ticker() {
     "Application Pipeline ✦","Vibe AI Coach ✦","ATS Optimizer ✦","Platform Comparison ✦","Job Alerts ✦",
   ]
   return (
-    <div style={{ background:"linear-gradient(135deg,#4338ca,#6d28d9)", padding:"15px 0", overflow:"hidden", position:"relative" }}>
+    <div style={{ background:"linear-gradient(135deg,#142a6a,#2548c5)", padding:"15px 0", overflow:"hidden", position:"relative" }}>
       <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px)", backgroundSize:"20px 20px", pointerEvents:"none" }} />
       {/* Edge fades */}
-      <div style={{ position:"absolute", top:0, bottom:0, left:0, width:140, background:"linear-gradient(to right, #4338ca, transparent)", zIndex:2, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:0, bottom:0, right:0, width:140, background:"linear-gradient(to left, #6d28d9, transparent)", zIndex:2, pointerEvents:"none" }} />
+      <div style={{ position:"absolute", top:0, bottom:0, left:0, width:140, background:"linear-gradient(to right, #142a6a, transparent)", zIndex:2, pointerEvents:"none" }} />
+      <div style={{ position:"absolute", top:0, bottom:0, right:0, width:140, background:"linear-gradient(to left, #2548c5, transparent)", zIndex:2, pointerEvents:"none" }} />
       <div className="ticker-wrap">
         {items.map((item,i) => (
           <span key={i} style={{ fontSize:12, fontWeight:800, color:"rgba(255,255,255,0.9)", textTransform:"uppercase", letterSpacing:".09em", whiteSpace:"nowrap", marginRight:48 }}>{item}</span>
@@ -650,14 +650,14 @@ function Problems() {
       tag:"AI Interview Coach",
     },
     {
-      icon:"🕳️", clr:"#6366f1", bg:"#eef2ff",
+      icon:"🕳️", clr:"#2a4ecf", bg:"#e8edfe",
       problem:"Applications disappear into a black hole",
       painSub:"Applied to 80 jobs. Heard from 3. No idea what stage anything is in.",
       fix:"Visual pipeline tracker — Applied → Screening → Interview → Offer. Always know your status.",
       tag:"Application Pipeline",
     },
     {
-      icon:"📋", clr:"#a855f7", bg:"#fdf4ff",
+      icon:"📋", clr:"#5a6ef4", bg:"#fdf4ff",
       problem:"Same resume, 50 companies, zero callbacks",
       painSub:"Generic resumes get ignored. Recruiters can spot a template in seconds.",
       fix:"Paste any JD → AI tailors your resume with the right keywords in 10 seconds.",
@@ -684,7 +684,7 @@ function Problems() {
         <div className="problems-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
           {problems.map((p,i) => (
             <div key={i} className={`card sr d${(i%3)+1}`} style={{ padding:0, overflow:"hidden" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform="translateY(-7px)"; (e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-lg), 0 0 0 1px rgba(79,70,229,0.07)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform="translateY(-7px)"; (e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-lg), 0 0 0 1px rgba(29,58,143,0.07)" }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform=""; (e.currentTarget as HTMLElement).style.boxShadow="" }}>
 
               {/* Problem band */}
@@ -726,7 +726,7 @@ function Features() {
     { icon:"₹", bg:"var(--grn-l)",  ic:"var(--grn)",  title:"Salary Intelligence",  tag:"Live Data", tagBg:"var(--grn-l)",  tagC:"var(--grn)",  desc:"₹ LPA benchmarks by role, city, company. Know your market rate before any negotiation." },
     { icon:"◈", bg:"var(--amb-l)",  ic:"var(--amb)",  title:"5-Day Interview Prep",  tag:"New",       tagBg:"var(--amb-l)",  tagC:"var(--amb)",  desc:"DSA, system design, HR rounds. Daily subtasks, streak tracking, Vibe AI mock coaching." },
     { icon:"⬡", bg:"#edf2ff",      ic:"#4361ee",     title:"Application Pipeline",  desc:"Visual kanban from Applied → Offer. Know exactly where each application stands in real time." },
-    { icon:"◆", bg:"#fdf4ff",      ic:"#a855f7",     title:"Vibe AI Strategist",    desc:"Your AI career coach. Weekly action plans, application feedback, negotiation scripts." },
+    { icon:"◆", bg:"#fdf4ff",      ic:"#5a6ef4",     title:"Vibe AI Strategist",    desc:"Your AI career coach. Weekly action plans, application feedback, negotiation scripts." },
   ]
   return (
     <section id="features" className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
@@ -763,7 +763,7 @@ function Features() {
 function HowItWorks() {
   const steps = [
     { n:1, clr:"var(--ind)", bg:"var(--ind-l)", title:"Build Your Profile", desc:"Upload or build your resume in 5 minutes. Vibe AI scores it and highlights every gap before you apply.", chip:"Takes 5 minutes" },
-    { n:2, clr:"var(--vio)", bg:"#f5f3ff",      title:"Discover & Match",   desc:"AI scans thousands of jobs daily and ranks by your fit %. See exactly which skills to highlight.", chip:"Real-time results" },
+    { n:2, clr:"var(--vio)", bg:"#eef1fe",      title:"Discover & Match",   desc:"AI scans thousands of jobs daily and ranks by your fit %. See exactly which skills to highlight.", chip:"Real-time results" },
     { n:3, clr:"var(--grn)", bg:"var(--grn-l)", title:"Prep, Apply & Win",  desc:"5-day interview roadmap + one-tap Smart Apply with a JD-tailored resume. Land the offer.", chip:"Avg. 12 days to offer" },
   ]
   return (
@@ -802,7 +802,7 @@ function HowItWorks() {
 // ─── Testimonials ──────────────────────────────────────────────
 function Testimonials() {
   const cards = [
-    { quote:"Resume tailor got me 3 interview calls in one week. ATS went 61%→94% overnight. Salary intel helped me lock ₹44 LPA at Zepto.", name:"Rahul M.", role:"SDE II @ Zepto", initials:"RM", clr:"var(--vio)", bg:"#f5f3ff" },
+    { quote:"Resume tailor got me 3 interview calls in one week. ATS went 61%→94% overnight. Salary intel helped me lock ₹44 LPA at Zepto.", name:"Rahul M.", role:"SDE II @ Zepto", initials:"RM", clr:"var(--vio)", bg:"#eef1fe" },
     { quote:"5-day prep streak + Vibe AI mock interviews changed how I prepared completely. Cracked Flipkart system design on first attempt. Life-changing.", name:"Priya S.", role:"PM @ Flipkart", initials:"PS", clr:"var(--amb)", bg:"var(--amb-l)", featured:true },
     { quote:"Saw 94% match on Swiggy, knew exactly what to highlight. Offer in 12 days. Jobngen ran my whole job search for me. 100% worth it.", name:"Arjun K.", role:"Backend @ Swiggy", initials:"AK", clr:"var(--grn)", bg:"var(--grn-l)" },
   ]
@@ -820,9 +820,9 @@ function Testimonials() {
           {cards.map((t,i) => (
             <div key={i} className={`sr d${i+1}${t.featured ? " testimonial-feat" : ""}`} style={{
               borderRadius:24, padding:"28px 26px", display:"flex", flexDirection:"column", gap:16,
-              background: t.featured ? "linear-gradient(145deg,#4f46e5,#6d28d9)" : "white",
+              background: t.featured ? "linear-gradient(145deg,#1d3a8f,#2548c5)" : "white",
               border: t.featured ? "none" : "1.5px solid var(--border)",
-              boxShadow: t.featured ? "0 32px 80px rgba(79,70,229,0.28), 0 8px 24px rgba(79,70,229,0.14)" : "var(--shadow-sm)",
+              boxShadow: t.featured ? "0 32px 80px rgba(29,58,143,0.28), 0 8px 24px rgba(29,58,143,0.14)" : "var(--shadow-sm)",
               transform: t.featured ? "scale(1.04)" : "scale(1)",
               position:"relative",
               transition:"transform .28s var(--spring), box-shadow .28s ease",
@@ -831,7 +831,7 @@ function Testimonials() {
               onMouseLeave={e => { if (!t.featured) (e.currentTarget as HTMLElement).style.transform=t.featured?"scale(1.04)":"scale(1)"; }}>
               {t.featured && <div style={{ position:"absolute", top:16, right:16, padding:"3px 10px", borderRadius:99, background:"rgba(255,255,255,0.18)", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em" }}>⭐ Featured</div>}
               {/* Decorative quote mark */}
-              <div style={{ position:"absolute", top:18, left:22, fontSize:72, lineHeight:1, color:t.featured?"rgba(255,255,255,0.1)":"rgba(79,70,229,0.09)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
+              <div style={{ position:"absolute", top:18, left:22, fontSize:72, lineHeight:1, color:t.featured?"rgba(255,255,255,0.1)":"rgba(29,58,143,0.09)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
               <div style={{ display:"flex", gap:3 }}>
                 {[...Array(5)].map((_,j) => <svg key={j} width="13" height="13" viewBox="0 0 14 14"><path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={t.featured?"rgba(255,255,255,0.9)":"#fbbf24"}/></svg>)}
               </div>
@@ -865,7 +865,7 @@ function Bootcamp() {
         <div className="sr card" style={{ overflow:"hidden", padding:0, borderRadius:24 }}>
 
           {/* ── Header band ── */}
-          <div className="bootcamp-head" style={{ background:"linear-gradient(135deg,#4f46e5 0%,#6d28d9 100%)", padding:"18px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
+          <div className="bootcamp-head" style={{ background:"linear-gradient(135deg,#1d3a8f 0%,#2548c5 100%)", padding:"18px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
             <div className="bootcamp-left-group" style={{ display:"flex", alignItems:"center", gap:14 }}>
               <div style={{ display:"flex", alignItems:"center", gap:7, padding:"4px 12px", borderRadius:99, background:"rgba(255,255,255,0.15)", border:"1px solid rgba(255,255,255,0.25)", fontSize:10, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em", whiteSpace:"nowrap" }}>
                 <div style={{ width:6, height:6, borderRadius:"50%", background:"#f87171", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
@@ -880,7 +880,7 @@ function Bootcamp() {
                 <div style={{ fontSize:30, fontWeight:900, color:"white", lineHeight:1 }}>₹29</div>
                 <div style={{ fontSize:10, color:"rgba(255,255,255,0.55)", marginTop:1 }}>Online · Limited seats</div>
               </div>
-              <a href="/register" className="btn" style={{ fontSize:13, fontWeight:900, padding:"11px 24px", borderRadius:14, color:"#4f46e5", background:"white", boxShadow:"0 4px 20px rgba(0,0,0,0.18)", display:"inline-flex", alignItems:"center", gap:8, whiteSpace:"nowrap" }}>
+              <a href="/register" className="btn" style={{ fontSize:13, fontWeight:900, padding:"11px 24px", borderRadius:14, color:"#1d3a8f", background:"white", boxShadow:"0 4px 20px rgba(0,0,0,0.18)", display:"inline-flex", alignItems:"center", gap:8, whiteSpace:"nowrap" }}>
                 Register Now
                 <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
@@ -916,7 +916,7 @@ function Bootcamp() {
                 <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
                   {[
                     { name:"Aditya Dubey",    role:"Sr. AI Engineer",          initials:"AD", clr:"var(--ind)", bg:"var(--ind-l)" },
-                    { name:"Shubham Kaushik", role:"Gen AI Consultant · KPMG", initials:"SK", clr:"var(--vio)", bg:"#f5f3ff"      },
+                    { name:"Shubham Kaushik", role:"Gen AI Consultant · KPMG", initials:"SK", clr:"var(--vio)", bg:"#eef1fe"      },
                   ].map((s,i) => (
                     <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
                       <div style={{ width:36, height:36, borderRadius:11, background:s.bg, color:s.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:900, flexShrink:0 }}>{s.initials}</div>
@@ -959,7 +959,7 @@ function Bootcamp() {
               </div>
 
               {/* Day 2 — Hackathon */}
-              <div style={{ padding:"16px 16px", borderRadius:16, background:"linear-gradient(145deg,#4f46e5,#6d28d9)", position:"relative", overflow:"hidden" }}>
+              <div style={{ padding:"16px 16px", borderRadius:16, background:"linear-gradient(145deg,#1d3a8f,#2548c5)", position:"relative", overflow:"hidden" }}>
                 <div style={{ position:"absolute", top:-16, right:-16, width:70, height:70, borderRadius:"50%", background:"rgba(255,255,255,0.07)", pointerEvents:"none" }} />
                 <div style={{ position:"relative" }}>
                   <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:12 }}>
@@ -1013,14 +1013,14 @@ function Bootcamp() {
 
 // ─── CTA ───────────────────────────────────────────────────────
 function CTA() {
-  const avatars = ["#818cf8","#34d399","#fb7185","#fbbf24","#60a5fa"]
+  const avatars = ["#6074f3","#34d399","#fb7185","#fbbf24","#60a5fa"]
   return (
     <section className="sr section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
       <div style={{ maxWidth:1120, margin:"0 auto" }}>
         <div className="cta-inner" style={{
           borderRadius:32, padding:"72px 48px", textAlign:"center", position:"relative", overflow:"hidden",
-          background:"linear-gradient(145deg,#4f46e5 0%,#6d28d9 100%)",
-          boxShadow:"0 32px 100px rgba(79,70,229,0.28), 0 8px 32px rgba(79,70,229,0.14)",
+          background:"linear-gradient(145deg,#1d3a8f 0%,#2548c5 100%)",
+          boxShadow:"0 32px 100px rgba(29,58,143,0.28), 0 8px 32px rgba(29,58,143,0.14)",
         }}>
           {/* Decorative orbs — same pattern as Pricing Pro card */}
           <div style={{ position:"absolute", top:-60, right:-60, width:260, height:260, borderRadius:"50%", background:"rgba(255,255,255,0.07)", pointerEvents:"none" }} />
@@ -1047,7 +1047,7 @@ function CTA() {
 
             {/* CTAs */}
             <div style={{ display:"flex", justifyContent:"center", gap:12, flexWrap:"wrap", marginBottom:48 }}>
-              <a href="/register" className="btn" style={{ fontSize:15, fontWeight:900, padding:"15px 32px", borderRadius:16, color:"#4f46e5", background:"white", boxShadow:"0 8px 32px rgba(0,0,0,0.18)", gap:8, display:"inline-flex", alignItems:"center" }}>
+              <a href="/register" className="btn" style={{ fontSize:15, fontWeight:900, padding:"15px 32px", borderRadius:16, color:"#1d3a8f", background:"white", boxShadow:"0 8px 32px rgba(0,0,0,0.18)", gap:8, display:"inline-flex", alignItems:"center" }}>
                 Start Free Today
                 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>

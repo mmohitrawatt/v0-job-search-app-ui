@@ -590,16 +590,16 @@ export function PreparationScreen() {
 
         {/* Rich gradient banner */}
         <div className="relative overflow-hidden px-4 lg:px-8 pt-12 lg:pt-6 pb-5"
-          style={{ background: "linear-gradient(135deg, #312e81 0%, #4c1d95 55%, #5b21b6 100%)" }}>
+          style={{ background: "linear-gradient(135deg, #0d1b45 0%, #142a6a 55%, #1d3a8f 100%)" }}>
 
           {/* Dot grid overlay */}
           <div className="absolute inset-0 opacity-[0.12]"
             style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)", backgroundSize: "18px 18px" }} />
           {/* Glow blobs */}
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl"
-            style={{ background: "radial-gradient(circle, #a78bfa, transparent)" }} />
+            style={{ background: "radial-gradient(circle, #8c9df6, transparent)" }} />
           <div className="absolute bottom-0 left-8 w-32 h-24 rounded-full opacity-15 blur-2xl"
-            style={{ background: "radial-gradient(circle, #818cf8, transparent)" }} />
+            style={{ background: "radial-gradient(circle, #6074f3, transparent)" }} />
 
           <div className="relative">
             {/* Top row */}
