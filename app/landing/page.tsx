@@ -258,13 +258,56 @@ const CSS = `
   /* ── Nav short text ──────────────────────── */
   .nav-cta-short { display: none; }
 
+  /* ── Nav desktop/mobile visibility ──────── */
+  .nav-links-desk { display:flex; align-items:center; gap:36px; }
+  .nav-ctas-desk  { display:flex; align-items:center; gap:10px; }
+  .nav-mob-right  { display:none; align-items:center; gap:8px; }
+  .nav-mob-menu   { display:none; flex-direction:column; border-top:1px solid var(--border); padding:8px 20px 16px; }
+  .nav-mob-menu.open { display:flex; }
+  .nav-mob-link   { font-size:15px; font-weight:700; color:var(--ink); text-decoration:none; padding:13px 0; border-bottom:1px solid var(--border); transition:color .15s; }
+  .nav-mob-link:last-child { border-bottom:none; }
+  .nav-mob-link:hover { color:var(--ind); }
+  .nav-ham        { width:38px; height:38px; border-radius:10px; background:transparent; border:1.5px solid var(--borderM); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+
+  /* ── Services bento grid ─────────────────── */
+  .lp-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .lp-scard{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:18px;padding:24px 22px;transition:all .35s cubic-bezier(.16,1,.3,1);overflow:hidden;display:flex;gap:14px;align-items:flex-start}
+  .lp-scard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(29,58,143,.1);border-color:rgba(42,78,207,.08)}
+  .lp-sicon{width:46px;height:46px;min-width:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .lp-scard h3{font-size:16px;font-weight:800;margin:0 0 4px;letter-spacing:-.2px;line-height:1.3;color:var(--ink)}
+  .lp-scard p{font-size:13px;color:var(--ink3);line-height:1.5;margin:0}
+  .lp-stag{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:5px}
+
+  /* ── Problem dark card ───────────────────── */
+  .lp-prob-card{border-radius:32px;background:linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#142a6a 100%);padding:64px 48px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(6,13,36,.3)}
+  .lp-prob-card::before{content:'';position:absolute;top:-80px;right:-40px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.25),transparent 70%);pointer-events:none;animation:float-phone 20s ease-in-out infinite}
+  .lp-prob-card::after{content:'';position:absolute;bottom:-60px;left:15%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.18),transparent 70%);pointer-events:none;animation:float-phone 24s ease-in-out 2s infinite}
+  .lp-pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;position:relative;z-index:1}
+  .lp-paincard{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;transition:all .35s cubic-bezier(.16,1,.3,1)}
+  .lp-paincard:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+  .lp-painico{font-size:28px;margin-bottom:12px}
+  .lp-paincard h4{font-size:15px;font-weight:800;color:#fff;margin:0 0 6px}
+  .lp-paincard p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;margin:0}
+
+  /* ── Journey timeline ────────────────────── */
+  .lp-journey{display:flex;flex-direction:column;margin-top:48px;position:relative}
+  .lp-journey::before{content:'';position:absolute;top:24px;bottom:24px;left:23px;width:2px;background:linear-gradient(180deg,#1d3a8f,rgba(29,58,143,.08));z-index:0}
+  .lp-jstep{display:flex;gap:20px;align-items:flex-start;padding:20px 0;position:relative;z-index:1}
+  .lp-jdot{width:48px;min-width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1d3a8f,#3b52f0);color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(29,58,143,.25),0 0 0 4px var(--white)}
+  .lp-jbody{flex:1;padding:4px 0}
+  .lp-jbody h3{font-size:17px;font-weight:800;margin:0 0 4px;letter-spacing:-.2px;color:var(--ink)}
+  .lp-jbody p{font-size:14px;color:var(--ink2);line-height:1.55;margin:0}
+  .lp-jtags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .lp-jtag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--ind-l);color:var(--ind)}
+
   /* ── Responsive ─────────────────────────── */
   @media (max-width:768px) {
     /* Navbar */
-    .nav-inner { padding: 0 18px !important; }
-    .nav-cta-main { font-size: 12px !important; padding: 8px 14px !important; border-radius: 10px !important; }
-    .nav-cta-full  { display: none; }
-    .nav-cta-short { display: inline; }
+    .nav-inner { padding: 0 16px !important; }
+    .nav-links-desk { display: none !important; }
+    .nav-ctas-desk  { display: none !important; }
+    .nav-mob-right  { display: flex !important; }
+    .nav-inner a img { height: 70px !important; }
 
     /* Hero */
     .hero-grid { grid-template-columns: 1fr !important; padding: 76px 20px 44px !important; gap: 0 !important; }
@@ -306,35 +349,58 @@ const CSS = `
 
     /* Sections */
     .section-pad { padding: 52px 20px !important; }
+
+    /* Services bento */
+    .lp-svc-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* Problem card */
+    .lp-prob-card { padding: 40px 24px !important; border-radius: 22px !important; }
+    .lp-pain-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+    /* Journey */
+    .lp-journey::before { left: 19px !important; }
+    .lp-jstep { gap: 14px !important; }
+    .lp-jdot { width: 40px !important; min-width: 40px !important; height: 40px !important; font-size: 16px !important; }
+    .lp-jbody h3 { font-size: 15px !important; }
+    .lp-jbody p { font-size: 13px !important; }
   }
   @media (max-width:480px) {
     .nav-inner { padding: 0 14px !important; }
-    .hero-grid { padding: 70px 16px 36px !important; }
+    .nav-inner a img { height: 55px !important; }
+    .hero-grid { padding: 64px 16px 32px !important; }
     .hero-h1  { font-size: clamp(32px,8.5vw,42px) !important; }
     .hero-ctas a { width: 100% !important; justify-content: center !important; }
     .footer-grid { grid-template-columns: 1fr !important; }
     .cta-inner { padding: 36px 16px !important; }
     .cta-pills { flex-direction: column !important; }
+    .lp-svc-grid { grid-template-columns: 1fr !important; }
+    .lp-pain-grid { grid-template-columns: 1fr !important; }
   }
 `
 
 // ─── Navbar ────────────────────────────────────────────────────
 function Navbar({ scrolled }: { scrolled: boolean }) {
+  const [open, setOpen] = useState(false)
+  const links = [["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"]]
   return (
     <nav style={{
       position:"fixed", top:0, left:0, right:0, zIndex:100,
-      background: scrolled ? "rgba(247,247,251,0.94)" : "rgba(247,247,251,0.55)",
+      background: scrolled || open ? "rgba(247,247,251,0.97)" : "rgba(247,247,251,0.55)",
       backdropFilter:"blur(24px)",
-      borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+      borderBottom: scrolled || open ? "1px solid var(--border)" : "1px solid transparent",
       boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none",
-      transition: "all .35s ease",
+      transition: "background .35s ease, border-color .35s ease, box-shadow .35s ease",
     }}>
-      <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:24 }}>
-        <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
+      <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+
+        {/* Logo */}
+        <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none", flexShrink:0 }}>
           <JobingenLogo height={110} />
         </a>
-        <div className="hidden md:flex" style={{ display:"flex", alignItems:"center", gap:36 }}>
-          {[["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"]].map(([l,href]) => (
+
+        {/* Desktop nav links */}
+        <div className="nav-links-desk">
+          {links.map(([l,href]) => (
             <a key={l} href={href}
               style={{ fontSize:13, fontWeight:700, color:"var(--ink2)", textDecoration:"none", transition:"color .15s" }}
               onMouseEnter={e => (e.currentTarget.style.color = "var(--ind)")}
@@ -343,13 +409,31 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
             </a>
           ))}
         </div>
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <a href="/app" className="btn btn-outline hidden sm:inline-flex" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
-          <a href="/register" className="btn btn-primary nav-cta-main" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>
-            <span className="nav-cta-full">Get Started</span>
-            <span className="nav-cta-short">Join Now</span>
-          </a>
+
+        {/* Desktop CTA buttons */}
+        <div className="nav-ctas-desk">
+          <a href="/app" className="btn btn-outline" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
+          <a href="/register" className="btn btn-primary" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>Get Started</a>
         </div>
+
+        {/* Mobile: Join + Hamburger */}
+        <div className="nav-mob-right">
+          <a href="/register" className="btn btn-primary" style={{ fontSize:12, fontWeight:800, padding:"8px 16px", borderRadius:10, color:"white" }}>Join Now</a>
+          <button className="nav-ham" onClick={() => setOpen(o => !o)} aria-label="Menu">
+            {open
+              ? <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="var(--ink)" strokeWidth="2.2" strokeLinecap="round"/></svg>
+              : <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M2 8h10M2 12h12" stroke="var(--ink)" strokeWidth="2.2" strokeLinecap="round"/></svg>
+            }
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown */}
+      <div className={`nav-mob-menu${open ? " open" : ""}`}>
+        {links.map(([l,href]) => (
+          <a key={l} href={href} className="nav-mob-link" onClick={() => setOpen(false)}>{l}</a>
+        ))}
+        <a href="/app" className="nav-mob-link" onClick={() => setOpen(false)} style={{ color:"var(--ink2)" }}>Open App</a>
       </div>
     </nav>
   )
@@ -391,7 +475,7 @@ function Hero() {
         </div>
       ))}
 
-      <div className="hero-grid" style={{ maxWidth:1240, margin:"0 auto", padding:"80px 32px", width:"100%", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:80, alignItems:"center" }}>
+      <div className="hero-grid" style={{ maxWidth:1240, margin:"0 auto", padding:"56px 32px 48px", width:"100%", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:80, alignItems:"center" }}>
 
         {/* ── LEFT ── */}
         <div className="hero-left" style={{ animation:"reveal-up .8s var(--ease-out) both" }}>
@@ -623,99 +707,44 @@ function Logos() {
 
 // ─── Problems ──────────────────────────────────────────────────
 function Problems() {
-  const problems = [
-    {
-      icon:"🌀", clr:"var(--rose)", bg:"var(--rose-l)",
-      problem:"Switching between 10 job portals every morning",
-      painSub:"Naukri, LinkedIn, Wellfound, Internshala, Instahyre... and still missing jobs.",
-      fix:"All portals in one feed — ranked by your AI fit score automatically.",
-      tag:"Job Companion AI",
-    },
-    {
-      icon:"🤖", clr:"var(--ind)", bg:"var(--ind-l)",
-      problem:"Your resume gets rejected before a human sees it",
-      painSub:"ATS bots filter out 75% of resumes. Yours might be one of them.",
-      fix:"LaTeX resume builder + ATS optimizer. Hit 90+ score, every time.",
-      tag:"LaTeX Resume + ATS Score",
-    },
-    {
-      icon:"💸", clr:"var(--grn)", bg:"var(--grn-l)",
-      problem:"You don't know what salary to ask for",
-      painSub:"Quoting too low costs you lakhs. Quoting too high loses you the offer.",
-      fix:"Live ₹ LPA salary benchmarks by role, city, and company. Walk in prepared.",
-      tag:"Salary Intelligence",
-    },
-    {
-      icon:"😰", clr:"var(--amb)", bg:"var(--amb-l)",
-      problem:"Blanking out in technical and HR interviews",
-      painSub:"You know the answers — but freeze when it matters most.",
-      fix:"Vibe AI mock interviews + 5-day structured prep. Real feedback, zero pressure.",
-      tag:"AI Interview Coach",
-    },
-    {
-      icon:"🕳️", clr:"#2a4ecf", bg:"#e8edfe",
-      problem:"Applications disappear into a black hole",
-      painSub:"Applied to 80 jobs. Heard from 3. No idea what stage anything is in.",
-      fix:"Visual pipeline tracker — Applied → Screening → Interview → Offer. Always know your status.",
-      tag:"Application Pipeline",
-    },
-    {
-      icon:"📋", clr:"#5a6ef4", bg:"#fdf4ff",
-      problem:"Same resume, 50 companies, zero callbacks",
-      painSub:"Generic resumes get ignored. Recruiters can spot a template in seconds.",
-      fix:"Paste any JD → AI tailors your resume with the right keywords in 10 seconds.",
-      tag:"AI Resume Tailor",
-    },
+  const pains = [
+    { icon:"🌀", title:"10 portals, zero clarity", desc:"Switching tabs every morning. Naukri, LinkedIn, Wellfound, Internshala — same listings, different formats. Hours wasted, opportunities missed." },
+    { icon:"🤖", title:"Resume rejected before humans see it", desc:"ATS bots filter out 75% of applications. Your generic resume is probably one of them. You'll never know." },
+    { icon:"💸", title:"No idea what salary to ask", desc:"Quoting too low costs you lakhs. Quoting too high loses the offer. Real ₹ LPA data is nowhere to be found." },
+    { icon:"😰", title:"Blanking in technical interviews", desc:"You know the answers — but freeze under pressure. No structured prep, no real feedback, no second chances." },
+    { icon:"🕳️", title:"Applications vanish into a black hole", desc:"Applied to 80 jobs. Heard from 3. No visibility into what stage anything is. Complete silence." },
+    { icon:"📋", title:"Same resume, 50 companies, zero calls", desc:"Generic templates get ignored. Recruiters spot a copy-paste resume in seconds and move on." },
   ]
   return (
-    <section id="problems" className="section-pad" style={{ background:"var(--white)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
+    <section id="problems" style={{ background:"var(--white)", padding:"80px 28px" }}>
+      <div style={{ maxWidth:1100, margin:"0 auto" }}>
+        <div className="lp-prob-card sr">
+          {/* Decorative orbs */}
+          <div style={{ position:"absolute", top:-80, right:-40, width:320, height:320, borderRadius:"50%", background:"radial-gradient(circle,rgba(59,82,240,.22),transparent 70%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", bottom:-60, left:"12%", width:240, height:240, borderRadius:"50%", background:"radial-gradient(circle,rgba(42,78,207,.16),transparent 70%)", pointerEvents:"none" }} />
+          {/* Dot grid */}
+          <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px)", backgroundSize:"24px 24px", borderRadius:"inherit", pointerEvents:"none" }} />
 
-        {/* Header */}
-        <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
-          <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--rose-l)", color:"var(--rose)", marginBottom:14 }}>Sound familiar?</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,46px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 14px", lineHeight:1.05 }}>
-            Job search is broken.<br /><span className="shimmer">We fix all of it.</span>
-          </h2>
-          <p className="sr d3" style={{ fontSize:16, color:"var(--ink2)", maxWidth:480, margin:"0 auto", lineHeight:1.7 }}>
-            6 real problems every job seeker in India faces — solved in one app.
-          </p>
-        </div>
+          <div style={{ position:"relative", zIndex:1, textAlign:"center", marginBottom:48 }}>
+            <div className="pill" style={{ background:"rgba(96,116,243,.18)", color:"#a5b4fc", marginBottom:16 }}>The Real Problem</div>
+            <h2 style={{ fontSize:"clamp(28px,3.8vw,48px)", fontWeight:900, letterSpacing:"-.035em", color:"#fff", margin:"0 0 18px", lineHeight:1.05 }}>
+              Job search in India<br />is completely broken.
+            </h2>
+            <p style={{ fontSize:16, color:"rgba(255,255,255,.55)", maxWidth:520, margin:"0 auto", lineHeight:1.75 }}>
+              You spend hours every week on the same painful loop. Jobingen fixes every part of it — in one app.
+            </p>
+          </div>
 
-        {/* Grid */}
-        <div className="problems-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16 }}>
-          {problems.map((p,i) => (
-            <div key={i} className={`card sr d${(i%3)+1}`} style={{ padding:0, overflow:"hidden" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform="translateY(-7px)"; (e.currentTarget as HTMLElement).style.boxShadow="var(--shadow-lg), 0 0 0 1px rgba(29,58,143,0.07)" }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform=""; (e.currentTarget as HTMLElement).style.boxShadow="" }}>
-
-              {/* Problem band */}
-              <div style={{ padding:"22px 22px 18px", background:"var(--cream)", borderBottom:"1px solid var(--border)" }}>
-                <div style={{ width:42, height:42, borderRadius:13, background:p.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, marginBottom:14 }}>{p.icon}</div>
-                <div style={{ fontSize:15, fontWeight:800, color:"var(--ink)", marginBottom:6, lineHeight:1.3 }}>{p.problem}</div>
-                <div style={{ fontSize:12, color:"var(--ink3)", lineHeight:1.6 }}>{p.painSub}</div>
+          <div className="lp-pain-grid">
+            {pains.map((p,i) => (
+              <div key={i} className={`lp-paincard sr d${(i%3)+1}`}>
+                <div className="lp-painico">{p.icon}</div>
+                <h4>{p.title}</h4>
+                <p>{p.desc}</p>
               </div>
-
-              {/* Solution band */}
-              <div style={{ padding:"16px 22px 20px", background:"white" }}>
-                <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                  <div style={{ width:18, height:18, borderRadius:"50%", background:p.bg, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
-                    <svg width="9" height="9" fill="none" viewBox="0 0 9 9"><path d="M1.5 4.5L3.5 6.5L7.5 2.5" stroke={p.clr} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <div style={{ fontSize:13, fontWeight:600, color:"var(--ink2)", lineHeight:1.6 }}>{p.fix}</div>
-                </div>
-                <div style={{ marginTop:12 }}>
-                  <span style={{ display:"inline-flex", alignItems:"center", gap:4, padding:"3px 10px", borderRadius:99, background:p.bg, fontSize:10, fontWeight:800, color:p.clr, textTransform:"uppercase", letterSpacing:".05em" }}>
-                    {p.tag}
-                  </span>
-                </div>
-              </div>
-
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   )
@@ -723,37 +752,35 @@ function Problems() {
 
 // ─── Features ──────────────────────────────────────────────────
 function Features() {
-  const feats = [
-    { icon:"✦", bg:"var(--ind-l)",  ic:"var(--ind)",  title:"AI Resume Tailor",     tag:"Most Used", tagBg:"var(--ind-l)",  tagC:"var(--ind)",  desc:"Paste any JD → instant keyword-matched bullets. ATS score jumps 40+ points. Zero guesswork." },
-    { icon:"◎", bg:"var(--rose-l)", ic:"var(--rose)", title:"Smart Job Matching",    desc:"See your fit % before applying. Every job ranked by skills, experience, culture, and salary alignment." },
-    { icon:"₹", bg:"var(--grn-l)",  ic:"var(--grn)",  title:"Salary Intelligence",  tag:"Live Data", tagBg:"var(--grn-l)",  tagC:"var(--grn)",  desc:"₹ LPA benchmarks by role, city, company. Know your market rate before any negotiation." },
-    { icon:"◈", bg:"var(--amb-l)",  ic:"var(--amb)",  title:"5-Day Interview Prep",  tag:"New",       tagBg:"var(--amb-l)",  tagC:"var(--amb)",  desc:"DSA, system design, HR rounds. Daily subtasks, streak tracking, Vibe AI mock coaching." },
-    { icon:"⬡", bg:"#edf2ff",      ic:"#4361ee",     title:"Application Pipeline",  desc:"Visual kanban from Applied → Offer. Know exactly where each application stands in real time." },
-    { icon:"◆", bg:"#fdf4ff",      ic:"#5a6ef4",     title:"Vibe AI Strategist",    desc:"Your AI career coach. Weekly action plans, application feedback, negotiation scripts." },
+  const services = [
+    { icon:"🔍", bg:"var(--ind-l)",  title:"Unified Job Feed",      tag:"Core",      tagBg:"var(--ind-l)",  tagC:"var(--ind)",  desc:"Every portal in one feed — Naukri, LinkedIn, Indeed, Wellfound ranked by your personal AI fit score." },
+    { icon:"📄", bg:"var(--grn-l)",  title:"AI Resume Tailor",      tag:"Most Used", tagBg:"var(--grn-l)",  tagC:"var(--grn)",  desc:"Paste any JD → instant keyword-matched resume. ATS score jumps 40+ points. Zero guesswork." },
+    { icon:"💰", bg:"#fffbeb",       title:"Salary Intelligence",   tag:"Live Data", tagBg:"#fffbeb",       tagC:"var(--amb)",  desc:"Real ₹ LPA benchmarks by role, city, and company. Know your exact market rate before any negotiation." },
+    { icon:"🎤", bg:"#fdf2f8",       title:"Vibe AI Coach",         tag:"AI",        tagBg:"#fdf2f8",       tagC:"#db2777",     desc:"Mock interviews with real-time feedback. 5-day structured prep. 93% of users crack their first interview." },
+    { icon:"📊", bg:"#edf2ff",       title:"Application Pipeline",  tag:"Tracker",   tagBg:"#edf2ff",       tagC:"#4361ee",     desc:"Visual kanban from Applied → Offer. Know exactly where each application stands in real time." },
+    { icon:"🔔", bg:"var(--rose-l)", title:"Smart Job Alerts",      tag:"Auto",      tagBg:"var(--rose-l)", tagC:"var(--rose)", desc:"Set your criteria once. Get notified the moment matching jobs appear — before they go viral." },
   ]
   return (
-    <section id="features" className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
+    <section id="features" style={{ background:"#f8f9ff", padding:"80px 28px", position:"relative" }}>
+      <div style={{ position:"absolute", top:0, left:0, right:0, height:1, background:"linear-gradient(90deg,transparent,rgba(42,78,207,.08),transparent)" }} />
+      <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
           <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--ind-l)", color:"var(--ind)", marginBottom:14 }}>Features</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:"0 0 14px" }}>
-            Everything You Need<br /><span className="shimmer">to Get Hired</span>
+          <div className="pill sr d1" style={{ background:"var(--ind-l)", color:"var(--ind)", marginBottom:14 }}>Everything You Need</div>
+          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,48px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 14px", lineHeight:1.05 }}>
+            Built to get you<br /><span className="shimmer">hired faster.</span>
           </h2>
-          <p className="sr d3" style={{ fontSize:16, color:"var(--ink2)", maxWidth:440, margin:"0 auto" }}>One platform for India&apos;s tech job market — from resume to offer letter.</p>
+          <p className="sr d3" style={{ fontSize:17, color:"var(--ink2)", maxWidth:520, margin:"0 auto", lineHeight:1.65 }}>One platform. Every tool India&apos;s job seekers need — from resume to offer letter.</p>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:16 }}>
-          {feats.map((f,i) => (
-            <div key={i} className={`card grad-border feat-card sr d${(i%3)+1}`} style={{ padding:"32px 32px 42px" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 24px 64px ${f.ic}28, 0 4px 16px ${f.ic}14, var(--shadow-lg)` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "" }}>
-              <div className="feat-icon" style={{ width:54, height:54, borderRadius:16, background:f.bg, color:f.ic, fontSize:24, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:20, boxShadow:`0 4px 16px ${f.ic}18` }}>{f.icon}</div>
-              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
-                <div style={{ fontSize:16, fontWeight:800, color:"var(--ink)" }}>{f.title}</div>
-                {f.tag && <div style={{ fontSize:9, fontWeight:900, padding:"3px 9px", borderRadius:99, background:f.tagBg, color:f.tagC, textTransform:"uppercase", letterSpacing:".05em" }}>{f.tag}</div>}
+        <div className="lp-svc-grid">
+          {services.map((s,i) => (
+            <div key={i} className={`lp-scard sr d${(i%3)+1}`}>
+              <div className="lp-sicon" style={{ background:s.bg }}>{s.icon}</div>
+              <div>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+                <span className="lp-stag" style={{ background:s.tagBg, color:s.tagC }}>{s.tag}</span>
               </div>
-              <p style={{ fontSize:13.5, lineHeight:1.72, color:"var(--ink2)", margin:0 }}>{f.desc}</p>
-              <div style={{ position:"absolute", bottom:-4, right:6, fontSize:96, fontWeight:900, lineHeight:1, color:"rgba(10,10,20,0.025)", userSelect:"none", pointerEvents:"none" }}>{i+1}</div>
             </div>
           ))}
         </div>
@@ -765,34 +792,33 @@ function Features() {
 // ─── How It Works ──────────────────────────────────────────────
 function HowItWorks() {
   const steps = [
-    { n:1, clr:"var(--ind)", bg:"var(--ind-l)", title:"Build Your Profile", desc:"Upload or build your resume in 5 minutes. Vibe AI scores it and highlights every gap before you apply.", chip:"Takes 5 minutes" },
-    { n:2, clr:"var(--vio)", bg:"#eef1fe",      title:"Discover & Match",   desc:"AI scans thousands of jobs daily and ranks by your fit %. See exactly which skills to highlight.", chip:"Real-time results" },
-    { n:3, clr:"var(--grn)", bg:"var(--grn-l)", title:"Prep, Apply & Win",  desc:"5-day interview roadmap + one-tap Smart Apply with a JD-tailored resume. Land the offer.", chip:"Avg. 12 days to offer" },
+    { n:"1", title:"Build your profile in 5 minutes", desc:"Upload your resume — Vibe AI scores it, finds skill gaps, and suggests fixes before you apply to a single job.", tags:["Resume Score","Gap Analysis"] },
+    { n:"2", title:"Discover jobs from every portal", desc:"One search. Naukri, LinkedIn, Indeed, Wellfound and 6+ portals — all ranked by your personal AI fit percentage.", tags:["Naukri","LinkedIn","6+ portals"] },
+    { n:"3", title:"Apply with a JD-tailored resume", desc:"For each role, AI rewrites your resume with matching keywords. ATS score hits 90+ automatically. Stand out every time.", tags:["ATS Optimized","Per-JD Resume"] },
+    { n:"4", title:"Prep with Vibe AI mock interviews", desc:"5-day structured roadmap + AI mock coach. Real-time feedback on DSA, system design, and HR rounds. No guesswork.", tags:["5-Day Prep","Vibe AI Coach"] },
+    { n:"5", title:"Accept your offer, negotiate confidently", desc:"Real ₹ LPA data for your exact role, city, and company. Walk into every salary conversation fully prepared.", tags:["Salary Intel","Offer Letter"] },
   ]
   return (
-    <section id="how-it-works" className="section-pad" style={{ background:"var(--white)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
-        <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
+    <section id="how-it-works" style={{ background:"var(--white)", padding:"80px 28px" }}>
+      <div style={{ maxWidth:900, margin:"0 auto" }}>
+        <div className="sr" style={{ textAlign:"center" }}>
           <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--grn-l)", color:"var(--grn)", marginBottom:14 }}>How It Works</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:0 }}>
-            Profile to Offer in<br /><span className="shimmer">3 Simple Steps</span>
+          <div className="pill sr d1" style={{ background:"var(--grn-l)", color:"var(--grn)", marginBottom:14 }}>Your Journey on Jobingen</div>
+          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:"0 0 14px" }}>
+            From sign-up to<br /><span className="shimmer">offer letter.</span>
           </h2>
+          <p className="sr d3" style={{ fontSize:16, color:"var(--ink2)", maxWidth:440, margin:"0 auto", lineHeight:1.7 }}>A clear path — no guesswork, no wasted effort, no missed opportunities.</p>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:20 }}>
+        <div className="lp-journey">
           {steps.map((s,i) => (
-            <div key={i} className={`card sr d${i+1}`} style={{ padding:"32px 28px" }}>
-              <div style={{ position:"relative", width:58, height:58, borderRadius:18, background:s.bg, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:20 }}>
-                <span style={{ fontSize:26, fontWeight:900, color:s.clr }}>{s.n}</span>
-                {/* Orbit dot */}
-                <div style={{ position:"absolute", inset:0 }}>
-                  <div style={{ position:"absolute", top:"50%", left:"50%", width:8, height:8, borderRadius:"50%", background:s.clr, opacity:.4, transform:"translate(-50%,-50%)", animation:`orbit ${3+i}s linear infinite` }} />
+            <div key={i} className={`lp-jstep sr d${(i%3)+1}`}>
+              <div className="lp-jdot">{s.n}</div>
+              <div className="lp-jbody">
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+                <div className="lp-jtags">
+                  {s.tags.map(t => <span key={t} className="lp-jtag">{t}</span>)}
                 </div>
-              </div>
-              <h3 style={{ fontSize:20, fontWeight:800, color:"var(--ink)", margin:"0 0 10px" }}>{s.title}</h3>
-              <p style={{ fontSize:14, lineHeight:1.68, color:"var(--ink2)", margin:"0 0 18px" }}>{s.desc}</p>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"5px 12px", borderRadius:99, background:s.bg, fontSize:11, fontWeight:800, color:s.clr }}>
-                <div style={{ width:5, height:5, borderRadius:"50%", background:s.clr }} />{s.chip}
               </div>
             </div>
           ))}
