@@ -276,14 +276,17 @@ export default function PreLaunchPage() {
           .pl-stitle{font-size:32px;letter-spacing:-1.5px}
           .pl-slbl{font-size:12px}
           .pl-ssub{font-size:15px;margin-bottom:40px}
-          .pl-bc{padding:0 16px 60px}
-          .pl-bc-head{padding:24px 20px;gap:14px;flex-direction:column;align-items:flex-start}
-          .pl-bc-h{font-size:18px}
-          .pl-bc-right{flex-wrap:wrap;width:100%;justify-content:space-between}
+          .pl-bc{padding:32px 16px 60px}
+          .pl-bc-head{padding:24px 20px;gap:16px;flex-direction:column;align-items:stretch}
+          .pl-bc-left{flex-direction:column;align-items:flex-start;gap:10px}
+          .pl-bc-h{font-size:18px;line-height:1.25}
+          .pl-bc-right{flex-direction:column;align-items:flex-start;width:100%;gap:10px}
+          .pl-bc-price{display:flex;align-items:baseline;gap:8px;text-align:left}
+          .pl-bc-psub{margin-top:0}
+          .pl-bc-amt{font-size:28px}
+          .pl-bc-reg{width:100%;justify-content:center;padding:13px 20px;font-size:14px}
           .pl-bc-body{grid-template-columns:1fr;padding:20px;gap:20px}
           .pl-bc-cols{grid-template-columns:1fr}
-          .pl-bc-amt{font-size:30px}
-          .pl-bc-reg{padding:12px 24px;font-size:13px}
           .pl-portals{padding:36px 0}
           .pl-portals-lbl{font-size:11px;margin-bottom:20px}
           .pl-portals-track{animation-duration:15s}
@@ -341,8 +344,9 @@ export default function PreLaunchPage() {
           .pl-cta{padding:56px 14px 64px}
           .pl-cta h2{font-size:26px;letter-spacing:-1px}
           .pl-cta-in p.pl-cta-desc{font-size:14px}
-          .pl-bc-head{padding:18px 14px}
-          .pl-bc-h{font-size:16px}
+          .pl-bc-head{padding:18px 16px;gap:12px}
+          .pl-bc-h{font-size:16px;line-height:1.3}
+          .pl-bc-amt{font-size:26px}
           .pl-bc-body{padding:16px 14px}
           .pl-bc-amt{font-size:26px}
           .pl-portals-track{animation-duration:12s}
