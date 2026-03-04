@@ -71,7 +71,7 @@ export default function PreLaunchPage() {
         .pl-hero-orb2{position:absolute;bottom:-100px;right:-6%;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.12) 0%,rgba(42,78,207,.04) 40%,transparent 70%);pointer-events:none;animation:pl-float-2 28s ease-in-out infinite;filter:blur(50px)}
         .pl-hero-orb3{position:absolute;top:35%;left:55%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 60%);pointer-events:none;animation:pl-float-3 18s ease-in-out infinite;filter:blur(40px)}
         .pl-hero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(42,78,207,.035) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 80% 60% at 50% 35%,black 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 35%,black 10%,transparent 70%);pointer-events:none}
-        .pl-hero-in{position:relative;max-width:800px;margin:0 auto;z-index:1}
+        .pl-hero-in{position:relative;max-width:800px;margin:0 auto;z-index:1;width:100%}
         .pl-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.65);backdrop-filter:blur(16px);border:1px solid rgba(42,78,207,.1);padding:8px 20px;border-radius:100px;font-size:13px;font-weight:600;color:#2a4ecf;margin-bottom:40px;box-shadow:0 4px 16px rgba(42,78,207,.06)}
         .pl-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;box-shadow:0 0 8px rgba(34,197,94,.4);animation:pl-p 2s infinite}
         .pl-hero h1{font-size:72px;font-weight:900;letter-spacing:-3.5px;line-height:1.0;margin-bottom:28px}
@@ -265,7 +265,7 @@ export default function PreLaunchPage() {
           .pl-nav-in{height:60px;padding:0 16px}
           .pl-nav-in a img{height:80px!important}
           .pl-nav-cta{padding:8px 18px;font-size:13px}
-          .pl-hero{padding:120px 20px 70px}
+          .pl-hero{padding:120px 20px 70px;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
           .pl-hero h1{font-size:38px;letter-spacing:-1.8px;line-height:1.08}
           .pl-hero-sub{font-size:16px;margin-bottom:32px;max-width:400px}
           .pl-form{flex-direction:column;max-width:100%}
@@ -329,7 +329,7 @@ export default function PreLaunchPage() {
         }
         @media(max-width:480px){
           .pl-nav-in a img{height:65px!important}
-          .pl-hero{padding:100px 14px 50px}
+          .pl-hero{padding:100px 14px 50px;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
           .pl-hero h1{font-size:30px;letter-spacing:-1.2px}
           .pl-hero-sub{font-size:15px;margin-bottom:28px}
           .pl-stitle{font-size:26px;letter-spacing:-1px}
