@@ -11,7 +11,7 @@ import { AiInterviewScreen } from "@/components/screens/ai-interview-screen"
 import { SalaryIntelScreen } from "@/components/screens/salary-intel-screen"
 import { JobAlertsScreen } from "@/components/screens/job-alerts-screen"
 import { cn } from "@/lib/utils"
-import { JobngenLogo } from "@/components/jobngen-logo"
+import { JobingenLogo } from "@/components/jobingen-logo"
 
 export default function App() {
   return (
@@ -61,7 +61,7 @@ function DesktopSidebar({
         {!collapsed && (
           <>
             <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-              <JobngenLogo height={18} />
+              <JobingenLogo height={18} />
               <p className="text-[10px] text-muted-foreground font-medium">AI Career Platform</p>
             </div>
             <button

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { JobngenLogo } from "@/components/jobngen-logo"
+import { JobingenLogo } from "@/components/jobingen-logo"
 
 // ─── CSS ────────────────────────────────────────────────────────
 const CSS = `
@@ -266,7 +266,7 @@ export default function RegisterPage() {
         {/* Navbar */}
         <nav style={{ background:"rgba(247,247,251,0.9)", backdropFilter:"blur(20px)", borderBottom:"1px solid var(--border)", padding:"0 28px", height:60, display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <a href="/landing" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-            <JobngenLogo height={110} />
+            <JobingenLogo height={110} />
           </a>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--rose-l)", border:"1px solid rgba(244,63,94,0.22)", fontSize:11, fontWeight:800, color:"var(--rose)", textTransform:"uppercase", letterSpacing:".06em" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--rose)", animation:"pulse-s 1.5s ease-in-out infinite" }} />

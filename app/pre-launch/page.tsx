@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { JobngenLogo } from "@/components/jobngen-logo"
+import { JobingenLogo } from "@/components/jobingen-logo"
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null)
@@ -359,7 +359,7 @@ export default function PreLaunchPage() {
         {/* ═══ NAV ═══ */}
         <nav className="pl-nav">
           <div className="pl-nav-in">
-            <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}><JobngenLogo height={110} /></a>
+            <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}><JobingenLogo height={110} /></a>
             <div className="pl-nav-links">
               <a href="#bootcamp" className="pl-nav-a">Bootcamp</a>
               <a href="#services" className="pl-nav-a">Services</a>
@@ -377,7 +377,7 @@ export default function PreLaunchPage() {
           <div className="pl-hero-in">
             <div className="pl-chip"><span className="pl-dot" />Launching Soon</div>
             <h1>Your entire job search.<br /><span className="pl-grad">One intelligent platform.</span></h1>
-            <p className="pl-hero-sub">Jobngen brings every job portal, AI-powered resume tools, salary data, and interview prep into one command center — built for India.</p>
+            <p className="pl-hero-sub">Jobingen brings every job portal, AI-powered resume tools, salary data, and interview prep into one command center — built for India.</p>
             {submitted ? (
               <p className="pl-ok">You&apos;re on the list! We&apos;ll notify you at launch.</p>
             ) : (
@@ -597,13 +597,13 @@ export default function PreLaunchPage() {
         <section className="pl-how" id="how">
           <div className="pl-how-inner">
           <Reveal>
-            <p className="pl-slbl">Your Journey on Jobngen</p>
+            <p className="pl-slbl">Your Journey on Jobingen</p>
             <h2 className="pl-stitle">From sign-up to offer letter.</h2>
           </Reveal>
           <div className="pl-journey">
             {[
               { num: "1", title: "Set your preferences", desc: "Tell us your target role, location, salary range, and experience. Takes 30 seconds.", tags: ["Role", "Location", "Salary"] },
-              { num: "2", title: "Discover jobs from every portal", desc: "Jobngen pulls matching jobs from Naukri, LinkedIn, Indeed, and 6+ portals into one feed.", tags: ["Naukri", "LinkedIn", "Indeed", "6+ more"] },
+              { num: "2", title: "Discover jobs from every portal", desc: "Jobingen pulls matching jobs from Naukri, LinkedIn, Indeed, and 6+ portals into one feed.", tags: ["Naukri", "LinkedIn", "Indeed", "6+ more"] },
               { num: "3", title: "Apply with AI-tailored resumes", desc: "For each job, AI rewrites your resume with the right keywords. Beat ATS filters automatically.", tags: ["ATS Optimized", "Per-JD Tailoring"] },
               { num: "4", title: "Talk to company insiders", desc: "Before your interview, connect with real employees at the company. Know the culture, questions, and expectations.", tags: ["Insider Connect", "Real People"] },
               { num: "5", title: "Prep, interview, get hired", desc: "Practice mock interviews with Vibe AI, track all your applications, and negotiate with real salary data.", tags: ["AI Coach", "Tracker", "Salary Data"] },
@@ -635,9 +635,9 @@ export default function PreLaunchPage() {
             <Reveal>
               <div className="pl-cta-badge"><span />Launching Soon</div>
               <h2>Something big is <span className="pl-grad2">coming.</span></h2>
-              <p className="pl-cta-desc">Be first in line when Jobngen launches. Sign up and we&apos;ll notify you on day one.</p>
+              <p className="pl-cta-desc">Be first in line when Jobingen launches. Sign up and we&apos;ll notify you on day one.</p>
               {submitted2 ? (
-                <p className="pl-ok">Welcome to Jobngen! We&apos;ll be in touch.</p>
+                <p className="pl-ok">Welcome to Jobingen! We&apos;ll be in touch.</p>
               ) : (
                 <form className="pl-form" onSubmit={(e) => handleSubmit(e, "cta")}>
                   <input className="pl-input" type="email" placeholder="Enter your email address" value={email2} onChange={(e) => setEmail2(e.target.value)} required />
@@ -653,7 +653,7 @@ export default function PreLaunchPage() {
         <footer className="pl-ft">
           <div className="pl-ft-in">
             <div className="pl-ft-brand">
-              <JobngenLogo height={100} style={{ marginBottom: 4 }} />
+              <JobingenLogo height={100} style={{ marginBottom: 4 }} />
               <p>AI-powered job search built for India. One platform, every portal, zero noise.</p>
             </div>
             <div className="pl-ft-col">
@@ -665,7 +665,7 @@ export default function PreLaunchPage() {
             <div className="pl-ft-col">
               <h4>Company</h4>
               <a href="/landing">About Us</a>
-              <a href="mailto:hello@jobngen.com">Contact</a>
+              <a href="mailto:hello@jobingen.com">Contact</a>
               <a href="/register">Early Access</a>
             </div>
             <div className="pl-ft-col">
@@ -676,7 +676,7 @@ export default function PreLaunchPage() {
             </div>
           </div>
           <div className="pl-ft-bot">
-            <span>&copy; 2026 Jobngen. All rights reserved.</span>
+            <span>&copy; 2026 Jobingen. All rights reserved.</span>
             <span>Built with purpose in India</span>
           </div>
         </footer>

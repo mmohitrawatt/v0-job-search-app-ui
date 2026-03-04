@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { JobngenLogo } from "@/components/jobngen-logo"
+import { JobingenLogo } from "@/components/jobingen-logo"
 
 // ─── CSS ────────────────────────────────────────────────────────
 const CSS = `
@@ -328,7 +328,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
     }}>
       <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between", gap:24 }}>
         <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-          <JobngenLogo height={110} />
+          <JobingenLogo height={110} />
         </a>
         <div className="hidden md:flex" style={{ display:"flex", alignItems:"center", gap:36 }}>
           {[["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"]].map(([l,href]) => (
@@ -804,7 +804,7 @@ function Testimonials() {
   const cards = [
     { quote:"Resume tailor got me 3 interview calls in one week. ATS went 61%→94% overnight. Salary intel helped me lock ₹44 LPA at Zepto.", name:"Rahul M.", role:"SDE II @ Zepto", initials:"RM", clr:"var(--vio)", bg:"#eef1fe" },
     { quote:"5-day prep streak + Vibe AI mock interviews changed how I prepared completely. Cracked Flipkart system design on first attempt. Life-changing.", name:"Priya S.", role:"PM @ Flipkart", initials:"PS", clr:"var(--amb)", bg:"var(--amb-l)", featured:true },
-    { quote:"Saw 94% match on Swiggy, knew exactly what to highlight. Offer in 12 days. Jobngen ran my whole job search for me. 100% worth it.", name:"Arjun K.", role:"Backend @ Swiggy", initials:"AK", clr:"var(--grn)", bg:"var(--grn-l)" },
+    { quote:"Saw 94% match on Swiggy, knew exactly what to highlight. Offer in 12 days. Jobingen ran my whole job search for me. 100% worth it.", name:"Arjun K.", role:"Backend @ Swiggy", initials:"AK", clr:"var(--grn)", bg:"var(--grn-l)" },
   ]
   return (
     <section className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
@@ -1099,7 +1099,7 @@ function Footer() {
         <div className="footer-grid" style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:48 }}>
           <div className="footer-brand">
             <div style={{ marginBottom:16 }}>
-              <JobngenLogo height={26} />
+              <JobingenLogo height={26} />
             </div>
             <p style={{ fontSize:13, color:"var(--ink3)", lineHeight:1.72, maxWidth:200, margin:"0 0 20px" }}>AI-powered job search for India&apos;s tech job market.</p>
             <div style={{ display:"flex", gap:8 }}>
@@ -1126,7 +1126,7 @@ function Footer() {
           ))}
         </div>
         <div className="footer-bottom" style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, paddingTop:24, borderTop:"1px solid var(--border)", flexWrap:"wrap" }}>
-          <span style={{ fontSize:12, color:"var(--ink3)" }}>© 2026 Jobngen. Built with ❤️ for India&apos;s job seekers.</span>
+          <span style={{ fontSize:12, color:"var(--ink3)" }}>© 2026 Jobingen. Built with ❤️ for India&apos;s job seekers.</span>
           <div style={{ display:"flex", alignItems:"center", gap:6, padding:"5px 12px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.15)" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 2s ease-in-out infinite" }} />
             <span style={{ fontSize:11, fontWeight:700, color:"var(--grn)" }}>All systems operational</span>
