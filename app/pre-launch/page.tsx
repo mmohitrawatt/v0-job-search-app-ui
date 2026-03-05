@@ -23,6 +23,53 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
   return <div ref={ref} className={`pl-reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>
 }
 
+function PromoPopup() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("pl_popup_closed")) return
+    const t = setTimeout(() => setVisible(true), 3000)
+    return () => clearTimeout(t)
+  }, [])
+
+  const close = () => {
+    setVisible(false)
+    localStorage.setItem("pl_popup_closed", "1")
+  }
+
+  if (!visible) return null
+
+  return (
+    <div className="pl-pop-overlay" onClick={close}>
+      <div className="pl-pop" onClick={e => e.stopPropagation()}>
+        {/* Close */}
+        <button className="pl-pop-x" onClick={close} aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3L13 13M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+        </button>
+
+        {/* Badge */}
+        <div className="pl-pop-badge">
+          <span className="pl-pop-badge-dot" />
+          Limited Seats
+        </div>
+
+        {/* Title */}
+        <h3 className="pl-pop-title">Bootcamp &amp; Hackathon</h3>
+        <p className="pl-pop-desc">Join our upcoming bootcamp and hackathon to build real AI products and win exciting rewards.</p>
+
+        {/* Buttons */}
+        <div className="pl-pop-btns">
+          <a href="#bootcamp" className="pl-pop-btn-primary" onClick={close}>Join Bootcamp</a>
+          <a href="#bootcamp" className="pl-pop-btn-outline" onClick={close}>Register Hackathon</a>
+        </div>
+
+        {/* Footer note */}
+        <p className="pl-pop-note">🎁 Winners get ₹50,000+ in prizes &amp; mentorship</p>
+      </div>
+    </div>
+  )
+}
+
 export default function PreLaunchPage() {
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
@@ -54,6 +101,29 @@ export default function PreLaunchPage() {
         @keyframes pl-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
         @keyframes pl-count{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         @keyframes pl-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+        /* ═══ POPUP ═══ */
+        @keyframes pl-pop-in{from{opacity:0;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+        @keyframes pl-pop-bg{from{opacity:0}to{opacity:1}}
+        .pl-pop-overlay{position:fixed;inset:0;z-index:999;background:rgba(10,10,10,.45);backdrop-filter:blur(6px);animation:pl-pop-bg .35s ease forwards;display:flex;align-items:center;justify-content:center}
+        .pl-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:24px;padding:32px 28px 26px;width:min(440px,calc(100vw - 32px));box-shadow:0 32px 80px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.04);animation:pl-pop-in .45s cubic-bezier(.16,1,.3,1) forwards;z-index:1000}
+        .pl-pop-x{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:8px;border:none;background:#f3f4f6;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+        .pl-pop-x:hover{background:#e5e7eb;color:#111}
+        .pl-pop-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(42,78,207,.07);color:#2a4ecf;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-bottom:16px}
+        .pl-pop-badge-dot{width:6px;height:6px;border-radius:50%;background:#2a4ecf;animation:pl-p 2s infinite}
+        .pl-pop-title{font-size:22px;font-weight:900;letter-spacing:-.6px;color:#0a0a0a;margin-bottom:10px;line-height:1.2}
+        .pl-pop-desc{font-size:14px;color:#555;line-height:1.65;margin-bottom:22px}
+        .pl-pop-btns{display:flex;gap:10px;margin-bottom:16px}
+        .pl-pop-btn-primary{flex:1;background:linear-gradient(135deg,#1d3a8f,#2a4ecf,#3b52f0);color:#fff;border:none;padding:13px 0;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 4px 16px rgba(42,78,207,.3);font-family:inherit}
+        .pl-pop-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(42,78,207,.45)}
+        .pl-pop-btn-outline{flex:1;background:#fff;color:#1d3a8f;border:1.5px solid rgba(42,78,207,.25);padding:13px 0;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;transition:all .25s;font-family:inherit}
+        .pl-pop-btn-outline:hover{background:rgba(42,78,207,.05);border-color:#2a4ecf}
+        .pl-pop-note{font-size:12px;color:#999;text-align:center}
+        @media(max-width:480px){
+          .pl-pop{padding:24px 20px 20px}
+          .pl-pop-title{font-size:19px}
+          .pl-pop-btns{flex-direction:column}
+        }
 
         /* ═══ NAV ═══ */
         .pl-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(0,0,0,.04)}
@@ -354,6 +424,8 @@ export default function PreLaunchPage() {
           .pl-ft-brand img{height:55px!important}
         }
       `}</style>
+
+      <PromoPopup />
 
       <div className="pl">
         {/* ═══ NAV ═══ */}
