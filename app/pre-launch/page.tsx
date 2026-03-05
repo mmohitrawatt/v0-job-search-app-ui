@@ -359,7 +359,7 @@ export default function PreLaunchPage() {
         {/* ═══ NAV ═══ */}
         <nav className="pl-nav">
           <div className="pl-nav-in">
-            <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}><JobingenLogo height={110} /></a>
+            <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}><JobingenLogo height={110} /></a>
             <div className="pl-nav-links">
               <a href="#bootcamp" className="pl-nav-a">Bootcamp</a>
               <a href="#services" className="pl-nav-a">Services</a>
