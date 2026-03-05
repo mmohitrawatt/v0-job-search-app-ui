@@ -9,6 +9,7 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/pre-launch', destination: '/', permanent: true },
+      { source: '/app', destination: '/dashboard', permanent: true },
     ]
   },
 }

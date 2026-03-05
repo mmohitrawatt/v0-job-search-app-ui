@@ -412,7 +412,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
 
         {/* Desktop CTA buttons */}
         <div className="nav-ctas-desk">
-          <a href="/app" className="btn btn-outline" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
+          <a href="/dashboard" className="btn btn-outline" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
           <a href="/register" className="btn btn-primary" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>Get Started</a>
         </div>
 
@@ -433,7 +433,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
         {links.map(([l,href]) => (
           <a key={l} href={href} className="nav-mob-link" onClick={() => setOpen(false)}>{l}</a>
         ))}
-        <a href="/app" className="nav-mob-link" onClick={() => setOpen(false)} style={{ color:"var(--ink2)" }}>Open App</a>
+        <a href="/dashboard" className="nav-mob-link" onClick={() => setOpen(false)} style={{ color:"var(--ink2)" }}>Open App</a>
       </div>
     </nav>
   )
