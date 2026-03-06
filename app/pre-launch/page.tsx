@@ -781,7 +781,7 @@ export default function PreLaunchPage() {
           <div className="pl-ft-in">
             <div className="pl-ft-brand">
               <JobingenLogo height={100} style={{ marginBottom: 4 }} />
-              <p>Stop applying everywhere and hearing nothing. Jobingen brings every job portal, AI resume tools, and interview prep into one place — built for India&apos;s job seekers.</p>
+              <p>The search ends here!</p>
             </div>
             <div className="pl-ft-col">
               <h4>Product</h4>
@@ -799,7 +799,6 @@ export default function PreLaunchPage() {
           </div>
           <div className="pl-ft-bot">
             <span>&copy; 2026 Jobingen. All rights reserved.</span>
-            <span>Built with purpose in India</span>
           </div>
         </footer>
       </div>
