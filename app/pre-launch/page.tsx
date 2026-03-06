@@ -71,16 +71,47 @@ function PromoPopup() {
 }
 
 export default function PreLaunchPage() {
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [formError, setFormError] = useState("")
+
+  const [name2, setName2] = useState("")
   const [email2, setEmail2] = useState("")
   const [submitted2, setSubmitted2] = useState(false)
+  const [loading2, setLoading2] = useState(false)
+  const [formError2, setFormError2] = useState("")
 
-  const handleSubmit = (e: React.FormEvent, which: "hero" | "cta") => {
+  const handleSubmit = async (e: React.FormEvent, which: "hero" | "cta") => {
     e.preventDefault()
-    if (which === "hero") { if (!email.trim()) return; setSubmitted(true); setEmail("") }
-    else { if (!email2.trim()) return; setSubmitted2(true); setEmail2("") }
-    setTimeout(() => { if (which === "hero") setSubmitted(false); else setSubmitted2(false) }, 4000)
+    const n = which === "hero" ? name : name2
+    const em = which === "hero" ? email : email2
+    if (!n.trim() || !em.trim()) return
+    if (which === "hero") { setLoading(true); setFormError("") }
+    else { setLoading2(true); setFormError2("") }
+    try {
+      const res = await fetch("/api/early-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: n.trim(), email: em.trim() }),
+      })
+      const data = await res.json()
+      if (!res.ok && res.status !== 409) {
+        if (which === "hero") setFormError(data.error || "Something went wrong.")
+        else setFormError2(data.error || "Something went wrong.")
+      } else {
+        // 201 success or 409 duplicate — both treated as success for user
+        if (which === "hero") { setSubmitted(true); setName(""); setEmail("") }
+        else { setSubmitted2(true); setName2(""); setEmail2("") }
+      }
+    } catch {
+      if (which === "hero") setFormError("Network error. Please try again.")
+      else setFormError2("Network error. Please try again.")
+    } finally {
+      if (which === "hero") setLoading(false)
+      else setLoading2(false)
+    }
   }
 
   return (
@@ -134,6 +165,9 @@ export default function PreLaunchPage() {
         .pl-nav-cta{background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 12px rgba(42,78,207,.25)}
         .pl-nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(42,78,207,.4)}
         .pl-nav-cta:active{transform:translateY(0) scale(.97)}
+        .pl-nav-wa{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:#f0fdf4;border:1.5px solid rgba(16,185,129,.25);color:#16a34a;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap}
+        .pl-nav-wa:hover{background:#dcfce7;border-color:#16a34a;transform:translateY(-1px)}
+        @media(max-width:768px){.pl-nav-wa span{display:none}}
 
         /* ═══ HERO ═══ */
         .pl-hero{position:relative;padding:100px 32px 60px;min-height:100vh;min-height:100svh;text-align:center;overflow:hidden;background:linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%)}
@@ -316,7 +350,7 @@ export default function PreLaunchPage() {
 
         /* ═══ FOOTER ═══ */
         .pl-ft{padding:56px 32px 40px;border-top:1px solid rgba(0,0,0,.04);background:#fafbff}
-        .pl-ft-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:48px}
+        .pl-ft-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2.5fr 1fr 1fr;gap:48px}
         .pl-ft-brand h3{font-size:20px;font-weight:900;margin-bottom:10px}
         .pl-ft-brand p{font-size:14px;color:#888;line-height:1.6;max-width:280px}
         .pl-ft-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999;margin-bottom:16px}
@@ -437,7 +471,13 @@ export default function PreLaunchPage() {
               <a href="#services" className="pl-nav-a">Services</a>
               <a href="#how" className="pl-nav-a">How it Works</a>
             </div>
-            <button className="pl-nav-cta" onClick={() => document.getElementById("hero-email")?.focus()}>Join Waitlist</button>
+            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+              <a href="https://chat.whatsapp.com/Bm260I6cjiX6ks9yLhxYec" target="_blank" rel="noopener noreferrer" className="pl-nav-wa">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.528 5.845L.057 23.03l5.327-1.394A11.937 11.937 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.99-1.364l-.358-.213-3.714.973.99-3.625-.233-.37A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+                <span>Join Group</span>
+              </a>
+              <button className="pl-nav-cta" onClick={() => document.getElementById("hero-email")?.focus()}>Join Waitlist</button>
+            </div>
           </div>
         </nav>
 
@@ -451,11 +491,17 @@ export default function PreLaunchPage() {
             <h1>Your entire job search.<br /><span className="pl-grad">One intelligent platform.</span></h1>
             <p className="pl-hero-sub">Jobingen brings every job portal, AI-powered resume tools, salary data, and interview prep into one command center — built for India.</p>
             {submitted ? (
-              <p className="pl-ok">You&apos;re on the list! We&apos;ll notify you at launch.</p>
+              <p className="pl-ok">You&apos;re on the early access list.</p>
             ) : (
-              <form className="pl-form" onSubmit={(e) => handleSubmit(e, "hero")}>
-                <input id="hero-email" className="pl-input" type="email" placeholder="Enter your email address" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <button className="pl-btn" type="submit">Get Early Access</button>
+              <form className="pl-form" style={{ flexDirection: "column", maxWidth: 480 }} onSubmit={(e) => handleSubmit(e, "hero")}>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <input className="pl-input" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required style={{ flex: 1, minWidth: 0 }} />
+                  <input id="hero-email" className="pl-input" type="email" placeholder="Your email address" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ flex: 1.4, minWidth: 0 }} />
+                </div>
+                {formError && <p style={{ color: "#f43f5e", fontSize: 13, fontWeight: 600, margin: "4px 0 0" }}>{formError}</p>}
+                <button className="pl-btn" type="submit" disabled={loading} style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "wait" : "pointer" }}>
+                  {loading ? "Joining..." : "Get Early Access"}
+                </button>
               </form>
             )}
             <p className="pl-note">Join 1,200+ others. No spam, ever.</p>
@@ -485,7 +531,10 @@ export default function PreLaunchPage() {
                   </div>
                   <div className="pl-bc-right">
                     <div className="pl-bc-price">
-                      <div className="pl-bc-amt">&#8377;29</div>
+                      <div style={{ display:"flex", alignItems:"flex-end", gap:8 }}>
+                        <div className="pl-bc-amt">&#8377;29</div>
+                        <span style={{ fontSize:16, color:"rgba(255,255,255,0.4)", textDecoration:"line-through", marginBottom:4, fontWeight:700 }}>&#8377;499</span>
+                      </div>
                       <div className="pl-bc-psub">Online &middot; Limited seats</div>
                     </div>
                     <a href="/register" className="pl-bc-reg">
@@ -709,11 +758,17 @@ export default function PreLaunchPage() {
               <h2>Something big is <span className="pl-grad2">coming.</span></h2>
               <p className="pl-cta-desc">Be first in line when Jobingen launches. Sign up and we&apos;ll notify you on day one.</p>
               {submitted2 ? (
-                <p className="pl-ok">Welcome to Jobingen! We&apos;ll be in touch.</p>
+                <p className="pl-ok">You&apos;re on the early access list.</p>
               ) : (
-                <form className="pl-form" onSubmit={(e) => handleSubmit(e, "cta")}>
-                  <input className="pl-input" type="email" placeholder="Enter your email address" value={email2} onChange={(e) => setEmail2(e.target.value)} required />
-                  <button className="pl-btn" type="submit">Join the Waitlist</button>
+                <form className="pl-form" style={{ flexDirection: "column" }} onSubmit={(e) => handleSubmit(e, "cta")}>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    <input className="pl-input" placeholder="Your name" value={name2} onChange={(e) => setName2(e.target.value)} required style={{ flex: 1, minWidth: 0 }} />
+                    <input className="pl-input" type="email" placeholder="Your email address" value={email2} onChange={(e) => setEmail2(e.target.value)} required style={{ flex: 1.4, minWidth: 0 }} />
+                  </div>
+                  {formError2 && <p style={{ color: "#a3e635", fontSize: 13, fontWeight: 600, margin: "4px 0 0" }}>{formError2}</p>}
+                  <button className="pl-btn" type="submit" disabled={loading2} style={{ opacity: loading2 ? 0.7 : 1, cursor: loading2 ? "wait" : "pointer" }}>
+                    {loading2 ? "Joining..." : "Join the Waitlist"}
+                  </button>
                 </form>
               )}
               <p className="pl-note">Be the first to know. No spam, ever.</p>
@@ -726,25 +781,20 @@ export default function PreLaunchPage() {
           <div className="pl-ft-in">
             <div className="pl-ft-brand">
               <JobingenLogo height={100} style={{ marginBottom: 4 }} />
-              <p>AI-powered job search built for India. One platform, every portal, zero noise.</p>
+              <p>Stop applying everywhere and hearing nothing. Jobingen brings every job portal, AI resume tools, and interview prep into one place — built for India&apos;s job seekers.</p>
             </div>
             <div className="pl-ft-col">
               <h4>Product</h4>
-              <a href="#services">Services</a>
+              <a href="#services">Features</a>
               <a href="#bootcamp">Bootcamp</a>
               <a href="#how">How it Works</a>
+              <a href="/register">Register Now</a>
             </div>
             <div className="pl-ft-col">
-              <h4>Company</h4>
-              <a href="/landing">About Us</a>
-              <a href="mailto:hello@jobingen.com">Contact</a>
-              <a href="/register">Early Access</a>
-            </div>
-            <div className="pl-ft-col">
-              <h4>Connect</h4>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter / X</a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <h4>Community</h4>
+              <a href="https://chat.whatsapp.com/Bm260I6cjiX6ks9yLhxYec" target="_blank" rel="noopener noreferrer">WhatsApp Group</a>
+              <a href="https://www.instagram.com/jobingen.ai" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://www.linkedin.com/company/jobingen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
           </div>
           <div className="pl-ft-bot">
