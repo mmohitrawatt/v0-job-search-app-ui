@@ -166,15 +166,13 @@ export default function PreLaunchPage() {
         .pl-nav-links{display:flex;gap:32px}
         .pl-nav-a{font-size:14px;font-weight:500;color:#666;text-decoration:none;transition:color .25s}
         .pl-nav-a:hover{color:#1d3a8f}
-        .pl-nav-cta{background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 12px rgba(42,78,207,.25)}
+        .pl-nav-cta{display:inline-flex;align-items:center;background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 12px rgba(42,78,207,.25)}
         .pl-nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(42,78,207,.4)}
         .pl-nav-cta:active{transform:translateY(0) scale(.97)}
         .pl-nav-wa{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:#f0fdf4;border:1.5px solid rgba(16,185,129,.25);color:#16a34a;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap}
         .pl-nav-wa:hover{background:#dcfce7;border-color:#16a34a;transform:translateY(-1px)}
-        @media(max-width:768px){.pl-nav-wa span{display:none}}
         .pl-nav-reg{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap;box-shadow:0 2px 10px rgba(42,78,207,.25)}
         .pl-nav-reg:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(42,78,207,.4)}
-        @media(max-width:768px){.pl-nav-reg span{display:none}}
 
         /* ═══ HERO ═══ */
         .pl-hero{position:relative;padding:100px 32px 60px;min-height:100vh;min-height:100svh;text-align:center;overflow:hidden;background:linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%)}
@@ -402,9 +400,12 @@ export default function PreLaunchPage() {
           .pl-ca-tag{padding:10px 14px}
           .pl-ca-tag-txt{font-size:12px}
           .pl-nav-links{display:none}
+          .pl-nav-wa{display:none}
+          .pl-nav-cta{display:none}
           .pl-nav-in{height:60px;padding:0 16px}
-          .pl-nav-in a img{height:80px!important}
-          .pl-nav-cta{padding:8px 18px;font-size:13px}
+          .pl-nav-in a img{height:42px!important}
+          .pl-nav-reg{padding:9px 16px;font-size:13px;gap:6px}
+          .pl-nav-reg span{display:inline}
           .pl-hero{padding:120px 20px 70px;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
           .pl-hero h1{font-size:38px;letter-spacing:-1.8px;line-height:1.08}
           .pl-hero-sub{font-size:16px;margin-bottom:32px;max-width:400px}
