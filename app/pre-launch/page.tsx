@@ -168,6 +168,9 @@ export default function PreLaunchPage() {
         .pl-nav-wa{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:#f0fdf4;border:1.5px solid rgba(16,185,129,.25);color:#16a34a;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap}
         .pl-nav-wa:hover{background:#dcfce7;border-color:#16a34a;transform:translateY(-1px)}
         @media(max-width:768px){.pl-nav-wa span{display:none}}
+        .pl-nav-reg{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap;box-shadow:0 2px 10px rgba(42,78,207,.25)}
+        .pl-nav-reg:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(42,78,207,.4)}
+        @media(max-width:768px){.pl-nav-reg span{display:none}}
 
         /* ═══ HERO ═══ */
         .pl-hero{position:relative;padding:100px 32px 60px;min-height:100vh;min-height:100svh;text-align:center;overflow:hidden;background:linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%)}
@@ -475,6 +478,10 @@ export default function PreLaunchPage() {
               <a href="https://chat.whatsapp.com/Bm260I6cjiX6ks9yLhxYec" target="_blank" rel="noopener noreferrer" className="pl-nav-wa">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.528 5.845L.057 23.03l5.327-1.394A11.937 11.937 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.99-1.364l-.358-.213-3.714.973.99-3.625-.233-.37A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
                 <span>Join Group</span>
+              </a>
+              <a href="/register" className="pl-nav-reg">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                <span>Register Now</span>
               </a>
               <button className="pl-nav-cta" onClick={() => document.getElementById("hero-email")?.focus()}>Join Waitlist</button>
             </div>
