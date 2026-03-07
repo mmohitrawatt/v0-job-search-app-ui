@@ -62,6 +62,10 @@ function PromoPopup() {
           <a href="#bootcamp" className="pl-pop-btn-primary" onClick={close}>Join Bootcamp</a>
           <a href="#bootcamp" className="pl-pop-btn-outline" onClick={close}>Register Hackathon</a>
         </div>
+        <a href="/campus-ambassador" className="pl-pop-btn-amb" onClick={close}>
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          Become Campus Ambassador
+        </a>
 
         {/* Footer note */}
         <p className="pl-pop-note">🎁 Winners get ₹50,000+ in prizes &amp; mentorship</p>
@@ -361,6 +365,28 @@ export default function PreLaunchPage() {
         .pl-ft-col a:hover{color:#2a4ecf;transform:translateX(2px)}
         .pl-ft-bot{max-width:1200px;margin:32px auto 0;padding-top:24px;border-top:1px solid rgba(0,0,0,.04);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#aaa}
 
+        /* ═══ CAMPUS AMBASSADOR CARD ═══ */
+        .pl-ca-wrap{padding:0 32px 64px;background:#f8f9ff}
+        .pl-ca-card{border-radius:28px;overflow:hidden;background:linear-gradient(135deg,#060d24 0%,#0d1b45 45%,#1d3a8f 100%);padding:56px 60px;position:relative;box-shadow:0 24px 80px rgba(6,13,36,.28);display:flex;align-items:center;justify-content:space-between;gap:40px}
+        .pl-ca-card::before{content:'';position:absolute;top:-80px;right:-40px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.28),transparent 70%);pointer-events:none}
+        .pl-ca-card::after{content:'';position:absolute;bottom:-60px;left:18%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.18),transparent 70%);pointer-events:none}
+        .pl-ca-left{flex:1;position:relative;z-index:1}
+        .pl-ca-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:6px 16px;border-radius:100px;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.07em;margin-bottom:20px}
+        .pl-ca-badge-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.5);animation:pl-p 2s infinite}
+        .pl-ca-card h3{font-size:30px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.18;margin-bottom:14px}
+        .pl-ca-card p{font-size:16px;color:rgba(255,255,255,.58);line-height:1.72;max-width:480px;margin-bottom:32px}
+        .pl-ca-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1d3a8f;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:800;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,.2);transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;z-index:1}
+        .pl-ca-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 32px rgba(0,0,0,.28)}
+        .pl-ca-btn:active{transform:scale(.97)}
+        .pl-ca-right{flex-shrink:0;position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+        .pl-ca-tag{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 18px;backdrop-filter:blur(8px);white-space:nowrap}
+        .pl-ca-tag-ico{font-size:16px}
+        .pl-ca-tag-txt{font-size:13px;font-weight:600;color:rgba(255,255,255,.78)}
+
+        /* ═══ POPUP AMBASSADOR BUTTON ═══ */
+        .pl-pop-btn-amb{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:12px 0;border-radius:12px;background:transparent;color:#1d3a8f;border:1.5px solid rgba(42,78,207,.22);font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;margin-bottom:12px;font-family:inherit;cursor:pointer}
+        .pl-pop-btn-amb:hover{background:rgba(42,78,207,.06);border-color:#2a4ecf;transform:translateY(-1px)}
+
         /* ═══ RESPONSIVE ═══ */
         @media(max-width:1024px){
           .pl-svc-grid{grid-template-columns:repeat(2,1fr);gap:14px}
@@ -368,6 +394,13 @@ export default function PreLaunchPage() {
           .pl-ft-in{grid-template-columns:1fr 1fr;gap:32px}
         }
         @media(max-width:768px){
+          .pl-ca-wrap{padding:0 16px 48px}
+          .pl-ca-card{flex-direction:column;align-items:flex-start;padding:36px 24px;gap:20px}
+          .pl-ca-card h3{font-size:22px;letter-spacing:-.7px}
+          .pl-ca-card p{font-size:14px}
+          .pl-ca-right{align-items:flex-start;width:100%;flex-direction:row;flex-wrap:wrap;gap:8px}
+          .pl-ca-tag{padding:10px 14px}
+          .pl-ca-tag-txt{font-size:12px}
           .pl-nav-links{display:none}
           .pl-nav-in{height:60px;padding:0 16px}
           .pl-nav-in a img{height:80px!important}
@@ -483,7 +516,7 @@ export default function PreLaunchPage() {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                 <span>Register Now</span>
               </a>
-              <button className="pl-nav-cta" onClick={() => document.getElementById("hero-email")?.focus()}>Join Waitlist</button>
+              <a href="/campus-ambassador" className="pl-nav-cta">Become Ambassador</a>
             </div>
           </div>
         </nav>
@@ -692,6 +725,46 @@ export default function PreLaunchPage() {
           </div>
           </div>
         </section>
+
+        {/* ═══ CAMPUS AMBASSADOR CARD ═══ */}
+        <div className="pl-ca-wrap">
+          <Reveal>
+            <div className="pl-ca-card">
+              <div className="pl-ca-left">
+                <div className="pl-ca-badge">
+                  <span className="pl-ca-badge-dot" />
+                  Now Recruiting
+                </div>
+                <h3>Become a Jobingen Campus Ambassador</h3>
+                <p>Represent Jobingen in your college and help students discover better job opportunities, AI tools, and career resources.</p>
+                <a href="/campus-ambassador" className="pl-ca-btn">
+                  Apply Now
+                  <svg width="14" height="14" fill="none" viewBox="0 0 18 18">
+                    <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+              <div className="pl-ca-right">
+                <div className="pl-ca-tag">
+                  <span className="pl-ca-tag-ico">🏆</span>
+                  <span className="pl-ca-tag-txt">Official Certificate</span>
+                </div>
+                <div className="pl-ca-tag">
+                  <span className="pl-ca-tag-ico">💼</span>
+                  <span className="pl-ca-tag-txt">Internship Opportunity</span>
+                </div>
+                <div className="pl-ca-tag">
+                  <span className="pl-ca-tag-ico">🤖</span>
+                  <span className="pl-ca-tag-txt">Exclusive AI Workshops</span>
+                </div>
+                <div className="pl-ca-tag">
+                  <span className="pl-ca-tag-ico">🌐</span>
+                  <span className="pl-ca-tag-txt">Network with Founders</span>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
 
         {/* ═══ PROBLEM ═══ */}
         <section className="pl-prob">

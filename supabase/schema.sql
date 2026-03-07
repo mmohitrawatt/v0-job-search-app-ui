@@ -53,6 +53,29 @@ CREATE POLICY "Allow public insert" ON hackathon_registrations
 -- Admins can read all rows (service role bypasses RLS automatically)
 
 
+-- ─── Table: campus_ambassador_applications ──────────────────────────────────
+CREATE TABLE IF NOT EXISTS campus_ambassador_applications (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name            TEXT NOT NULL,
+  college         TEXT NOT NULL,
+  course_year     TEXT NOT NULL,
+  email           TEXT NOT NULL,
+  phone           TEXT NOT NULL,
+  linkedin        TEXT,
+  instagram       TEXT,
+  why_ambassador  TEXT NOT NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- RLS: allow inserts from anon (public form submissions)
+ALTER TABLE campus_ambassador_applications ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public insert" ON campus_ambassador_applications
+  FOR INSERT TO anon WITH CHECK (true);
+
+-- Admins can read all rows (service role bypasses RLS automatically)
+
+
 -- ─── Storage bucket: hackathon-screenshots ───────────────────────────────────
 -- Run this separately in Supabase Dashboard → Storage → New bucket
 -- OR execute via SQL:
