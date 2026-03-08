@@ -1,181 +1,228 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { useEffect, useState, useMemo } from "react"
 
 type EarlyAccessUser = {
-  id: string
-  name: string
-  email: string
-  phone?: string
-  created_at: string
+  id: string; name: string; email: string; phone?: string; created_at: string
+}
+type HackathonReg = {
+  id: string; name: string; email: string; phone?: string; college?: string
+  team_name?: string; upi_transaction_id?: string; payment_screenshot_url?: string; created_at: string
+}
+type CampusAmbassador = {
+  id: string; name: string; email: string; phone: string; college: string
+  course_year: string; linkedin?: string; instagram?: string; why_ambassador: string; created_at: string
 }
 
-type HackathonRegistration = {
-  id: string
-  name: string
-  email: string
-  phone?: string
-  college?: string
-  team_name?: string
-  upi_transaction_id?: string
-  payment_screenshot_url?: string
-  created_at: string
+function fmt(iso: string) {
+  return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
 }
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  })
+function exportCSV(data: Record<string, unknown>[], filename: string) {
+  if (!data.length) return
+  const keys = Object.keys(data[0]).filter(k => k !== "id")
+  const rows = data.map(r => keys.map(k => `"${String(r[k] ?? "").replace(/"/g, '""')}"`).join(","))
+  const csv = [keys.join(","), ...rows].join("\n")
+  const a = document.createElement("a")
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }))
+  a.download = filename; a.click()
+}
+
+function filterRows<T extends { name: string; email: string }>(rows: T[], q: string): T[] {
+  if (!q.trim()) return rows
+  const s = q.toLowerCase()
+  return rows.filter(r => r.name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s))
 }
 
 export default function AdminPage() {
   const [earlyAccess, setEarlyAccess] = useState<EarlyAccessUser[]>([])
-  const [hackathon, setHackathon] = useState<HackathonRegistration[]>([])
+  const [hackathon, setHackathon] = useState<HackathonReg[]>([])
+  const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState("")
+  const [search, setSearch] = useState("")
+  const [authChecked, setAuthChecked] = useState(false)
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const [{ data: ea, error: eaErr }, { data: hr, error: hrErr }] = await Promise.all([
-          supabase.from("early_access").select("*").order("created_at", { ascending: false }),
-          supabase.from("hackathon_registrations").select("*").order("created_at", { ascending: false }),
-        ])
-        if (eaErr) throw eaErr
-        if (hrErr) throw hrErr
-        setEarlyAccess(ea || [])
-        setHackathon(hr || [])
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : "Failed to load data")
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
+    const pwd = typeof window !== "undefined" ? sessionStorage.getItem("adm_auth") : null
+    if (!pwd) { window.location.href = "/admin-login"; return }
+    setAuthChecked(true)
+    fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
+      .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setHackathon(d.hackathon || []); setAmbassadors(d.campusAmbassadors || []) })
+      .catch(() => setError("Failed to load data. Refresh to retry."))
+      .finally(() => setLoading(false))
   }, [])
+
+  const eaFiltered = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
+  const hrFiltered = useMemo(() => filterRows(hackathon, search), [hackathon, search])
+  const caFiltered = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
+
+  const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
+
+  if (!authChecked) return null
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-        .adm-wrap{min-height:100vh;background:#f1f5f9}
-        .adm-header{background:#0f172a;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-        .adm-header-logo{display:flex;align-items:center;gap:12px}
-        .adm-header-logo-dot{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.2);animation:pulse 2s infinite}
-        @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.1)}}
-        .adm-header-title{color:#f8fafc;font-size:18px;font-weight:700;letter-spacing:-.3px}
-        .adm-header-sub{color:#64748b;font-size:13px;font-weight:500}
-        .adm-body{padding:32px;max-width:1400px;margin:0 auto}
+        body{background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+        .adm{min-height:100vh;background:#f1f5f9}
+        /* Header */
+        .adm-hdr{background:#0f172a;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 rgba(255,255,255,.05)}
+        .adm-hdr-l{display:flex;align-items:center;gap:12px}
+        .adm-hdr-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.2);animation:adm-pulse 2s infinite}
+        @keyframes adm-pulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.08)}}
+        .adm-hdr-title{color:#f8fafc;font-size:17px;font-weight:800;letter-spacing:-.3px}
+        .adm-hdr-sub{color:#475569;font-size:12px;font-weight:500;margin-top:1px}
+        .adm-hdr-r{display:flex;align-items:center;gap:12px}
+        .adm-search{background:#1e293b;border:1.5px solid #334155;border-radius:10px;padding:8px 14px 8px 36px;font-size:13px;color:#f8fafc;outline:none;width:240px;font-family:inherit;transition:all .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%2364748b' stroke-width='2'/%3E%3Cpath d='m21 21-4.35-4.35' stroke='%2364748b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+        .adm-search:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+        .adm-search::placeholder{color:#475569}
+        .adm-logout{background:#1e293b;border:1.5px solid #334155;color:#94a3b8;font-size:13px;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .2s}
+        .adm-logout:hover{background:#334155;color:#f8fafc}
+        @media(max-width:640px){.adm-hdr{padding:0 16px;height:56px}.adm-search{width:140px}.adm-hdr-sub{display:none}}
+        /* Body */
+        .adm-body{padding:28px 32px;max-width:1440px;margin:0 auto}
         @media(max-width:768px){.adm-body{padding:16px}}
-        .adm-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
-        .adm-stat-card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid #e2e8f0}
-        .adm-stat-label{font-size:12px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-        .adm-stat-val{font-size:36px;font-weight:800;color:#0f172a;line-height:1}
+        /* Stats */
+        .adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+        @media(max-width:1024px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:480px){.adm-stats{grid-template-columns:1fr 1fr}}
+        .adm-stat{background:#fff;border-radius:14px;padding:20px 22px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+        .adm-stat-lbl{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+        .adm-stat-val{font-size:34px;font-weight:900;line-height:1;color:#0f172a}
         .adm-stat-val.green{color:#16a34a}
         .adm-stat-val.blue{color:#2563eb}
-        .adm-section{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid #e2e8f0;margin-bottom:28px;overflow:hidden}
-        .adm-section-head{padding:20px 28px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px}
-        .adm-section-title{font-size:16px;font-weight:700;color:#0f172a}
-        .adm-section-badge{background:#f1f5f9;color:#475569;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px}
-        .adm-table-wrap{overflow-x:auto}
-        table{width:100%;border-collapse:collapse}
+        .adm-stat-val.purple{color:#7c3aed}
+        .adm-stat-val.orange{color:#ea580c}
+        .adm-stat-sub{font-size:11px;color:#94a3b8;margin-top:6px;font-weight:500}
+        /* Error */
+        .adm-err{background:#fff1f2;border:1px solid #fecdd3;border-radius:12px;padding:16px 20px;color:#be123c;font-size:14px;font-weight:600;margin-bottom:20px}
+        /* Loading */
+        .adm-load{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:16px}
+        .adm-spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#3b82f6;border-radius:50%;animation:adm-spin .65s linear infinite}
+        @keyframes adm-spin{to{transform:rotate(360deg)}}
+        .adm-load-txt{color:#64748b;font-size:14px;font-weight:500}
+        /* Section */
+        .adm-sec{background:#fff;border-radius:16px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-bottom:24px;overflow:hidden}
+        .adm-sec-head{padding:18px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+        .adm-sec-hl{display:flex;align-items:center;gap:10px}
+        .adm-sec-title{font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px}
+        .adm-sec-badge{background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+        .adm-csv{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#475569;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+        .adm-csv:hover{background:#e2e8f0;color:#0f172a}
+        /* Table */
+        .adm-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+        table{width:100%;border-collapse:collapse;min-width:600px}
         thead tr{background:#f8fafc}
-        th{padding:12px 20px;text-align:left;font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;white-space:nowrap;border-bottom:1px solid #f1f5f9}
-        td{padding:14px 20px;font-size:14px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
+        th{padding:10px 18px;text-align:left;font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;border-bottom:1px solid #f1f5f9}
+        td{padding:13px 18px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
         tr:last-child td{border-bottom:none}
-        tbody tr:hover{background:#f8fafc}
-        .adm-empty{padding:48px 28px;text-align:center;color:#94a3b8;font-size:14px;font-weight:500}
-        .adm-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px}
-        .adm-spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin .7s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .adm-loading-text{color:#64748b;font-size:15px;font-weight:500}
-        .adm-error{background:#fff1f2;border:1px solid #fecdd3;border-radius:12px;padding:20px 24px;color:#be123c;font-size:14px;font-weight:500;margin-bottom:24px}
-        .cell-email{color:#2563eb;font-size:13px}
-        .cell-phone{color:#475569;font-family:monospace;font-size:13px}
-        .cell-date{color:#64748b;font-size:12px;white-space:nowrap}
-        .cell-txn{font-family:monospace;font-size:12px;color:#475569;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        .cell-screenshot a{color:#2563eb;font-size:12px;text-decoration:none;font-weight:600}
-        .cell-screenshot a:hover{text-decoration:underline}
-        .adm-badge-row{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;color:#16a34a;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid #bbf7d0}
+        tbody tr:hover{background:#fafbfc}
+        .adm-empty{padding:48px 24px;text-align:center;color:#94a3b8;font-size:14px;font-weight:500}
+        .adm-empty-ico{font-size:28px;margin-bottom:10px}
+        /* Cell types */
+        .c-num{color:#94a3b8;font-size:12px;font-weight:600}
+        .c-name{font-weight:700;color:#0f172a}
+        .c-email{color:#2563eb;font-size:12px}
+        .c-phone{color:#475569;font-family:monospace;font-size:12px}
+        .c-date{color:#94a3b8;font-size:11px;white-space:nowrap}
+        .c-txn{font-family:monospace;font-size:11px;color:#475569;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+        .c-tag{display:inline-flex;align-items:center;background:#f0fdf4;color:#16a34a;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;white-space:nowrap}
+        .c-link{color:#2563eb;font-size:12px;font-weight:600;text-decoration:none}
+        .c-link:hover{text-decoration:underline}
+        .c-why{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#64748b;cursor:help}
       ` }} />
 
-      <div className="adm-wrap">
+      <div className="adm">
         {/* Header */}
-        <header className="adm-header">
-          <div className="adm-header-logo">
-            <div className="adm-header-logo-dot" />
+        <header className="adm-hdr">
+          <div className="adm-hdr-l">
+            <div className="adm-hdr-dot" />
             <div>
-              <div className="adm-header-title">Jobingen Admin</div>
+              <div className="adm-hdr-title">Jobingen Admin</div>
+              <div className="adm-hdr-sub">Internal Dashboard</div>
             </div>
           </div>
-          <div className="adm-header-sub">Internal Dashboard</div>
+          <div className="adm-hdr-r">
+            <input
+              className="adm-search"
+              placeholder="Search name or email..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            <button className="adm-logout" onClick={logout}>Logout</button>
+          </div>
         </header>
 
         <div className="adm-body">
           {loading ? (
-            <div className="adm-loading">
+            <div className="adm-load">
               <div className="adm-spinner" />
-              <div className="adm-loading-text">Loading data...</div>
+              <div className="adm-load-txt">Loading data...</div>
             </div>
           ) : (
             <>
-              {error && <div className="adm-error">Error: {error}</div>}
+              {error && <div className="adm-err">{error}</div>}
 
               {/* Stats */}
               <div className="adm-stats">
-                <div className="adm-stat-card">
-                  <div className="adm-stat-label">Early Access Users</div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Early Access</div>
                   <div className="adm-stat-val green">{earlyAccess.length}</div>
+                  <div className="adm-stat-sub">Waitlist signups</div>
                 </div>
-                <div className="adm-stat-card">
-                  <div className="adm-stat-label">Bootcamp Registrations</div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Hackathon</div>
                   <div className="adm-stat-val blue">{hackathon.length}</div>
+                  <div className="adm-stat-sub">Registrations</div>
                 </div>
-                <div className="adm-stat-card">
-                  <div className="adm-stat-label">Total Signups</div>
-                  <div className="adm-stat-val">{earlyAccess.length + hackathon.length}</div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Ambassadors</div>
+                  <div className="adm-stat-val purple">{ambassadors.length}</div>
+                  <div className="adm-stat-sub">Applications</div>
+                </div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Total Signups</div>
+                  <div className="adm-stat-val orange">{earlyAccess.length + hackathon.length + ambassadors.length}</div>
+                  <div className="adm-stat-sub">All time</div>
                 </div>
               </div>
 
-              {/* Early Access */}
-              <div className="adm-section">
-                <div className="adm-section-head">
-                  <div className="adm-section-title">Early Access Users</div>
-                  <div className="adm-section-badge">{earlyAccess.length} users</div>
+              {/* ── Early Access ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Early Access Users</div>
+                    <div className="adm-sec-badge">{eaFiltered.length} users</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(eaFiltered as unknown as Record<string, unknown>[], "early-access.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
                 </div>
-                <div className="adm-table-wrap">
-                  {earlyAccess.length === 0 ? (
-                    <div className="adm-empty">No registrations yet</div>
+                <div className="adm-tbl-wrap">
+                  {eaFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No registrations yet"}
+                    </div>
                   ) : (
                     <table>
                       <thead>
                         <tr>
-                          <th>#</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>Date</th>
+                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Date</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {earlyAccess.map((u, i) => (
+                        {eaFiltered.map((u, i) => (
                           <tr key={u.id}>
-                            <td style={{ color: "#94a3b8", fontSize: 13 }}>{i + 1}</td>
-                            <td style={{ fontWeight: 600 }}>{u.name}</td>
-                            <td className="cell-email">{u.email}</td>
-                            <td className="cell-phone">{u.phone || "—"}</td>
-                            <td className="cell-date">{formatDate(u.created_at)}</td>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{u.name}</td>
+                            <td className="c-email">{u.email}</td>
+                            <td className="c-phone">{u.phone || "—"}</td>
+                            <td className="c-date">{fmt(u.created_at)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -184,50 +231,101 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Hackathon */}
-              <div className="adm-section">
-                <div className="adm-section-head">
-                  <div className="adm-section-title">AI Bootcamp & Hackathon Registrations</div>
-                  <div className="adm-section-badge">{hackathon.length} registrations</div>
+              {/* ── Hackathon ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">AI Bootcamp & Hackathon Registrations</div>
+                    <div className="adm-sec-badge">{hrFiltered.length} registrations</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(hrFiltered as unknown as Record<string, unknown>[], "hackathon.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
                 </div>
-                <div className="adm-table-wrap">
-                  {hackathon.length === 0 ? (
-                    <div className="adm-empty">No registrations yet</div>
+                <div className="adm-tbl-wrap">
+                  {hrFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No registrations yet"}
+                    </div>
                   ) : (
                     <table>
                       <thead>
                         <tr>
-                          <th>#</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>College</th>
-                          <th>Team Name</th>
-                          <th>Transaction ID</th>
-                          <th>Screenshot</th>
-                          <th>Registration Date</th>
+                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                          <th>College</th><th>Team</th><th>Transaction ID</th>
+                          <th>Screenshot</th><th>Date</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {hackathon.map((r, i) => (
+                        {hrFiltered.map((r, i) => (
                           <tr key={r.id}>
-                            <td style={{ color: "#94a3b8", fontSize: 13 }}>{i + 1}</td>
-                            <td style={{ fontWeight: 600 }}>{r.name}</td>
-                            <td className="cell-email">{r.email}</td>
-                            <td className="cell-phone">{r.phone || "—"}</td>
-                            <td>{r.college || "—"}</td>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{r.name}</td>
+                            <td className="c-email">{r.email}</td>
+                            <td className="c-phone">{r.phone || "—"}</td>
+                            <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                            <td>{r.team_name ? <span className="c-tag">{r.team_name}</span> : "—"}</td>
+                            <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
                             <td>
-                              {r.team_name ? (
-                                <span className="adm-badge-row">{r.team_name}</span>
-                              ) : "—"}
+                              {r.payment_screenshot_url
+                                ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a>
+                                : "—"}
                             </td>
-                            <td className="cell-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</td>
-                            <td className="cell-screenshot">
-                              {r.payment_screenshot_url ? (
-                                <a href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a>
-                              ) : "—"}
+                            <td className="c-date">{fmt(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Campus Ambassadors ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Campus Ambassador Applications</div>
+                    <div className="adm-sec-badge">{caFiltered.length} applications</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(caFiltered as unknown as Record<string, unknown>[], "campus-ambassadors.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {caFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No applications yet"}
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                          <th>College</th><th>Course / Year</th>
+                          <th>LinkedIn</th><th>Instagram</th><th>Why Ambassador</th><th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {caFiltered.map((a, i) => (
+                          <tr key={a.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{a.name}</td>
+                            <td className="c-email">{a.email}</td>
+                            <td className="c-phone">{a.phone}</td>
+                            <td style={{ fontSize: 13 }}>{a.college}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.course_year}</td>
+                            <td>
+                              {a.linkedin
+                                ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
+                                : "—"}
                             </td>
-                            <td className="cell-date">{formatDate(r.created_at)}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.instagram || "—"}</td>
+                            <td><span className="c-why" title={a.why_ambassador}>{a.why_ambassador}</span></td>
+                            <td className="c-date">{fmt(a.created_at)}</td>
                           </tr>
                         ))}
                       </tbody>
