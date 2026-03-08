@@ -446,27 +446,67 @@ export default function CampusAmbassadorPage() {
           .ca-perks-grid { grid-template-columns: repeat(2,1fr); }
         }
         @media(max-width:768px) {
+          /* Nav */
           .ca-nav-in { height: 60px; padding: 0 16px; }
-          .ca-hero { padding: 104px 20px 64px; }
-          .ca-hero h1 { font-size: 36px; letter-spacing: -1.8px; }
-          .ca-hero-sub { font-size: 16px; margin-bottom: 32px; }
-          .ca-hero-cta { padding: 14px 34px; font-size: 15px; }
-          .ca-section, .ca-section-alt { padding: 60px 16px; }
-          .ca-who-section { padding: 60px 16px; }
-          .ca-form-section { padding: 60px 16px 80px; }
-          .ca-title { font-size: 30px; letter-spacing: -1.3px; }
-          .ca-sub { font-size: 15px; margin-bottom: 36px; }
-          .ca-perks-grid { grid-template-columns: 1fr; }
-          .ca-form { padding: 28px 20px; }
-          .ca-form-row { grid-template-columns: 1fr; gap: 12px; }
+          .ca-nav-back-txt { display: none; }
+          .ca-nav-back { gap: 0; padding: 6px 8px 6px 4px; }
+          .ca-nav-cta { padding: 9px 16px; font-size: 13px; }
+          /* Hero — fit in one screen */
+          .ca-hero { padding: 72px 18px 24px; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+          .ca-hero-in { width: 100%; }
+          .ca-hero-badge { font-size: 11px; padding: 6px 14px; margin-bottom: 18px; }
+          .ca-hero h1 { font-size: 32px; letter-spacing: -1.4px; margin-bottom: 14px; }
+          .ca-hero-sub { font-size: 14px; margin-bottom: 22px; max-width: 100%; line-height: 1.6; }
+          .ca-hero-cta-wrap { margin-bottom: 0; }
+          .ca-hero-cta { padding: 13px 28px; font-size: 15px; }
+          .ca-hero-note { font-size: 12px; margin-top: 12px; }
+          /* Sections */
+          .ca-section, .ca-section-alt { padding: 56px 16px; }
+          .ca-who-section { padding: 56px 16px; }
+          .ca-form-section { padding: 56px 16px 72px; }
+          .ca-label { font-size: 12px; }
+          .ca-title { font-size: 28px; letter-spacing: -1.2px; }
+          .ca-sub { font-size: 14px; margin-bottom: 32px; }
+          /* Grids */
+          .ca-do-grid { grid-template-columns: repeat(2,1fr); gap: 12px; }
+          .ca-do-card { padding: 20px 16px; border-radius: 14px; }
+          .ca-do-icon { width: 40px; height: 40px; font-size: 18px; margin-bottom: 12px; }
+          .ca-perks-grid { grid-template-columns: 1fr; gap: 12px; }
+          .ca-perk-card { padding: 24px 20px; border-radius: 16px; }
+          /* Who */
+          .ca-who-inner { text-align: left; }
+          .ca-who-item { padding: 14px 16px; }
+          /* Form */
+          .ca-form { padding: 24px 18px; border-radius: 16px; }
+          .ca-form-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+          .ca-form-input, .ca-form-textarea { font-size: 16px; } /* prevent iOS zoom */
+          /* Footer */
+          .ca-footer { padding: 28px 16px; }
+          .ca-footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
         @media(max-width:480px) {
-          .ca-hero h1 { font-size: 28px; letter-spacing: -1.2px; }
-          .ca-hero-sub { font-size: 15px; }
-          .ca-do-grid { grid-template-columns: 1fr; }
-          .ca-title { font-size: 26px; letter-spacing: -1px; }
-          .ca-sub { font-size: 14px; }
-          .ca-form { padding: 22px 16px; }
+          /* Nav */
+          .ca-nav-in { height: 56px; }
+          /* Hero — still one screen on small phones */
+          .ca-hero { padding: 68px 16px 20px; }
+          .ca-hero-badge { font-size: 11px; padding: 5px 12px; margin-bottom: 14px; }
+          .ca-hero h1 { font-size: 26px; letter-spacing: -1.1px; margin-bottom: 12px; }
+          .ca-hero-sub { font-size: 13px; margin-bottom: 20px; }
+          .ca-hero-cta { padding: 12px 22px; font-size: 14px; gap: 7px; }
+          .ca-hero-note { font-size: 11px; margin-top: 10px; }
+          /* Sections */
+          .ca-section, .ca-section-alt { padding: 48px 14px; }
+          .ca-who-section { padding: 48px 14px; }
+          .ca-form-section { padding: 48px 14px 64px; }
+          .ca-title { font-size: 24px; letter-spacing: -0.8px; }
+          .ca-sub { font-size: 13px; margin-bottom: 28px; }
+          /* Grids */
+          .ca-do-grid { grid-template-columns: 1fr; gap: 10px; }
+          .ca-perk-card { padding: 20px 16px; }
+          .ca-perk-icon { width: 44px; height: 44px; font-size: 20px; margin-bottom: 14px; }
+          /* Form */
+          .ca-form { padding: 20px 14px; }
+          .ca-form-submit { font-size: 14px; padding: 14px 0; }
         }
       `}</style>
 
@@ -474,14 +514,14 @@ export default function CampusAmbassadorPage() {
         {/* NAV */}
         <nav className="ca-nav">
           <div className="ca-nav-in">
-            <a href="/pre-launch" className="ca-nav-back">
+            <a href="/" className="ca-nav-back">
               <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
                 <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              Back to Jobingen
+              <span className="ca-nav-back-txt">Back to Jobingen</span>
             </a>
             <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-              <JobingenLogo height={96} />
+              <JobingenLogo height={44} />
             </a>
             <a href="#apply" className="ca-nav-cta">Apply Now</a>
           </div>
