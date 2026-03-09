@@ -321,6 +321,7 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({})
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [screenshotName, setScreenshotName] = useState("")
+  const [screenshotError, setScreenshotError] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState("")
@@ -337,6 +338,7 @@ export default function RegisterPage() {
     if (!file) return
     setScreenshot(file)
     setScreenshotName(file.name)
+    setScreenshotError("")
   }
 
   function validate() {
@@ -355,7 +357,8 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const errs = validate()
-    if (Object.keys(errs).length) { setErrors(errs); return }
+    if (!screenshot) setScreenshotError("Please upload your payment screenshot")
+    if (Object.keys(errs).length || !screenshot) { setErrors(errs); return }
     setLoading(true)
     setServerError("")
     try {
@@ -500,10 +503,10 @@ export default function RegisterPage() {
                 {/* Screenshot upload */}
                 <div>
                   <label style={{ fontSize:12, fontWeight:700, color:"var(--ink2)", letterSpacing:".01em", display:"block", marginBottom:6 }}>
-                    Payment Screenshot <span style={{ color:"var(--ink3)", fontWeight:500 }}>(optional)</span>
+                    Payment Screenshot <span style={{ color:"var(--rose)" }}>*</span>
                   </label>
                   <input ref={fileRef} type="file" accept="image/*" style={{ display:"none" }} onChange={handleFile} />
-                  <div className={`upload-zone${screenshotName?" has-file":""}`} onClick={() => fileRef.current?.click()}>
+                  <div className={`upload-zone${screenshotName?" has-file":""}${screenshotError?" err":""}`} onClick={() => fileRef.current?.click()} style={screenshotError ? { borderColor:"var(--rose)", borderStyle:"dashed" } : {}}>
                     {screenshotName ? (
                       <div style={{ display:"flex", alignItems:"center", gap:8, justifyContent:"center" }}>
                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="var(--grn)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="10" stroke="var(--grn)" strokeWidth="2"/></svg>
@@ -511,12 +514,13 @@ export default function RegisterPage() {
                       </div>
                     ) : (
                       <div>
-                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" style={{ margin:"0 auto 6px", display:"block" }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round"/><polyline points="17 8 12 3 7 8" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><line x1="12" y1="3" x2="12" y2="15" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        <div style={{ fontSize:13, fontWeight:600, color:"var(--ink3)" }}>Click to upload payment screenshot</div>
-                        <div style={{ fontSize:11, color:"var(--ink3)", marginTop:3 }}>PNG, JPG — optional but helps with faster verification</div>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" style={{ margin:"0 auto 6px", display:"block" }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke={screenshotError?"var(--rose)":"var(--ink3)"} strokeWidth="1.8" strokeLinecap="round"/><polyline points="17 8 12 3 7 8" stroke={screenshotError?"var(--rose)":"var(--ink3)"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><line x1="12" y1="3" x2="12" y2="15" stroke={screenshotError?"var(--rose)":"var(--ink3)"} strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        <div style={{ fontSize:13, fontWeight:600, color:screenshotError?"var(--rose)":"var(--ink3)" }}>Click to upload payment screenshot</div>
+                        <div style={{ fontSize:11, color:"var(--ink3)", marginTop:3 }}>PNG, JPG — required for payment verification</div>
                       </div>
                     )}
                   </div>
+                  {screenshotError && <div style={{ fontSize:11, color:"var(--rose)", fontWeight:600, marginTop:4 }}>{screenshotError}</div>}
                 </div>
 
                 {/* Agree */}
