@@ -62,7 +62,7 @@ const CSS = `
   }
   .nav-inner {
     max-width: 1000px; margin: 0 auto; padding: 0 24px;
-    height: 60px; display: flex; align-items: center; justify-content: space-between;
+    height: 72px; display: flex; align-items: center; justify-content: space-between;
   }
 
   /* Hero */
@@ -181,7 +181,7 @@ export default async function JobsPage() {
         <div className="nav-inner">
           <Link href="/pre-launch" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 44, width: "auto" }} />
+            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 64, width: "auto" }} />
           </Link>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
