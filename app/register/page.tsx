@@ -149,7 +149,142 @@ const CSS = `
   }
   .hint-right  { display: inline; }
   .hint-mobile { display: none; }
+
+  /* ═══ MEET YOUR MENTORS ═══ */
+  .mentors-section { margin-bottom: 52px; }
+  .mentors-title-row { margin-bottom: 36px; text-align: center; }
+  .mentors-label { font-size: 12px; font-weight: 700; color: var(--ind); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .mentors-heading { font-size: clamp(26px,3.2vw,38px); font-weight: 900; letter-spacing: -.03em; color: var(--ink); margin: 0 0 10px; line-height: 1.1; }
+  .mentors-sub { font-size: 15px; color: var(--ink2); line-height: 1.7; max-width: 520px; margin: 0 auto; }
+  .mentors-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  @media (max-width: 1024px) { .mentors-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px)  { .mentors-grid { grid-template-columns: 1fr; } }
+  .mentor-card {
+    background: white; border-radius: 20px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm); padding: 22px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: transform .28s var(--ease-out), box-shadow .28s ease;
+  }
+  .mentor-card:hover { transform: translateY(-5px); box-shadow: 0 18px 52px rgba(10,10,20,0.13); }
+  .mentor-photo {
+    width: 68px; height: 68px; border-radius: 16px; object-fit: cover;
+    border: 2.5px solid var(--ind-l); flex-shrink: 0;
+  }
+  .mentor-photo-fallback {
+    width: 68px; height: 68px; border-radius: 16px;
+    background: linear-gradient(135deg,#1d3a8f,#3b52f0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: white; flex-shrink: 0;
+  }
+  .mentor-name { font-size: 16px; font-weight: 800; color: var(--ink); line-height: 1.2; }
+  .mentor-role { font-size: 12px; font-weight: 600; color: var(--ind); line-height: 1.4; margin-top: 2px; }
+  .mentor-co   { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--ind-l); color: var(--ind); letter-spacing: .03em; margin-top: 4px; }
+  .mentor-divider { height: 1px; background: var(--border); }
+  .mentor-desc { font-size: 12.5px; color: var(--ink2); line-height: 1.72; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .mentor-linkedin {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 700; color: var(--ind); text-decoration: none;
+    padding: 8px 14px; border-radius: 10px; background: var(--ind-l);
+    border: 1.5px solid rgba(29,58,143,0.15);
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+    align-self: flex-start; margin-top: auto;
+  }
+  .mentor-linkedin:hover { background: var(--ind); color: white; transform: translateY(-1px); }
 `
+
+// ─── Mentor Data ─────────────────────────────────────────────────
+const MENTORS = [
+  {
+    name: "Sonic Payeng",
+    role: "AI Engineer",
+    company: "Dell Technologies",
+    initials: "SP",
+    photo: "/mentors/sonic-payeng.jpg",
+    desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He completed his M.Tech in AI & Data Science from NIT Allahabad (MNNIT) and works at Dell Technologies on the Dell Automation Platform — building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
+    linkedin: "https://www.linkedin.com/in/sonic-payeng-7ab8a8212/",
+  },
+  {
+    name: "Jitesh Vijaykumar",
+    role: "AI Engineer",
+    company: "KPMG",
+    initials: "JV",
+    photo: "/mentors/jitesh-vijaykumar.jpg",
+    desc: "Jitesh has 5+ years of experience building scalable AI solutions for enterprise systems. With an M.Tech in AI & Data Science, he focuses on practical machine learning applications at KPMG — designing AI-powered solutions that improve decision-making, automation, and operational efficiency.",
+    linkedin: "https://www.linkedin.com/in/jitesh-vijaykumar-b2786814b/",
+  },
+  {
+    name: "Shubham Kaushik",
+    role: "AI & Financial Intelligence Researcher",
+    company: "KPMG",
+    initials: "SK",
+    photo: "/mentors/shubham-kaushik.jpg",
+    desc: "Shubham has 5+ years in AI, machine learning, and full-stack development. His research spans LLMs, intelligent data systems, and scalable financial AI applications. Prior to KPMG, he worked as a Research Assistant at MNNIT Allahabad on advanced AI methodologies.",
+    linkedin: "https://www.linkedin.com/in/eskaykaushik/",
+  },
+  {
+    name: "Aditya Dubey",
+    role: "AI Strategy & Implementation Consultant",
+    company: "Cograd Technologies",
+    initials: "AD",
+    photo: "/mentors/aditya-dubey.jpg",
+    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies and industry applications. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
+  },
+]
+
+function MentorsSection() {
+  return (
+    <div className="mentors-section">
+      <div className="mentors-title-row">
+        <div className="mentors-label">Expert Instructors</div>
+        <h2 className="mentors-heading">Meet Your Mentors</h2>
+        <p className="mentors-sub">
+          Learn from AI engineers and researchers with real-world experience at top companies.
+          They don&apos;t just teach — they mentor you live throughout the bootcamp.
+        </p>
+      </div>
+      <div className="mentors-grid">
+        {MENTORS.map((m) => (
+          <div className="mentor-card" key={m.name}>
+            {/* Photo + identity */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={m.photo}
+                alt={m.name}
+                className="mentor-photo"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none"
+                  const fb = e.currentTarget.nextElementSibling as HTMLElement
+                  if (fb) fb.style.display = "flex"
+                }}
+              />
+              <div className="mentor-photo-fallback" style={{ display: "none" }}>{m.initials}</div>
+              <div>
+                <div className="mentor-name">{m.name}</div>
+                <div className="mentor-role">{m.role}</div>
+                <span className="mentor-co">{m.company}</span>
+              </div>
+            </div>
+            <div className="mentor-divider" />
+            <p className="mentor-desc">{m.desc}</p>
+            <a
+              href={m.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mentor-linkedin"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn Profile
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 // ─── Types ──────────────────────────────────────────────────────
 type FormState = {
@@ -426,6 +561,9 @@ export default function RegisterPage() {
               <strong style={{ color:"var(--ind)" }}>₹29</strong> only · Limited seats
             </p>
           </div>
+
+          {/* ── Meet Your Mentors ── */}
+          <MentorsSection />
 
           {/* Grid */}
           <div className="reg-grid" style={{ display:"grid", gridTemplateColumns:"1fr 400px", gap:32, alignItems:"start" }}>
