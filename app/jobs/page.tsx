@@ -48,7 +48,7 @@ export default async function JobsPage() {
         <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 36, width: "auto", display: "block" }} />
+            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 52, width: "auto", display: "block" }} />
           </Link>
           <span style={{ fontSize: 13, fontWeight: 600, color: "#64748b", background: "#f1f5f9", padding: "4px 12px", borderRadius: 20 }}>Careers</span>
         </div>
