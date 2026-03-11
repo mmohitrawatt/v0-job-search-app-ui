@@ -13,6 +13,10 @@ type CampusAmbassador = {
   id: string; name: string; email: string; phone: string; college: string
   course_year: string; linkedin?: string; instagram?: string; why_ambassador: string; created_at: string
 }
+type JobApplication = {
+  id: string; name: string; email: string; phone: string
+  linkedin?: string; resume_url?: string; job_slug: string; job_title: string; created_at: string
+}
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
@@ -38,6 +42,7 @@ export default function AdminPage() {
   const [earlyAccess, setEarlyAccess] = useState<EarlyAccessUser[]>([])
   const [hackathon, setHackathon] = useState<HackathonReg[]>([])
   const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
+  const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -49,7 +54,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setHackathon(d.hackathon || []); setAmbassadors(d.campusAmbassadors || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setHackathon(d.hackathon || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -57,6 +62,7 @@ export default function AdminPage() {
   const eaFiltered = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
   const hrFiltered = useMemo(() => filterRows(hackathon, search), [hackathon, search])
   const caFiltered = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
+  const jaFiltered = useMemo(() => filterRows(jobApplications, search), [jobApplications, search])
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
 
@@ -86,8 +92,9 @@ export default function AdminPage() {
         .adm-body{padding:28px 32px;max-width:1440px;margin:0 auto}
         @media(max-width:768px){.adm-body{padding:16px}}
         /* Stats */
-        .adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
-        @media(max-width:1024px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
+        .adm-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+        @media(max-width:1200px){.adm-stats{grid-template-columns:repeat(3,1fr)}}
+        @media(max-width:768px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:480px){.adm-stats{grid-template-columns:1fr 1fr}}
         .adm-stat{background:#fff;border-radius:14px;padding:20px 22px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
         .adm-stat-lbl{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
@@ -184,8 +191,13 @@ export default function AdminPage() {
                   <div className="adm-stat-sub">Applications</div>
                 </div>
                 <div className="adm-stat">
+                  <div className="adm-stat-lbl">Job Applications</div>
+                  <div className="adm-stat-val orange">{jobApplications.length}</div>
+                  <div className="adm-stat-sub">Resume submissions</div>
+                </div>
+                <div className="adm-stat">
                   <div className="adm-stat-lbl">Total Signups</div>
-                  <div className="adm-stat-val orange">{earlyAccess.length + hackathon.length + ambassadors.length}</div>
+                  <div className="adm-stat-val" style={{ color: "#0369a1" }}>{earlyAccess.length + hackathon.length + ambassadors.length + jobApplications.length}</div>
                   <div className="adm-stat-sub">All time</div>
                 </div>
               </div>
@@ -274,6 +286,61 @@ export default function AdminPage() {
                                 : "—"}
                             </td>
                             <td className="c-date">{fmt(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Job Applications ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Job Applications</div>
+                    <div className="adm-sec-badge">{jaFiltered.length} applications</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(jaFiltered as unknown as Record<string, unknown>[], "job-applications.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {jaFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No job applications yet"}
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                          <th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {jaFiltered.map((a, i) => (
+                          <tr key={a.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{a.name}</td>
+                            <td className="c-email">{a.email}</td>
+                            <td className="c-phone">{a.phone}</td>
+                            <td>
+                              <span className="c-tag">{a.job_title}</span>
+                            </td>
+                            <td>
+                              {a.linkedin
+                                ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
+                                : "—"}
+                            </td>
+                            <td>
+                              {a.resume_url
+                                ? <a className="c-link" href={a.resume_url} target="_blank" rel="noopener noreferrer">Download ↓</a>
+                                : "—"}
+                            </td>
+                            <td className="c-date">{fmt(a.created_at)}</td>
                           </tr>
                         ))}
                       </tbody>

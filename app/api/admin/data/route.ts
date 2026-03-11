@@ -13,15 +13,27 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr, ca] = await Promise.all([
+  const [ea, hr, ca, ja, jobsRes] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").order("created_at", { ascending: false }),
     supabase.from("campus_ambassador_applications").select("*").order("created_at", { ascending: false }),
+    supabase.from("job_applications").select("*").order("created_at", { ascending: false }),
+    supabase.from("jobs").select("slug, title"),
   ])
+
+  // Build slug → title lookup for enriching job applications
+  const jobTitleMap: Record<string, string> = Object.fromEntries(
+    (jobsRes.data ?? []).map((j: { slug: string; title: string }) => [j.slug, j.title])
+  )
+  const jobApplications = (ja.data ?? []).map((a: Record<string, unknown>) => ({
+    ...a,
+    job_title: jobTitleMap[a.job_slug as string] ?? (a.job_slug as string),
+  }))
 
   return NextResponse.json({
     earlyAccess: ea.data || [],
     hackathon: hr.data || [],
     campusAmbassadors: ca.data || [],
+    jobApplications,
   })
 }
