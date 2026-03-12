@@ -14,6 +14,7 @@ type Job = {
   description?: string
   stipend?: string
   duration?: string
+  applyUrl?: string
 }
 
 export const revalidate = 60
@@ -72,6 +73,20 @@ const STATIC_JOBS: Job[] = [
     duration: "3 months",
     description: "Help build the team that builds the product. You'll source and screen candidates, coordinate interviews, manage onboarding, and help shape a culture that attracts top talent. High-ownership role — your decisions directly influence who joins Trippyway and how fast we grow.",
   },
+  {
+    id: "5",
+    title: "Software Engineering Intern",
+    company: "Netflix",
+    location: "India · US · Poland · Japan",
+    slug: "swe-intern-netflix",
+    type: "Internship",
+    department: "Engineering & Data",
+    experience: "Bachelor's / Master's / PhD",
+    mode: "On-site",
+    duration: "12 weeks (Summer)",
+    description: "12-week summer internship immersing you in Netflix's unique culture. Work on meaningful projects across Engineering, Data & Insights, Content, Finance, Marketing, and Program Management that directly advance the business and thrill global audiences. Open to students pursuing bachelor's, master's, or doctoral degrees.",
+    applyUrl: "https://jobs.netflix.com/careers/internships",
+  },
 ]
 
 const CSS = `
@@ -112,10 +127,8 @@ const CSS = `
   }
 
   .top-bar {
-    height: 3px;
-    background: linear-gradient(90deg, #1d3a8f, #3b52f0, #5a6ef4, #3b52f0, #1d3a8f);
-    background-size: 200% auto;
-    animation: shimmer 4s linear infinite;
+    height: 2px;
+    background: #1d3a8f;
   }
 
   /* ── NAV ── */
@@ -263,6 +276,7 @@ const CSS = `
 const COMPANY_LOGOS: Record<string, string> = {
   "Trippyway": "/trippyway-logo.jpg",
   "IIT Kanpur (IITK)": "/iit-kanpur.jpg",
+  "Netflix": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' fill='%23141414'/%3E%3Cpolygon points='9%2C6 16%2C6 35%2C38 28%2C38' fill='%23E50914'/%3E%3Crect x='9' y='6' width='7' height='32' fill='%23E50914'/%3E%3Crect x='28' y='6' width='7' height='32' fill='%23E50914'/%3E%3C%2Fsvg%3E",
 }
 
 function getInitials(company: string) {
@@ -346,7 +360,7 @@ export default async function JobsPage() {
 
           {!jobs || jobs.length === 0 ? (
             <div className="empty">
-              <div style={{ fontSize: 40, marginBottom: 14 }}>💼</div>
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{ marginBottom: 14, color: "var(--ink3)" }}><rect x="6" y="14" width="28" height="20" rx="3" stroke="currentColor" strokeWidth="2"/><path d="M14 14V11C14 9.89 14.9 9 16 9H24C25.1 9 26 9.9 26 11V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M6 22H34" stroke="currentColor" strokeWidth="1.5"/></svg>
               <div style={{ fontSize: 18, fontWeight: 800, color: "var(--ink)", marginBottom: 8 }}>No open positions right now</div>
               <div style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.65 }}>We&apos;re growing fast — check back soon for new opportunities.</div>
             </div>
@@ -422,13 +436,19 @@ function JobCard({ job }: { job: Job }) {
       <div className="job-card-footer">
         <span className="job-posted">Posted recently · via Jobingen</span>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <Link href={`/jobs/${job.slug}`} className="job-save-btn">
-            View Details
-          </Link>
-          <Link href={`/jobs/${job.slug}`} className="job-apply-btn">
+          {!job.applyUrl && (
+            <Link href={`/jobs/${job.slug}`} className="job-save-btn">
+              View Details
+            </Link>
+          )}
+          <a
+            href={job.applyUrl ?? `/jobs/${job.slug}`}
+            {...(job.applyUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="job-apply-btn"
+          >
             Apply Now
             <svg width="12" height="12" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </Link>
+          </a>
         </div>
       </div>
     </div>

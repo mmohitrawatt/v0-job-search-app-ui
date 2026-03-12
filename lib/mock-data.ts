@@ -24,6 +24,8 @@ export type Job = {
   isRemote: boolean
   portal: JobPortal
   portalListings?: PortalListing[]
+  applyUrl?: string
+  logoType?: string
 }
 
 export type ApplicationStatus = "applied" | "screening" | "interview" | "offer" | "rejected"
@@ -190,6 +192,28 @@ export const MOCK_JOBS: Job[] = [
       { portal: "naukri",      benefit: "Direct Hiring",   recommended: false, salaryMin: 18, salaryMax: 28 },
       { portal: "linkedin",    benefit: "Easy Apply",      recommended: true,  salaryMin: 22, salaryMax: 32 },
       { portal: "internshala", benefit: "Fresher Friendly", recommended: false, salaryMin: 15, salaryMax: 24 },
+    ],
+  },
+  {
+    id: "7",
+    title: "Software Engineering Intern",
+    company: "Netflix",
+    location: "India · US · Poland · Japan",
+    type: "Internship",
+    skills: ["Python", "Java", "Distributed Systems", "Cloud"],
+    missingSkills: ["Streaming Infrastructure", "Media Tech"],
+    matchScore: 82,
+    salary: "Stipend Disclosed",
+    initials: "N",
+    color: "bg-red-600 text-white",
+    logoType: "netflix",
+    description:
+      "12-week summer internship at Netflix immersing you in our unique culture. Work on meaningful projects across Engineering, Data & Insights, Content, Finance, Marketing and Program Management that directly advance our business and thrill global audiences. Open to students pursuing bachelor's, master's, or doctoral degrees in the US, India, Poland, and Japan.",
+    isRemote: false,
+    portal: "internshala",
+    applyUrl: "https://jobs.netflix.com/careers/internships",
+    portalListings: [
+      { portal: "internshala", benefit: "Direct Apply", recommended: true },
     ],
   },
 ]

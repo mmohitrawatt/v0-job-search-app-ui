@@ -42,6 +42,37 @@ function PortalBadge({ portal }: { portal: JobPortal }) {
   )
 }
 
+// ─── Company Logo ─────────────────────────────────────────────────────────────
+
+function CompanyLogo({ job, size = "md" }: { job: Job; size?: "md" | "lg" }) {
+  const dim = size === "lg" ? "w-12 h-12 rounded-[13px] text-[13px]" : "w-11 h-11 rounded-[11px] text-[12px]"
+  if (job.logoType === "netflix") {
+    const logoSize = size === "lg" ? 48 : 44
+    return (
+      <div className={cn("flex-shrink-0 shadow-sm overflow-hidden", size === "lg" ? "w-12 h-12 rounded-[13px]" : "w-11 h-11 rounded-[11px]")}>
+        <svg width={logoSize} height={logoSize} viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" fill="#E50914"/>
+          <text
+            x="22" y="32"
+            textAnchor="middle"
+            fontFamily="'Arial Black', 'Impact', sans-serif"
+            fontWeight="900"
+            fontStyle="italic"
+            fontSize="30"
+            fill="white"
+            letterSpacing="-1"
+          >N</text>
+        </svg>
+      </div>
+    )
+  }
+  return (
+    <div className={cn("flex items-center justify-center font-extrabold flex-shrink-0 shadow-sm", dim, job.color)}>
+      {job.initials}
+    </div>
+  )
+}
+
 type SubScreen = "list" | "detail" | "apply-detail" | "apply-confirm"
 
 const FILTERS = ["Remote", "Full-time", "Internship", "High Match", "Saved"]
@@ -105,7 +136,9 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
     const matchRemote = !activeFilters.includes("Remote") || j.isRemote
     const matchSaved = !activeFilters.includes("Saved") || savedJobIds.includes(j.id)
     const matchHighMatch = !activeFilters.includes("High Match") || j.matchScore >= 80
-    return matchQuery && matchRemote && matchSaved && matchHighMatch
+    const matchInternship = !activeFilters.includes("Internship") || j.type === "Internship"
+    const matchFullTime = !activeFilters.includes("Full-time") || j.type === "Full-time"
+    return matchQuery && matchRemote && matchSaved && matchHighMatch && matchInternship && matchFullTime
   })
 
   function toggleFilter(f: string) {
@@ -399,9 +432,7 @@ function JobCard({
       <div onClick={onClick} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && onClick()} className="w-full p-4 text-left tap-highlight-none active:bg-muted/40 transition-colors duration-150 cursor-pointer">
         <div className="flex items-start gap-3">
           {/* Logo */}
-          <div className={cn("w-11 h-11 rounded-[11px] flex items-center justify-center text-[12px] font-extrabold flex-shrink-0 shadow-sm", job.color)}>
-            {job.initials}
-          </div>
+          <CompanyLogo job={job} size="md" />
 
           {/* Main info */}
           <div className="flex-1 min-w-0">
@@ -855,9 +886,7 @@ function JobDetail({ job, onBack, onApplyNow }: { job: Job; onBack: () => void; 
             <h1 className="text-[19px] font-bold text-foreground leading-tight">{job.title}</h1>
             <p className="text-[13px] text-muted-foreground mt-0.5 font-medium">{job.company} · {job.isRemote ? "Remote" : job.location}</p>
           </div>
-          <div className={cn("w-12 h-12 rounded-[13px] flex items-center justify-center text-[13px] font-extrabold flex-shrink-0 shadow-sm", job.color)}>
-            {job.initials}
-          </div>
+          <CompanyLogo job={job} size="lg" />
         </div>
         <div className="flex items-center gap-2 mt-3 flex-wrap">
           <span className={cn("text-[11px] font-bold px-2.5 py-1 rounded-full", matchColor)}>{job.matchScore}% Match</span>
@@ -1191,9 +1220,7 @@ function ApplyDetail({ job, onBack, onConfirm }: { job: Job; onBack: () => void;
             <h1 className="text-[18px] font-bold text-foreground leading-tight">{job.title}</h1>
             <p className="text-[12px] text-muted-foreground font-semibold mt-0.5">{job.company}</p>
           </div>
-          <div className={cn("w-11 h-11 rounded-[11px] flex items-center justify-center text-[12px] font-extrabold", job.color)}>
-            {job.initials}
-          </div>
+          <CompanyLogo job={job} size="md" />
         </div>
       </div>
 
@@ -1392,6 +1419,10 @@ export function JobsScreen() {
   }
 
   function openApplyDetail(job: Job) {
+    if (job.applyUrl) {
+      window.open(job.applyUrl, "_blank", "noopener,noreferrer")
+      return
+    }
     setSelectedJob(job)
     setSubScreen("apply-detail")
     navigate("smart-apply")
