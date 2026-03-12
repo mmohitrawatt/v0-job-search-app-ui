@@ -231,8 +231,8 @@ export default function PreLaunchPage() {
         .pl-nav-cta{display:inline-flex;align-items:center;background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 12px rgba(42,78,207,.25)}
         .pl-nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(42,78,207,.4)}
         .pl-nav-cta:active{transform:translateY(0) scale(.97)}
-        .pl-nav-wa{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:#f0fdf4;border:1.5px solid rgba(16,185,129,.25);color:#16a34a;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap}
-        .pl-nav-wa:hover{background:#dcfce7;border-color:#16a34a;transform:translateY(-1px)}
+        .pl-nav-wa{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:#fff;border:1.5px solid rgba(42,78,207,.3);color:#2a4ecf;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap}
+        .pl-nav-wa:hover{background:#e8edfe;border-color:#2a4ecf;transform:translateY(-1px)}
         .pl-nav-reg{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:linear-gradient(135deg,#2a4ecf,#3b52f0);color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;white-space:nowrap;box-shadow:0 2px 10px rgba(42,78,207,.25)}
         .pl-nav-reg:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(42,78,207,.4)}
 
@@ -367,18 +367,21 @@ export default function PreLaunchPage() {
         .pl-paincard p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6}
 
         /* ═══ YOUR JOURNEY ═══ */
-        .pl-how{padding:80px 32px 88px;background:#f8f9ff;position:relative}
-        .pl-how::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(42,78,207,.08),transparent)}
-        .pl-how-inner{max-width:900px;margin:0 auto}
-        .pl-journey{display:flex;flex-direction:column;gap:0;margin-top:48px;position:relative}
-        .pl-journey::before{content:'';position:absolute;top:24px;bottom:24px;left:23px;width:2px;background:linear-gradient(180deg,#2a4ecf,rgba(42,78,207,.1));z-index:0}
-        .pl-jstep{display:flex;gap:20px;align-items:flex-start;padding:20px 0;position:relative;z-index:1}
-        .pl-jstep-dot{width:48px;min-width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1d3a8f,#2a4ecf);color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(42,78,207,.25),0 0 0 4px #f8f9ff}
-        .pl-jstep-body{flex:1;padding:4px 0 0}
-        .pl-jstep-body h3{font-size:17px;font-weight:800;margin-bottom:4px;letter-spacing:-.2px}
-        .pl-jstep-body p{font-size:14px;color:#666;line-height:1.5}
-        .pl-jstep-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-        .pl-jtag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;background:#e8edfe;color:#2a4ecf}
+        .pl-how{padding:80px 32px 88px;background:#fff;position:relative}
+        .pl-how-inner{max-width:1100px;margin:0 auto}
+        .pl-how-head{text-align:center;margin-bottom:56px}
+        .pl-how-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2a4ecf;margin-bottom:12px}
+        .pl-how-title{font-size:36px;font-weight:900;letter-spacing:-.03em;color:#09090f;line-height:1.1;margin-bottom:12px}
+        .pl-how-sub{font-size:15px;color:#8a8aa8;font-weight:500}
+        .pl-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+        .pl-steps::before{content:'';position:absolute;top:28px;left:calc(10% + 16px);right:calc(10% + 16px);height:1px;background:linear-gradient(90deg,rgba(42,78,207,.15),rgba(42,78,207,.3),rgba(42,78,207,.15));z-index:0}
+        .pl-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 12px;position:relative;z-index:1}
+        .pl-step-num{width:56px;height:56px;border-radius:16px;background:#fff;border:1.5px solid rgba(42,78,207,.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#2a4ecf;margin-bottom:20px;position:relative;box-shadow:0 2px 12px rgba(42,78,207,.08);transition:all .3s ease}
+        .pl-step:hover .pl-step-num{background:linear-gradient(135deg,#1d3a8f,#2a4ecf);color:#fff;border-color:transparent;box-shadow:0 8px 24px rgba(42,78,207,.25);transform:translateY(-3px)}
+        .pl-step h4{font-size:14px;font-weight:800;color:#09090f;margin-bottom:8px;letter-spacing:-.01em;line-height:1.3}
+        .pl-step p{font-size:12.5px;color:#8a8aa8;line-height:1.6;font-weight:450}
+        @media(max-width:860px){.pl-steps{grid-template-columns:1fr 1fr;gap:32px}.pl-steps::before{display:none}}
+        @media(max-width:480px){.pl-steps{grid-template-columns:1fr;gap:24px}}
 
         /* ═══ BENEFITS ═══ */
         .pl-bene{padding:120px 32px;background:#fff;position:relative;overflow:hidden}
@@ -426,7 +429,7 @@ export default function PreLaunchPage() {
         .pl-ft-bot{max-width:1200px;margin:32px auto 0;padding-top:24px;border-top:1px solid rgba(0,0,0,.04);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#aaa}
 
         /* ═══ CAMPUS AMBASSADOR CARD ═══ */
-        .pl-ca-wrap{padding:0 32px 64px;background:#f8f9ff}
+        .pl-ca-wrap{padding:0 32px 64px;background:#f8f9ff;max-width:1100px;margin:0 auto}
         .pl-ca-card{border-radius:28px;overflow:hidden;background:linear-gradient(135deg,#060d24 0%,#0d1b45 45%,#1d3a8f 100%);padding:56px 60px;position:relative;box-shadow:0 24px 80px rgba(6,13,36,.28);display:flex;align-items:center;justify-content:space-between;gap:40px}
         .pl-ca-card::before{content:'';position:absolute;top:-80px;right:-40px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.28),transparent 70%);pointer-events:none}
         .pl-ca-card::after{content:'';position:absolute;bottom:-60px;left:18%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.18),transparent 70%);pointer-events:none}
@@ -560,13 +563,16 @@ export default function PreLaunchPage() {
         /* ═══ JOBS SECTION ═══ */
         .pl-jobs{padding:60px 32px 72px;background:#f4f6fb}
         .pl-jobs-wrap{max-width:1100px;margin:0 auto}
+        .pl-jgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        @media(max-width:700px){.pl-jgrid{grid-template-columns:1fr}}
         .pl-jobs-label{font-size:11px;font-weight:700;color:#1d3a8f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;text-align:center}
         .pl-jobs-heading{font-size:clamp(22px,3vw,34px);font-weight:900;color:#09090f;letter-spacing:-.03em;text-align:center;margin-bottom:8px}
         .pl-jobs-sub{font-size:14px;color:#5a5a7a;text-align:center;max-width:480px;margin:0 auto 36px;line-height:1.65}
-        .pl-jcard{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:18px;overflow:hidden;margin-bottom:12px;transition:transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s ease;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+        .pl-jcard{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s ease;box-shadow:0 2px 8px rgba(0,0,0,.05)}
         .pl-jcard:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(29,58,143,.11);border-color:rgba(29,58,143,.18)}
-        .pl-jcard-body{padding:20px 22px 16px;display:flex;gap:14px;align-items:flex-start}
-        .pl-jlogo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:-.01em}
+        .pl-jcard-body{padding:20px 22px 16px;display:flex;gap:14px;align-items:flex-start;flex:1}
+        .pl-jlogo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:-.01em;overflow:hidden;padding:0;border:1px solid rgba(0,0,0,.08)}
+        .pl-jlogo img{width:100%;height:100%;object-fit:contain;display:block}
         .pl-jinfo{flex:1;min-width:0}
         .pl-jtitle{font-size:15px;font-weight:800;color:#09090f;margin-bottom:3px;letter-spacing:-.02em;line-height:1.25}
         .pl-jcompany{font-size:12px;font-weight:600;color:#5a5a7a;margin-bottom:10px}
@@ -714,16 +720,18 @@ export default function PreLaunchPage() {
                       </div>
                     </div>
                     <div className="pl-bc-hr" />
-                    <div>
-                      <div className="pl-mentors-h">Your Mentors</div>
-                      <div className="pl-mentor">
-                        <div className="pl-mentor-av" style={{ background: "#e8edfe", color: "#1d3a8f" }}>AD</div>
-                        <div><div className="pl-mentor-n">Aditya Dubey</div><div className="pl-mentor-r">Sr. AI Engineer</div></div>
-                      </div>
-                      <div className="pl-mentor">
-                        <div className="pl-mentor-av" style={{ background: "#eef1fe", color: "#3b52f0" }}>SK</div>
-                        <div><div className="pl-mentor-n">Shubham Kaushik</div><div className="pl-mentor-r">Gen AI Consultant &middot; KPMG</div></div>
-                      </div>
+                    <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                      {[
+                        { icon:"🏆", text:"Winners get paid internships" },
+                        { icon:"📄", text:"ATS-proof resume included" },
+                        { icon:"🤖", text:"Build a real AI project, end-to-end" },
+                        { icon:"👥", text:"Live mentors, no passive watching" },
+                      ].map((item) => (
+                        <div key={item.text} style={{ display:"flex", alignItems:"center", gap:10, fontSize:13, color:"#3d3d52", fontWeight:500 }}>
+                          <span style={{ fontSize:15 }}>{item.icon}</span>
+                          {item.text}
+                        </div>
+                      ))}
                     </div>
                     <div className="pl-bc-interactive">
                       <h5>&#127919; Fully Interactive</h5>
@@ -796,21 +804,43 @@ export default function PreLaunchPage() {
           </div>
         </section>
 
+        {/* ═══ BOOTCAMP MENTORS ═══ */}
+        <Reveal>
+          <section className="pl-mentors">
+            <div className="pl-mentors-wrap">
+              <div className="pl-mentors-label">Our Upcoming Bootcamp Mentors</div>
+              <h2 className="pl-mentors-heading">Learn from Industry Experts</h2>
+              <p className="pl-mentors-sub">
+                AI engineers and researchers from top companies who will guide you live through every session.
+              </p>
+              <div className="pl-mgrid">
+                {PL_MENTORS.map((m) => <PLMentorCard key={m.name} m={m} />)}
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
         {/* ═══ JOBS SECTION ═══ */}
         <Reveal>
           <section className="pl-jobs">
             <div className="pl-jobs-wrap">
-              <div className="pl-jobs-label">We&apos;re Hiring</div>
-              <h2 className="pl-jobs-heading">Open Positions at Jobingen</h2>
+
+              <h2 className="pl-jobs-heading">Open Positions</h2>
               <p className="pl-jobs-sub">
-                Join our team and help build the future of job search in India. We&apos;re growing fast.
+                Exciting opportunities across tech, design, and operations. Apply now and grow with us.
               </p>
+              <div className="pl-jgrid">
               {[
-                { title: "Technology Transfer & IP Manager", company: "IIT Kanpur (IITK)", location: "Kanpur, Uttar Pradesh", type: "Full Time", mode: "On-site", slug: "ip-manager-iitk", initials: "IK", gradient: "linear-gradient(135deg,#1d3a8f,#3b52f0)" },
+                { title: "Technology Transfer & IP Manager", company: "IIT Kanpur (IITK)", location: "Kanpur, Uttar Pradesh", type: "Full Time", mode: "On-site", slug: "ip-manager-iitk", logo: "/iit-kanpur.jpg", initials: "IK", gradient: "linear-gradient(135deg,#1d3a8f,#3b52f0)" },
+                { title: "AI Engineer Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "ai-engineer-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
+                { title: "UI/UX Design Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "uiux-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
+                { title: "HR & Talent Acquisition Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "hr-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
               ].map((job) => (
                 <div className="pl-jcard" key={job.slug}>
                   <div className="pl-jcard-body">
-                    <div className="pl-jlogo" style={{ background: job.gradient }}>{job.initials}</div>
+                    <div className="pl-jlogo">
+                      <img src={job.logo} alt={job.company} style={{ width:"100%",height:"100%",objectFit:"contain" }} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display="none"; const p = e.currentTarget.parentElement as HTMLElement; p.style.background=job.gradient; p.innerText=job.initials; }} />
+                    </div>
                     <div className="pl-jinfo">
                       <div className="pl-jtitle">{job.title}</div>
                       <div className="pl-jcompany">{job.company}</div>
@@ -837,27 +867,12 @@ export default function PreLaunchPage() {
                   </div>
                 </div>
               ))}
+              </div>
               <div className="pl-jobs-cta">
                 <a href="/jobs">
                   View All Open Positions
                   <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </a>
-              </div>
-            </div>
-          </section>
-        </Reveal>
-
-        {/* ═══ BOOTCAMP MENTORS ═══ */}
-        <Reveal>
-          <section className="pl-mentors">
-            <div className="pl-mentors-wrap">
-              <div className="pl-mentors-label">Our Upcoming Bootcamp Mentors</div>
-              <h2 className="pl-mentors-heading">Learn from Industry Experts</h2>
-              <p className="pl-mentors-sub">
-                AI engineers and researchers from top companies who will guide you live through every session.
-              </p>
-              <div className="pl-mgrid">
-                {PL_MENTORS.map((m) => <PLMentorCard key={m.name} m={m} />)}
               </div>
             </div>
           </section>
@@ -877,36 +892,6 @@ export default function PreLaunchPage() {
           </section>
         </Reveal>
 
-        {/* ═══ SERVICES ═══ */}
-        <section className="pl-svc" id="services">
-          <div className="pl-svc-inner">
-          <Reveal>
-            <p className="pl-slbl">Everything You Need</p>
-            <h2 className="pl-stitle">Built to get you hired faster.</h2>
-          </Reveal>
-          <div className="pl-svc-grid">
-            {[
-              { icon: "&#128269;", bg: "#e8edfe", title: "Unified Job Feed", desc: "Every portal in one feed. Search once, see everything.", tag: "Core", tagBg: "#e8edfe", tagC: "#2a4ecf" },
-              { icon: "&#128196;", bg: "#f0fdf4", title: "AI Resume Tailoring", desc: "Auto-optimize your resume for each job description.", tag: "AI", tagBg: "#f0fdf4", tagC: "#16a34a" },
-              { icon: "&#128101;", bg: "#fffbeb", title: "Insider Connect", desc: "Talk to employees inside companies before you interview.", tag: "New", tagBg: "#fffbeb", tagC: "#d97706" },
-              { icon: "&#127908;", bg: "#fdf2f8", title: "AI Mock Interviews", desc: "Practice with Vibe — real-time feedback and scoring.", tag: "AI Coach", tagBg: "#fdf2f8", tagC: "#db2777" },
-              { icon: "&#128203;", bg: "#f0f9ff", title: "Application Tracker", desc: "Visual pipeline from applied to offer. Never lose track.", tag: "Productivity", tagBg: "#f0f9ff", tagC: "#0284c7" },
-              { icon: "&#128276;", bg: "#eef1fe", title: "Smart Job Alerts", desc: "Set criteria once. Get notified when matching jobs appear.", tag: "Auto", tagBg: "#eef1fe", tagC: "#2a4ecf" },
-            ].map((s, i) => (
-              <Reveal key={s.title} delay={i * 60}>
-                <div className="pl-scard">
-                  <div className="pl-sicon" style={{ background: s.bg }} dangerouslySetInnerHTML={{ __html: s.icon }} />
-                  <div className="pl-scard-txt">
-                    <h3>{s.title}</h3>
-                    <p>{s.desc}</p>
-                    <span className="pl-stag" style={{ background: s.tagBg, color: s.tagC }}>{s.tag}</span>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          </div>
-        </section>
 
         {/* ═══ CAMPUS AMBASSADOR CARD ═══ */}
         <div className="pl-ca-wrap">
@@ -979,32 +964,30 @@ export default function PreLaunchPage() {
         {/* ═══ YOUR JOURNEY ═══ */}
         <section className="pl-how" id="how">
           <div className="pl-how-inner">
-          <Reveal>
-            <p className="pl-slbl">Your Journey on Jobingen</p>
-            <h2 className="pl-stitle">From sign-up to offer letter.</h2>
-          </Reveal>
-          <div className="pl-journey">
-            {[
-              { num: "1", title: "Set your preferences", desc: "Tell us your target role, location, salary range, and experience. Takes 30 seconds.", tags: ["Role", "Location", "Salary"] },
-              { num: "2", title: "Discover jobs from every portal", desc: "Jobingen pulls matching jobs from Naukri, LinkedIn, Indeed, and 6+ portals into one feed.", tags: ["Naukri", "LinkedIn", "Indeed", "6+ more"] },
-              { num: "3", title: "Apply with AI-tailored resumes", desc: "For each job, AI rewrites your resume with the right keywords. Beat ATS filters automatically.", tags: ["ATS Optimized", "Per-JD Tailoring"] },
-              { num: "4", title: "Talk to company insiders", desc: "Before your interview, connect with real employees at the company. Know the culture, questions, and expectations.", tags: ["Insider Connect", "Real People"] },
-              { num: "5", title: "Prep, interview, get hired", desc: "Practice mock interviews with Vibe AI, track all your applications, and negotiate with real salary data.", tags: ["AI Coach", "Tracker", "Salary Data"] },
-            ].map((s, i) => (
-              <Reveal key={s.num} delay={i * 80}>
-                <div className="pl-jstep">
-                  <div className="pl-jstep-dot">{s.num}</div>
-                  <div className="pl-jstep-body">
-                    <h3>{s.title}</h3>
+            <Reveal>
+              <div className="pl-how-head">
+                <div className="pl-how-label">How it works</div>
+                <h2 className="pl-how-title">From sign-up to offer letter.</h2>
+                <p className="pl-how-sub">Five steps. Zero wasted effort.</p>
+              </div>
+            </Reveal>
+            <Reveal>
+              <div className="pl-steps">
+                {[
+                  { num: "01", title: "Set your preferences", desc: "Target role, location, salary range, and experience. Done in 30 seconds." },
+                  { num: "02", title: "Get a unified job feed", desc: "Jobs from Naukri, LinkedIn, Indeed, and 6+ portals — all in one place." },
+                  { num: "03", title: "Apply with AI resumes", desc: "AI rewrites your resume per job description. Beat ATS filters automatically." },
+                  { num: "04", title: "Talk to insiders", desc: "Connect with real employees before your interview. Know what to expect." },
+                  { num: "05", title: "Get hired", desc: "Mock interviews with Vibe AI, application tracker, and real salary data." },
+                ].map((s) => (
+                  <div className="pl-step" key={s.num}>
+                    <div className="pl-step-num">{s.num}</div>
+                    <h4>{s.title}</h4>
                     <p>{s.desc}</p>
-                    <div className="pl-jstep-tags">
-                      {s.tags.map((t) => <span className="pl-jtag" key={t}>{t}</span>)}
-                    </div>
                   </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </section>
 

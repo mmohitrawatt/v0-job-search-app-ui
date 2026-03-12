@@ -33,6 +33,48 @@ Assist in managing IP filings, patent portfolios, and legal compliance for licen
 Supervise a small team or coordinate with external consultants for valuation and legal vetting as needed`,
     apply_type: "direct",
   },
+  {
+    id: "2",
+    title: "AI Engineer Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "ai-engineer-intern-trippyway",
+    description: `Work on real AI features — LLMs, RAG pipelines, recommendation engines, and travel intelligence systems
+Ship production-grade code alongside senior engineers and see your work live in front of real users
+Own features end-to-end: from scoping and prototyping to deployment and monitoring
+Integrate third-party AI APIs and build custom fine-tuned solutions tailored to the travel domain
+Write clean, well-documented Python/TypeScript code and participate in regular code reviews
+Collaborate directly with founders and the product team on AI strategy and roadmap decisions`,
+    apply_type: "direct",
+  },
+  {
+    id: "3",
+    title: "UI/UX Design Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "uiux-intern-trippyway",
+    description: `Design the future of travel discovery — from user research and wireframes to high-fidelity Figma prototypes
+Work directly with founders on product strategy and help define how millions of travelers plan their trips
+Conduct usability tests, analyze user feedback, and iterate rapidly on designs based on real data
+Create and maintain a consistent design system — components, tokens, and guidelines
+Design across web and mobile surfaces with a strong eye for typography, spacing, and visual hierarchy
+Graduate with a portfolio of real shipped work — not concept projects`,
+    apply_type: "direct",
+  },
+  {
+    id: "4",
+    title: "HR & Talent Acquisition Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "hr-intern-trippyway",
+    description: `Source, screen, and shortlist candidates across engineering, design, and business roles
+Schedule and coordinate interviews with hiring managers and founders
+Manage end-to-end onboarding for new hires — documentation, tool access, and orientation sessions
+Maintain and update the applicant tracking system and recruitment pipelines
+Draft job descriptions, outreach messages, and offer letters
+Help build Trippyway's employer brand across LinkedIn and job platforms`,
+    apply_type: "direct",
+  },
 ]
 
 export default async function JobDetailPage({ params }: { params: Promise<{ slug: string }> }) {

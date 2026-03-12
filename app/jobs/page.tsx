@@ -11,6 +11,9 @@ type Job = {
   department?: string
   experience?: string
   mode?: string
+  description?: string
+  stipend?: string
+  duration?: string
 }
 
 export const revalidate = 60
@@ -26,6 +29,48 @@ const STATIC_JOBS: Job[] = [
     department: "Research & Innovation",
     experience: "3–7 years",
     mode: "On-site",
+  },
+  {
+    id: "2",
+    title: "AI Engineer Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "ai-engineer-intern-trippyway",
+    type: "Internship",
+    department: "Engineering & AI",
+    experience: "Fresher / 0–1 yr",
+    mode: "Remote",
+    stipend: "₹8,000–15,000/mo",
+    duration: "3–6 months",
+    description: "Work on real AI features — LLMs, RAG pipelines, recommendation engines, and travel intelligence systems. You'll ship production-grade code alongside senior engineers and build AI that real users interact with. This is not a watch-and-learn internship — you own features end-to-end and see your work live.",
+  },
+  {
+    id: "3",
+    title: "UI/UX Design Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "uiux-intern-trippyway",
+    type: "Internship",
+    department: "Design",
+    experience: "Fresher / 0–1 yr",
+    mode: "Remote",
+    stipend: "₹6,000–10,000/mo",
+    duration: "3–6 months",
+    description: "Design the future of travel discovery. From user research and wireframes to high-fidelity Figma prototypes, you'll shape how people plan their trips. You'll work directly with founders on product strategy, run usability tests, and graduate with a portfolio of real shipped work — not concept projects.",
+  },
+  {
+    id: "4",
+    title: "HR & Talent Acquisition Intern",
+    company: "Trippyway",
+    location: "Remote (India)",
+    slug: "hr-intern-trippyway",
+    type: "Internship",
+    department: "Human Resources",
+    experience: "Fresher / 0–1 yr",
+    mode: "Remote",
+    stipend: "₹5,000–8,000/mo",
+    duration: "3 months",
+    description: "Help build the team that builds the product. You'll source and screen candidates, coordinate interviews, manage onboarding, and help shape a culture that attracts top talent. High-ownership role — your decisions directly influence who joins Trippyway and how fast we grow.",
   },
 ]
 
@@ -75,16 +120,16 @@ const CSS = `
 
   /* ── NAV ── */
   .nav {
-    background: rgba(255,255,255,0.97);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.72);
+    backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,.04);
     position: sticky; top: 0; z-index: 50;
   }
   .nav-inner {
-    max-width: 1100px; margin: 0 auto; padding: 0 28px;
+    max-width: 1200px; margin: 0 auto; padding: 0 28px;
     height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
-  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
   .nav-badge {
     display: inline-flex; align-items: center; gap: 6px;
     background: var(--grn-l); border: 1px solid rgba(16,185,129,.2);
@@ -92,156 +137,104 @@ const CSS = `
     font-size: 12px; font-weight: 700; color: var(--grn);
   }
   .nav-jobs-link {
-    font-size: 13px; font-weight: 700; color: var(--ink2); text-decoration: none;
-    padding: 7px 14px; border-radius: 10px; border: 1.5px solid var(--border);
-    background: white; transition: all .18s ease;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 700; color: #2a4ecf; text-decoration: none;
+    padding: 9px 18px; border-radius: 10px;
+    border: 1.5px solid rgba(42,78,207,.3); background: white; transition: all .18s ease;
   }
-  .nav-jobs-link:hover { border-color: rgba(29,58,143,.25); color: var(--ind); background: var(--ind-l); }
+  .nav-jobs-link:hover { background: #e8edfe; border-color: #2a4ecf; transform: translateY(-1px); }
 
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(135deg, #060e2a 0%, #0d1b45 40%, #1d3a8f 100%);
-    padding: 64px 28px 72px; position: relative; overflow: hidden;
+  /* ── PAGE HEADER ── */
+  .page-head {
+    background: white; border-bottom: 1px solid var(--border);
+    padding: 22px 28px;
   }
-  .hero::before {
-    content: ''; position: absolute; top: -100px; right: -60px;
-    width: 500px; height: 500px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(59,82,240,.22), transparent 70%);
-    pointer-events: none;
+  .page-head-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
   }
-  .hero::after {
-    content: ''; position: absolute; bottom: -80px; left: 15%;
-    width: 360px; height: 360px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(29,58,143,.18), transparent 70%);
-    pointer-events: none;
+  .page-head-left { display: flex; flex-direction: column; gap: 3px; }
+  .page-head-title { font-size: 20px; font-weight: 900; color: var(--ink); letter-spacing: -.03em; }
+  .page-head-sub { font-size: 13px; color: var(--ink3); font-weight: 500; }
+  .page-head-count {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--ind-l); border: 1px solid rgba(29,58,143,.12);
+    padding: 6px 14px; border-radius: 99px;
+    font-size: 12px; font-weight: 800; color: var(--ind);
   }
-  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
-    border-radius: 99px; padding: 6px 16px; margin-bottom: 22px;
-    font-size: 11px; font-weight: 800; color: rgba(255,255,255,.9);
-    letter-spacing: .07em; text-transform: uppercase; animation: fade-up .5s ease both;
-  }
-  .hero-h1 {
-    font-size: clamp(28px, 4vw, 48px); font-weight: 900;
-    color: white; line-height: 1.08; letter-spacing: -.035em; margin: 0 0 16px;
-    animation: fade-up .5s .1s ease both;
-  }
-  .hero-sub {
-    font-size: 16px; color: rgba(255,255,255,.6); line-height: 1.7;
-    max-width: 460px; margin-bottom: 32px;
-    animation: fade-up .5s .2s ease both;
-  }
-  .hero-stats {
-    display: flex; gap: 24px; flex-wrap: wrap;
-    animation: fade-up .5s .3s ease both;
-  }
-  .hero-stat {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px; padding: 10px 18px;
-  }
-  .hero-stat-n { font-size: 22px; font-weight: 900; color: white; line-height: 1; }
-  .hero-stat-l { font-size: 11px; color: rgba(255,255,255,.55); font-weight: 600; margin-top: 1px; }
 
   /* ── MAIN CONTENT ── */
-  .page { max-width: 1100px; margin: 0 auto; padding: 40px 28px 80px; display: grid; grid-template-columns: 260px 1fr; gap: 28px; align-items: start; }
-  @media (max-width: 860px) { .page { grid-template-columns: 1fr; } }
+  .page { max-width: 1200px; margin: 0 auto; padding: 32px 28px 72px; }
 
-  /* ── SIDEBAR / FILTERS ── */
-  .sidebar { background: white; border-radius: 20px; border: 1.5px solid var(--border); padding: 24px; box-shadow: var(--shadow-sm); position: sticky; top: 88px; }
-  .sidebar-title { font-size: 13px; font-weight: 800; color: var(--ink); margin-bottom: 16px; letter-spacing: -.01em; }
-  .filter-group { margin-bottom: 20px; }
-  .filter-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ink3); margin-bottom: 10px; }
-  .filter-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; font-weight: 600; padding: 5px 12px;
-    border-radius: 8px; border: 1.5px solid var(--border);
-    background: var(--cream); color: var(--ink2); cursor: pointer;
-    margin: 0 6px 6px 0; transition: all .15s ease; user-select: none;
-  }
-  .filter-pill.active, .filter-pill:hover { border-color: var(--ind); background: var(--ind-l); color: var(--ind); font-weight: 700; }
-  .sidebar-divider { height: 1px; background: var(--border); margin: 18px 0; }
-  .alert-box {
-    background: var(--ind-l); border: 1.5px solid rgba(29,58,143,.15);
-    border-radius: 14px; padding: 14px; margin-top: 4px;
-  }
-  .alert-box p { font-size: 12px; color: var(--ind); font-weight: 600; line-height: 1.5; margin-bottom: 10px; }
-  .alert-btn {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    width: 100%; padding: 9px; border-radius: 10px;
-    background: var(--ind); color: white; font-size: 12px; font-weight: 800;
-    text-decoration: none; border: none; cursor: pointer;
-    transition: opacity .15s ease;
-  }
-  .alert-btn:hover { opacity: .88; }
-
-  /* ── JOBS PANEL ── */
-  .jobs-panel {}
-  .jobs-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+  /* ── JOBS HEADER ── */
+  .jobs-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
   .jobs-title-row { display: flex; align-items: center; gap: 10px; }
   .jobs-heading { font-size: 18px; font-weight: 900; color: var(--ink); letter-spacing: -.02em; }
   .jobs-count { font-size: 12px; font-weight: 800; color: var(--ind); background: var(--ind-l); padding: 3px 10px; border-radius: 99px; }
   .jobs-sort { font-size: 12px; font-weight: 600; color: var(--ink3); display: flex; align-items: center; gap: 6px; }
 
+  /* ── JOBS GRID ── */
+  .jobs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 700px) { .jobs-grid { grid-template-columns: 1fr; } }
+
   /* ── JOB CARD ── */
   .job-card {
-    background: white; border-radius: 20px; border: 1.5px solid var(--border);
-    box-shadow: var(--shadow-sm); padding: 0; margin-bottom: 14px;
-    text-decoration: none; color: inherit; display: block;
-    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    background: white; border-radius: 18px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none; color: inherit; display: flex; flex-direction: column;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     overflow: hidden;
   }
-  .job-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: rgba(29,58,143,.2); }
-  .job-card-body { padding: 22px 24px 18px; display: flex; gap: 16px; align-items: flex-start; }
+  .job-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(29,58,143,.22); }
+  .job-card-body { padding: 20px 20px 16px; display: flex; gap: 14px; align-items: flex-start; flex: 1; }
   .job-logo {
-    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 900; color: white;
+    font-size: 14px; font-weight: 900; color: white;
     background: linear-gradient(135deg, #1d3a8f, #3b52f0);
-    border: 2px solid rgba(29,58,143,.1);
-    letter-spacing: -.02em;
+    border: 1px solid rgba(0,0,0,.07);
+    overflow: hidden; padding: 0;
   }
+  .job-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
   .job-info { flex: 1; min-width: 0; }
-  .job-title { font-size: 16px; font-weight: 800; color: var(--ink); margin: 0 0 5px; letter-spacing: -.02em; line-height: 1.25; }
-  .job-company { font-size: 13px; font-weight: 600; color: var(--ink2); margin-bottom: 10px; }
-  .job-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .job-title { font-size: 15px; font-weight: 800; color: var(--ink); margin: 0 0 3px; letter-spacing: -.02em; line-height: 1.3; }
+  .job-company { font-size: 12px; font-weight: 600; color: var(--ink3); margin-bottom: 10px; }
+  .job-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
   .tag {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 11px; font-weight: 700; padding: 3px 9px;
-    border-radius: 7px; letter-spacing: .01em;
+    font-size: 11px; font-weight: 700; padding: 3px 8px;
+    border-radius: 6px; letter-spacing: .01em; white-space: nowrap;
   }
   .tag-type  { background: var(--ind-l); color: var(--ind); }
   .tag-mode  { background: var(--vio-l); color: var(--vio); }
   .tag-dept  { background: #f0fdf4; color: #059669; }
   .tag-exp   { background: var(--amb-l); color: #b45309; }
   .tag-live  { background: var(--grn-l); color: var(--grn); }
-  .job-meta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .job-meta-item { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink3); font-weight: 500; }
+  .job-desc { font-size: 12px; color: var(--ink3); line-height: 1.6; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .job-meta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .job-meta-item { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ink3); font-weight: 500; }
   .job-card-footer {
-    padding: 12px 24px; border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 20px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
     background: #fafbff;
   }
-  .job-posted { font-size: 11px; color: var(--ink3); font-weight: 500; }
+  .job-posted { font-size: 11px; color: var(--ink3); font-weight: 500; white-space: nowrap; }
   .job-apply-btn {
     display: inline-flex; align-items: center; gap: 6px;
     background: linear-gradient(135deg, #1d3a8f, #2548c5);
     color: white; font-size: 12px; font-weight: 800;
-    padding: 8px 18px; border-radius: 10px; text-decoration: none;
-    box-shadow: 0 3px 12px rgba(29,58,143,.28);
+    padding: 8px 16px; border-radius: 9px; text-decoration: none;
+    box-shadow: 0 2px 10px rgba(29,58,143,.25);
     transition: transform .18s ease, box-shadow .18s ease;
     white-space: nowrap;
   }
-  .job-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,58,143,.38); }
+  .job-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(29,58,143,.35); }
   .job-save-btn {
     display: inline-flex; align-items: center; gap: 5px;
     font-size: 12px; font-weight: 700; color: var(--ink3);
-    padding: 7px 14px; border-radius: 10px;
+    padding: 7px 13px; border-radius: 9px;
     border: 1.5px solid var(--border); background: white;
-    text-decoration: none; transition: all .18s ease;
-    white-space: nowrap;
+    text-decoration: none; transition: all .18s ease; white-space: nowrap;
   }
   .job-save-btn:hover { border-color: rgba(29,58,143,.25); color: var(--ind); background: var(--ind-l); }
 
@@ -258,15 +251,19 @@ const CSS = `
   .f-link:hover { color: var(--ind); }
 
   @media (max-width: 640px) {
-    .hero { padding: 44px 16px 52px; }
-    .hero-stats { gap: 12px; }
-    .page { padding: 24px 16px 60px; gap: 20px; }
+    .page-head { padding: 16px; }
+    .page { padding: 24px 16px 60px; }
     .job-card-body { flex-direction: column; gap: 12px; }
     .job-card-footer { flex-direction: column; align-items: stretch; gap: 8px; }
     .job-apply-btn, .job-save-btn { justify-content: center; width: 100%; }
     .sidebar { position: static; }
   }
 `
+
+const COMPANY_LOGOS: Record<string, string> = {
+  "Trippyway": "/trippyway-logo.jpg",
+  "IIT Kanpur (IITK)": "/iit-kanpur.jpg",
+}
 
 function getInitials(company: string) {
   return company.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
@@ -319,88 +316,22 @@ export default async function JobsPage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="hero">
-        <div className="hero-inner">
-          <div className="hero-badge">
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", display: "inline-block" }} />
-            Jobingen is hiring
+      {/* Page Header */}
+      <div className="page-head">
+        <div className="page-head-inner">
+          <div className="page-head-left">
+            <div className="page-head-title">Open Positions</div>
+            <div className="page-head-sub">Jobs listed via Jobingen</div>
           </div>
-          <h1 className="hero-h1">
-            Build the future of<br />job search in India
-          </h1>
-          <p className="hero-sub">
-            Join a fast-growing team helping millions of Indian professionals find better opportunities.
-          </p>
-          <div className="hero-stats">
-            <div className="hero-stat">
-              <div>
-                <div className="hero-stat-n">{jobs.length}</div>
-                <div className="hero-stat-l">Open Roles</div>
-              </div>
-            </div>
-            <div className="hero-stat">
-              <div>
-                <div className="hero-stat-n">100%</div>
-                <div className="hero-stat-l">Remote Friendly</div>
-              </div>
-            </div>
-            <div className="hero-stat">
-              <div>
-                <div className="hero-stat-n">Fast</div>
-                <div className="hero-stat-l">Response Time</div>
-              </div>
-            </div>
+          <div className="page-head-count">
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--grn)", display: "inline-block" }} />
+            {jobs.length} {jobs.length === 1 ? "role" : "roles"} open
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Main */}
       <div className="page">
-
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <div className="sidebar-title">Filter Jobs</div>
-
-          <div className="filter-group">
-            <div className="filter-label">Job Type</div>
-            <span className="filter-pill active">All</span>
-            <span className="filter-pill">Full Time</span>
-            <span className="filter-pill">Part Time</span>
-            <span className="filter-pill">Internship</span>
-          </div>
-
-          <div className="filter-group">
-            <div className="filter-label">Work Mode</div>
-            <span className="filter-pill active">All</span>
-            <span className="filter-pill">Remote</span>
-            <span className="filter-pill">On-site</span>
-            <span className="filter-pill">Hybrid</span>
-          </div>
-
-          <div className="filter-group">
-            <div className="filter-label">Department</div>
-            <span className="filter-pill active">All</span>
-            <span className="filter-pill">Engineering</span>
-            <span className="filter-pill">Product</span>
-            <span className="filter-pill">Research</span>
-            <span className="filter-pill">Operations</span>
-          </div>
-
-          <div className="sidebar-divider" />
-
-          <div className="alert-box">
-            <p>Get notified when new roles matching your profile are posted.</p>
-            <Link href="/register" className="alert-btn">
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Set Job Alert
-            </Link>
-          </div>
-        </aside>
-
-        {/* Jobs */}
         <main>
           <div className="jobs-header">
             <div className="jobs-title-row">
@@ -420,7 +351,7 @@ export default async function JobsPage() {
               <div style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.65 }}>We&apos;re growing fast — check back soon for new opportunities.</div>
             </div>
           ) : (
-            <div>
+            <div className="jobs-grid">
               {jobs.map((job: Job) => (
                 <JobCard key={job.id} job={job} />
               ))}
@@ -453,8 +384,11 @@ function JobCard({ job }: { job: Job }) {
     <div className="job-card">
       <div className="job-card-body">
         {/* Logo */}
-        <div className="job-logo" style={{ background: getGradient(job.company) }}>
-          {getInitials(job.company)}
+        <div className="job-logo" style={{ background: COMPANY_LOGOS[job.company] ? "#fff" : getGradient(job.company) }}>
+          {COMPANY_LOGOS[job.company]
+            ? <img src={COMPANY_LOGOS[job.company]} alt={job.company} />
+            : getInitials(job.company)
+          }
         </div>
 
         {/* Info */}
