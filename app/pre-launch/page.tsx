@@ -74,6 +74,68 @@ function PromoPopup() {
   )
 }
 
+const PL_MENTORS = [
+  {
+    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd Technologies",
+    initials: "AD", photo: "/mentors/aditya-dubey.jpg",
+    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
+  },
+  {
+    name: "Sonic Payeng", role: "AI Engineer", company: "Dell Technologies",
+    initials: "SP", photo: "/mentors/sonic-payeng.jpg",
+    desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He works at Dell Technologies on the Dell Automation Platform, building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
+    linkedin: "https://www.linkedin.com/in/sonic-payeng-7ab8a8212/",
+  },
+  {
+    name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG",
+    initials: "JV", photo: "/mentors/jitesh-vijaykumar.jpg",
+    desc: "Jitesh has 5+ years building scalable AI solutions for enterprise systems. At KPMG, he designs and implements AI-powered solutions that improve decision-making, automation, and operational efficiency for organizations.",
+    linkedin: "https://www.linkedin.com/in/jitesh-vijaykumar-b2786814b/",
+  },
+  {
+    name: "Shubham Kaushik", role: "AI & Financial Intelligence Researcher", company: "KPMG",
+    initials: "SK", photo: "/mentors/shubham-kaushik.jpg",
+    desc: "Shubham has 5+ years in AI, machine learning, and full-stack development. His research spans LLMs, intelligent data systems, and scalable financial AI applications at KPMG.",
+    linkedin: "https://www.linkedin.com/in/eskaykaushik/",
+  },
+]
+
+function PLMentorCard({ m }: { m: typeof PL_MENTORS[0] }) {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <div className="pl-mcard">
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={m.photo} alt={m.name} className="pl-mphoto"
+          onError={(e) => {
+            e.currentTarget.style.display = "none"
+            const fb = e.currentTarget.nextElementSibling as HTMLElement
+            if (fb) fb.style.display = "flex"
+          }}
+        />
+        <div className="pl-mfallback" style={{ display: "none" }}>{m.initials}</div>
+        <div>
+          <div className="pl-mname">{m.name}</div>
+          <div className="pl-mrole">{m.role}</div>
+          <span className="pl-mco">{m.company}</span>
+        </div>
+      </div>
+      <div className="pl-mdiv" />
+      <p className={`pl-mdesc${expanded ? "" : " clamped"}`}>{m.desc}</p>
+      <button className="pl-mmore" onClick={() => setExpanded(v => !v)}>
+        {expanded ? "View Less ↑" : "View More ↓"}
+      </button>
+      <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="pl-mli">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+    </div>
+  )
+}
+
 export default function PreLaunchPage() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -494,6 +556,30 @@ export default function PreLaunchPage() {
           .pl-ppill{font-size:13px;padding:6px 18px}
           .pl-ft-brand img{height:55px!important}
         }
+
+        /* ═══ BOOTCAMP MENTORS ═══ */
+        .pl-mentors{padding:60px 32px 72px;background:#fff}
+        .pl-mentors-wrap{max-width:1100px;margin:0 auto}
+        .pl-mentors-label{font-size:11px;font-weight:700;color:#1d3a8f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;text-align:center}
+        .pl-mentors-heading{font-size:clamp(22px,3vw,34px);font-weight:900;color:#09090f;letter-spacing:-.03em;text-align:center;margin-bottom:8px}
+        .pl-mentors-sub{font-size:14px;color:#5a5a7a;text-align:center;max-width:500px;margin:0 auto 36px;line-height:1.65}
+        .pl-mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+        @media(max-width:1024px){.pl-mgrid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:560px){.pl-mgrid{grid-template-columns:1fr}}
+        .pl-mcard{background:#f8f9ff;border:1px solid rgba(29,58,143,.08);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s cubic-bezier(.16,1,.3,1)}
+        .pl-mcard:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(29,58,143,.12)}
+        .pl-mphoto{width:60px;height:60px;border-radius:14px;object-fit:cover;object-position:top;flex-shrink:0;border:2px solid rgba(29,58,143,.1)}
+        .pl-mfallback{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#1d3a8f,#3b52f0);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+        .pl-mname{font-size:15px;font-weight:800;color:#09090f;line-height:1.2}
+        .pl-mrole{font-size:11px;font-weight:600;color:#1d3a8f;margin-top:2px;line-height:1.4}
+        .pl-mco{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;background:#e8edfe;color:#1d3a8f;margin-top:4px}
+        .pl-mdiv{height:1px;background:rgba(0,0,0,.07)}
+        .pl-mdesc{font-size:12px;color:#5a5a7a;line-height:1.7;flex:1}
+        .pl-mdesc.clamped{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+        .pl-mmore{background:none;border:none;padding:0;font-size:11.5px;font-weight:700;color:#1d3a8f;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+        .pl-mli{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:#e8edfe;color:#1d3a8f;font-size:12px;font-weight:700;text-decoration:none;border:1px solid rgba(29,58,143,.15);transition:all .2s ease;margin-top:auto}
+        .pl-mli:hover{background:#1d3a8f;color:#fff}
+        @media(max-width:640px){.pl-mentors{padding:40px 16px 52px}}
       `}</style>
 
       <PromoPopup />
@@ -681,6 +767,22 @@ export default function PreLaunchPage() {
             </Reveal>
           </div>
         </section>
+
+        {/* ═══ BOOTCAMP MENTORS ═══ */}
+        <Reveal>
+          <section className="pl-mentors">
+            <div className="pl-mentors-wrap">
+              <div className="pl-mentors-label">Our Upcoming Bootcamp Mentors</div>
+              <h2 className="pl-mentors-heading">Learn from Industry Experts</h2>
+              <p className="pl-mentors-sub">
+                AI engineers and researchers from top companies who will guide you live through every session.
+              </p>
+              <div className="pl-mgrid">
+                {PL_MENTORS.map((m) => <PLMentorCard key={m.name} m={m} />)}
+              </div>
+            </div>
+          </section>
+        </Reveal>
 
         {/* ═══ PORTALS — infinite ticker ═══ */}
         <Reveal>

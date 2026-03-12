@@ -180,7 +180,9 @@ const CSS = `
   .mentor-role { font-size: 12px; font-weight: 600; color: var(--ind); line-height: 1.4; margin-top: 2px; }
   .mentor-co   { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--ind-l); color: var(--ind); letter-spacing: .03em; margin-top: 4px; }
   .mentor-divider { height: 1px; background: var(--border); }
-  .mentor-desc { font-size: 12.5px; color: var(--ink2); line-height: 1.72; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+  .mentor-desc { font-size: 12.5px; color: var(--ink2); line-height: 1.72; flex: 1; }
+  .mentor-desc.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .mentor-more { margin-top: 6px; background: none; border: none; padding: 0; font-size: 12px; font-weight: 700; color: var(--ind); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
   .mentor-linkedin {
     display: inline-flex; align-items: center; gap: 7px;
     font-size: 12px; font-weight: 700; color: var(--ind); text-decoration: none;
@@ -195,12 +197,21 @@ const CSS = `
 // ─── Mentor Data ─────────────────────────────────────────────────
 const MENTORS = [
   {
+    name: "Aditya Dubey",
+    role: "AI Strategy & Implementation Consultant",
+    company: "Cograd Technologies",
+    initials: "AD",
+    photo: "/mentors/aditya-dubey.jpg",
+    desc: "Aditya Dubey is an AI strategy and implementation consultant focused on helping organizations leverage artificial intelligence for business growth, automation, and operational transformation. He has mentored more than 12,000 professionals and students in AI technologies and practical industry applications. With an M.Tech in Information Systems from NIT Allahabad, Aditya works on translating complex AI concepts into real-world solutions that drive measurable impact for businesses and startups.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
+  },
+  {
     name: "Sonic Payeng",
     role: "AI Engineer",
     company: "Dell Technologies",
     initials: "SP",
     photo: "/mentors/sonic-payeng.jpg",
-    desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He completed his M.Tech in AI & Data Science from NIT Allahabad (MNNIT) and works at Dell Technologies on the Dell Automation Platform — building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
+    desc: "Sonic Payeng is an AI engineer specializing in applied machine learning, intelligent automation, and large language model systems. He completed his M.Tech in Artificial Intelligence and Data Science from NIT Allahabad (MNNIT) and currently works at Dell Technologies on the Dell Automation Platform. His work focuses on building AI-driven automation solutions across on-premise, SaaS, and hybrid cloud environments. Sonic has extensive experience developing neural networks, fine-tuning LLMs, and designing intelligent systems that transform complex manual workflows into highly efficient automated processes.",
     linkedin: "https://www.linkedin.com/in/sonic-payeng-7ab8a8212/",
   },
   {
@@ -209,7 +220,7 @@ const MENTORS = [
     company: "KPMG",
     initials: "JV",
     photo: "/mentors/jitesh-vijaykumar.jpg",
-    desc: "Jitesh has 5+ years of experience building scalable AI solutions for enterprise systems. With an M.Tech in AI & Data Science, he focuses on practical machine learning applications at KPMG — designing AI-powered solutions that improve decision-making, automation, and operational efficiency.",
+    desc: "Jitesh Vijaykumar is an AI engineer with over five years of experience building scalable artificial intelligence solutions for enterprise systems. With an M.Tech in Artificial Intelligence and Data Science, his work focuses on developing practical machine learning applications that solve real-world business problems. At KPMG, he contributes to designing and implementing AI-powered solutions that improve decision-making, automation, and operational efficiency for organizations.",
     linkedin: "https://www.linkedin.com/in/jitesh-vijaykumar-b2786814b/",
   },
   {
@@ -218,19 +229,53 @@ const MENTORS = [
     company: "KPMG",
     initials: "SK",
     photo: "/mentors/shubham-kaushik.jpg",
-    desc: "Shubham has 5+ years in AI, machine learning, and full-stack development. His research spans LLMs, intelligent data systems, and scalable financial AI applications. Prior to KPMG, he worked as a Research Assistant at MNNIT Allahabad on advanced AI methodologies.",
+    desc: "Shubham Kaushik is an AI and financial intelligence researcher with more than five years of experience in artificial intelligence, machine learning, and full-stack development. His work focuses on applied AI research, including large language models, intelligent data systems, and scalable applications for financial analysis and enterprise solutions. Prior to joining KPMG, he worked as a Research Assistant at Motilal Nehru National Institute of Technology Allahabad, contributing to research in advanced AI methodologies and intelligent systems.",
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
   },
-  {
-    name: "Aditya Dubey",
-    role: "AI Strategy & Implementation Consultant",
-    company: "Cograd Technologies",
-    initials: "AD",
-    photo: "/mentors/aditya-dubey.jpg",
-    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies and industry applications. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
-    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
-  },
 ]
+
+function MentorCard({ m }: { m: typeof MENTORS[0] }) {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <div className="mentor-card">
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={m.photo}
+          alt={m.name}
+          className="mentor-photo"
+          onError={(e) => {
+            e.currentTarget.style.display = "none"
+            const fb = e.currentTarget.nextElementSibling as HTMLElement
+            if (fb) fb.style.display = "flex"
+          }}
+        />
+        <div className="mentor-photo-fallback" style={{ display: "none" }}>{m.initials}</div>
+        <div>
+          <div className="mentor-name">{m.name}</div>
+          <div className="mentor-role">{m.role}</div>
+          <span className="mentor-co">{m.company}</span>
+        </div>
+      </div>
+      <div className="mentor-divider" />
+      <p className={`mentor-desc${expanded ? "" : " clamped"}`}>{m.desc}</p>
+      <button className="mentor-more" onClick={() => setExpanded(v => !v)}>
+        {expanded ? "View Less ↑" : "View More ↓"}
+      </button>
+      <a
+        href={m.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mentor-linkedin"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn Profile
+      </a>
+    </div>
+  )
+}
 
 function MentorsSection() {
   return (
@@ -244,43 +289,7 @@ function MentorsSection() {
         </p>
       </div>
       <div className="mentors-grid">
-        {MENTORS.map((m) => (
-          <div className="mentor-card" key={m.name}>
-            {/* Photo + identity */}
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={m.photo}
-                alt={m.name}
-                className="mentor-photo"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none"
-                  const fb = e.currentTarget.nextElementSibling as HTMLElement
-                  if (fb) fb.style.display = "flex"
-                }}
-              />
-              <div className="mentor-photo-fallback" style={{ display: "none" }}>{m.initials}</div>
-              <div>
-                <div className="mentor-name">{m.name}</div>
-                <div className="mentor-role">{m.role}</div>
-                <span className="mentor-co">{m.company}</span>
-              </div>
-            </div>
-            <div className="mentor-divider" />
-            <p className="mentor-desc">{m.desc}</p>
-            <a
-              href={m.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mentor-linkedin"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-              LinkedIn Profile
-            </a>
-          </div>
-        ))}
+        {MENTORS.map((m) => <MentorCard key={m.name} m={m} />)}
       </div>
     </div>
   )
