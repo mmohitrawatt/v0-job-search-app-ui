@@ -557,6 +557,34 @@ export default function PreLaunchPage() {
           .pl-ft-brand img{height:55px!important}
         }
 
+        /* ═══ JOBS SECTION ═══ */
+        .pl-jobs{padding:60px 32px 72px;background:#f4f6fb}
+        .pl-jobs-wrap{max-width:1100px;margin:0 auto}
+        .pl-jobs-label{font-size:11px;font-weight:700;color:#1d3a8f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;text-align:center}
+        .pl-jobs-heading{font-size:clamp(22px,3vw,34px);font-weight:900;color:#09090f;letter-spacing:-.03em;text-align:center;margin-bottom:8px}
+        .pl-jobs-sub{font-size:14px;color:#5a5a7a;text-align:center;max-width:480px;margin:0 auto 36px;line-height:1.65}
+        .pl-jcard{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:18px;overflow:hidden;margin-bottom:12px;transition:transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s ease;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+        .pl-jcard:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(29,58,143,.11);border-color:rgba(29,58,143,.18)}
+        .pl-jcard-body{padding:20px 22px 16px;display:flex;gap:14px;align-items:flex-start}
+        .pl-jlogo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;letter-spacing:-.01em}
+        .pl-jinfo{flex:1;min-width:0}
+        .pl-jtitle{font-size:15px;font-weight:800;color:#09090f;margin-bottom:3px;letter-spacing:-.02em;line-height:1.25}
+        .pl-jcompany{font-size:12px;font-weight:600;color:#5a5a7a;margin-bottom:10px}
+        .pl-jtags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+        .pl-jtag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;letter-spacing:.01em}
+        .pl-jtag-type{background:#e8edfe;color:#1d3a8f}
+        .pl-jtag-mode{background:#f5f3ff;color:#7c3aed}
+        .pl-jtag-live{background:#ecfdf5;color:#10b981;display:inline-flex;align-items:center;gap:3px}
+        .pl-jloc{font-size:11px;color:#8a8aa8;display:flex;align-items:center;gap:4px}
+        .pl-jcard-foot{padding:10px 22px;border-top:1px solid rgba(0,0,0,.06);background:#fafbff;display:flex;align-items:center;justify-content:space-between;gap:10px}
+        .pl-japply{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#1d3a8f,#2548c5);color:#fff;font-size:11px;font-weight:800;padding:7px 16px;border-radius:9px;text-decoration:none;box-shadow:0 3px 10px rgba(29,58,143,.25);transition:all .18s ease}
+        .pl-japply:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(29,58,143,.35)}
+        .pl-jposted{font-size:10px;color:#8a8aa8;font-weight:500}
+        .pl-jobs-cta{text-align:center;margin-top:28px}
+        .pl-jobs-cta a{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#1d3a8f;text-decoration:none;padding:10px 20px;border-radius:11px;border:1.5px solid rgba(29,58,143,.2);background:#e8edfe;transition:all .18s ease}
+        .pl-jobs-cta a:hover{background:#1d3a8f;color:#fff}
+        @media(max-width:640px){.pl-jobs{padding:40px 16px 52px}.pl-jcard-foot{flex-direction:column;align-items:stretch}.pl-japply{justify-content:center;width:100%}}
+
         /* ═══ BOOTCAMP MENTORS ═══ */
         .pl-mentors{padding:60px 32px 72px;background:#fff}
         .pl-mentors-wrap{max-width:1100px;margin:0 auto}
@@ -767,6 +795,57 @@ export default function PreLaunchPage() {
             </Reveal>
           </div>
         </section>
+
+        {/* ═══ JOBS SECTION ═══ */}
+        <Reveal>
+          <section className="pl-jobs">
+            <div className="pl-jobs-wrap">
+              <div className="pl-jobs-label">We&apos;re Hiring</div>
+              <h2 className="pl-jobs-heading">Open Positions at Jobingen</h2>
+              <p className="pl-jobs-sub">
+                Join our team and help build the future of job search in India. We&apos;re growing fast.
+              </p>
+              {[
+                { title: "Technology Transfer & IP Manager", company: "IIT Kanpur (IITK)", location: "Kanpur, Uttar Pradesh", type: "Full Time", mode: "On-site", slug: "ip-manager-iitk", initials: "IK", gradient: "linear-gradient(135deg,#1d3a8f,#3b52f0)" },
+              ].map((job) => (
+                <div className="pl-jcard" key={job.slug}>
+                  <div className="pl-jcard-body">
+                    <div className="pl-jlogo" style={{ background: job.gradient }}>{job.initials}</div>
+                    <div className="pl-jinfo">
+                      <div className="pl-jtitle">{job.title}</div>
+                      <div className="pl-jcompany">{job.company}</div>
+                      <div className="pl-jtags">
+                        <span className="pl-jtag pl-jtag-type">{job.type}</span>
+                        <span className="pl-jtag pl-jtag-mode">{job.mode}</span>
+                        <span className="pl-jtag pl-jtag-live">
+                          <span style={{ width:5,height:5,borderRadius:"50%",background:"#10b981",display:"inline-block" }} />
+                          Hiring Now
+                        </span>
+                      </div>
+                      <div className="pl-jloc">
+                        <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+                        {job.location}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pl-jcard-foot">
+                    <span className="pl-jposted">Posted recently · via Jobingen</span>
+                    <a href={`/jobs/${job.slug}`} className="pl-japply">
+                      Apply Now
+                      <svg width="11" height="11" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </a>
+                  </div>
+                </div>
+              ))}
+              <div className="pl-jobs-cta">
+                <a href="/jobs">
+                  View All Open Positions
+                  <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+          </section>
+        </Reveal>
 
         {/* ═══ BOOTCAMP MENTORS ═══ */}
         <Reveal>
