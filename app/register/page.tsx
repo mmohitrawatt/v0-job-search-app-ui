@@ -197,15 +197,6 @@ const CSS = `
 // ─── Mentor Data ─────────────────────────────────────────────────
 const MENTORS = [
   {
-    name: "Aditya Dubey",
-    role: "AI Strategy & Implementation Consultant",
-    company: "Cograd Technologies",
-    initials: "AD",
-    photo: "/mentors/aditya-dubey.jpg",
-    desc: "Aditya Dubey is an AI strategy and implementation consultant focused on helping organizations leverage artificial intelligence for business growth, automation, and operational transformation. He has mentored more than 12,000 professionals and students in AI technologies and practical industry applications. With an M.Tech in Information Systems from NIT Allahabad, Aditya works on translating complex AI concepts into real-world solutions that drive measurable impact for businesses and startups.",
-    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
-  },
-  {
     name: "Sonic Payeng",
     role: "Software Engineer 2 (SWE2)",
     company: "Dell Technologies",
@@ -231,6 +222,15 @@ const MENTORS = [
     photo: "/mentors/shubham-kaushik.jpg",
     desc: "Shubham Kaushik is an AI and financial intelligence researcher with more than five years of experience in artificial intelligence, machine learning, and full-stack development. His work focuses on applied AI research, including large language models, intelligent data systems, and scalable applications for financial analysis and enterprise solutions. Prior to joining KPMG, he worked as a Research Assistant at Motilal Nehru National Institute of Technology Allahabad, contributing to research in advanced AI methodologies and intelligent systems.",
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
+  },
+  {
+    name: "Aditya Dubey",
+    role: "AI Strategy & Implementation Consultant",
+    company: "Cograd Technologies",
+    initials: "AD",
+    photo: "/mentors/aditya-dubey.jpg",
+    desc: "Aditya Dubey is an AI strategy and implementation consultant focused on helping organizations leverage artificial intelligence for business growth, automation, and operational transformation. He has mentored more than 12,000 professionals and students in AI technologies and practical industry applications. With an M.Tech in Information Systems from NIT Allahabad, Aditya works on translating complex AI concepts into real-world solutions that drive measurable impact for businesses and startups.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
   },
 ]
 

@@ -76,12 +76,6 @@ function PromoPopup() {
 
 const PL_MENTORS = [
   {
-    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd Technologies",
-    initials: "AD", photo: "/mentors/aditya-dubey.jpg",
-    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
-    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
-  },
-  {
     name: "Sonic Payeng", role: "Software Engineer 2 (SWE2)", company: "Dell Technologies",
     initials: "SP", photo: "/mentors/sonic-payeng.jpg",
     desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He works at Dell Technologies on the Dell Automation Platform, building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
@@ -98,6 +92,12 @@ const PL_MENTORS = [
     initials: "SK", photo: "/mentors/shubham-kaushik.jpg",
     desc: "Shubham has 5+ years in AI, machine learning, and full-stack development. His research spans LLMs, intelligent data systems, and scalable financial AI applications at KPMG.",
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
+  },
+  {
+    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd Technologies",
+    initials: "AD", photo: "/mentors/aditya-dubey.jpg",
+    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
   },
 ]
 
