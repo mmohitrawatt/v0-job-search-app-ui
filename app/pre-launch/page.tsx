@@ -82,7 +82,7 @@ const PL_MENTORS = [
     linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
   },
   {
-    name: "Sonic Payeng", role: "AI Engineer", company: "Dell Technologies",
+    name: "Sonic Payeng", role: "Software Engineer 2 (SWE2)", company: "Dell Technologies",
     initials: "SP", photo: "/mentors/sonic-payeng.jpg",
     desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He works at Dell Technologies on the Dell Automation Platform, building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
     linkedin: "https://www.linkedin.com/in/sonic-payeng-7ab8a8212/",

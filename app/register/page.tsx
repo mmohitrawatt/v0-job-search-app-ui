@@ -207,7 +207,7 @@ const MENTORS = [
   },
   {
     name: "Sonic Payeng",
-    role: "AI Engineer",
+    role: "Software Engineer 2 (SWE2)",
     company: "Dell Technologies",
     initials: "SP",
     photo: "/mentors/sonic-payeng.jpg",
