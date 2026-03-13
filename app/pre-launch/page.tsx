@@ -96,7 +96,7 @@ const PL_MENTORS = [
   {
     name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd Technologies",
     initials: "AD", photo: "/mentors/aditya-dubey.jpg",
-    desc: "Aditya has mentored 12,000+ professionals and students in AI technologies. With an M.Tech in Information Systems from NIT Allahabad, he helps organizations leverage AI for business growth, automation, and operational transformation.",
+    desc: "An expert in building scalable systems and managing the full project lifecycle. With 3+ years of experience as an AI Engineer, he specializes in the strategic application of LLMs, Multi-Agent systems, and Offline AI models. Beyond engineering, he is a dedicated mentor to 12,000+ students and professionals, bridging the gap between cutting-edge technology and education.",
     linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
   },
 ]
