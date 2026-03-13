@@ -7,10 +7,9 @@ import { useApp } from "@/lib/app-context"
 type InterviewType = "behavioral" | "technical" | "hr"
 type Phase = "welcome" | "question" | "feedback" | "summary"
 
-const INTERVIEW_DATA: Record<InterviewType, { label: string; icon: string; questions: { q: string; tips: string; score: number }[] }> = {
+const INTERVIEW_DATA: Record<InterviewType, { label: string; questions: { q: string; tips: string; score: number }[] }> = {
   behavioral: {
     label: "Behavioral",
-    icon: "🧠",
     questions: [
       { q: "Tell me about a time you led a project under tight deadlines. How did you manage it?", tips: "Use STAR method. Focus on your specific role, actions taken, and measurable outcomes.", score: 8 },
       { q: "Describe a situation where you had to work with a difficult team member. What did you do?", tips: "Show emotional intelligence. Emphasize communication and how the relationship improved.", score: 7 },
@@ -21,7 +20,6 @@ const INTERVIEW_DATA: Record<InterviewType, { label: string; icon: string; quest
   },
   technical: {
     label: "Technical",
-    icon: "⚙️",
     questions: [
       { q: "Explain the architecture of a real-time recommendation system for 100 million users.", tips: "Split into retrieval (two-tower + ANN) and ranking stages. Cover latency, cold-start, and data freshness.", score: 8 },
       { q: "How would you detect and handle data drift in a production ML model?", tips: "Mention PSI, KS-test, Evidently AI. Cover retraining triggers and rollback strategy.", score: 7 },
@@ -32,7 +30,6 @@ const INTERVIEW_DATA: Record<InterviewType, { label: string; icon: string; quest
   },
   hr: {
     label: "HR Round",
-    icon: "💼",
     questions: [
       { q: "Where do you see yourself in 5 years?", tips: "Align with the company's growth trajectory. Show ambition but also commitment to the current role.", score: 8 },
       { q: "Why do you want to join our company specifically?", tips: "Research their recent products, culture, and mission. Be specific — avoid generic answers.", score: 9 },
@@ -43,10 +40,10 @@ const INTERVIEW_DATA: Record<InterviewType, { label: string; icon: string; quest
   },
 }
 
-const TYPE_OPTIONS: { id: InterviewType; label: string; icon: string; desc: string }[] = [
-  { id: "behavioral", label: "Behavioral", icon: "🧠", desc: "STAR method, leadership, conflict resolution" },
-  { id: "technical", label: "Technical", icon: "⚙️", desc: "ML systems, architecture, algorithms" },
-  { id: "hr", label: "HR Round", icon: "💼", desc: "Salary, culture fit, career goals" },
+const TYPE_OPTIONS: { id: InterviewType; label: string; desc: string }[] = [
+  { id: "behavioral", label: "Behavioral", desc: "STAR method, leadership, conflict resolution" },
+  { id: "technical", label: "Technical", desc: "ML systems, architecture, algorithms" },
+  { id: "hr", label: "HR Round", desc: "Salary, culture fit, career goals" },
 ]
 
 export function AiInterviewScreen() {
@@ -87,7 +84,7 @@ export function AiInterviewScreen() {
   }
 
   function handleFinish() {
-    showToast("Mock interview complete! Great work 🎉", "success")
+    showToast("Mock interview complete. Well done.", "success")
     goBack()
   }
 
@@ -105,20 +102,17 @@ export function AiInterviewScreen() {
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
 
-        {/* AI avatar */}
+        {/* Vibe avatar */}
         <div className="relative">
-          <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)" }}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <circle cx="9" cy="6" r="3" stroke="white" strokeWidth="1.4"/>
-              <path d="M3 15C3 12.5 5.69 10.5 9 10.5C12.31 10.5 15 12.5 15 15" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-            </svg>
+          <div className="w-9 h-9 rounded-[10px] bg-foreground flex items-center justify-center text-background font-bold text-[13px]">
+            Vi
           </div>
           <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-card" />
         </div>
 
         <div>
-          <p className="text-[13px] font-bold text-foreground">AI Interview Coach</p>
-          <p className="text-[10px] text-muted-foreground font-medium">Powered by AI · Mock sessions</p>
+          <p className="text-[13px] font-bold text-foreground">Interview Coach</p>
+          <p className="text-[10px] text-muted-foreground font-medium">Mock sessions · 5 questions</p>
         </div>
 
         {phase === "question" && interviewType && (
@@ -134,14 +128,14 @@ export function AiInterviewScreen() {
         {/* Welcome Phase */}
         {phase === "welcome" && (
           <div>
-            {/* AI greeting bubble */}
+            {/* Greeting bubble */}
             <div className="flex items-start gap-2.5 mb-6">
-              <div className="w-8 h-8 rounded-[8px] flex items-center justify-center text-white flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)" }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="white" strokeWidth="1.3"/><path d="M2.5 13C2.5 10.79 5.02 9 8 9C10.98 9 13.5 10.79 13.5 13" stroke="white" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              <div className="w-8 h-8 rounded-[8px] bg-foreground flex items-center justify-center text-background font-bold text-[11px] flex-shrink-0 mt-0.5">
+                Vi
               </div>
               <div className="bg-accent rounded-[14px] rounded-tl-[4px] px-4 py-3 max-w-[85%]">
                 <p className="text-[13px] font-semibold text-foreground leading-relaxed">
-                  Hey {displayName}! 👋 I&apos;m your <span className="text-primary font-bold">AI Interview Coach</span>.
+                  Hello {displayName}, I&apos;m <span className="text-primary font-bold">Vibe</span>, your interview coach.
                 </p>
                 <p className="text-[12px] text-muted-foreground mt-1.5 leading-relaxed">
                   We&apos;ll practice 5 questions tailored to your ML background and Swiggy experience. Which round would you like to focus on?
@@ -158,7 +152,9 @@ export function AiInterviewScreen() {
                   onClick={() => startInterview(opt.id)}
                   className="w-full flex items-center gap-3 bg-card rounded-[14px] p-4 shadow-card border border-border card-tap text-left"
                 >
-                  <span className="text-[24px] flex-shrink-0">{opt.icon}</span>
+                  <div className="w-9 h-9 rounded-[10px] bg-accent flex items-center justify-center flex-shrink-0">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-primary"><circle cx="8" cy="5.5" r="2.5" stroke="currentColor" strokeWidth="1.3"/><path d="M2.5 13C2.5 10.79 5.02 9 8 9C10.98 9 13.5 10.79 13.5 13" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                  </div>
                   <div className="flex-1">
                     <p className="text-[13px] font-bold text-foreground">{opt.label}</p>
                     <p className="text-[11px] text-muted-foreground mt-0.5">{opt.desc}</p>
@@ -171,7 +167,7 @@ export function AiInterviewScreen() {
             {/* Info chip */}
             <div className="mt-4 bg-primary/8 rounded-[12px] px-4 py-3 flex items-center gap-2.5">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-primary flex-shrink-0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M8 7V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="5.5" r="0.75" fill="currentColor"/></svg>
-              <p className="text-[11px] text-primary font-medium">5 questions · AI feedback after each · Summary at end</p>
+              <p className="text-[11px] text-primary font-medium">5 questions · Feedback after each · Summary at end</p>
             </div>
           </div>
         )}
@@ -189,8 +185,8 @@ export function AiInterviewScreen() {
 
             {/* AI question bubble */}
             <div className="flex items-start gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-[8px] flex items-center justify-center text-white flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)" }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="white" strokeWidth="1.3"/><path d="M2.5 13C2.5 10.79 5.02 9 8 9C10.98 9 13.5 10.79 13.5 13" stroke="white" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              <div className="w-8 h-8 rounded-[8px] bg-foreground flex items-center justify-center text-background font-bold text-[11px] flex-shrink-0 mt-0.5">
+                Vi
               </div>
               <div>
                 <div className="bg-accent rounded-[14px] rounded-tl-[4px] px-4 py-3">
@@ -280,12 +276,12 @@ export function AiInterviewScreen() {
           <div>
             {/* AI summary bubble */}
             <div className="flex items-start gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-[8px] flex items-center justify-center text-white flex-shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)" }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="white" strokeWidth="1.3"/><path d="M2.5 13C2.5 10.79 5.02 9 8 9C10.98 9 13.5 10.79 13.5 13" stroke="white" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              <div className="w-8 h-8 rounded-[8px] bg-foreground flex items-center justify-center text-background font-bold text-[11px] flex-shrink-0 mt-0.5">
+                Vi
               </div>
               <div className="bg-accent rounded-[14px] rounded-tl-[4px] px-4 py-3">
                 <p className="text-[13px] font-semibold text-foreground leading-relaxed">
-                  Great work {displayName}! 🎉 You completed the <span className="text-primary font-bold">{INTERVIEW_DATA[interviewType].label}</span> round. Here&apos;s your performance summary:
+                  You completed the <span className="text-primary font-bold">{INTERVIEW_DATA[interviewType].label}</span> round. Here&apos;s your performance summary:
                 </p>
               </div>
             </div>
@@ -293,8 +289,7 @@ export function AiInterviewScreen() {
             {/* Overall score card */}
             <div className="bg-card rounded-[16px] p-5 shadow-card border border-border mb-4 text-center">
               <div
-                className="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-[28px] font-extrabold"
-                style={{ background: "linear-gradient(135deg, #4F46E5, #7C3AED)" }}
+                className="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-background text-[28px] font-extrabold bg-foreground"
               >
                 {avgScore}
               </div>
@@ -329,7 +324,7 @@ export function AiInterviewScreen() {
 
             {/* Next steps */}
             <div className="bg-primary/8 rounded-[12px] px-4 py-3 mb-5">
-              <p className="text-[11px] font-bold text-primary mb-1">AI Tip 💡</p>
+              <p className="text-[11px] font-bold text-primary mb-1">Coach Tip</p>
               <p className="text-[11px] text-foreground/80 leading-relaxed">
                 {avgScore >= 8
                   ? "Solid performance! Try another round next — especially the Technical round if you haven't yet."

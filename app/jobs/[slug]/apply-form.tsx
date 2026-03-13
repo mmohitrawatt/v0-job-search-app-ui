@@ -52,7 +52,7 @@ export default function ApplyForm({ jobSlug }: { jobSlug: string }) {
         padding: "32px 28px",
         textAlign: "center",
       }}>
-        <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>
+        <div style={{ marginBottom: 12, display: "flex", justifyContent: "center" }}><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="#15803d" strokeWidth="2"/><path d="M12 20L17.5 25.5L28 14" stroke="#15803d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
         <h3 style={{ fontSize: 18, fontWeight: 800, color: "#15803d", margin: "0 0 8px" }}>Application Submitted!</h3>
         <p style={{ fontSize: 15, color: "#166534", margin: 0, lineHeight: 1.6 }}>
           Application submitted successfully. Our team will review your resume.
@@ -106,7 +106,7 @@ export default function ApplyForm({ jobSlug }: { jobSlug: string }) {
           />
           {file ? (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-              <span style={{ fontSize: 22 }}>📄</span>
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style={{ color: "#15803d" }}><rect x="4" y="2" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="1.5"/><path d="M7.5 7.5H14.5M7.5 11H12M7.5 14.5H13" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#166534" }}>{file.name}</div>
                 <div style={{ fontSize: 12, color: "#15803d" }}>{(file.size / 1024).toFixed(1)} KB · Click to change</div>

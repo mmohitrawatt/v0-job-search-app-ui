@@ -3,7 +3,7 @@
 import { useState, useRef, ChangeEvent } from "react"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
-const UPI_ID = "jobingen@ybl"
+const UPI_ID = "jobingenai@ybl"
 const WHATSAPP = "7078211741"
 
 // ─── CSS ────────────────────────────────────────────────────────

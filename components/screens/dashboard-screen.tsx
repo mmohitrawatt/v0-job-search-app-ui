@@ -107,7 +107,7 @@ export function DashboardScreen() {
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-semibold text-muted-foreground leading-none mb-0.5">{getGreeting()}</p>
             <h1 className="text-[17px] font-extrabold text-foreground tracking-tight leading-none truncate">
-              {displayName} 👋
+              {displayName}
             </h1>
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -141,52 +141,38 @@ export function DashboardScreen() {
 
       <div className="px-4 lg:px-8 pt-5 pb-6">
 
-        {/* Vibe AI Career Strategist Card */}
+        {/* Vibe Career Strategist Card */}
         {!loading && (
           <button
             onClick={() => navigate("ai-interview")}
-            className="w-full rounded-[20px] mb-5 text-left tap-highlight-none btn-press overflow-hidden relative"
-            style={{ background: "linear-gradient(135deg, #312E81 0%, #4F46E5 45%, #7C3AED 100%)" }}
+            className="w-full rounded-[16px] mb-5 text-left tap-highlight-none btn-press overflow-hidden relative bg-foreground"
           >
-            {/* Decorative blobs */}
-            <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.3), transparent 70%)" }} />
-            <div className="absolute -bottom-6 left-10 w-24 h-24 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.4), transparent 70%)" }} />
-            {/* Dot grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.07]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
-
             <div className="relative p-4 pb-3.5">
-              {/* Top row: avatar + name + online badge */}
+              {/* Top row: avatar + name + available badge */}
               <div className="flex items-center gap-3 mb-3">
                 <div className="relative flex-shrink-0">
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-extrabold text-[15px] tracking-tight" style={{ background: "linear-gradient(135deg, #818CF8, #A78BFA)" }}>
+                  <div className="w-11 h-11 rounded-full bg-background flex items-center justify-center text-foreground font-extrabold text-[15px] tracking-tight">
                     Vi
                   </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-indigo-900" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-foreground" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-[16px] font-extrabold text-white leading-none tracking-tight">Vibe</p>
-                    <span className="text-[9px] font-bold text-emerald-300 bg-emerald-400/20 border border-emerald-400/30 px-1.5 py-0.5 rounded-full uppercase tracking-wide">Online</span>
-                    <span className="text-[9px] font-semibold text-violet-200 bg-violet-400/20 px-1.5 py-0.5 rounded-full">AI</span>
+                    <p className="text-[16px] font-extrabold text-background leading-none tracking-tight">Vibe</p>
+                    <span className="text-[9px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-1.5 py-0.5 rounded-full uppercase tracking-wide">Available</span>
                   </div>
-                  <p className="text-[11px] text-white/55 font-medium mt-0.5">Your AI Career Strategist</p>
+                  <p className="text-[11px] text-background/55 font-medium mt-0.5">Your Career Strategist</p>
                 </div>
-                <div className="flex-shrink-0 bg-white text-indigo-700 rounded-[10px] px-3.5 py-1.5">
-                  <p className="text-[12px] font-extrabold whitespace-nowrap">Chat Now →</p>
+                <div className="flex-shrink-0 bg-background/15 border border-background/25 rounded-[10px] px-3.5 py-1.5">
+                  <p className="text-[12px] font-extrabold whitespace-nowrap text-background">Start Session →</p>
                 </div>
               </div>
 
               {/* What Vibe can do */}
               <div className="flex items-center gap-2 flex-wrap">
-                {[
-                  { icon: "🎯", label: "Interview Prep" },
-                  { icon: "📄", label: "Resume Review" },
-                  { icon: "💰", label: "Salary Script" },
-                  { icon: "🗺️", label: "Career Path" },
-                ].map((item) => (
-                  <span key={item.label} className="flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 px-2 py-0.5 rounded-full">
-                    <span>{item.icon}</span>
-                    {item.label}
+                {["Interview Prep", "Resume Review", "Salary Script", "Career Path"].map((label) => (
+                  <span key={label} className="text-[10px] font-semibold text-background/60 bg-background/10 px-2 py-0.5 rounded-full">
+                    {label}
                   </span>
                 ))}
               </div>
@@ -200,14 +186,8 @@ export function DashboardScreen() {
 
         {/* Bootcamp Banner */}
         {!loading && (
-          <div className="w-full rounded-[20px] mb-5 overflow-hidden relative" style={{ background: "linear-gradient(135deg, #0D0D1A 0%, #1A0A2E 55%, #0D1520 100%)" }}>
-            {/* Glow blobs */}
-            <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.22), transparent 70%)" }} />
-            <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%)" }} />
-            {/* Dot grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
-
-            <div className="relative p-4">
+          <div className="w-full rounded-[16px] mb-5 overflow-hidden bg-[#111827] border border-white/5">
+            <div className="p-4">
               {/* Top row: LIVE badge + price */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -215,7 +195,7 @@ export function DashboardScreen() {
                     <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
                     LIVE
                   </span>
-                  <span className="text-white/50 text-[10px] font-semibold">⏰ Ends in 2 days</span>
+                  <span className="text-white/50 text-[10px] font-semibold">Ends in 2 days</span>
                 </div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-[26px] font-extrabold text-white leading-none">₹99</span>
@@ -225,12 +205,12 @@ export function DashboardScreen() {
 
               {/* Title */}
               <p className="text-[18px] font-extrabold text-white leading-snug mb-2.5">
-                Sprint AI &amp; Interactive<br />Hackathon
+                Sprint &amp; Interactive<br />Hackathon
               </p>
 
               {/* Feature chips */}
               <div className="flex items-center gap-2 mb-3 flex-wrap">
-                {["🤖 AI Projects", "🏆 Compete", "📜 Certificate"].map((f) => (
+                {["Build Projects", "Compete", "Certificate"].map((f) => (
                   <span key={f} className="text-[10px] font-semibold text-white/65 bg-white/10 px-2.5 py-0.5 rounded-full">
                     {f}
                   </span>
@@ -244,7 +224,7 @@ export function DashboardScreen() {
                   <span className="text-[10px] text-orange-400 font-bold">73 seats left</span>
                 </div>
                 <div className="w-full h-[3px] bg-white/10 rounded-full">
-                  <div className="h-[3px] rounded-full" style={{ width: "63%", background: "linear-gradient(90deg, #F97316, #EF4444)" }} />
+                  <div className="h-[3px] rounded-full bg-orange-500" style={{ width: "63%" }} />
                 </div>
               </div>
 
@@ -253,14 +233,13 @@ export function DashboardScreen() {
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
                     {["#FBBF24", "#34D399", "#60A5FA", "#F472B6"].map((color, i) => (
-                      <div key={i} className="w-6 h-6 rounded-full border-2 flex-shrink-0" style={{ backgroundColor: color, borderColor: "#1A0A2E" }} />
+                      <div key={i} className="w-6 h-6 rounded-full border-2 flex-shrink-0" style={{ backgroundColor: color, borderColor: "#111827" }} />
                     ))}
                   </div>
                   <span className="text-[11px] text-white/55 font-semibold">500+ joined</span>
                 </div>
                 <button
-                  className="btn-press tap-highlight-none px-4 py-2 rounded-[12px] text-[13px] font-extrabold text-white"
-                  style={{ background: "linear-gradient(135deg, #F97316 0%, #EF4444 100%)" }}
+                  className="btn-press tap-highlight-none px-4 py-2 rounded-[10px] text-[13px] font-extrabold text-white bg-orange-500"
                 >
                   Reserve Seat →
                 </button>

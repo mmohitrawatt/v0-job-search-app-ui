@@ -395,15 +395,14 @@ export function ProfileScreen() {
 
                 {/* Contact */}
                 <div className="mt-3 pt-3 border-t border-border/50 space-y-1.5">
-                  {[
-                    { icon: "✉", text: profile.email },
-                    { icon: "📞", text: profile.phone },
-                  ].map((c) => (
-                    <div key={c.text} className="flex items-center gap-2">
-                      <span className="text-[10px]">{c.icon}</span>
-                      <span className="text-[11px] text-muted-foreground truncate">{c.text}</span>
-                    </div>
-                  ))}
+                  <div className="flex items-center gap-2">
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" className="text-muted-foreground flex-shrink-0"><rect x="1" y="2" width="9" height="7" rx="1.2" stroke="currentColor" strokeWidth="1.1"/><path d="M1 4L5.5 6.5L10 4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                    <span className="text-[11px] text-muted-foreground truncate">{profile.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" className="text-muted-foreground flex-shrink-0"><rect x="3" y="1" width="5" height="9" rx="1.2" stroke="currentColor" strokeWidth="1.1"/><circle cx="5.5" cy="8" r="0.5" fill="currentColor"/></svg>
+                    <span className="text-[11px] text-muted-foreground truncate">{profile.phone}</span>
+                  </div>
                 </div>
 
                 {/* Social */}

@@ -83,7 +83,7 @@ function ResumeList({ onCreate, onPreview, onTailor }: { onCreate: () => void; o
           </div>
         </button>
 
-        {/* AI Tailor for JD */}
+        {/* Resume Tailor for JD */}
         <button
           onClick={onTailor}
           className="w-full bg-card rounded-[14px] p-4 mb-3 border border-primary/30 shadow-card card-tap text-left"
@@ -95,7 +95,7 @@ function ResumeList({ onCreate, onPreview, onTailor }: { onCreate: () => void; o
               </svg>
             </div>
             <div className="flex-1">
-              <p className="text-[14px] font-semibold text-foreground">AI Tailor for a JD</p>
+              <p className="text-[14px] font-semibold text-foreground">Resume Tailor for a JD</p>
               <p className="text-[11px] text-muted-foreground mt-0.5">Paste job description — get a tailored resume</p>
             </div>
             <span className="text-[9px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full flex-shrink-0">AI</span>
@@ -706,7 +706,7 @@ function ResumeTailor({ onBack }: { onBack: () => void }) {
   }
 
   function handleApply() {
-    showToast("Resume tailored for the JD ✨", "success")
+    showToast("Resume tailored for the JD.", "success")
     onBack()
   }
 
@@ -714,7 +714,7 @@ function ResumeTailor({ onBack }: { onBack: () => void }) {
     <div className="flex-1 flex flex-col min-h-0 bg-background">
       <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-4 border-b border-border flex-shrink-0">
         <BackButton onBack={onBack} label="Resume" />
-        <h1 className="text-[19px] font-bold text-foreground mt-2">AI Tailor</h1>
+        <h1 className="text-[19px] font-bold text-foreground mt-2">Resume Tailor</h1>
         <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Paste a job description to optimize your resume</p>
       </div>
 
@@ -832,7 +832,7 @@ function ResumeTailor({ onBack }: { onBack: () => void }) {
               onClick={handleApply}
               className="w-full py-3.5 rounded-[14px] bg-primary text-primary-foreground text-[14px] font-bold btn-press mb-3"
             >
-              Apply All Changes ✨
+              Apply All Changes
             </button>
             <button
               onClick={() => setPhase("input")}

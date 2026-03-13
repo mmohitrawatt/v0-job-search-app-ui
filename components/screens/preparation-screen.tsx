@@ -131,7 +131,9 @@ function RoadmapTab({ jobTitle }: { jobTitle: string }) {
           </div>
           {doneCount === ROADMAP.length && (
             <div className="flex-shrink-0 text-center">
-              <div className="text-[22px]">🎉</div>
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mx-auto">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-emerald-600"><path d="M3 7L6 10L11 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
               <p className="text-[9px] font-bold text-emerald-600 mt-0.5">All Done!</p>
             </div>
           )}
@@ -337,7 +339,7 @@ function InterviewTab() {
         <p className="text-[14px] font-semibold text-foreground leading-relaxed">{q.q}</p>
         {q.tip && (
           <div className="mt-3 pt-3 border-t border-border/40 flex items-start gap-2">
-            <span className="text-[12px] flex-shrink-0">💡</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground flex-shrink-0 mt-0.5"><circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2"/><path d="M6 5V8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="6" cy="3.5" r="0.6" fill="currentColor"/></svg>
             <p className="text-[11px] text-muted-foreground leading-relaxed">{q.tip}</p>
           </div>
         )}
@@ -402,7 +404,7 @@ function InterviewTab() {
           )}
           {confidence && (
             <div className="flex items-center gap-2 pt-2 border-t border-emerald-200">
-              <span className="text-[12px]">{confidence === "easy" ? "✅" : confidence === "medium" ? "🟡" : "🔴"}</span>
+              <span className={cn("w-2 h-2 rounded-full flex-shrink-0", confidence === "easy" ? "bg-emerald-500" : confidence === "medium" ? "bg-amber-500" : "bg-red-500")} />
               <p className="text-[11px] font-semibold text-emerald-800">
                 {confidence === "easy" ? "Great! Moving to next…" : confidence === "medium" ? "Review this one again later" : "Mark for revision"}
               </p>
@@ -532,7 +534,7 @@ function QuestionsTab() {
                       </div>
                       {q.tip && (
                         <div className="flex items-start gap-2 p-3 rounded-[10px] bg-amber-50 border border-amber-100">
-                          <span className="text-[12px] flex-shrink-0">💡</span>
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-muted-foreground flex-shrink-0 mt-0.5"><circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2"/><path d="M6 5V8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="6" cy="3.5" r="0.6" fill="currentColor"/></svg>
                           <p className="text-[11.5px] text-amber-900 leading-relaxed">{q.tip}</p>
                         </div>
                       )}
@@ -588,40 +590,25 @@ export function PreparationScreen() {
       {/* Header */}
       <div className="flex-shrink-0">
 
-        {/* Rich gradient banner */}
-        <div className="relative overflow-hidden px-4 lg:px-8 pt-12 lg:pt-6 pb-5"
-          style={{ background: "linear-gradient(135deg, #0d1b45 0%, #142a6a 55%, #1d3a8f 100%)" }}>
-
-          {/* Dot grid overlay */}
-          <div className="absolute inset-0 opacity-[0.12]"
-            style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)", backgroundSize: "18px 18px" }} />
-          {/* Glow blobs */}
-          <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl"
-            style={{ background: "radial-gradient(circle, #8c9df6, transparent)" }} />
-          <div className="absolute bottom-0 left-8 w-32 h-24 rounded-full opacity-15 blur-2xl"
-            style={{ background: "radial-gradient(circle, #6074f3, transparent)" }} />
-
-          <div className="relative">
+        {/* Header */}
+        <div className="px-4 lg:px-8 pt-12 lg:pt-6 pb-5 bg-foreground">
+          <div>
             {/* Top row */}
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-200">5-Day AI Prep Plan</span>
-                  <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/15 text-white border border-white/25">AI</span>
-                </div>
-                <h1 className="text-[20px] font-bold text-white tracking-tight leading-tight">{job.title}</h1>
-                <p className="text-[12px] text-indigo-200 font-medium mt-0.5">{job.company} · {job.isRemote ? "Remote" : job.location}</p>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-background/50 mb-1.5 block">5-Day Prep Plan</span>
+                <h1 className="text-[20px] font-bold text-background tracking-tight leading-tight">{job.title}</h1>
+                <p className="text-[12px] text-background/55 font-medium mt-0.5">{job.company} · {job.isRemote ? "Remote" : job.location}</p>
               </div>
               <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                <div className={cn("w-11 h-11 rounded-[10px] flex items-center justify-center text-[12px] font-bold shadow-lg", job.color)}>
+                <div className={cn("w-11 h-11 rounded-[10px] flex items-center justify-center text-[12px] font-bold", job.color)}>
                   {job.initials}
                 </div>
-                <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30">
-                  🗓 Interview in 3d
+                <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-background/15 text-background/70 border border-background/20">
+                  Interview in 3d
                 </span>
               </div>
             </div>
-
           </div>
         </div>
 
