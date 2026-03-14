@@ -409,7 +409,7 @@ function UpiCard() {
       <div style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", padding:"20px 24px" }}>
         <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:4 }}>Registration Fee</div>
         <div style={{ display:"flex", alignItems:"flex-end", gap:8 }}>
-          <span style={{ fontSize:42, fontWeight:900, color:"white", lineHeight:1 }}>₹29</span>
+          <span style={{ fontSize:42, fontWeight:900, color:"white", lineHeight:1 }}>₹49</span>
           <div style={{ display:"flex", flexDirection:"column", marginBottom:5, gap:1 }}>
             <span style={{ fontSize:13, color:"rgba(255,255,255,0.4)", textDecoration:"line-through", lineHeight:1 }}>₹499</span>
             <span style={{ fontSize:11, color:"rgba(255,255,255,0.6)", fontWeight:600, lineHeight:1 }}>only</span>
@@ -423,7 +423,7 @@ function UpiCard() {
         {/* Steps */}
         <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
           {[
-            { n:"1", t:"Pay ₹29 using the QR code or UPI ID below" },
+            { n:"1", t:"Pay ₹49 using the QR code or UPI ID below" },
             { n:"2", t:"Note your UPI Transaction ID from the app" },
             { n:"3", t:"Fill it in the form and submit" },
           ].map(s => (
@@ -462,7 +462,7 @@ function UpiCard() {
         </div>
 
         <div style={{ fontSize:12, color:"var(--ink3)", lineHeight:1.6, padding:"10px 14px", borderRadius:10, background:"var(--amb-l)", border:"1px solid rgba(245,158,11,.18)" }}>
-          Scan the QR or send ₹29 to <strong style={{ color:"var(--ink2)" }}>{UPI_ID}</strong> via any UPI app, then fill in the transaction ID in the form.
+          Scan the QR or send ₹49 to <strong style={{ color:"var(--ink2)" }}>{UPI_ID}</strong> via any UPI app, then fill in the transaction ID in the form.
         </div>
 
         {/* WhatsApp help */}
@@ -639,7 +639,7 @@ function RegisterForm() {
             <p style={{ fontSize:15, color:"var(--ink2)", lineHeight:1.7 }}>
               Online · Happening within 2 weeks ·{" "}
               <span style={{ textDecoration:"line-through", color:"var(--ink3)", fontSize:14 }}>₹499</span>{" "}
-              <strong style={{ color:"var(--ind)" }}>₹29</strong> only · Limited seats
+              <strong style={{ color:"var(--ind)" }}>₹49</strong> only · Limited seats
             </p>
             <div style={{ marginTop:12, display:"inline-flex", alignItems:"center", gap:8, padding:"8px 14px", borderRadius:10, background:"var(--amb-l)", border:"1px solid rgba(245,158,11,0.25)", fontSize:12, color:"var(--amb)", fontWeight:700 }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M7 4V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
@@ -703,8 +703,8 @@ function RegisterForm() {
                 {/* Payment section label */}
                 <div style={{ fontSize:14, fontWeight:800, color:"var(--ink)" }}>
                   Payment Details
-                  <span className="hint-right" style={{ fontSize:11, fontWeight:600, color:"var(--ink3)", marginLeft:8 }}>Pay ₹29 via the QR on the right →</span>
-                  <span className="hint-mobile" style={{ fontSize:11, fontWeight:600, color:"var(--ink3)", marginLeft:8 }}>Pay ₹29 via the QR below ↓</span>
+                  <span className="hint-right" style={{ fontSize:11, fontWeight:600, color:"var(--ink3)", marginLeft:8 }}>Pay ₹49 via the QR on the right →</span>
+                  <span className="hint-mobile" style={{ fontSize:11, fontWeight:600, color:"var(--ink3)", marginLeft:8 }}>Pay ₹49 via the QR below ↓</span>
                 </div>
 
                 {/* UPI Transaction ID */}
@@ -716,7 +716,7 @@ function RegisterForm() {
                     onChange={e => set("upi_transaction_id", e.target.value)}
                   />
                   <div style={{ fontSize:11, color:"var(--ink3)", marginTop:2 }}>
-                    Find this in your UPI app after completing the ₹29 payment.
+                    Find this in your UPI app after completing the ₹49 payment.
                   </div>
                 </Field>
 
@@ -750,7 +750,7 @@ function RegisterForm() {
                       {form.agreed && <svg width="11" height="11" fill="none" viewBox="0 0 11 11"><path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                     </div>
                     <span style={{ fontSize:13, color:"var(--ink2)", lineHeight:1.6 }}>
-                      I agree to receive event communications via email and WhatsApp. I understand the ₹29 registration fee is non-refundable and my payment will be verified manually.
+                      I agree to receive event communications via email and WhatsApp. I understand the ₹49 registration fee is non-refundable and my payment will be verified manually.
                     </span>
                   </label>
                   {errors.agreed && <div style={{ fontSize:11, color:"var(--rose)", marginTop:6, marginLeft:32 }}>{errors.agreed}</div>}
@@ -768,7 +768,7 @@ function RegisterForm() {
                   style={{ fontSize:15, fontWeight:900, padding:"15px 28px", borderRadius:16, width:"100%", gap:10, transition:"opacity .2s" }}>
                   {loading
                     ? <><Spinner /> Registering...</>
-                    : <>Register for Next Bootcamp — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹29 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
+                    : <>Register for Next Bootcamp — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹49 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
                   }
                 </button>
 
