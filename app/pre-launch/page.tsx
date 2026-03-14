@@ -202,7 +202,7 @@ const PL_MENTORS = [
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
   },
   {
-    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd Technologies",
+    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd",
     initials: "AD", photo: "/mentors/aditya-dubey.jpg",
     desc: "An expert in building scalable systems and managing the full project lifecycle. With 3+ years of experience as an AI Engineer, he specializes in the strategic application of LLMs, Multi-Agent systems, and Offline AI models. Beyond engineering, he is a dedicated mentor to 12,000+ students and professionals, bridging the gap between cutting-edge technology and education.",
     linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",

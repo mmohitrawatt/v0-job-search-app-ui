@@ -225,7 +225,7 @@ const MENTORS = [
   {
     name: "Aditya Dubey",
     role: "AI Strategy & Implementation Consultant",
-    company: "Cograd Technologies",
+    company: "Cograd",
     initials: "AD",
     photo: "/mentors/aditya-dubey.jpg",
     desc: "Aditya Dubey is an AI strategy and implementation consultant focused on helping organizations leverage artificial intelligence for business growth, automation, and operational transformation. He has mentored more than 12,000 professionals and students in AI technologies and practical industry applications. With an M.Tech in Information Systems from NIT Allahabad, Aditya works on translating complex AI concepts into real-world solutions that drive measurable impact for businesses and startups.",
