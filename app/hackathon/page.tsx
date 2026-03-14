@@ -784,23 +784,6 @@ export default function HackathonRegisterPage() {
                 </div>
               </div>
 
-              {/* Help */}
-              <div style={{
-                padding: "14px 18px", borderRadius: 14,
-                background: "var(--ind-l)", border: "1px solid rgba(29,58,143,.15)",
-                fontSize: 12, color: "var(--ind2)", lineHeight: 1.6,
-              }}>
-                <span style={{ fontWeight: 700, color: "var(--ind)" }}>Need help?</span>{" "}
-                <span style={{ color: "var(--ink2)" }}>
-                  WhatsApp us at{" "}
-                  <a
-                    href="https://wa.me/7078211741"
-                    style={{ color: "var(--ind)", fontWeight: 700, textDecoration: "none" }}
-                  >
-                    +91 99999 99999
-                  </a>
-                </span>
-              </div>
             </div>
           </div>
         </div>
