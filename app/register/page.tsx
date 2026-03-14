@@ -460,7 +460,49 @@ function UpiCard() {
 }
 
 // ─── Main Page ───────────────────────────────────────────────────
+const REGISTRATION_CLOSED = true
+
+function ClosedScreen() {
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <div style={{ minHeight:"100vh", background:"var(--cream)", display:"flex", alignItems:"center", justifyContent:"center", padding:"40px 24px" }}>
+        <div style={{ maxWidth:420, width:"100%", background:"#fff", borderRadius:20, border:"1.5px solid var(--border)", boxShadow:"var(--shadow-md)", padding:"40px 36px", textAlign:"center" }}>
+          <div style={{ width:56, height:56, borderRadius:"50%", background:"var(--ind-l)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px" }}>
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <rect x="3" y="11" width="20" height="13" rx="2.5" stroke="var(--ind)" strokeWidth="1.8"/>
+              <path d="M8 11V7.5C8 4.46 10.46 2 13 2C15.54 2 18 4.46 18 7.5V11" stroke="var(--ind)" strokeWidth="1.8" strokeLinecap="round"/>
+              <circle cx="13" cy="17.5" r="1.5" fill="var(--ind)"/>
+            </svg>
+          </div>
+          <p style={{ fontSize:11, fontWeight:700, color:"var(--ind)", letterSpacing:".08em", textTransform:"uppercase", marginBottom:10 }}>Registration Closed</p>
+          <h1 style={{ fontSize:22, fontWeight:800, color:"var(--ink)", lineHeight:1.3, marginBottom:12 }}>
+            This Bootcamp is Full
+          </h1>
+          <p style={{ fontSize:14, color:"var(--ink2)", lineHeight:1.7, marginBottom:28 }}>
+            We&apos;ve reached capacity for this batch. Be ready — the next bootcamp is coming next month with new projects, mentors, and opportunities.
+          </p>
+          <a
+            href={`https://wa.me/${WHATSAPP}?text=Hi%2C%20I%27m%20interested%20in%20the%20next%20bootcamp.%20Please%20notify%20me%20when%20registrations%20open.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display:"inline-block", background:"var(--ind)", color:"#fff", borderRadius:12, padding:"13px 28px", fontSize:14, fontWeight:700, textDecoration:"none" }}
+          >
+            Notify Me for Next Batch
+          </a>
+          <p style={{ fontSize:12, color:"var(--ink3)", marginTop:16 }}>We&apos;ll reach out as soon as the next cohort opens.</p>
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function RegisterPage() {
+  if (REGISTRATION_CLOSED) return <ClosedScreen />
+  return <RegisterForm />
+}
+
+function RegisterForm() {
   const [form, setForm] = useState<FormState>(INIT)
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({})
   const [screenshot, setScreenshot] = useState<File | null>(null)
@@ -749,7 +791,7 @@ export default function RegisterPage() {
 
               {/* Urgency */}
               <div style={{ borderRadius:16, padding:"12px 16px", background:"var(--amb-l)", border:"1px solid rgba(245,158,11,0.25)", display:"flex", alignItems:"center", gap:12 }}>
-                <span style={{ fontSize:18 }}>⚡</span>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink:0 }}><path d="M10 2L4 10H9L8 16L14 8H9L10 2Z" stroke="var(--amb)" strokeWidth="1.5" strokeLinejoin="round"/></svg>
                 <div>
                   <div style={{ fontSize:13, fontWeight:800, color:"var(--ink)" }}>Seats filling up fast</div>
                   <div style={{ fontSize:11, color:"var(--ink3)" }}>Online · Limited capacity · Register now</div>
