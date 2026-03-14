@@ -1148,8 +1148,7 @@ export default function PreLaunchPage() {
             </div>
             <div className="pl-ft-col">
               <h4>Community</h4>
-              <a href="https://chat.whatsapp.com/Bm260I6cjiX6ks9yLhxYec" target="_blank" rel="noopener noreferrer">WhatsApp Group</a>
-              <a href="https://www.instagram.com/jobingen.ai" target="_blank" rel="noopener noreferrer">Instagram</a>
+<a href="https://www.instagram.com/jobingen.ai" target="_blank" rel="noopener noreferrer">Instagram</a>
               <a href="https://www.linkedin.com/company/jobingen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
           </div>
