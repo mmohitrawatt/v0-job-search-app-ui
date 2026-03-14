@@ -7,7 +7,13 @@ type EarlyAccessUser = {
 }
 type HackathonReg = {
   id: string; name: string; email: string; phone?: string; college?: string
-  team_name?: string; upi_transaction_id?: string; payment_screenshot_url?: string; created_at: string
+  team_name?: string; upi_transaction_id?: string; payment_screenshot_url?: string; bootcamp?: string; created_at: string
+}
+type BootcampFeedback = {
+  id: string; name: string; email?: string
+  overall_rating: number; content_rating: number; mentor_rating: number
+  liked: string; improve?: string; recommend?: string; next_topic?: string
+  bootcamp: string; created_at: string
 }
 type CampusAmbassador = {
   id: string; name: string; email: string; phone: string; college: string
@@ -40,7 +46,9 @@ function filterRows<T extends { name: string; email: string }>(rows: T[], q: str
 
 export default function AdminPage() {
   const [earlyAccess, setEarlyAccess] = useState<EarlyAccessUser[]>([])
-  const [hackathon, setHackathon] = useState<HackathonReg[]>([])
+  const [bootcamp1, setBootcamp1] = useState<HackathonReg[]>([])
+  const [bootcamp2, setBootcamp2] = useState<HackathonReg[]>([])
+  const [feedback, setFeedback] = useState<BootcampFeedback[]>([])
   const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
   const [loading, setLoading] = useState(true)
@@ -54,15 +62,17 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setHackathon(d.hackathon || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
 
-  const eaFiltered = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
-  const hrFiltered = useMemo(() => filterRows(hackathon, search), [hackathon, search])
-  const caFiltered = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
-  const jaFiltered = useMemo(() => filterRows(jobApplications, search), [jobApplications, search])
+  const eaFiltered  = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
+  const b1Filtered  = useMemo(() => filterRows(bootcamp1, search), [bootcamp1, search])
+  const b2Filtered  = useMemo(() => filterRows(bootcamp2, search), [bootcamp2, search])
+  const fbFiltered  = useMemo(() => filterRows(feedback, search), [feedback, search])
+  const caFiltered  = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
+  const jaFiltered  = useMemo(() => filterRows(jobApplications, search), [jobApplications, search])
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
 
@@ -176,29 +186,29 @@ export default function AdminPage() {
               {/* Stats */}
               <div className="adm-stats">
                 <div className="adm-stat">
-                  <div className="adm-stat-lbl">Early Access</div>
-                  <div className="adm-stat-val green">{earlyAccess.length}</div>
-                  <div className="adm-stat-sub">Waitlist signups</div>
-                </div>
-                <div className="adm-stat">
-                  <div className="adm-stat-lbl">Hackathon</div>
-                  <div className="adm-stat-val blue">{hackathon.length}</div>
+                  <div className="adm-stat-lbl">Bootcamp 1</div>
+                  <div className="adm-stat-val blue">{bootcamp1.length}</div>
                   <div className="adm-stat-sub">Registrations</div>
                 </div>
                 <div className="adm-stat">
+                  <div className="adm-stat-lbl">Bootcamp 2</div>
+                  <div className="adm-stat-val" style={{ color:"#0891b2" }}>{bootcamp2.length}</div>
+                  <div className="adm-stat-sub">Registrations</div>
+                </div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Feedback</div>
+                  <div className="adm-stat-val green">{feedback.length}</div>
+                  <div className="adm-stat-sub">Bootcamp 1 responses</div>
+                </div>
+                <div className="adm-stat">
+                  <div className="adm-stat-lbl">Early Access</div>
+                  <div className="adm-stat-val purple">{earlyAccess.length}</div>
+                  <div className="adm-stat-sub">Waitlist signups</div>
+                </div>
+                <div className="adm-stat">
                   <div className="adm-stat-lbl">Ambassadors</div>
-                  <div className="adm-stat-val purple">{ambassadors.length}</div>
+                  <div className="adm-stat-val orange">{ambassadors.length}</div>
                   <div className="adm-stat-sub">Applications</div>
-                </div>
-                <div className="adm-stat">
-                  <div className="adm-stat-lbl">Job Applications</div>
-                  <div className="adm-stat-val orange">{jobApplications.length}</div>
-                  <div className="adm-stat-sub">Resume submissions</div>
-                </div>
-                <div className="adm-stat">
-                  <div className="adm-stat-lbl">Total Signups</div>
-                  <div className="adm-stat-val" style={{ color: "#0369a1" }}>{earlyAccess.length + hackathon.length + ambassadors.length + jobApplications.length}</div>
-                  <div className="adm-stat-sub">All time</div>
                 </div>
               </div>
 
@@ -243,20 +253,20 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* ── Hackathon ── */}
+              {/* ── Bootcamp 2 Registrations ── */}
               <div className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
-                    <div className="adm-sec-title">AI Bootcamp & Hackathon Registrations</div>
-                    <div className="adm-sec-badge">{hrFiltered.length} registrations</div>
+                    <div className="adm-sec-title">Bootcamp 2 — Registrations</div>
+                    <div className="adm-sec-badge">{b2Filtered.length} registrations</div>
                   </div>
-                  <button className="adm-csv" onClick={() => exportCSV(hrFiltered as unknown as Record<string, unknown>[], "hackathon.csv")}>
+                  <button className="adm-csv" onClick={() => exportCSV(b2Filtered as unknown as Record<string, unknown>[], "bootcamp2-registrations.csv")}>
                     <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Export CSV
                   </button>
                 </div>
                 <div className="adm-tbl-wrap">
-                  {hrFiltered.length === 0 ? (
+                  {b2Filtered.length === 0 ? (
                     <div className="adm-empty">
                       <div className="adm-empty-ico">📭</div>
                       {search ? `No results for "${search}"` : "No registrations yet"}
@@ -264,27 +274,105 @@ export default function AdminPage() {
                   ) : (
                     <table>
                       <thead>
-                        <tr>
-                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
-                          <th>College</th><th>Team</th><th>Transaction ID</th>
-                          <th>Screenshot</th><th>Date</th>
-                        </tr>
+                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
                       </thead>
                       <tbody>
-                        {hrFiltered.map((r, i) => (
+                        {b2Filtered.map((r, i) => (
                           <tr key={r.id}>
                             <td className="c-num">{i + 1}</td>
                             <td className="c-name">{r.name}</td>
                             <td className="c-email">{r.email}</td>
                             <td className="c-phone">{r.phone || "—"}</td>
                             <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
-                            <td>{r.team_name ? <span className="c-tag">{r.team_name}</span> : "—"}</td>
                             <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
-                            <td>
-                              {r.payment_screenshot_url
-                                ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a>
-                                : "—"}
-                            </td>
+                            <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                            <td className="c-date">{fmt(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Bootcamp 1 Feedback ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Bootcamp 1 — Feedback</div>
+                    <div className="adm-sec-badge">{fbFiltered.length} responses</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(fbFiltered as unknown as Record<string, unknown>[], "bootcamp1-feedback.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {fbFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No feedback yet"}
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr><th>#</th><th>Name</th><th>Email</th><th>Overall</th><th>Content</th><th>Mentor</th><th>Liked</th><th>Improve</th><th>Recommend</th><th>Next Topic</th><th>Date</th></tr>
+                      </thead>
+                      <tbody>
+                        {fbFiltered.map((r, i) => (
+                          <tr key={r.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{r.name}</td>
+                            <td className="c-email">{r.email || "—"}</td>
+                            <td style={{ fontSize: 14, fontWeight: 800, color: r.overall_rating >= 4 ? "#16a34a" : r.overall_rating >= 3 ? "#d97706" : "#dc2626" }}>{"★".repeat(r.overall_rating)}{"☆".repeat(5 - r.overall_rating)}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.content_rating ? `${r.content_rating}/5` : "—"}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.mentor_rating ? `${r.mentor_rating}/5` : "—"}</td>
+                            <td><span className="c-why" title={r.liked}>{r.liked}</span></td>
+                            <td><span className="c-why" title={r.improve}>{r.improve || "—"}</span></td>
+                            <td style={{ fontSize: 12 }}>{r.recommend || "—"}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.next_topic || "—"}</td>
+                            <td className="c-date">{fmt(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Bootcamp 1 Registrations ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Bootcamp 1 — Registrations</div>
+                    <div className="adm-sec-badge">{b1Filtered.length} registrations</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(b1Filtered as unknown as Record<string, unknown>[], "bootcamp1-registrations.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {b1Filtered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No registrations"}
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
+                      </thead>
+                      <tbody>
+                        {b1Filtered.map((r, i) => (
+                          <tr key={r.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{r.name}</td>
+                            <td className="c-email">{r.email}</td>
+                            <td className="c-phone">{r.phone || "—"}</td>
+                            <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                            <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
+                            <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
                             <td className="c-date">{fmt(r.created_at)}</td>
                           </tr>
                         ))}

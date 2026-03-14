@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
       team_name,
       upi_transaction_id,
       payment_screenshot_url,
+      bootcamp: "bootcamp_2",
     })
 
     if (error) {

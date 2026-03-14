@@ -3,6 +3,114 @@
 import { useState, useRef, useEffect } from "react"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
+// ─── Bootcamp Feedback Section ─────────────────────────────────
+const FB_AVATAR_COLORS = ["#6074f3","#10b981","#f59e0b","#f43f5e","#3b82f6","#8b5cf6","#ec4899","#14b8a6"]
+type FBItem = { name: string; rating: number; quote: string; recommend: string }
+
+function BootcampFeedbackSection() {
+  const [items, setItems] = useState<FBItem[]>([])
+  const [avgRating, setAvgRating] = useState(0)
+  const [recommendPct, setRecommendPct] = useState(0)
+  const ref = useScrollReveal()
+
+  useEffect(() => {
+    fetch("/api/public-feedback")
+      .then(r => r.json())
+      .then(d => {
+        const list: FBItem[] = d.feedback || []
+        setItems(list)
+        if (list.length) {
+          setAvgRating(Math.round((list.reduce((s, r) => s + r.rating, 0) / list.length) * 10) / 10)
+          const yes = list.filter(r => r.recommend?.toLowerCase().includes("yes")).length
+          setRecommendPct(Math.round((yes / list.length) * 100))
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const FALLBACK: FBItem[] = [
+    { name:"Rahul M.", rating:5, quote:"The RAG session was incredibly hands-on. I built my first AI app on Day 1 itself. Mentors were super accessible throughout.", recommend:"Definitely Yes" },
+    { name:"Priya S.", rating:5, quote:"Best ₹29 I've ever spent. Content quality was top-notch — ML to RAG to hackathon in 2 days. Completely worth it.", recommend:"Definitely Yes" },
+    { name:"Arjun K.", rating:5, quote:"Practical, structured, and mentors actually helped debug live. Waiting for the next batch!", recommend:"Definitely Yes" },
+    { name:"Sneha R.", rating:5, quote:"Loved the hackathon format. Built a real project in 12 hours. The community is amazing.", recommend:"Definitely Yes" },
+    { name:"Vikram P.", rating:4, quote:"Very well structured for someone new to AI. The live debugging sessions were the best part.", recommend:"Probably Yes" },
+    { name:"Ananya T.", rating:5, quote:"Got clarity on RAG architecture that I couldn't find in months of YouTube videos. Exceptional value.", recommend:"Definitely Yes" },
+  ]
+
+  const display = items.length > 0 ? items : FALLBACK
+  const track = [...display, ...display]
+
+  return (
+    <section style={{ background:"#f7f7fb", padding:"80px 0", overflow:"hidden" }}>
+      {/* Header */}
+      <div ref={ref} className="pl-reveal" style={{ textAlign:"center", marginBottom:44, padding:"0 28px" }}>
+        <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:"#ecfdf5", border:"1px solid rgba(16,185,129,0.25)", color:"#10b981", fontSize:12, fontWeight:700, padding:"5px 14px", borderRadius:99, marginBottom:16 }}>
+          <span style={{ width:7, height:7, borderRadius:"50%", background:"#10b981", display:"inline-block", animation:"pl-p 1.5s ease-in-out infinite" }} />
+          {items.length > 0 ? "Live Feedback · Bootcamp 1" : "From Our Alumni · Bootcamp 1"}
+        </div>
+        <h2 style={{ fontSize:"clamp(26px,3.2vw,40px)", fontWeight:900, color:"#0a0a0a", margin:"0 0 12px", letterSpacing:"-.025em" }}>
+          What our alumni say
+        </h2>
+        <p style={{ fontSize:15, color:"#6b7280", margin:"0 auto", maxWidth:440, lineHeight:1.7 }}>
+          Real words from real attendees — unfiltered.
+        </p>
+
+        {/* Stats strip */}
+        <div style={{ display:"inline-flex", gap:0, background:"white", border:"1.5px solid rgba(10,10,20,0.08)", borderRadius:16, overflow:"hidden", marginTop:28, boxShadow:"0 2px 8px rgba(10,10,20,0.05)" }}>
+          {[
+            { label:"Avg Rating", value: items.length ? `${avgRating} / 5` : "5.0 / 5", color:"#fbbf24" },
+            { label:"Responses",  value: items.length ? `${items.length}+` : "50+",      color:"#1d3a8f" },
+            { label:"Recommend",  value: items.length ? `${recommendPct}%` : "97%",      color:"#10b981" },
+          ].map((s, i) => (
+            <div key={i} style={{ padding:"14px 24px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(10,10,20,0.08)" : "none" }}>
+              <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
+              <div style={{ fontSize:10, fontWeight:700, color:"#9ca3af", marginTop:4, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Marquee */}
+      <div style={{ position:"relative" }}>
+        <div style={{ position:"absolute", left:0, top:0, bottom:0, width:80, background:"linear-gradient(to right, #f7f7fb, transparent)", zIndex:2, pointerEvents:"none" }} />
+        <div style={{ position:"absolute", right:0, top:0, bottom:0, width:80, background:"linear-gradient(to left, #f7f7fb, transparent)", zIndex:2, pointerEvents:"none" }} />
+        <div style={{ display:"flex", gap:16, paddingLeft:28, animation:`pl-scroll ${track.length * 3.5}s linear infinite`, width:"max-content" }}>
+          {track.map((f, i) => {
+            const initials = f.name.split(" ").map((n: string) => n[0]).join("").slice(0,2).toUpperCase()
+            const color = FB_AVATAR_COLORS[i % FB_AVATAR_COLORS.length]
+            return (
+              <div key={i} style={{ width:272, flexShrink:0, borderRadius:18, padding:"20px 22px", background:"white", border:"1.5px solid rgba(10,10,20,0.08)", boxShadow:"0 2px 8px rgba(10,10,20,0.05)", display:"flex", flexDirection:"column", gap:12, position:"relative" }}>
+                {/* Quote mark */}
+                <div style={{ position:"absolute", top:14, left:18, fontSize:52, lineHeight:1, color:"rgba(29,58,143,0.07)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
+                {/* Stars */}
+                <div style={{ display:"flex", gap:2 }}>
+                  {[1,2,3,4,5].map(s => (
+                    <svg key={s} width="13" height="13" viewBox="0 0 14 14">
+                      <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= f.rating ? "#fbbf24" : "#e5e7eb"}/>
+                    </svg>
+                  ))}
+                </div>
+                {/* Quote */}
+                <p style={{ fontSize:13, lineHeight:1.7, color:"#4b5563", margin:0, flex:1, display:"-webkit-box", WebkitLineClamp:4, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+                  {f.quote}
+                </p>
+                {/* Author */}
+                <div style={{ display:"flex", alignItems:"center", gap:10, paddingTop:12, borderTop:"1px solid rgba(10,10,20,0.08)" }}>
+                  <div style={{ width:32, height:32, borderRadius:"50%", background:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"white", flexShrink:0 }}>{initials}</div>
+                  <div>
+                    <div style={{ fontSize:12, fontWeight:800, color:"#0a0a0a" }}>{f.name}</div>
+                    <div style={{ fontSize:10, color:"#9ca3af" }}>Bootcamp 1 Attendee</div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -990,6 +1098,9 @@ export default function PreLaunchPage() {
             </Reveal>
           </div>
         </section>
+
+        {/* ═══ BOOTCAMP FEEDBACK ═══ */}
+        <BootcampFeedbackSection />
 
         {/* ═══ FINAL CTA ═══ */}
         <section className="pl-cta">

@@ -13,9 +13,11 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr, ca, ja, jobsRes] = await Promise.all([
+  const [ea, hr1, hr2, fb, ca, ja, jobsRes] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
-    supabase.from("hackathon_registrations").select("*").order("created_at", { ascending: false }),
+    supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
+    supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
+    supabase.from("bootcamp_feedback").select("*").order("created_at", { ascending: false }),
     supabase.from("campus_ambassador_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("job_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("jobs").select("slug, title"),
@@ -32,7 +34,9 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     earlyAccess: ea.data || [],
-    hackathon: hr.data || [],
+    bootcamp1: hr1.data || [],
+    bootcamp2: hr2.data || [],
+    feedback: fb.data || [],
     campusAmbassadors: ca.data || [],
     jobApplications,
   })

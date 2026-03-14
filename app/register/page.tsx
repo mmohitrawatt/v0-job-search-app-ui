@@ -325,7 +325,7 @@ function SuccessScreen({ name }: { name: string }) {
         </div>
         <div style={{ fontSize:13, fontWeight:700, color:"var(--ind)", marginBottom:10, textTransform:"uppercase", letterSpacing:".06em" }}>You&apos;re registered!</div>
         <h1 style={{ fontSize:"clamp(28px,4vw,40px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 14px", lineHeight:1.1 }}>
-          See you on<br /><span className="shimmer">14 March, {name.split(" ")[0]}!</span>
+          You&apos;re in,<br /><span className="shimmer">{name.split(" ")[0]}!</span>
         </h1>
         <p style={{ fontSize:15, color:"var(--ink2)", lineHeight:1.72, margin:"0 0 32px", maxWidth:380, marginLeft:"auto", marginRight:"auto" }}>
           Your registration has been submitted. We will verify your payment and send a confirmation to your email.
@@ -337,7 +337,7 @@ function SuccessScreen({ name }: { name: string }) {
               { icon:"🔍", text:"We verify your UPI payment within a few hours" },
               { icon:"📧", text:"Confirmation email sent once payment is verified" },
               { icon:"💬", text:"Join the WhatsApp group below to stay updated" },
-              { icon:"📅", text:"Reminder 24hrs before — Saturday 14 March, 8:30 AM" },
+              { icon:"📅", text:"Reminder 24hrs before the bootcamp once date is confirmed" },
               { icon:"🏆", text:"Hackathon problem given at 6 PM on Day 1" },
             ].map((s,i) => (
               <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
@@ -349,7 +349,7 @@ function SuccessScreen({ name }: { name: string }) {
         </div>
         {/* Join WhatsApp Group */}
         <a
-          href="https://chat.whatsapp.com/Bm260I6cjiX6ks9yLhxYec"
+          href="https://chat.whatsapp.com/BuLo53f46OSGa9d6whiFdy"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -358,7 +358,7 @@ function SuccessScreen({ name }: { name: string }) {
             padding:"15px 28px", borderRadius:14,
             fontSize:15, fontWeight:800, textDecoration:"none",
             boxShadow:"0 6px 24px rgba(37,211,102,.35)",
-            transition:"all .25s", marginBottom:12,
+            transition:"all .25s", marginBottom:10,
           }}
           onMouseEnter={e => (e.currentTarget.style.transform="translateY(-2px)")}
           onMouseLeave={e => (e.currentTarget.style.transform="translateY(0)")}
@@ -368,6 +368,26 @@ function SuccessScreen({ name }: { name: string }) {
             <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.528 5.845L.057 23.03l5.327-1.394A11.937 11.937 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-4.99-1.364l-.358-.213-3.714.973.99-3.625-.233-.37A9.79 9.79 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
           </svg>
           Join WhatsApp Group
+        </a>
+        {/* Follow on Instagram */}
+        <a
+          href="https://www.instagram.com/jobingen.ai/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+            background:"linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)", color:"#fff",
+            padding:"13px 28px", borderRadius:14,
+            fontSize:14, fontWeight:800, textDecoration:"none",
+            transition:"all .25s", marginBottom:12,
+          }}
+          onMouseEnter={e => (e.currentTarget.style.transform="translateY(-2px)")}
+          onMouseLeave={e => (e.currentTarget.style.transform="translateY(0)")}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          Follow on Instagram
         </a>
         <a href="/pre-launch" className="btn btn-primary" style={{ fontSize:14, fontWeight:800, padding:"13px 28px", borderRadius:14 }}>
           Back to Home
@@ -460,10 +480,10 @@ function UpiCard() {
 }
 
 // ─── Main Page ───────────────────────────────────────────────────
-const REGISTRATION_CLOSED = true
+const REGISTRATION_CLOSED = false
 
-function ClosedScreen() {
-  return (
+export default function RegisterPage() {
+  if (REGISTRATION_CLOSED) return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={{ minHeight:"100vh", background:"var(--cream)", display:"flex", alignItems:"center", justifyContent:"center", padding:"40px 24px" }}>
@@ -480,25 +500,12 @@ function ClosedScreen() {
             This Bootcamp is Full
           </h1>
           <p style={{ fontSize:14, color:"var(--ink2)", lineHeight:1.7, marginBottom:28 }}>
-            We&apos;ve reached capacity for this batch. Be ready — the next bootcamp is coming next month with new projects, mentors, and opportunities.
+            We&apos;ve reached capacity for this batch. Be ready — the next bootcamp is coming next month.
           </p>
-          <a
-            href={`https://wa.me/${WHATSAPP}?text=Hi%2C%20I%27m%20interested%20in%20the%20next%20bootcamp.%20Please%20notify%20me%20when%20registrations%20open.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display:"inline-block", background:"var(--ind)", color:"#fff", borderRadius:12, padding:"13px 28px", fontSize:14, fontWeight:700, textDecoration:"none" }}
-          >
-            Notify Me for Next Batch
-          </a>
-          <p style={{ fontSize:12, color:"var(--ink3)", marginTop:16 }}>We&apos;ll reach out as soon as the next cohort opens.</p>
         </div>
       </div>
     </>
   )
-}
-
-export default function RegisterPage() {
-  if (REGISTRATION_CLOSED) return <ClosedScreen />
   return <RegisterForm />
 }
 
@@ -589,11 +596,34 @@ function RegisterForm() {
           <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
             <JobingenLogo height={110} />
           </a>
-          <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--rose-l)", border:"1px solid rgba(244,63,94,0.22)", fontSize:11, fontWeight:800, color:"var(--rose)", textTransform:"uppercase", letterSpacing:".06em" }}>
-            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--rose)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
-            Live · 14–15 March 2026
+          <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.22)", fontSize:11, fontWeight:800, color:"var(--grn)", textTransform:"uppercase", letterSpacing:".06em" }}>
+            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
+            Registrations Open
           </div>
         </nav>
+
+        {/* ── Closed Bootcamp Hero Banner ── */}
+        <div style={{ background:"var(--ind)", padding:"48px 28px" }}>
+          <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, flexWrap:"wrap" }}>
+            <div>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:99, padding:"4px 12px", marginBottom:14 }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.2" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><path d="M4 5V3.5C4 2.12 4.9 1 6 1C7.1 1 8 2.12 8 3.5V5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.7)", textTransform:"uppercase", letterSpacing:".07em" }}>Registration Closed</span>
+              </div>
+              <h2 style={{ fontSize:"clamp(22px,2.8vw,34px)", fontWeight:900, color:"white", margin:"0 0 10px", lineHeight:1.15, letterSpacing:"-.02em" }}>
+                This Bootcamp is Full
+              </h2>
+              <p style={{ fontSize:15, color:"rgba(255,255,255,0.65)", lineHeight:1.7, margin:0, maxWidth:520 }}>
+                We&apos;ve reached capacity for this batch. Be ready — the next bootcamp is coming within 2 weeks with new projects, mentors, and opportunities.
+              </p>
+            </div>
+            <div style={{ flexShrink:0, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:16, padding:"16px 24px", textAlign:"center" }}>
+              <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".06em", marginBottom:4 }}>Next Batch</div>
+              <div style={{ fontSize:20, fontWeight:900, color:"white", lineHeight:1.1 }}>Coming Soon</div>
+              <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", marginTop:4 }}>Within 2 weeks</div>
+            </div>
+          </div>
+        </div>
 
         {/* Page content */}
         <div className="reg-wrap" style={{ maxWidth:1100, margin:"0 auto", padding:"48px 28px" }}>
@@ -601,20 +631,21 @@ function RegisterForm() {
           {/* Header */}
           <div style={{ marginBottom:32 }}>
             <div style={{ fontSize:12, fontWeight:700, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".07em", marginBottom:10 }}>
-              2-Day AI Bootcamp + Hackathon
+              Next Bootcamp · Register Now
             </div>
             <h1 style={{ fontSize:"clamp(28px,3.6vw,44px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 12px", lineHeight:1.08 }}>
-              Secure your spot.<br /><span className="shimmer">Start building AI.</span>
+              Secure your spot.<br />Date announced soon.
             </h1>
             <p style={{ fontSize:15, color:"var(--ink2)", lineHeight:1.7 }}>
-              Online · 14–15 March ·{" "}
+              Online · Happening within 2 weeks ·{" "}
               <span style={{ textDecoration:"line-through", color:"var(--ink3)", fontSize:14 }}>₹499</span>{" "}
               <strong style={{ color:"var(--ind)" }}>₹29</strong> only · Limited seats
             </p>
+            <div style={{ marginTop:12, display:"inline-flex", alignItems:"center", gap:8, padding:"8px 14px", borderRadius:10, background:"var(--amb-l)", border:"1px solid rgba(245,158,11,0.25)", fontSize:12, color:"var(--amb)", fontWeight:700 }}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M7 4V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              Exact date will be announced soon — secure your seat now
+            </div>
           </div>
-
-          {/* ── Meet Your Mentors ── */}
-          <MentorsSection />
 
           {/* Grid */}
           <div className="reg-grid" style={{ display:"grid", gridTemplateColumns:"1fr 400px", gap:32, alignItems:"start" }}>
@@ -737,7 +768,7 @@ function RegisterForm() {
                   style={{ fontSize:15, fontWeight:900, padding:"15px 28px", borderRadius:16, width:"100%", gap:10, transition:"opacity .2s" }}>
                   {loading
                     ? <><Spinner /> Registering...</>
-                    : <>Register Now — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹29 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
+                    : <>Register for Next Bootcamp — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹29 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
                   }
                 </button>
 
@@ -758,31 +789,31 @@ function RegisterForm() {
               {/* Event summary */}
               <div style={{ borderRadius:24, overflow:"hidden", boxShadow:"var(--shadow-md)", border:"1.5px solid var(--border)" }}>
                 <div style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", padding:"20px 24px" }}>
-                  <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Schedule</div>
+                  <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>What&apos;s Included</div>
                   <div style={{ fontSize:17, fontWeight:800, color:"white", lineHeight:1.3 }}>2-Day AI Bootcamp + Hackathon</div>
+                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)", marginTop:4 }}>Date · Coming soon</div>
                 </div>
                 <div style={{ background:"white", padding:"18px 24px", display:"flex", flexDirection:"column", gap:12 }}>
                   {[
-                    { n:"1", day:"Sat 14 Mar", time:"8:30 AM – 6 PM", detail:"AI/ML/DL + RAG Masterclass", clr:"var(--ind)", bg:"var(--ind-l)" },
-                    { n:"2", day:"Sun 15 Mar", time:"9 AM – 9 PM",   detail:"Hackathon — Build real AI", clr:"var(--vio)", bg:"#f5f3ff" },
+                    { n:"1", label:"Day 1", detail:"AI/ML/DL + RAG Masterclass", clr:"var(--ind)", bg:"var(--ind-l)" },
+                    { n:"2", label:"Day 2", detail:"Hackathon — Build real AI projects", clr:"var(--vio)", bg:"#f5f3ff" },
                   ].map(s => (
                     <div key={s.n} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
                       <div style={{ width:32, height:32, borderRadius:10, background:s.bg, color:s.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, flexShrink:0 }}>{s.n}</div>
                       <div>
-                        <div style={{ fontSize:13, fontWeight:700, color:"var(--ink)" }}>{s.day}</div>
-                        <div style={{ fontSize:11, color:"var(--ind)", fontWeight:600 }}>{s.time}</div>
+                        <div style={{ fontSize:13, fontWeight:700, color:"var(--ink)" }}>{s.label}</div>
                         <div style={{ fontSize:11, color:"var(--ink3)" }}>{s.detail}</div>
                       </div>
                     </div>
                   ))}
                   <div style={{ height:1, background:"var(--border)" }} />
                   {[
-                    { icon:"📄", text:"ATS-proof resume review" },
-                    { icon:"📚", text:"Full lecture notes & resources" },
-                    { icon:"💼", text:"Paid internship for winners" },
+                    { text:"ATS-proof resume review" },
+                    { text:"Full lecture notes & resources" },
+                    { text:"Paid internship for top performers" },
                   ].map((p,i) => (
                     <div key={i} style={{ display:"flex", gap:10, alignItems:"center" }}>
-                      <span style={{ fontSize:15, flexShrink:0 }}>{p.icon}</span>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink:0 }}><circle cx="7" cy="7" r="6" stroke="var(--ind)" strokeWidth="1.2"/><path d="M4.5 7L6.5 9L9.5 5" stroke="var(--ind)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       <span style={{ fontSize:12, fontWeight:600, color:"var(--ink2)" }}>{p.text}</span>
                     </div>
                   ))}
