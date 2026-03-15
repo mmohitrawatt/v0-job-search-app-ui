@@ -184,6 +184,12 @@ function PromoPopup() {
 
 const PL_MENTORS = [
   {
+    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd",
+    initials: "AD", photo: "/mentors/aditya-dubey.jpg",
+    desc: "An expert in building scalable systems and managing the full project lifecycle. With 3+ years of experience as an AI Engineer, he specializes in the strategic application of LLMs, Multi-Agent systems, and Offline AI models. Beyond engineering, he is a dedicated mentor to 12,000+ students and professionals, bridging the gap between cutting-edge technology and education.",
+    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
+  },
+  {
     name: "Sonic Payeng", role: "Software Engineer 2 (SWE2)", company: "Dell Technologies",
     initials: "SP", photo: "/mentors/sonic-payeng.jpg",
     desc: "Sonic specializes in applied machine learning, intelligent automation, and LLM systems. He works at Dell Technologies on the Dell Automation Platform, building AI-driven solutions across on-premise, SaaS, and hybrid cloud environments.",
@@ -200,12 +206,6 @@ const PL_MENTORS = [
     initials: "SK", photo: "/mentors/shubham-kaushik.jpg",
     desc: "Shubham has 5+ years in AI, machine learning, and full-stack development. His research spans LLMs, intelligent data systems, and scalable financial AI applications at KPMG.",
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
-  },
-  {
-    name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd",
-    initials: "AD", photo: "/mentors/aditya-dubey.jpg",
-    desc: "An expert in building scalable systems and managing the full project lifecycle. With 3+ years of experience as an AI Engineer, he specializes in the strategic application of LLMs, Multi-Agent systems, and Offline AI models. Beyond engineering, he is a dedicated mentor to 12,000+ students and professionals, bridging the gap between cutting-edge technology and education.",
-    linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
   },
 ]
 
