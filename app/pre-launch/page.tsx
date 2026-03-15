@@ -107,6 +107,16 @@ function BootcampFeedbackSection() {
           })}
         </div>
       </div>
+
+      {/* CTA button */}
+      <div style={{ textAlign:"center", paddingBottom:48 }}>
+        <a href="/feedback" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"#1d3a8f", color:"white", borderRadius:14, padding:"13px 28px", fontSize:14, fontWeight:700, textDecoration:"none", boxShadow:"0 4px 20px rgba(29,58,143,0.3)", transition:"transform .15s, box-shadow .15s" }}
+          onMouseOver={e => { (e.currentTarget as HTMLAnchorElement).style.transform="translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow="0 8px 28px rgba(29,58,143,0.42)"; }}
+          onMouseOut={e => { (e.currentTarget as HTMLAnchorElement).style.transform="translateY(0)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow="0 4px 20px rgba(29,58,143,0.3)"; }}>
+          Share Your Feedback
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </a>
+      </div>
     </section>
   )
 }
