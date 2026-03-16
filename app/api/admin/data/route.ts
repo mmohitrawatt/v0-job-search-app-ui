@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr1, hr2, fb, ca, ja, jobsRes] = await Promise.all([
+  const [ea, hr1, hr2, fb, ca, ja, jobsRes, hs] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
     supabase.from("campus_ambassador_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("job_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("jobs").select("slug, title"),
+    supabase.from("hackathon_submissions").select("*").order("created_at", { ascending: false }),
   ])
 
   // Build slug → title lookup for enriching job applications
@@ -39,5 +40,6 @@ export async function GET(req: NextRequest) {
     feedback: fb.data || [],
     campusAmbassadors: ca.data || [],
     jobApplications,
+    hackathonSubmissions: hs.data || [],
   })
 }

@@ -23,6 +23,11 @@ type JobApplication = {
   id: string; name: string; email: string; phone: string
   linkedin?: string; resume_url?: string; job_slug: string; job_title: string; created_at: string
 }
+type HackathonSubmission = {
+  id: string; team_name: string; leader_name: string; email: string
+  project_title: string; description: string; tech_stack: string
+  github_link: string; demo_link?: string; screenshot_url?: string; created_at: string
+}
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
@@ -51,6 +56,7 @@ export default function AdminPage() {
   const [feedback, setFeedback] = useState<BootcampFeedback[]>([])
   const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
+  const [hackathonSubs, setHackathonSubs] = useState<HackathonSubmission[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -62,7 +68,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -73,6 +79,11 @@ export default function AdminPage() {
   const fbFiltered  = useMemo(() => filterRows(feedback, search), [feedback, search])
   const caFiltered  = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
   const jaFiltered  = useMemo(() => filterRows(jobApplications, search), [jobApplications, search])
+  const hsFiltered  = useMemo(() => {
+    if (!search.trim()) return hackathonSubs
+    const s = search.toLowerCase()
+    return hackathonSubs.filter(r => r.leader_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.team_name.toLowerCase().includes(s) || r.project_title.toLowerCase().includes(s))
+  }, [hackathonSubs, search])
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
 
@@ -102,7 +113,7 @@ export default function AdminPage() {
         .adm-body{padding:28px 32px;max-width:1440px;margin:0 auto}
         @media(max-width:768px){.adm-body{padding:16px}}
         /* Stats */
-        .adm-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+        .adm-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:28px}
         @media(max-width:1200px){.adm-stats{grid-template-columns:repeat(3,1fr)}}
         @media(max-width:768px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:480px){.adm-stats{grid-template-columns:1fr 1fr}}
@@ -206,6 +217,11 @@ export default function AdminPage() {
                   <div className="adm-stat-sub">Waitlist signups</div>
                 </div>
                 <div className="adm-stat">
+                  <div className="adm-stat-lbl">Hackathon</div>
+                  <div className="adm-stat-val" style={{ color: "#7c3aed" }}>{hackathonSubs.length}</div>
+                  <div className="adm-stat-sub">Project submissions</div>
+                </div>
+                <div className="adm-stat">
                   <div className="adm-stat-lbl">Ambassadors</div>
                   <div className="adm-stat-val orange">{ambassadors.length}</div>
                   <div className="adm-stat-sub">Applications</div>
@@ -286,6 +302,53 @@ export default function AdminPage() {
                             <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
                             <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
                             <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                            <td className="c-date">{fmt(r.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Hackathon Project Submissions ── */}
+              <div className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Hackathon — Project Submissions</div>
+                    <div className="adm-sec-badge">{hsFiltered.length} projects</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(hsFiltered as unknown as Record<string, unknown>[], "hackathon-submissions.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {hsFiltered.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      {search ? `No results for "${search}"` : "No project submissions yet"}
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr><th>#</th><th>Team</th><th>Leader</th><th>Email</th><th>Project</th><th>Tech Stack</th><th>GitHub</th><th>Demo</th><th>Screenshot</th><th>Date</th></tr>
+                      </thead>
+                      <tbody>
+                        {hsFiltered.map((r, i) => (
+                          <tr key={r.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td className="c-name">{r.team_name}</td>
+                            <td style={{ fontSize: 13 }}>{r.leader_name}</td>
+                            <td className="c-email">{r.email}</td>
+                            <td>
+                              <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a" }}>{r.project_title}</div>
+                              <span className="c-why" title={r.description}>{r.description}</span>
+                            </td>
+                            <td style={{ fontSize: 12, color: "#64748b", maxWidth: 160 }}>{r.tech_stack}</td>
+                            <td><a className="c-link" href={r.github_link} target="_blank" rel="noopener noreferrer">Repo</a></td>
+                            <td>{r.demo_link ? <a className="c-link" href={r.demo_link} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                            <td>{r.screenshot_url ? <a className="c-link" href={r.screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
                             <td className="c-date">{fmt(r.created_at)}</td>
                           </tr>
                         ))}
