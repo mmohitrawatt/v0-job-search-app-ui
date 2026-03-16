@@ -516,23 +516,6 @@ export default function PreLaunchPage() {
         .pl-scarcity{text-align:center;margin-top:56px;max-width:560px;margin-left:auto;margin-right:auto;background:linear-gradient(135deg,#0d1b45,#1d3a8f,#2a4ecf);padding:20px 32px;border-radius:16px;font-size:15px;color:#fff;font-weight:700;position:relative;box-shadow:0 8px 32px rgba(42,78,207,.3);overflow:hidden}
         .pl-scarcity::after{content:'';position:absolute;top:0;left:0;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:pl-shimmer 3s ease-in-out infinite}
 
-        /* ═══ RESOURCES ═══ */
-        .pl-res{padding:80px 32px;background:#fff}
-        .pl-res-wrap{max-width:860px;margin:0 auto;text-align:center}
-        .pl-res-label{font-size:11px;font-weight:700;color:#1d3a8f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-        .pl-res-heading{font-size:clamp(22px,3vw,34px);font-weight:900;color:#09090f;letter-spacing:-.03em;margin-bottom:8px}
-        .pl-res-sub{font-size:14px;color:#5a5a7a;max-width:500px;margin:0 auto 36px;line-height:1.65}
-        .pl-res-card{display:flex;align-items:center;gap:24px;background:#f8f9ff;border:1.5px solid rgba(29,58,143,.1);border-radius:20px;padding:32px 36px;text-align:left;max-width:600px;margin:0 auto;transition:border-color .2s,box-shadow .2s}
-        .pl-res-card:hover{border-color:rgba(29,58,143,.25);box-shadow:0 8px 32px rgba(29,58,143,.08)}
-        .pl-res-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#1d3a8f,#3b5bdb);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        .pl-res-info h3{font-size:18px;font-weight:800;color:#09090f;margin:0 0 6px}
-        .pl-res-info p{font-size:13px;color:#6b7280;margin:0 0 14px;line-height:1.6}
-        .pl-res-btn{display:inline-flex;align-items:center;gap:8px;background:#1d3a8f;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,transform .15s}
-        .pl-res-btn:hover{background:#15307a;transform:translateY(-1px)}
-        .pl-res-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px}
-        .pl-res-chip{font-size:11px;font-weight:600;color:#5a5a7a;background:#f0f1f8;padding:5px 14px;border-radius:99px;border:1px solid rgba(0,0,0,.06)}
-        @media(max-width:640px){.pl-res{padding:48px 16px}.pl-res-card{flex-direction:column;text-align:center;padding:24px 20px}.pl-res-info h3{font-size:16px}.pl-res-btn{width:100%;justify-content:center}}
-
         /* ═══ FINAL CTA ═══ */
         .pl-cta{padding:100px 32px 120px;text-align:center;background:#060d24;position:relative;overflow:hidden}
         .pl-cta-mesh1{position:absolute;top:-30%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.35),transparent 65%);pointer-events:none;animation:pl-float-1 22s ease-in-out infinite;filter:blur(80px)}
@@ -1125,38 +1108,6 @@ export default function PreLaunchPage() {
             </Reveal>
           </div>
         </section>
-
-        {/* ═══ RESOURCES ═══ */}
-        <Reveal>
-          <section className="pl-res">
-            <div className="pl-res-wrap">
-              <div className="pl-res-label">Free Resources</div>
-              <h2 className="pl-res-heading">Everything You Need to Get Started</h2>
-              <p className="pl-res-sub">
-                Curated learning materials, slides, notebooks, and references — all in one place. Completely free.
-              </p>
-              <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer" className="pl-res-card" style={{ textDecoration:"none" }}>
-                <div className="pl-res-icon">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 13h8M8 17h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <div className="pl-res-info">
-                  <h3>Bootcamp Resource Kit</h3>
-                  <p>Slides, code notebooks, cheat sheets, and reference docs from our bootcamp sessions.</p>
-                  <span className="pl-res-btn">
-                    Access Resources
-                    <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
-                </div>
-              </a>
-              <div className="pl-res-chips">
-                <span className="pl-res-chip">Slides</span>
-                <span className="pl-res-chip">Code Notebooks</span>
-                <span className="pl-res-chip">Cheat Sheets</span>
-                <span className="pl-res-chip">Reference Docs</span>
-              </div>
-            </div>
-          </section>
-        </Reveal>
 
         {/* ═══ BOOTCAMP FEEDBACK ═══ */}
         <BootcampFeedbackSection />

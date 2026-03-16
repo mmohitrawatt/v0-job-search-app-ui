@@ -145,6 +145,47 @@ const CSS = `
     animation: spin .7s linear infinite;
   }
 
+  .res-section {
+    background: var(--white); border-radius: 20px; border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm); padding: 0; overflow: hidden;
+  }
+  .res-header {
+    background: linear-gradient(135deg, #0f2260 0%, #1d3a8f 100%);
+    padding: 24px 28px; position: relative; overflow: hidden;
+  }
+  .res-header::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 20px 20px; pointer-events: none;
+  }
+  .res-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .res-item {
+    display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+    border-radius: 14px; background: var(--cream); border: 1.5px solid var(--border);
+    text-decoration: none; color: var(--ink);
+    transition: border-color .2s, transform .15s, box-shadow .2s;
+  }
+  .res-item:hover { border-color: rgba(29,58,143,0.3); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .res-item-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .res-item-info { flex: 1; }
+  .res-item-info h4 { font-size: 14px; font-weight: 800; color: var(--ink); margin: 0 0 3px; }
+  .res-item-info p { font-size: 12px; color: var(--ink3); margin: 0; line-height: 1.5; }
+  .res-arrow {
+    width: 32px; height: 32px; border-radius: 8px; background: var(--ind-l);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background .15s;
+  }
+  .res-item:hover .res-arrow { background: var(--ind); }
+  .res-item:hover .res-arrow svg path { stroke: white; }
+  .res-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .res-chip {
+    font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+
   @media (max-width: 640px) {
     .section-card { padding: 20px 18px !important; }
     .fb-wrap { padding: 20px 16px !important; }
@@ -152,6 +193,8 @@ const CSS = `
     .name-grid { grid-template-columns: 1fr !important; }
     .recommend-row { flex-wrap: wrap !important; }
     .recommend-card { min-width: calc(50% - 4px) !important; }
+    .res-header { padding: 20px 20px; }
+    .res-body { padding: 18px 18px; }
   }
 `
 
@@ -252,6 +295,22 @@ function SuccessScreen() {
             <div style={{ textAlign: "left" }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Follow @jobingen.ai</div>
               <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 1 }}>Get notified when the next bootcamp drops</div>
+            </div>
+            <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#8a8aa8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </a>
+        </div>
+
+        {/* Resources card */}
+        <div className="fade-up-3" style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: "18px 22px", marginBottom: 24, boxShadow: "var(--shadow-sm)", textAlign: "left" }}>
+          <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>Free Resources</div>
+          <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", padding: "12px 16px", borderRadius: 12, background: "var(--ind-l)", border: "1px solid rgba(29,58,143,0.15)" }}>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Bootcamp Resource Kit</div>
+              <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 1 }}>Slides, notebooks, cheat sheets — all free</div>
             </div>
             <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#8a8aa8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
@@ -544,6 +603,42 @@ export default function FeedbackPage() {
             </p>
 
           </form>
+
+          {/* ─── Resources ─── */}
+          <div className="res-section" style={{ marginTop: 20 }}>
+            <div className="res-header">
+              <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>Free Resources</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 500, marginTop: 2 }}>Everything from the bootcamp — yours to keep</div>
+                </div>
+              </div>
+            </div>
+            <div className="res-body">
+              <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer" className="res-item">
+                <div className="res-item-icon" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 13h8M8 17h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <div className="res-item-info">
+                  <h4>Bootcamp Resource Kit</h4>
+                  <p>Slides, code notebooks, cheat sheets, and reference material</p>
+                  <div className="res-chips" style={{ marginTop: 8 }}>
+                    <span className="res-chip" style={{ background: "#eef1fd", color: "#1d3a8f" }}>Slides</span>
+                    <span className="res-chip" style={{ background: "#ecfdf5", color: "#10b981" }}>Notebooks</span>
+                    <span className="res-chip" style={{ background: "#fef3c7", color: "#d97706" }}>Cheat Sheets</span>
+                    <span className="res-chip" style={{ background: "#fce7f3", color: "#db2777" }}>References</span>
+                  </div>
+                </div>
+                <div className="res-arrow">
+                  <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8h8M8 4l4 4-4 4" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </>
