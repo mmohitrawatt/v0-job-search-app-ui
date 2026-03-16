@@ -60,9 +60,8 @@ function BootcampFeedbackSection() {
           {[
             { label:"Avg Rating", value: items.length ? `${avgRating} / 5` : "5.0 / 5", color:"#fbbf24" },
             { label:"Responses",  value: items.length ? `${items.length}+` : "50+",      color:"#1d3a8f" },
-            { label:"Recommend",  value: items.length ? `${recommendPct}%` : "97%",      color:"#10b981" },
           ].map((s, i) => (
-            <div key={i} style={{ padding:"14px 24px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(10,10,20,0.08)" : "none" }}>
+            <div key={i} style={{ padding:"14px 24px", textAlign:"center", borderRight: i < 1 ? "1px solid rgba(10,10,20,0.08)" : "none" }}>
               <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
               <div style={{ fontSize:10, fontWeight:700, color:"#9ca3af", marginTop:4, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</div>
             </div>
