@@ -636,7 +636,7 @@ export default function FeedbackPage() {
     title1: "Submit your",
     title2: "hackathon project",
     subtitle: "Upload your project details and let the judges see what you built.",
-    stats: [["5 min","to fill"],["6","fields"],["Prize Pool","50K+"]],
+    stats: [["5 min","to fill"],["6","fields"],["100%","fair judging"]],
     gradient: "linear-gradient(160deg, #3b1578 0%, #5b21b6 55%, #7c3aed 100%)",
   }
 
