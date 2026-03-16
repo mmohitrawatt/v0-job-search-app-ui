@@ -64,6 +64,13 @@ const CSS = `
     -webkit-text-fill-color: transparent;
     animation: shimmer-text 4s linear infinite;
   }
+  .shimmer-grn {
+    background: linear-gradient(90deg, #059669 0%, #34d399 35%, #6ee7b7 50%, #34d399 65%, #059669 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-text 4s linear infinite;
+  }
   .shimmer-vio {
     background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 35%, #c4b5fd 50%, #a78bfa 65%, #7c3aed 100%);
     background-size: 300% auto;
@@ -218,35 +225,50 @@ const CSS = `
     text-transform: uppercase; letter-spacing: .04em;
   }
 
-  /* Tab bar */
-  .tab-bar {
-    display: flex; gap: 4px; padding: 4px;
-    background: var(--white); border-radius: 16px;
-    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm);
-    max-width: 500px; margin: 0 auto;
+  /* Navigation Cards */
+  .nav-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    max-width: 720px; margin: 0 auto;
   }
-  .tab-item {
-    flex: 1; padding: 12px 16px; border-radius: 12px;
-    border: none; background: transparent; cursor: pointer;
-    font-size: 13px; font-weight: 700; color: var(--ink3);
-    transition: all .2s ease; font-family: inherit;
-    display: flex; align-items: center; justify-content: center; gap: 8;
-    position: relative; white-space: nowrap;
+  .nav-card {
+    position: relative; padding: 20px 18px; border-radius: 18px;
+    border: 1.5px solid var(--border); background: var(--white);
+    cursor: pointer; text-align: left;
+    transition: all .25s var(--ease-out); font-family: inherit;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: var(--shadow-sm); overflow: hidden;
   }
-  .tab-item:hover { color: var(--ink2); background: var(--cream); }
-  .tab-item.active-fb {
-    background: var(--ind-l); color: var(--ind);
-    box-shadow: 0 2px 8px rgba(29,58,143,0.12);
+  .nav-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: transparent; transition: background .25s ease; border-radius: 18px 18px 0 0;
   }
-  .tab-item.active-hk {
-    background: var(--vio-l); color: var(--vio);
-    box-shadow: 0 2px 8px rgba(124,58,237,0.12);
+  .nav-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(10,10,20,0.1);
+    border-color: rgba(10,10,20,0.15);
   }
-  .tab-badge {
-    font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 99px;
+  .nav-card.active-fb { border-color: var(--ind); background: linear-gradient(180deg, #eef1fd 0%, #fff 60%); }
+  .nav-card.active-fb::before { background: linear-gradient(90deg, #1d3a8f, #3b5ff0); }
+  .nav-card.active-hk { border-color: var(--vio); background: linear-gradient(180deg, #f3f0ff 0%, #fff 60%); }
+  .nav-card.active-hk::before { background: linear-gradient(90deg, #5b21b6, #8b5cf6); }
+  .nav-card.active-rs { border-color: var(--grn); background: linear-gradient(180deg, #ecfdf5 0%, #fff 60%); }
+  .nav-card.active-rs::before { background: linear-gradient(90deg, #059669, #34d399); }
+  .nav-card-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: all .25s ease;
+  }
+  .nav-card-title {
+    font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: -.02em;
+    display: flex; align-items: center; gap: 8;
+  }
+  .nav-card-desc { font-size: 11px; color: var(--ink3); font-weight: 500; line-height: 1.5; margin-top: -4px; }
+  .nav-badge {
+    font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 99px;
     text-transform: uppercase; letter-spacing: .04em;
     background: linear-gradient(135deg, #7c3aed, #a78bfa);
     color: white; animation: pulse-glow 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
   /* Upload area */
@@ -285,8 +307,10 @@ const CSS = `
     .recommend-card { min-width: calc(50% - 4px) !important; }
     .res-header { padding: 20px 20px; }
     .res-body { padding: 18px 18px; }
-    .tab-bar { flex-direction: column; max-width: 100%; }
-    .tab-item { justify-content: center; }
+    .nav-cards { grid-template-columns: 1fr !important; gap: 10px; }
+    .nav-card { flex-direction: row; align-items: center; padding: 16px; gap: 14px; }
+    .nav-card-icon { width: 38px; height: 38px; }
+    .nav-card-desc { display: none; }
   }
 `
 
@@ -477,7 +501,7 @@ const RECOMMEND_OPTIONS = [
   { label: "No", sub: "Not really", icon: <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#f43f5e" stroke="#f43f5e" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
 ]
 
-type ActiveTab = "feedback" | "hackathon"
+type ActiveTab = "feedback" | "hackathon" | "resources"
 
 export default function FeedbackPage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("feedback")
@@ -622,23 +646,39 @@ export default function FeedbackPage() {
   )
 
   // ── Hero content per tab ──
-  const heroContent = activeTab === "feedback" ? {
-    badge: "2-Day AI Bootcamp · March 2026",
-    badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
-    title1: "How was your",
-    title2: "bootcamp experience?",
-    subtitle: "Takes 2 minutes. Your honest feedback shapes everything we build next.",
-    stats: [["~2 min","to complete"],["5","questions"],["100%","anonymous"]],
-    gradient: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)",
-  } : {
-    badge: "AI Hackathon · March 2026",
-    badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
-    title1: "Submit your",
-    title2: "hackathon project",
-    subtitle: "Upload your project details and let the judges see what you built.",
-    stats: [["5 min","to fill"],["6","fields"],["100%","fair judging"]],
-    gradient: "linear-gradient(160deg, #3b1578 0%, #5b21b6 55%, #7c3aed 100%)",
+  const heroMap = {
+    feedback: {
+      badge: "2-Day AI Bootcamp · March 2026",
+      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+      title1: "How was your",
+      title2: "bootcamp experience?",
+      subtitle: "Takes 2 minutes. Your honest feedback shapes everything we build next.",
+      stats: [["~2 min","to complete"],["5","questions"],["100%","anonymous"]],
+      gradient: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)",
+      shimmerClass: "shimmer",
+    },
+    hackathon: {
+      badge: "AI Hackathon · March 2026",
+      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+      title1: "Submit your",
+      title2: "hackathon project",
+      subtitle: "Upload your project details and let the judges see what you built.",
+      stats: [["5 min","to fill"],["6","fields"],["100%","fair judging"]],
+      gradient: "linear-gradient(160deg, #3b1578 0%, #5b21b6 55%, #7c3aed 100%)",
+      shimmerClass: "shimmer-vio",
+    },
+    resources: {
+      badge: "Bootcamp Resources · Free Access",
+      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+      title1: "Free bootcamp",
+      title2: "resources for you",
+      subtitle: "All slides, notebooks, cheat sheets and reference materials from the bootcamp.",
+      stats: [["100%","free forever"],["4+","resource types"],["Google","Drive access"]],
+      gradient: "linear-gradient(160deg, #064e3b 0%, #047857 55%, #059669 100%)",
+      shimmerClass: "shimmer-grn",
+    },
   }
+  const heroContent = heroMap[activeTab]
 
   return (
     <>
@@ -651,9 +691,9 @@ export default function FeedbackPage() {
             <JobingenLogo height={110} />
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : "#7c3aed", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : "#7c3aed20"}` }} />
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : activeTab === "hackathon" ? "#7c3aed" : "#059669", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : activeTab === "hackathon" ? "#7c3aed20" : "#05966920"}` }} />
             <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
-              {activeTab === "feedback" ? "Bootcamp 1 · Feedback" : "Hackathon · Project Submission"}
+              {activeTab === "feedback" ? "Bootcamp · Feedback" : activeTab === "hackathon" ? "Hackathon · Submit Project" : "Bootcamp · Resources"}
             </span>
           </div>
         </nav>
@@ -668,7 +708,7 @@ export default function FeedbackPage() {
             </div>
             <h1 style={{ fontSize: "clamp(28px,4vw,46px)", fontWeight: 900, color: "white", lineHeight: 1.1, letterSpacing: "-.025em", marginBottom: 14 }}>
               {heroContent.title1}<br />
-              <span className={activeTab === "feedback" ? "shimmer" : "shimmer-vio"}>{heroContent.title2}</span>
+              <span className={heroContent.shimmerClass}>{heroContent.title2}</span>
             </h1>
             <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 24px" }}>
               {heroContent.subtitle}
@@ -684,29 +724,52 @@ export default function FeedbackPage() {
           </div>
         </div>
 
-        {/* Tab Bar */}
-        <div style={{ maxWidth: 660, margin: "0 auto", padding: "24px 24px 0" }}>
-          <div className="tab-bar">
-            <button
-              className={`tab-item${activeTab === "feedback" ? " active-fb" : ""}`}
+        {/* Navigation Cards */}
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "28px 24px 0" }}>
+          <div className="nav-cards">
+            {/* Bootcamp Feedback */}
+            <div
+              className={`nav-card${activeTab === "feedback" ? " active-fb" : ""}`}
               onClick={() => setActiveTab("feedback")}
             >
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill={activeTab === "feedback" ? "currentColor" : "none"}/></svg>
-              Bootcamp Feedback
-            </button>
-            <button
-              className={`tab-item${activeTab === "hackathon" ? " active-hk" : ""}`}
+              <div className="nav-card-icon" style={{ background: activeTab === "feedback" ? "linear-gradient(135deg,#1d3a8f,#3b5ff0)" : "var(--ind-l)" }}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke={activeTab === "feedback" ? "#fff" : "#1d3a8f"} strokeWidth="2" strokeLinejoin="round" fill={activeTab === "feedback" ? "rgba(255,255,255,0.25)" : "none"}/></svg>
+              </div>
+              <div className="nav-card-title">Bootcamp Feedback</div>
+              <div className="nav-card-desc">Share your bootcamp experience and help us improve</div>
+            </div>
+
+            {/* Submit Project */}
+            <div
+              className={`nav-card${activeTab === "hackathon" ? " active-hk" : ""}`}
               onClick={() => setActiveTab("hackathon")}
             >
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill={activeTab === "hackathon" ? "currentColor" : "none"}/></svg>
-              Submit Project
-              <span className="tab-badge">New</span>
-            </button>
+              <div className="nav-card-icon" style={{ background: activeTab === "hackathon" ? "linear-gradient(135deg,#5b21b6,#8b5cf6)" : "var(--vio-l)" }}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke={activeTab === "hackathon" ? "#fff" : "#7c3aed"} strokeWidth="2" strokeLinejoin="round" fill={activeTab === "hackathon" ? "rgba(255,255,255,0.25)" : "none"}/></svg>
+              </div>
+              <div className="nav-card-title">
+                Submit Project
+                <span className="nav-badge">New</span>
+              </div>
+              <div className="nav-card-desc">Submit your hackathon project for judging</div>
+            </div>
+
+            {/* Free Resources */}
+            <div
+              className={`nav-card${activeTab === "resources" ? " active-rs" : ""}`}
+              onClick={() => setActiveTab("resources")}
+            >
+              <div className="nav-card-icon" style={{ background: activeTab === "resources" ? "linear-gradient(135deg,#047857,#34d399)" : "var(--grn-l)" }}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke={activeTab === "resources" ? "#fff" : "#10b981"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke={activeTab === "resources" ? "#fff" : "#10b981"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <div className="nav-card-title">Free Resources</div>
+              <div className="nav-card-desc">Slides, notebooks, cheat sheets — all free</div>
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="fb-wrap" style={{ maxWidth: 660, margin: "0 auto", padding: "24px 24px 60px" }}>
+        <div className="fb-wrap" style={{ maxWidth: 680, margin: "0 auto", padding: "24px 24px 60px" }}>
 
           {/* ═══════════════════════════════════════════════════ */}
           {/* ── FEEDBACK TAB ── */}
@@ -851,40 +914,6 @@ export default function FeedbackPage() {
                 </p>
               </form>
 
-              {/* Resources */}
-              <div className="res-section" style={{ marginTop: 20 }}>
-                <div className="res-header">
-                  <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>Free Resources</div>
-                      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 500, marginTop: 2 }}>Everything from the bootcamp — yours to keep</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="res-body">
-                  <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer" className="res-item">
-                    <div className="res-item-icon" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 13h8M8 17h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                    <div className="res-item-info">
-                      <h4>Bootcamp Resource Kit</h4>
-                      <p>Slides, code notebooks, cheat sheets, and reference material</p>
-                      <div className="res-chips" style={{ marginTop: 8 }}>
-                        <span className="res-chip" style={{ background: "#eef1fd", color: "#1d3a8f" }}>Slides</span>
-                        <span className="res-chip" style={{ background: "#ecfdf5", color: "#10b981" }}>Notebooks</span>
-                        <span className="res-chip" style={{ background: "#fef3c7", color: "#d97706" }}>Cheat Sheets</span>
-                        <span className="res-chip" style={{ background: "#fce7f3", color: "#db2777" }}>References</span>
-                      </div>
-                    </div>
-                    <div className="res-arrow">
-                      <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8h8M8 4l4 4-4 4" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                  </a>
-                </div>
-              </div>
             </>
           )}
 
@@ -1083,6 +1112,99 @@ export default function FeedbackPage() {
                 You can submit only once. Make sure all details are correct before submitting.
               </p>
             </form>
+          )}
+
+          {/* ═══════════════════════════════════════════════════ */}
+          {/* ── FREE RESOURCES TAB ── */}
+          {/* ═══════════════════════════════════════════════════ */}
+          {activeTab === "resources" && (
+            <div className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+              {/* Main resource card */}
+              <div className="res-section">
+                <div className="res-header" style={{ background: "linear-gradient(135deg, #064e3b 0%, #047857 100%)" }}>
+                  <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 13, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 18, fontWeight: 900, color: "white", letterSpacing: "-.02em" }}>Bootcamp Resource Kit</div>
+                      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", fontWeight: 500, marginTop: 3 }}>Everything from the 2-day AI bootcamp — yours to keep forever</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="res-body" style={{ gap: 14 }}>
+                  {/* Resource items */}
+                  {[
+                    { title: "Presentation Slides", desc: "All session slides from Day 1 & Day 2 in PDF format", icon: "📊", color: "#eef1fd", textColor: "#1d3a8f", chips: ["Day 1", "Day 2", "PDF"] },
+                    { title: "Code Notebooks", desc: "Jupyter notebooks with hands-on exercises and solutions", icon: "💻", color: "#f3f0ff", textColor: "#7c3aed", chips: ["Python", "Jupyter", "Colab"] },
+                    { title: "Cheat Sheets", desc: "Quick reference cards for LLMs, prompt engineering, RAG", icon: "📋", color: "#fef3c7", textColor: "#d97706", chips: ["LLM", "Prompts", "RAG"] },
+                    { title: "Reference Materials", desc: "Research papers, blog links, and further reading recommendations", icon: "📚", color: "#fce7f3", textColor: "#db2777", chips: ["Papers", "Blogs", "Links"] },
+                  ].map((item) => (
+                    <div key={item.title} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "16px 18px", borderRadius: 16, background: "var(--cream)", border: "1.5px solid var(--border)" }}>
+                      <div style={{ width: 46, height: 46, borderRadius: 13, background: item.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 22 }}>
+                        {item.icon}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ink)", marginBottom: 3 }}>{item.title}</div>
+                        <div style={{ fontSize: 12, color: "var(--ink3)", lineHeight: 1.5, marginBottom: 8 }}>{item.desc}</div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                          {item.chips.map(c => (
+                            <span key={c} style={{ fontSize: 10, fontWeight: 700, padding: "3px 9px", borderRadius: 6, background: item.color, color: item.textColor, textTransform: "uppercase", letterSpacing: ".03em" }}>{c}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Download button */}
+                  <a
+                    href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                      width: "100%", padding: "17px 28px", borderRadius: 16,
+                      background: "linear-gradient(135deg, #047857 0%, #059669 60%, #10b981 100%)",
+                      color: "white", fontSize: 15, fontWeight: 800, textDecoration: "none",
+                      boxShadow: "0 4px 20px rgba(5,150,105,0.35)",
+                      transition: "transform .15s, box-shadow .2s",
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(5,150,105,0.42)" }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(5,150,105,0.35)" }}
+                  >
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Open Google Drive
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              {/* Instagram follow */}
+              <div className="section-card fade-up-2" style={{ gap: 14 }}>
+                <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)" }}>Stay Connected</div>
+                <a href="https://www.instagram.com/jobingen.ai/" target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display: "flex", alignItems: "center", gap: 14, textDecoration: "none",
+                    padding: "14px 18px", borderRadius: 14,
+                    background: "linear-gradient(135deg,rgba(131,58,180,0.06),rgba(253,29,29,0.04),rgba(252,176,69,0.06))",
+                    border: "1.5px solid rgba(131,58,180,0.15)",
+                    transition: "transform .15s, box-shadow .2s",
+                  }}
+                >
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: "linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ink)" }}>Follow @jobingen.ai</div>
+                    <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 2 }}>Get notified when the next bootcamp drops</div>
+                  </div>
+                  <svg style={{ flexShrink: 0 }} width="18" height="18" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#8a8aa8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
           )}
         </div>
       </div>
