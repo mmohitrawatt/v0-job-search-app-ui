@@ -588,29 +588,75 @@ function RegisterForm() {
           </a>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.22)", fontSize:11, fontWeight:800, color:"var(--grn)", textTransform:"uppercase", letterSpacing:".06em" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
-            Registrations Open
+            Pre-Registration Open
           </div>
         </nav>
 
-        {/* ── Closed Bootcamp Hero Banner ── */}
-        <div style={{ background:"var(--ind)", padding:"48px 28px" }}>
-          <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, flexWrap:"wrap" }}>
-            <div>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:99, padding:"4px 12px", marginBottom:14 }}>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="5" width="8" height="6" rx="1.2" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2"/><path d="M4 5V3.5C4 2.12 4.9 1 6 1C7.1 1 8 2.12 8 3.5V5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.7)", textTransform:"uppercase", letterSpacing:".07em" }}>Registration Closed</span>
+        {/* ── Bootcamp Completed Hero Banner ── */}
+        <div style={{ background:"linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%)", padding:"52px 28px", position:"relative", overflow:"hidden" }}>
+          {/* Decorative orbs */}
+          <div style={{ position:"absolute", top:-60, right:-40, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(59,82,240,.25),transparent 70%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", bottom:-40, left:"15%", width:180, height:180, borderRadius:"50%", background:"radial-gradient(circle,rgba(16,185,129,.15),transparent 70%)", pointerEvents:"none" }} />
+
+          <div style={{ maxWidth:1100, margin:"0 auto", position:"relative", zIndex:1 }}>
+            {/* Top badges */}
+            <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:20 }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(16,185,129,0.15)", border:"1px solid rgba(16,185,129,0.3)", borderRadius:99, padding:"5px 14px" }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 7L5 10L10 3" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span style={{ fontSize:10, fontWeight:800, color:"#34d399", textTransform:"uppercase", letterSpacing:".07em" }}>Batch 1 Completed</span>
               </div>
-              <h2 style={{ fontSize:"clamp(22px,2.8vw,34px)", fontWeight:900, color:"white", margin:"0 0 10px", lineHeight:1.15, letterSpacing:"-.02em" }}>
-                This Bootcamp is Full
-              </h2>
-              <p style={{ fontSize:15, color:"rgba(255,255,255,0.65)", lineHeight:1.7, margin:0, maxWidth:520 }}>
-                We&apos;ve reached capacity for this batch. Be ready — the next bootcamp is coming within 2 weeks with new projects, mentors, and opportunities.
-              </p>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", borderRadius:99, padding:"5px 14px" }}>
+                <span style={{ fontSize:10 }}>🏆</span>
+                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>Hackathon Done</span>
+              </div>
             </div>
-            <div style={{ flexShrink:0, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:16, padding:"16px 24px", textAlign:"center" }}>
-              <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".06em", marginBottom:4 }}>Next Batch</div>
-              <div style={{ fontSize:20, fontWeight:900, color:"white", lineHeight:1.1 }}>Coming Soon</div>
-              <div style={{ fontSize:12, color:"rgba(255,255,255,0.5)", marginTop:4 }}>Within 2 weeks</div>
+
+            {/* Main content row */}
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:32, flexWrap:"wrap" }}>
+              <div style={{ flex:1, minWidth:280 }}>
+                <h2 style={{ fontSize:"clamp(24px,3vw,38px)", fontWeight:900, color:"white", margin:"0 0 14px", lineHeight:1.12, letterSpacing:"-.025em" }}>
+                  AI Bootcamp &amp; Hackathon<br />
+                  <span style={{ background:"linear-gradient(90deg,#34d399,#60a5fa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Successfully Completed</span>
+                </h2>
+                <p style={{ fontSize:15, color:"rgba(255,255,255,0.6)", lineHeight:1.75, margin:"0 0 22px", maxWidth:520 }}>
+                  100+ students from top institutes including IITs, NITs, and leading universities came together to learn AI hands-on, build real projects, and compete in a 12-hour hackathon.
+                </p>
+
+                {/* Stats row */}
+                <div style={{ display:"flex", gap:0, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:14, overflow:"hidden", width:"fit-content" }}>
+                  {[
+                    { value:"100+", label:"Students", color:"#34d399" },
+                    { value:"15+", label:"Projects Built", color:"#60a5fa" },
+                    { value:"2 Days", label:"Intensive", color:"#fbbf24" },
+                  ].map((s, i) => (
+                    <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
+                      <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
+                      <div style={{ fontSize:9, fontWeight:700, color:"rgba(255,255,255,0.45)", marginTop:4, textTransform:"uppercase", letterSpacing:".07em" }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Next batch card */}
+              <div style={{ flexShrink:0, background:"rgba(255,255,255,0.06)", border:"1.5px solid rgba(255,255,255,0.12)", borderRadius:20, padding:"24px 28px", textAlign:"center", backdropFilter:"blur(12px)", minWidth:200 }}>
+                <div style={{ width:44, height:44, borderRadius:12, background:"linear-gradient(135deg,#1d3a8f,#3b52f0)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", boxShadow:"0 8px 24px rgba(29,58,143,0.4)" }}>
+                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2" strokeLinejoin="round"/></svg>
+                </div>
+                <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Next Batch</div>
+                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>Coming Soon</div>
+                <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.5 }}>New projects &amp; mentors</div>
+                <div style={{ marginTop:14, padding:"6px 16px", borderRadius:99, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.25)", fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".06em", display:"inline-block" }}>
+                  ₹49 Only
+                </div>
+              </div>
+            </div>
+
+            {/* Institute tags */}
+            <div style={{ marginTop:24, display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+              <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".06em", marginRight:4 }}>Students from</span>
+              {["IITs","NITs","BITS","DTU","NSUT","VIT","SRM","IIIT","Top Universities"].map(tag => (
+                <span key={tag} style={{ fontSize:10, fontWeight:700, padding:"3px 10px", borderRadius:6, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.55)" }}>{tag}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -621,13 +667,13 @@ function RegisterForm() {
           {/* Header */}
           <div style={{ marginBottom:32 }}>
             <div style={{ fontSize:12, fontWeight:700, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".07em", marginBottom:10 }}>
-              Next Bootcamp · Register Now
+              Batch 2 · Pre-Registration Open
             </div>
             <h1 style={{ fontSize:"clamp(28px,3.6vw,44px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 12px", lineHeight:1.08 }}>
               Secure your spot.<br />Date announced soon.
             </h1>
             <p style={{ fontSize:15, color:"var(--ink2)", lineHeight:1.7 }}>
-              Online · Happening within 2 weeks ·{" "}
+              Online ·{" "}
               <span style={{ textDecoration:"line-through", color:"var(--ink3)", fontSize:14 }}>₹499</span>{" "}
               <strong style={{ color:"var(--ind)" }}>₹49</strong> only · Limited seats
             </p>

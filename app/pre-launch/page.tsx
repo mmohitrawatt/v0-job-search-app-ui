@@ -805,13 +805,13 @@ export default function PreLaunchPage() {
                 {/* Header */}
                 <div className="pl-bc-head">
                   <div className="pl-bc-left">
-                    <div className="pl-live"><span className="pl-live-d" />Live &middot; 14-15 March 2026</div>
+                    <div className="pl-live"><span className="pl-live-d" />Next Batch &middot; Date Announce Soon</div>
                     <div className="pl-bc-h">2-Day AI Bootcamp + Hackathon</div>
                   </div>
                   <div className="pl-bc-right">
                     <div className="pl-bc-price">
                       <div style={{ display:"flex", alignItems:"flex-end", gap:8 }}>
-                        <div className="pl-bc-amt">&#8377;29</div>
+                        <div className="pl-bc-amt">&#8377;49</div>
                         <span style={{ fontSize:16, color:"rgba(255,255,255,0.4)", textDecoration:"line-through", marginBottom:4, fontWeight:700 }}>&#8377;499</span>
                       </div>
                       <div className="pl-bc-psub">Online &middot; Limited seats</div>
@@ -830,11 +830,11 @@ export default function PreLaunchPage() {
                     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                       <div className="pl-bc-daterow">
                         <span className="ico">&#128197;</span>
-                        <div><div className="label">Saturday, 14 March</div><div className="sub">8:30 AM - 6 PM &middot; 4 sessions</div></div>
+                        <div><div className="label">Day 1 — AI Bootcamp</div><div className="sub">Full day &middot; 4 hands-on sessions</div></div>
                       </div>
                       <div className="pl-bc-daterow">
                         <span className="ico">&#9889;</span>
-                        <div><div className="label">Sunday, 15 March</div><div className="sub">9 AM - 9 PM &middot; Hackathon</div></div>
+                        <div><div className="label">Day 2 — Hackathon</div><div className="sub">Full day &middot; Build &amp; present projects</div></div>
                       </div>
                     </div>
                     <div className="pl-bc-hr" />
