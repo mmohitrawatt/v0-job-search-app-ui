@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, ChangeEvent } from "react"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
 const CSS = `
@@ -18,6 +18,9 @@ const CSS = `
     --grn-l:  #ecfdf5;
     --rose:   #f43f5e;
     --amb:    #f59e0b;
+    --amb-l:  #fffbeb;
+    --vio:    #7c3aed;
+    --vio-l:  #f3f0ff;
     --shadow-sm: 0 1px 4px rgba(10,10,20,0.06);
     --shadow-md: 0 4px 24px rgba(10,10,20,0.08);
     --shadow-lg: 0 8px 40px rgba(10,10,20,0.12);
@@ -49,9 +52,20 @@ const CSS = `
     0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
     100% { transform: translateY(60px) rotate(360deg); opacity: 0; }
   }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.25); }
+    50%      { box-shadow: 0 0 0 8px rgba(124,58,237,0); }
+  }
 
   .shimmer {
     background: linear-gradient(90deg, #1d3a8f 0%, #4f6ef7 35%, #7b93ff 50%, #4f6ef7 65%, #1d3a8f 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-text 4s linear infinite;
+  }
+  .shimmer-vio {
+    background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 35%, #c4b5fd 50%, #a78bfa 65%, #7c3aed 100%);
     background-size: 300% auto;
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -125,6 +139,11 @@ const CSS = `
     display: inline-flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 800; color: var(--ind); flex-shrink: 0;
   }
+  .section-num-vio {
+    width: 22px; height: 22px; border-radius: 7px; background: var(--vio-l);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--vio); flex-shrink: 0;
+  }
 
   .submit-btn {
     width: 100%; padding: 17px 28px; border-radius: 16px;
@@ -138,6 +157,19 @@ const CSS = `
   .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(29,58,143,0.42); }
   .submit-btn:active:not(:disabled) { transform: translateY(0); }
   .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+  .submit-btn-vio {
+    width: 100%; padding: 17px 28px; border-radius: 16px;
+    background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 60%, #8b5cf6 100%);
+    color: white; font-size: 15px; font-weight: 800; border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px;
+    transition: opacity .2s, transform .15s, box-shadow .2s; font-family: inherit;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+    letter-spacing: -.01em;
+  }
+  .submit-btn-vio:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,0.42); }
+  .submit-btn-vio:active:not(:disabled) { transform: translateY(0); }
+  .submit-btn-vio:disabled { opacity: 0.65; cursor: not-allowed; }
 
   .spinner {
     width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3);
@@ -186,15 +218,75 @@ const CSS = `
     text-transform: uppercase; letter-spacing: .04em;
   }
 
+  /* Tab bar */
+  .tab-bar {
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--white); border-radius: 16px;
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-sm);
+    max-width: 500px; margin: 0 auto;
+  }
+  .tab-item {
+    flex: 1; padding: 12px 16px; border-radius: 12px;
+    border: none; background: transparent; cursor: pointer;
+    font-size: 13px; font-weight: 700; color: var(--ink3);
+    transition: all .2s ease; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8;
+    position: relative; white-space: nowrap;
+  }
+  .tab-item:hover { color: var(--ink2); background: var(--cream); }
+  .tab-item.active-fb {
+    background: var(--ind-l); color: var(--ind);
+    box-shadow: 0 2px 8px rgba(29,58,143,0.12);
+  }
+  .tab-item.active-hk {
+    background: var(--vio-l); color: var(--vio);
+    box-shadow: 0 2px 8px rgba(124,58,237,0.12);
+  }
+  .tab-badge {
+    font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 99px;
+    text-transform: uppercase; letter-spacing: .04em;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    color: white; animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Upload area */
+  .upload-zone {
+    width: 100%; padding: 24px; border-radius: 16px;
+    border: 2px dashed var(--border); background: var(--cream);
+    text-align: center; cursor: pointer;
+    transition: all .2s ease;
+  }
+  .upload-zone:hover { border-color: rgba(124,58,237,.35); background: var(--vio-l); }
+  .upload-zone.has-file { border-color: var(--grn); background: var(--grn-l); border-style: solid; }
+
+  /* Tech chip */
+  .tech-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tech-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: 8px;
+    background: var(--vio-l); color: var(--vio);
+    font-size: 12px; font-weight: 700;
+    animation: fade-up .3s var(--ease-out) both;
+  }
+  .tech-chip button {
+    background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--vio); opacity: .6; font-size: 14px; line-height: 1;
+    transition: opacity .15s;
+  }
+  .tech-chip button:hover { opacity: 1; }
+
   @media (max-width: 640px) {
     .section-card { padding: 20px 18px !important; }
     .fb-wrap { padding: 20px 16px !important; }
     .fb-hero { padding: 36px 20px !important; }
     .name-grid { grid-template-columns: 1fr !important; }
+    .proj-grid { grid-template-columns: 1fr !important; }
     .recommend-row { flex-wrap: wrap !important; }
     .recommend-card { min-width: calc(50% - 4px) !important; }
     .res-header { padding: 20px 20px; }
     .res-body { padding: 18px 18px; }
+    .tab-bar { flex-direction: column; max-width: 100%; }
+    .tab-item { justify-content: center; }
   }
 `
 
@@ -226,7 +318,7 @@ function StarRating({ value, onChange, size = 36 }: { value: number; onChange: (
       </div>
       {active === 0 && (
         <div style={{ display: "flex", gap: 0 }}>
-          {["1","2","3","4","5"].map((n, i) => (
+          {["1","2","3","4","5"].map((n) => (
             <span key={n} style={{ width: 36, textAlign: "center", fontSize: 10, color: "var(--ink3)", fontWeight: 600 }}>{n}</span>
           ))}
         </div>
@@ -261,17 +353,15 @@ function MiniStarRow({ label, value, onChange }: { label: string; value: number;
   )
 }
 
-function SuccessScreen() {
+function FeedbackSuccessScreen() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--cream)", padding: "40px 24px" }}>
       <div style={{ maxWidth: 480, width: "100%", textAlign: "center" }}>
-        {/* Check circle */}
         <div className="success-check" style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#2548c5)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", boxShadow: "0 16px 48px rgba(29,58,143,0.3)" }}>
           <svg width="40" height="40" fill="none" viewBox="0 0 40 40">
             <path d="M10 20L17 27L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
-
         <div className="fade-up" style={{ fontSize: 11, fontWeight: 800, color: "var(--ind)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>
           Feedback Received
         </div>
@@ -281,8 +371,6 @@ function SuccessScreen() {
         <p className="fade-up-3" style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 360, margin: "0 auto 32px" }}>
           Your response has been recorded. We&apos;ll use it to build an even better experience for the next bootcamp.
         </p>
-
-        {/* Instagram card */}
         <div className="fade-up-3" style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: "18px 22px", marginBottom: 24, boxShadow: "var(--shadow-sm)" }}>
           <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>Stay in the loop</div>
           <a href="https://www.instagram.com/jobingen.ai/" target="_blank" rel="noopener noreferrer"
@@ -299,8 +387,6 @@ function SuccessScreen() {
             <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#8a8aa8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
         </div>
-
-        {/* Resources card */}
         <div className="fade-up-3" style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: "18px 22px", marginBottom: 24, boxShadow: "var(--shadow-sm)", textAlign: "left" }}>
           <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>Free Resources</div>
           <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer"
@@ -315,8 +401,52 @@ function SuccessScreen() {
             <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="#8a8aa8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
         </div>
-
         <a href="/pre-launch" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--ind)", color: "white", borderRadius: 14, padding: "13px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.3)" }}>
+          Back to Home
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  )
+}
+
+function ProjectSuccessScreen({ teamName }: { teamName: string }) {
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--cream)", padding: "40px 24px" }}>
+      <div style={{ maxWidth: 480, width: "100%", textAlign: "center" }}>
+        <div className="success-check" style={{ width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg,#5b21b6,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 28px", boxShadow: "0 16px 48px rgba(124,58,237,0.3)" }}>
+          <svg width="40" height="40" fill="none" viewBox="0 0 40 40">
+            <path d="M10 20L17 27L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <div className="fade-up" style={{ fontSize: 11, fontWeight: 800, color: "var(--vio)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>
+          Project Submitted!
+        </div>
+        <h1 className="fade-up-2" style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 900, letterSpacing: "-.03em", color: "var(--ink)", lineHeight: 1.1, marginBottom: 14 }}>
+          Great work, <span className="shimmer-vio">{teamName || "Team"}!</span>
+        </h1>
+        <p className="fade-up-3" style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 380, margin: "0 auto 32px" }}>
+          Your hackathon project has been submitted successfully. Our judges will review it and results will be announced soon.
+        </p>
+
+        <div className="fade-up-3" style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: "20px 24px", marginBottom: 24, boxShadow: "var(--shadow-sm)", textAlign: "left" }}>
+          <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>What happens next</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {[
+              { icon: "1", text: "Judges review all submitted projects" },
+              { icon: "2", text: "Top projects shortlisted for final evaluation" },
+              { icon: "3", text: "Winners announced on our Instagram and WhatsApp group" },
+              { icon: "4", text: "Prizes distributed within 48 hours of announcement" },
+            ].map((s) => (
+              <div key={s.icon} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div style={{ width: 24, height: 24, borderRadius: 7, background: "var(--vio-l)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 11, fontWeight: 800, color: "var(--vio)" }}>{s.icon}</div>
+                <span style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.5, paddingTop: 2 }}>{s.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <a href="/pre-launch" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#5b21b6,#7c3aed)", color: "white", borderRadius: 14, padding: "13px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 16px rgba(124,58,237,0.3)" }}>
           Back to Home
           <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </a>
@@ -347,7 +477,12 @@ const RECOMMEND_OPTIONS = [
   { label: "No", sub: "Not really", icon: <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#f43f5e" stroke="#f43f5e" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
 ]
 
+type ActiveTab = "feedback" | "hackathon"
+
 export default function FeedbackPage() {
+  const [activeTab, setActiveTab] = useState<ActiveTab>("feedback")
+
+  // ── Feedback form state ──
   const [form, setForm] = useState({
     name: "", email: "",
     overall_rating: 0, content_rating: 0, mentor_rating: 0,
@@ -360,6 +495,21 @@ export default function FeedbackPage() {
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState("")
 
+  // ── Project submission state ──
+  const [projForm, setProjForm] = useState({
+    team_name: "", leader_name: "", email: "",
+    project_title: "", description: "", tech_stack: "",
+    github_link: "", demo_link: "",
+  })
+  const [projScreenshot, setProjScreenshot] = useState<File | null>(null)
+  const [projScreenshotName, setProjScreenshotName] = useState("")
+  const [projErrors, setProjErrors] = useState<Record<string, string>>({})
+  const [projLoading, setProjLoading] = useState(false)
+  const [projSubmitted, setProjSubmitted] = useState(false)
+  const [projServerError, setProjServerError] = useState("")
+  const projFileRef = useRef<HTMLInputElement>(null)
+
+  // ── Feedback handlers ──
   function set(key: string, val: string | number) {
     setForm(f => ({ ...f, [key]: val }))
     setErrors(e => ({ ...e, [key]: "" }))
@@ -402,12 +552,93 @@ export default function FeedbackPage() {
     }
   }
 
+  // ── Project handlers ──
+  function projSet(key: string, val: string) {
+    setProjForm(f => ({ ...f, [key]: val }))
+    setProjErrors(e => ({ ...e, [key]: "" }))
+    setProjServerError("")
+  }
+
+  function handleProjFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setProjScreenshot(file)
+    setProjScreenshotName(file.name)
+  }
+
+  function projValidate() {
+    const e: Record<string, string> = {}
+    if (!projForm.team_name.trim()) e.team_name = "Team name is required"
+    if (!projForm.leader_name.trim()) e.leader_name = "Team leader name is required"
+    if (!projForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(projForm.email)) e.email = "Valid email is required"
+    if (!projForm.project_title.trim()) e.project_title = "Project title is required"
+    if (!projForm.description.trim()) e.description = "Project description is required"
+    if (!projForm.tech_stack.trim()) e.tech_stack = "Tech stack is required"
+    if (!projForm.github_link.trim()) e.github_link = "GitHub repo link is required"
+    return e
+  }
+
+  async function handleProjSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const errs = projValidate()
+    if (Object.keys(errs).length) { setProjErrors(errs); return }
+    setProjLoading(true)
+    setProjServerError("")
+    try {
+      const fd = new FormData()
+      fd.append("team_name", projForm.team_name.trim())
+      fd.append("leader_name", projForm.leader_name.trim())
+      fd.append("email", projForm.email.trim())
+      fd.append("project_title", projForm.project_title.trim())
+      fd.append("description", projForm.description.trim())
+      fd.append("tech_stack", projForm.tech_stack.trim())
+      fd.append("github_link", projForm.github_link.trim())
+      fd.append("demo_link", projForm.demo_link.trim())
+      if (projScreenshot) fd.append("screenshot", projScreenshot)
+
+      const res = await fetch("/api/hackathon-submit", { method: "POST", body: fd })
+      const data = await res.json()
+      if (!res.ok) { setProjServerError(data.error || "Something went wrong."); setProjLoading(false); return }
+      setProjSubmitted(true)
+    } catch {
+      setProjServerError("Network error. Please try again.")
+      setProjLoading(false)
+    }
+  }
+
+  // ── Success screens ──
   if (submitted) return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <SuccessScreen />
+      <FeedbackSuccessScreen />
     </>
   )
+
+  if (projSubmitted) return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <ProjectSuccessScreen teamName={projForm.team_name} />
+    </>
+  )
+
+  // ── Hero content per tab ──
+  const heroContent = activeTab === "feedback" ? {
+    badge: "2-Day AI Bootcamp · March 2026",
+    badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+    title1: "How was your",
+    title2: "bootcamp experience?",
+    subtitle: "Takes 2 minutes. Your honest feedback shapes everything we build next.",
+    stats: [["~2 min","to complete"],["5","questions"],["100%","anonymous"]],
+    gradient: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)",
+  } : {
+    badge: "AI Hackathon · March 2026",
+    badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
+    title1: "Submit your",
+    title2: "hackathon project",
+    subtitle: "Upload your project details and let the judges see what you built.",
+    stats: [["5 min","to fill"],["6","fields"],["Prize Pool","50K+"]],
+    gradient: "linear-gradient(160deg, #3b1578 0%, #5b21b6 55%, #7c3aed 100%)",
+  }
 
   return (
     <>
@@ -420,29 +651,30 @@ export default function FeedbackPage() {
             <JobingenLogo height={110} />
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 0 3px #10b98120" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Bootcamp 1 · Feedback</span>
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : "#7c3aed", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : "#7c3aed20"}` }} />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
+              {activeTab === "feedback" ? "Bootcamp 1 · Feedback" : "Hackathon · Project Submission"}
+            </span>
           </div>
         </nav>
 
         {/* Hero */}
-        <div className="fb-hero" style={{ background: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)", padding: "52px 28px 48px", position: "relative", overflow: "hidden" }}>
-          {/* subtle grid */}
+        <div className="fb-hero" style={{ background: heroContent.gradient, padding: "52px 28px 48px", position: "relative", overflow: "hidden", transition: "background .4s ease" }}>
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
           <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 99, padding: "5px 14px", marginBottom: 18 }}>
-              <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: ".07em" }}>2-Day AI Bootcamp · March 2026</span>
+              {heroContent.badgeIcon}
+              <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: ".07em" }}>{heroContent.badge}</span>
             </div>
             <h1 style={{ fontSize: "clamp(28px,4vw,46px)", fontWeight: 900, color: "white", lineHeight: 1.1, letterSpacing: "-.025em", marginBottom: 14 }}>
-              How was your<br />bootcamp experience?
+              {heroContent.title1}<br />
+              <span className={activeTab === "feedback" ? "shimmer" : "shimmer-vio"}>{heroContent.title2}</span>
             </h1>
             <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 24px" }}>
-              Takes 2 minutes. Your honest feedback shapes everything we build next.
+              {heroContent.subtitle}
             </p>
-            {/* time indicator */}
             <div style={{ display: "inline-flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.08)", borderRadius: 14, padding: "10px 20px", border: "1px solid rgba(255,255,255,0.1)" }}>
-              {[["~2 min","to complete"],["5","questions"],["100%","anonymous"]].map(([v, l]) => (
+              {heroContent.stats.map(([v, l]) => (
                 <div key={v} style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 14, fontWeight: 800, color: "white" }}>{v}</div>
                   <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>{l}</div>
@@ -452,193 +684,406 @@ export default function FeedbackPage() {
           </div>
         </div>
 
-        {/* Form */}
-        <div className="fb-wrap" style={{ maxWidth: 660, margin: "0 auto", padding: "36px 24px 60px" }}>
-          <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-            {/* Section 1 — About You */}
-            <div className="section-card fade-up">
-              <div className="section-label">
-                <span className="section-num">1</span>
-                <span style={{ marginLeft: 8 }}>About You</span>
-              </div>
-              <div className="name-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Your Name <span style={{ color: "var(--rose)" }}>*</span></label>
-                  <input className={`field-input${errors.name ? " err" : ""}`} placeholder="Arjun Sharma" value={form.name} onChange={e => set("name", e.target.value)} />
-                  {errors.name && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.name}</span>}
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Email <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span></label>
-                  <input className="field-input" type="email" placeholder="arjun@gmail.com" value={form.email} onChange={e => set("email", e.target.value)} />
-                </div>
-              </div>
-            </div>
-
-            {/* Section 2 — Ratings */}
-            <div className="section-card fade-up-2">
-              <div className="section-label">
-                <span className="section-num">2</span>
-                <span style={{ marginLeft: 8 }}>Your Ratings</span>
-              </div>
-
-              {/* Overall */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>
-                  Overall experience <span style={{ color: "var(--rose)" }}>*</span>
-                </div>
-                <StarRating value={form.overall_rating} onChange={v => set("overall_rating", v)} size={40} />
-                {errors.overall_rating && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.overall_rating}</span>}
-              </div>
-
-              {/* Divider */}
-              <div style={{ height: 1, background: "var(--border)" }} />
-
-              {/* Category */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink2)", marginBottom: 4 }}>Rate specific areas</div>
-                <div style={{ background: "var(--cream)", borderRadius: 14, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 16 }}>
-                  <MiniStarRow label="Content Quality" value={form.content_rating} onChange={v => set("content_rating", v)} />
-                  <div style={{ height: 1, background: "var(--border)" }} />
-                  <MiniStarRow label="Mentor / Teaching" value={form.mentor_rating} onChange={v => set("mentor_rating", v)} />
-                </div>
-              </div>
-            </div>
-
-            {/* Section 3 — Your Thoughts */}
-            <div className="section-card fade-up-3">
-              <div className="section-label">
-                <span className="section-num">3</span>
-                <span style={{ marginLeft: 8 }}>Your Thoughts</span>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What did you like most? <span style={{ color: "var(--rose)" }}>*</span></label>
-                <p style={{ fontSize: 12, color: "var(--ink3)" }}>Sessions, projects, mentors — anything that stood out</p>
-                <textarea className={`field-input${errors.liked ? " err" : ""}`} rows={3} placeholder="e.g. The RAG session was really practical, loved the hands-on hackathon project..." value={form.liked} onChange={e => set("liked", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
-                {errors.liked && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.liked}</span>}
-              </div>
-
-              <div style={{ height: 1, background: "var(--border)" }} />
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What could be better? <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span></label>
-                <p style={{ fontSize: 12, color: "var(--ink3)" }}>Pacing, content depth, schedule — be honest!</p>
-                <textarea className="field-input" rows={3} placeholder="e.g. More time for Q&A, slower pace on Day 2, more coding exercises..." value={form.improve} onChange={e => set("improve", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
-              </div>
-            </div>
-
-            {/* Section 4 — Recommend */}
-            <div className="section-card">
-              <div className="section-label">
-                <span className="section-num">4</span>
-                <span style={{ marginLeft: 8 }}>Would You Recommend?</span>
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)", marginBottom: 4 }}>Would you recommend this bootcamp to a friend or classmate?</div>
-              <div className="recommend-row" style={{ display: "flex", gap: 8 }}>
-                {RECOMMEND_OPTIONS.map(opt => (
-                  <div key={opt.label} className={`recommend-card${form.recommend === opt.label ? " selected" : ""}`} onClick={() => set("recommend", opt.label)}>
-                    <div className="rc-icon">{opt.icon}</div>
-                    <div className="rc-label">{opt.label}</div>
-                    <div style={{ fontSize: 10, color: "var(--ink3)", fontWeight: 500 }}>{opt.sub}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Section 5 — Next Bootcamp Topics */}
-            <div className="section-card">
-              <div className="section-label">
-                <span className="section-num">5</span>
-                <span style={{ marginLeft: 8 }}>Next Bootcamp</span>
-              </div>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>What topics should we cover next?</div>
-                <div style={{ fontSize: 12, color: "var(--ink3)" }}>Pick as many as you like — this directly influences our next curriculum</div>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {TOPIC_SUGGESTIONS.map(({ label, icon }) => {
-                  const isSelected = selectedTopics.includes(label)
-                  return (
-                    <div key={label} className={`topic-chip${isSelected ? " selected" : ""}`} onClick={() => toggleTopic(label)}>
-                      <span className="chip-dot" />
-                      {label}
-                    </div>
-                  )
-                })}
-              </div>
-              {selectedTopics.length > 0 && (
-                <div style={{ fontSize: 12, color: "var(--ind)", fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
-                  <svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M2.5 6.5L5.5 9.5L10.5 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  {selectedTopics.length} topic{selectedTopics.length > 1 ? "s" : ""} selected
-                </div>
-              )}
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink3)" }}>Anything else not listed above?</label>
-                <input className="field-input" placeholder="Type a topic..." value={customTopic} onChange={e => setCustomTopic(e.target.value)} />
-              </div>
-            </div>
-
-            {/* Server error */}
-            {serverError && (
-              <div style={{ padding: "13px 16px", borderRadius: 12, background: "#fff1f2", border: "1px solid rgba(244,63,94,.2)", fontSize: 13, fontWeight: 600, color: "var(--rose)", display: "flex", alignItems: "center", gap: 8 }}>
-                <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="#f43f5e" strokeWidth="1.5"/><path d="M8 5v3.5M8 10.5v.5" stroke="#f43f5e" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                {serverError}
-              </div>
-            )}
-
-            {/* Submit */}
-            <button type="submit" disabled={loading} className="submit-btn">
-              {loading ? (
-                <><div className="spinner" /> Submitting...</>
-              ) : (
-                <>Submit Feedback
-                  <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </>
-              )}
+        {/* Tab Bar */}
+        <div style={{ maxWidth: 660, margin: "0 auto", padding: "24px 24px 0" }}>
+          <div className="tab-bar">
+            <button
+              className={`tab-item${activeTab === "feedback" ? " active-fb" : ""}`}
+              onClick={() => setActiveTab("feedback")}
+            >
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill={activeTab === "feedback" ? "currentColor" : "none"}/></svg>
+              Bootcamp Feedback
             </button>
+            <button
+              className={`tab-item${activeTab === "hackathon" ? " active-hk" : ""}`}
+              onClick={() => setActiveTab("hackathon")}
+            >
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill={activeTab === "hackathon" ? "currentColor" : "none"}/></svg>
+              Submit Project
+              <span className="tab-badge">New</span>
+            </button>
+          </div>
+        </div>
 
-            <p style={{ textAlign: "center", fontSize: 11, color: "var(--ink3)", lineHeight: 1.6 }}>
-              Your response is confidential and used only to improve future bootcamps.
-            </p>
+        {/* Content */}
+        <div className="fb-wrap" style={{ maxWidth: 660, margin: "0 auto", padding: "24px 24px 60px" }}>
 
-          </form>
+          {/* ═══════════════════════════════════════════════════ */}
+          {/* ── FEEDBACK TAB ── */}
+          {/* ═══════════════════════════════════════════════════ */}
+          {activeTab === "feedback" && (
+            <>
+              <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-          {/* ─── Resources ─── */}
-          <div className="res-section" style={{ marginTop: 20 }}>
-            <div className="res-header">
-              <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                {/* Section 1 — About You */}
+                <div className="section-card fade-up">
+                  <div className="section-label">
+                    <span className="section-num">1</span>
+                    <span style={{ marginLeft: 8 }}>About You</span>
+                  </div>
+                  <div className="name-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Your Name <span style={{ color: "var(--rose)" }}>*</span></label>
+                      <input className={`field-input${errors.name ? " err" : ""}`} placeholder="Arjun Sharma" value={form.name} onChange={e => set("name", e.target.value)} />
+                      {errors.name && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.name}</span>}
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Email <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span></label>
+                      <input className="field-input" type="email" placeholder="arjun@gmail.com" value={form.email} onChange={e => set("email", e.target.value)} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 2 — Ratings */}
+                <div className="section-card fade-up-2">
+                  <div className="section-label">
+                    <span className="section-num">2</span>
+                    <span style={{ marginLeft: 8 }}>Your Ratings</span>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>
+                      Overall experience <span style={{ color: "var(--rose)" }}>*</span>
+                    </div>
+                    <StarRating value={form.overall_rating} onChange={v => set("overall_rating", v)} size={40} />
+                    {errors.overall_rating && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.overall_rating}</span>}
+                  </div>
+                  <div style={{ height: 1, background: "var(--border)" }} />
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink2)", marginBottom: 4 }}>Rate specific areas</div>
+                    <div style={{ background: "var(--cream)", borderRadius: 14, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 16 }}>
+                      <MiniStarRow label="Content Quality" value={form.content_rating} onChange={v => set("content_rating", v)} />
+                      <div style={{ height: 1, background: "var(--border)" }} />
+                      <MiniStarRow label="Mentor / Teaching" value={form.mentor_rating} onChange={v => set("mentor_rating", v)} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3 — Your Thoughts */}
+                <div className="section-card fade-up-3">
+                  <div className="section-label">
+                    <span className="section-num">3</span>
+                    <span style={{ marginLeft: 8 }}>Your Thoughts</span>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What did you like most? <span style={{ color: "var(--rose)" }}>*</span></label>
+                    <p style={{ fontSize: 12, color: "var(--ink3)" }}>Sessions, projects, mentors — anything that stood out</p>
+                    <textarea className={`field-input${errors.liked ? " err" : ""}`} rows={3} placeholder="e.g. The RAG session was really practical, loved the hands-on hackathon project..." value={form.liked} onChange={e => set("liked", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
+                    {errors.liked && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.liked}</span>}
+                  </div>
+                  <div style={{ height: 1, background: "var(--border)" }} />
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What could be better? <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span></label>
+                    <p style={{ fontSize: 12, color: "var(--ink3)" }}>Pacing, content depth, schedule — be honest!</p>
+                    <textarea className="field-input" rows={3} placeholder="e.g. More time for Q&A, slower pace on Day 2, more coding exercises..." value={form.improve} onChange={e => set("improve", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
+                  </div>
+                </div>
+
+                {/* Section 4 — Recommend */}
+                <div className="section-card">
+                  <div className="section-label">
+                    <span className="section-num">4</span>
+                    <span style={{ marginLeft: 8 }}>Would You Recommend?</span>
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)", marginBottom: 4 }}>Would you recommend this bootcamp to a friend or classmate?</div>
+                  <div className="recommend-row" style={{ display: "flex", gap: 8 }}>
+                    {RECOMMEND_OPTIONS.map(opt => (
+                      <div key={opt.label} className={`recommend-card${form.recommend === opt.label ? " selected" : ""}`} onClick={() => set("recommend", opt.label)}>
+                        <div className="rc-icon">{opt.icon}</div>
+                        <div className="rc-label">{opt.label}</div>
+                        <div style={{ fontSize: 10, color: "var(--ink3)", fontWeight: 500 }}>{opt.sub}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Section 5 — Next Bootcamp Topics */}
+                <div className="section-card">
+                  <div className="section-label">
+                    <span className="section-num">5</span>
+                    <span style={{ marginLeft: 8 }}>Next Bootcamp</span>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>What topics should we cover next?</div>
+                    <div style={{ fontSize: 12, color: "var(--ink3)" }}>Pick as many as you like — this directly influences our next curriculum</div>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {TOPIC_SUGGESTIONS.map(({ label }) => {
+                      const isSelected = selectedTopics.includes(label)
+                      return (
+                        <div key={label} className={`topic-chip${isSelected ? " selected" : ""}`} onClick={() => toggleTopic(label)}>
+                          <span className="chip-dot" />
+                          {label}
+                        </div>
+                      )
+                    })}
+                  </div>
+                  {selectedTopics.length > 0 && (
+                    <div style={{ fontSize: 12, color: "var(--ind)", fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
+                      <svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M2.5 6.5L5.5 9.5L10.5 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      {selectedTopics.length} topic{selectedTopics.length > 1 ? "s" : ""} selected
+                    </div>
+                  )}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink3)" }}>Anything else not listed above?</label>
+                    <input className="field-input" placeholder="Type a topic..." value={customTopic} onChange={e => setCustomTopic(e.target.value)} />
+                  </div>
+                </div>
+
+                {serverError && (
+                  <div style={{ padding: "13px 16px", borderRadius: 12, background: "#fff1f2", border: "1px solid rgba(244,63,94,.2)", fontSize: 13, fontWeight: 600, color: "var(--rose)", display: "flex", alignItems: "center", gap: 8 }}>
+                    <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="#f43f5e" strokeWidth="1.5"/><path d="M8 5v3.5M8 10.5v.5" stroke="#f43f5e" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                    {serverError}
+                  </div>
+                )}
+
+                <button type="submit" disabled={loading} className="submit-btn">
+                  {loading ? (
+                    <><div className="spinner" /> Submitting...</>
+                  ) : (
+                    <>Submit Feedback
+                      <svg width="18" height="18" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </>
+                  )}
+                </button>
+
+                <p style={{ textAlign: "center", fontSize: 11, color: "var(--ink3)", lineHeight: 1.6 }}>
+                  Your response is confidential and used only to improve future bootcamps.
+                </p>
+              </form>
+
+              {/* Resources */}
+              <div className="res-section" style={{ marginTop: 20 }}>
+                <div className="res-header">
+                  <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>Free Resources</div>
+                      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 500, marginTop: 2 }}>Everything from the bootcamp — yours to keep</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="res-body">
+                  <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer" className="res-item">
+                    <div className="res-item-icon" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 13h8M8 17h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <div className="res-item-info">
+                      <h4>Bootcamp Resource Kit</h4>
+                      <p>Slides, code notebooks, cheat sheets, and reference material</p>
+                      <div className="res-chips" style={{ marginTop: 8 }}>
+                        <span className="res-chip" style={{ background: "#eef1fd", color: "#1d3a8f" }}>Slides</span>
+                        <span className="res-chip" style={{ background: "#ecfdf5", color: "#10b981" }}>Notebooks</span>
+                        <span className="res-chip" style={{ background: "#fef3c7", color: "#d97706" }}>Cheat Sheets</span>
+                        <span className="res-chip" style={{ background: "#fce7f3", color: "#db2777" }}>References</span>
+                      </div>
+                    </div>
+                    <div className="res-arrow">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8h8M8 4l4 4-4 4" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ═══════════════════════════════════════════════════ */}
+          {/* ── HACKATHON PROJECT SUBMISSION TAB ── */}
+          {/* ═══════════════════════════════════════════════════ */}
+          {activeTab === "hackathon" && (
+            <form onSubmit={handleProjSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+              {/* Section 1 — Team Info */}
+              <div className="section-card fade-up">
+                <div className="section-label">
+                  <span className="section-num-vio">1</span>
+                  <span style={{ marginLeft: 8 }}>Team Info</span>
+                </div>
+                <div className="proj-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Team Name <span style={{ color: "var(--rose)" }}>*</span></label>
+                    <input className={`field-input${projErrors.team_name ? " err" : ""}`} placeholder="e.g. Team Rocket" value={projForm.team_name} onChange={e => projSet("team_name", e.target.value)} />
+                    {projErrors.team_name && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.team_name}</span>}
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Team Leader Name <span style={{ color: "var(--rose)" }}>*</span></label>
+                    <input className={`field-input${projErrors.leader_name ? " err" : ""}`} placeholder="Arjun Sharma" value={projForm.leader_name} onChange={e => projSet("leader_name", e.target.value)} />
+                    {projErrors.leader_name && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.leader_name}</span>}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Email Address <span style={{ color: "var(--rose)" }}>*</span></label>
+                  <input className={`field-input${projErrors.email ? " err" : ""}`} type="email" placeholder="arjun@gmail.com" value={projForm.email} onChange={e => projSet("email", e.target.value)} />
+                  {projErrors.email && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.email}</span>}
+                </div>
+              </div>
+
+              {/* Section 2 — Project Details */}
+              <div className="section-card fade-up-2">
+                <div className="section-label">
+                  <span className="section-num-vio">2</span>
+                  <span style={{ marginLeft: 8 }}>Project Details</span>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Project Title <span style={{ color: "var(--rose)" }}>*</span></label>
+                  <input className={`field-input${projErrors.project_title ? " err" : ""}`} placeholder="e.g. AI Resume Analyzer" value={projForm.project_title} onChange={e => projSet("project_title", e.target.value)} />
+                  {projErrors.project_title && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.project_title}</span>}
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Project Description <span style={{ color: "var(--rose)" }}>*</span></label>
+                  <p style={{ fontSize: 12, color: "var(--ink3)" }}>What does your project do? What problem does it solve? Be specific.</p>
+                  <textarea className={`field-input${projErrors.description ? " err" : ""}`} rows={4} placeholder="e.g. Our project uses GPT-4 to analyze resumes against job descriptions, providing a match score, missing keywords, and actionable suggestions to improve the resume..." value={projForm.description} onChange={e => projSet("description", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
+                  {projErrors.description && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.description}</span>}
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <span style={{ fontSize: 11, color: projForm.description.length > 500 ? "var(--grn)" : "var(--ink3)", fontWeight: 600 }}>
+                      {projForm.description.length} chars {projForm.description.length < 100 && projForm.description.length > 0 ? "· write more for better evaluation" : ""}
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{ height: 1, background: "var(--border)" }} />
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>Tech Stack Used <span style={{ color: "var(--rose)" }}>*</span></label>
+                  <p style={{ fontSize: 12, color: "var(--ink3)" }}>e.g. Python, LangChain, Streamlit, OpenAI API, Pinecone</p>
+                  <input className={`field-input${projErrors.tech_stack ? " err" : ""}`} placeholder="Python, FastAPI, React, GPT-4, ChromaDB..." value={projForm.tech_stack} onChange={e => projSet("tech_stack", e.target.value)} />
+                  {projErrors.tech_stack && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.tech_stack}</span>}
+                  {projForm.tech_stack.trim() && (
+                    <div className="tech-chip-row">
+                      {projForm.tech_stack.split(",").map(t => t.trim()).filter(Boolean).map((tech, i) => (
+                        <span key={i} className="tech-chip">{tech}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Section 3 — Links & Upload */}
+              <div className="section-card fade-up-3">
+                <div className="section-label">
+                  <span className="section-num-vio">3</span>
+                  <span style={{ marginLeft: 8 }}>Links & Screenshot</span>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      GitHub Repository Link <span style={{ color: "var(--rose)" }}>*</span>
+                    </span>
+                  </label>
+                  <input className={`field-input${projErrors.github_link ? " err" : ""}`} type="url" placeholder="https://github.com/your-team/project-name" value={projForm.github_link} onChange={e => projSet("github_link", e.target.value)} />
+                  {projErrors.github_link && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{projErrors.github_link}</span>}
+                  <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 2 }}>
+                    Make sure your repo is public or shared with the judges
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><polyline points="15 3 21 3 21 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Live Demo Link <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span>
+                    </span>
+                  </label>
+                  <input className="field-input" type="url" placeholder="https://your-project.vercel.app or Loom/YouTube video link" value={projForm.demo_link} onChange={e => projSet("demo_link", e.target.value)} />
+                  <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 2 }}>
+                    Deployed app URL, Loom walkthrough, or YouTube demo video
+                  </div>
+                </div>
+
+                <div style={{ height: 1, background: "var(--border)" }} />
+
+                {/* Screenshot upload */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
+                    Project Screenshot <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional but recommended)</span>
+                  </label>
+                  <input
+                    ref={projFileRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleProjFile}
+                  />
+                  <div
+                    className={`upload-zone${projScreenshotName ? " has-file" : ""}`}
+                    onClick={() => projFileRef.current?.click()}
+                  >
+                    {projScreenshotName ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                          <path d="M9 12l2 2 4-4" stroke="var(--grn)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                          <circle cx="12" cy="12" r="10" stroke="var(--grn)" strokeWidth="2" />
+                        </svg>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: "var(--grn)" }}>{projScreenshotName}</span>
+                        <span style={{ fontSize: 11, color: "var(--ink3)", fontWeight: 500 }}>· Click to change</span>
+                      </div>
+                    ) : (
+                      <div>
+                        <div style={{ width: 48, height: 48, borderRadius: 14, background: "var(--vio-l)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--vio)" strokeWidth="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5" fill="var(--vio)"/>
+                            <path d="M21 15l-5-5L5 21" stroke="var(--vio)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <div style={{ fontSize: 14, fontWeight: 700, color: "var(--ink2)" }}>
+                          Click to upload project screenshot
+                        </div>
+                        <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 4 }}>PNG, JPG up to 5MB — show off your UI!</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Important note */}
+              <div style={{
+                padding: "16px 18px", borderRadius: 14,
+                background: "var(--amb-l)", border: "1.5px solid rgba(245,158,11,.2)",
+                display: "flex", gap: 12, alignItems: "flex-start",
+              }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(245,158,11,.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="#d97706" strokeWidth="2.5" strokeLinecap="round"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#d97706" strokeWidth="2" strokeLinejoin="round"/></svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>Free Resources</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 500, marginTop: 2 }}>Everything from the bootcamp — yours to keep</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Before submitting</div>
+                  <ul style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.7, paddingLeft: 16, margin: 0 }}>
+                    <li>Make sure your GitHub repo is <strong>public</strong> or shared with judges</li>
+                    <li>Add a <strong>README.md</strong> with setup instructions in your repo</li>
+                    <li>Double-check your project description — judges read this first</li>
+                  </ul>
                 </div>
               </div>
-            </div>
-            <div className="res-body">
-              <a href="https://drive.google.com/drive/folders/1EhuxYuf8W91AgaUkMp4YUrKEigBSgu7F?usp=sharing" target="_blank" rel="noopener noreferrer" className="res-item">
-                <div className="res-item-icon" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-7-7z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M13 2v7h7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 13h8M8 17h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <div className="res-item-info">
-                  <h4>Bootcamp Resource Kit</h4>
-                  <p>Slides, code notebooks, cheat sheets, and reference material</p>
-                  <div className="res-chips" style={{ marginTop: 8 }}>
-                    <span className="res-chip" style={{ background: "#eef1fd", color: "#1d3a8f" }}>Slides</span>
-                    <span className="res-chip" style={{ background: "#ecfdf5", color: "#10b981" }}>Notebooks</span>
-                    <span className="res-chip" style={{ background: "#fef3c7", color: "#d97706" }}>Cheat Sheets</span>
-                    <span className="res-chip" style={{ background: "#fce7f3", color: "#db2777" }}>References</span>
-                  </div>
-                </div>
-                <div className="res-arrow">
-                  <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8h8M8 4l4 4-4 4" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-              </a>
-            </div>
-          </div>
 
+              {/* Server error */}
+              {projServerError && (
+                <div style={{ padding: "13px 16px", borderRadius: 12, background: "#fff1f2", border: "1px solid rgba(244,63,94,.2)", fontSize: 13, fontWeight: 600, color: "var(--rose)", display: "flex", alignItems: "center", gap: 8 }}>
+                  <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="#f43f5e" strokeWidth="1.5"/><path d="M8 5v3.5M8 10.5v.5" stroke="#f43f5e" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  {projServerError}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button type="submit" disabled={projLoading} className="submit-btn-vio">
+                {projLoading ? (
+                  <><div className="spinner" /> Submitting project...</>
+                ) : (
+                  <>Submit Hackathon Project
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2.2" strokeLinejoin="round"/></svg>
+                  </>
+                )}
+              </button>
+
+              <p style={{ textAlign: "center", fontSize: 11, color: "var(--ink3)", lineHeight: 1.6 }}>
+                You can submit only once. Make sure all details are correct before submitting.
+              </p>
+            </form>
+          )}
         </div>
       </div>
     </>
