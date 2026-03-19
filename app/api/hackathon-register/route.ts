@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     const phone = (formData.get("phone") as string | null)?.trim() ?? ""
     const college = (formData.get("college") as string | null)?.trim() ?? ""
     const team_name = (formData.get("team_name") as string | null)?.trim() ?? "Individual"
+    const learning_cluster = (formData.get("learning_cluster") as string | null)?.trim() ?? ""
     const upi_transaction_id = (formData.get("upi_transaction_id") as string | null)?.trim() ?? ""
     const screenshot = formData.get("screenshot") as File | null
 
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
       phone,
       college,
       team_name,
+      learning_cluster: learning_cluster || null,
       upi_transaction_id,
       payment_screenshot_url,
       bootcamp: "bootcamp_2",

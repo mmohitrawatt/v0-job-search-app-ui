@@ -731,6 +731,34 @@ export default function PreLaunchPage() {
         .pl-mli{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;background:#e8edfe;color:#1d3a8f;font-size:12px;font-weight:700;text-decoration:none;border:1px solid rgba(29,58,143,.15);transition:all .2s ease;margin-top:auto}
         .pl-mli:hover{background:#1d3a8f;color:#fff}
         @media(max-width:640px){.pl-mentors{padding:40px 16px 52px}}
+
+        /* ═══ CLUSTER LEARNING ═══ */
+        .pl-cluster{padding:80px 32px;background:#fff;position:relative;overflow:hidden}
+        .pl-cluster::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(29,58,143,.1),transparent)}
+        .pl-cluster-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+        .pl-cl-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:99px;background:linear-gradient(135deg,#eef1fd,#f3f0ff);border:1px solid rgba(29,58,143,.12);margin-bottom:20px;font-size:10px;font-weight:800;color:#1d3a8f;text-transform:uppercase;letter-spacing:.08em}
+        .pl-cl-badge-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,#1d3a8f,#7c3aed);animation:pl-p 2s ease-in-out infinite}
+        .pl-cl-h{font-size:clamp(26px,3vw,38px);font-weight:900;color:#09090f;letter-spacing:-.03em;line-height:1.12;margin-bottom:20px}
+        .pl-cl-h span{background:linear-gradient(135deg,#1d3a8f,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .pl-cl-p{font-size:15px;color:#5a5a7a;line-height:1.78;margin-bottom:16px}
+        .pl-cl-p strong{color:#09090f;font-weight:700}
+        .pl-cl-highlight{padding:16px 20px;border-radius:14px;background:linear-gradient(135deg,#f8f9ff,#faf8ff);border:1px solid rgba(29,58,143,.08);margin-top:24px;font-size:14px;color:#3d3d52;line-height:1.7;font-weight:600;position:relative}
+        .pl-cl-highlight::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:linear-gradient(180deg,#1d3a8f,#7c3aed)}
+        .pl-cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative}
+        .pl-cl-line-h,.pl-cl-line-v{position:absolute;background:rgba(29,58,143,.06);z-index:0}
+        .pl-cl-line-h{height:1px;left:10%;right:10%;top:50%}
+        .pl-cl-line-v{width:1px;top:10%;bottom:10%;left:50%}
+        .pl-cl-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid rgba(29,58,143,.15);top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+        .pl-cl-dot::after{content:'';position:absolute;inset:2px;border-radius:50%;background:linear-gradient(135deg,#1d3a8f,#7c3aed)}
+        .pl-cl-card{position:relative;z-index:1;padding:24px 20px;border-radius:18px;background:#fff;border:1.5px solid rgba(10,10,20,.06);box-shadow:0 2px 12px rgba(10,10,20,.04);transition:all .3s cubic-bezier(.16,1,.3,1);cursor:default}
+        .pl-cl-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(29,58,143,.1);border-color:rgba(29,58,143,.12)}
+        .pl-cl-card-num{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
+        .pl-cl-card-num::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.18),transparent);pointer-events:none}
+        .pl-cl-card h4{font-size:15px;font-weight:800;color:#09090f;margin-bottom:6px;letter-spacing:-.02em}
+        .pl-cl-card p{font-size:12.5px;color:#6b7280;line-height:1.6}
+        .pl-cl-card-tag{display:inline-flex;margin-top:12px;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.03em}
+        @media(max-width:900px){.pl-cluster-wrap{grid-template-columns:1fr;gap:40px}}
+        @media(max-width:480px){.pl-cluster{padding:52px 18px}.pl-cl-grid{gap:12px}.pl-cl-card{padding:18px 16px}}
       `}</style>
 
       <PromoPopup />
@@ -920,6 +948,60 @@ export default function PreLaunchPage() {
             </Reveal>
           </div>
         </section>
+
+        {/* ═══ CLUSTER-BASED LEARNING ═══ */}
+        <Reveal>
+          <section className="pl-cluster">
+            <div className="pl-cluster-wrap">
+              {/* Left — Text */}
+              <div>
+                <div className="pl-cl-badge">
+                  <span className="pl-cl-badge-dot" />
+                  What Makes Us Different
+                </div>
+                <h2 className="pl-cl-h">
+                  Your Time Is Too Valuable for<br /><span>Generic Training</span>
+                </h2>
+                <p className="pl-cl-p">
+                  Most bootcamps follow a one-size-fits-all approach where every participant learns the same syllabus regardless of their background.
+                </p>
+                <p className="pl-cl-p">
+                  At <strong>Jobingen</strong>, participants are organized into <strong>specialized learning clusters</strong> based on their existing skills, experience level, and career goals — ensuring every session provides meaningful value and targeted mentorship.
+                </p>
+                <p className="pl-cl-p">
+                  Whether you are a beginner exploring AI, a developer building intelligent systems, or a professional integrating AI into real-world products — you will be placed in a cluster designed for <strong>your learning path</strong>.
+                </p>
+                <div className="pl-cl-highlight">
+                  No wasted time. No unnecessary repetition. Just the right guidance at the right stage of your journey.
+                </div>
+              </div>
+
+              {/* Right — Cluster Cards */}
+              <div>
+                <div className="pl-cl-grid">
+                  <div className="pl-cl-line-h" />
+                  <div className="pl-cl-line-v" />
+                  <div className="pl-cl-dot" />
+
+                  {[
+                    { num:"01", name:"AI Foundations", desc:"For beginners starting their AI journey — learn core concepts, tools, and your first model from scratch.", tag:"Beginner", bg:"linear-gradient(135deg,#1d3a8f,#3b5ff0)", tagBg:"#eef1fd", tagColor:"#1d3a8f", slug:"AI Foundations" },
+                    { num:"02", name:"AI Builders", desc:"For developers building AI products and intelligent systems — RAG, agents, and production deployment.", tag:"Intermediate", bg:"linear-gradient(135deg,#7c3aed,#a78bfa)", tagBg:"#f3f0ff", tagColor:"#7c3aed", slug:"AI Builders" },
+                    { num:"03", name:"AI Automation", desc:"For professionals implementing AI workflows — automate tasks, build pipelines, and ship faster.", tag:"Professional", bg:"linear-gradient(135deg,#047857,#34d399)", tagBg:"#ecfdf5", tagColor:"#047857", slug:"AI Automation" },
+                    { num:"04", name:"AI for Startups", desc:"For founders building AI-first products — strategy, MVP development, and go-to-market with AI.", tag:"Founder", bg:"linear-gradient(135deg,#b45309,#f59e0b)", tagBg:"#fffbeb", tagColor:"#b45309", slug:"AI for Startups" },
+                  ].map(c => (
+                    <a key={c.num} href={`/register?cluster=${encodeURIComponent(c.slug)}`} className="pl-cl-card" style={{ textDecoration:"none", color:"inherit" }}>
+                      <div className="pl-cl-card-num" style={{ background:c.bg }}>{c.num}</div>
+                      <h4>{c.name}</h4>
+                      <p>{c.desc}</p>
+                      <span className="pl-cl-card-tag" style={{ background:c.tagBg, color:c.tagColor }}>{c.tag}</span>
+                    </a>
+                  ))}
+                </div>
+                <p style={{ textAlign:"center", marginTop:18, fontSize:12, color:"#9ca3af", fontWeight:600 }}>Click your preferred learning cluster to continue registration.</p>
+              </div>
+            </div>
+          </section>
+        </Reveal>
 
         {/* ═══ BOOTCAMP MENTORS ═══ */}
         <Reveal>

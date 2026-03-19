@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useRef, ChangeEvent } from "react"
+import { useState, useRef, useEffect, ChangeEvent, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
 const UPI_ID = "jobingenai@ybl"
@@ -295,14 +296,16 @@ function MentorsSection() {
 }
 
 // ─── Types ──────────────────────────────────────────────────────
+const CLUSTERS = ["AI Foundations", "AI Builders", "AI Automation", "AI for Startups"] as const
+
 type FormState = {
   name: string; email: string; phone: string; org: string
-  status: string; level: string; goal: string
+  status: string; level: string; goal: string; learning_cluster: string
   upi_transaction_id: string; agreed: boolean
 }
 const INIT: FormState = {
   name:"", email:"", phone:"", org:"", status:"", level:"",
-  goal:"", upi_transaction_id:"", agreed:false,
+  goal:"", learning_cluster:"", upi_transaction_id:"", agreed:false,
 }
 
 // ─── Success Screen ──────────────────────────────────────────────
@@ -496,10 +499,11 @@ export default function RegisterPage() {
       </div>
     </>
   )
-  return <RegisterForm />
+  return <Suspense><RegisterForm /></Suspense>
 }
 
 function RegisterForm() {
+  const searchParams = useSearchParams()
   const [form, setForm] = useState<FormState>(INIT)
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({})
   const [screenshot, setScreenshot] = useState<File | null>(null)
@@ -509,6 +513,17 @@ function RegisterForm() {
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState("")
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Auto-fill cluster from URL param and scroll to form
+  useEffect(() => {
+    const cluster = searchParams.get("cluster")
+    if (cluster && CLUSTERS.includes(cluster as typeof CLUSTERS[number])) {
+      setForm(f => ({ ...f, learning_cluster: cluster }))
+      setTimeout(() => {
+        document.getElementById("bootcamp-registration")?.scrollIntoView({ behavior: "smooth" })
+      }, 300)
+    }
+  }, [searchParams])
 
   function set(key: keyof FormState, val: string | boolean) {
     setForm(f => ({ ...f, [key]: val }))
@@ -550,6 +565,7 @@ function RegisterForm() {
       fd.append("email", form.email.trim())
       fd.append("phone", form.phone.trim())
       fd.append("college", form.org.trim())
+      fd.append("learning_cluster", form.learning_cluster)
       fd.append("upi_transaction_id", form.upi_transaction_id.trim())
       if (screenshot) fd.append("screenshot", screenshot)
 
@@ -662,7 +678,7 @@ function RegisterForm() {
         </div>
 
         {/* Page content */}
-        <div className="reg-wrap" style={{ maxWidth:1100, margin:"0 auto", padding:"48px 28px" }}>
+        <div id="bootcamp-registration" className="reg-wrap" style={{ maxWidth:1100, margin:"0 auto", padding:"48px 28px" }}>
 
           {/* Header */}
           <div style={{ marginBottom:32 }}>
@@ -726,6 +742,19 @@ function RegisterForm() {
                       <div key={opt} className={`radio-card${form.level===opt?" selected":""}`} onClick={() => set("level", opt)}>{opt}</div>
                     ))}
                   </div>
+                </Field>
+
+                {/* Learning Cluster */}
+                <Field label="Learning Cluster" error={errors.learning_cluster}>
+                  <select
+                    className={`field-input${errors.learning_cluster?" err":""}`}
+                    value={form.learning_cluster}
+                    onChange={e => set("learning_cluster", e.target.value)}
+                    style={{ cursor:"pointer" }}
+                  >
+                    <option value="">Select your preferred cluster</option>
+                    {CLUSTERS.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                 </Field>
 
                 {/* Goal */}

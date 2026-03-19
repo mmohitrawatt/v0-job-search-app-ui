@@ -7,7 +7,7 @@ type EarlyAccessUser = {
 }
 type HackathonReg = {
   id: string; name: string; email: string; phone?: string; college?: string
-  team_name?: string; upi_transaction_id?: string; payment_screenshot_url?: string; bootcamp?: string; created_at: string
+  team_name?: string; learning_cluster?: string; upi_transaction_id?: string; payment_screenshot_url?: string; bootcamp?: string; created_at: string
 }
 type BootcampFeedback = {
   id: string; name: string; email?: string
@@ -290,7 +290,7 @@ export default function AdminPage() {
                   ) : (
                     <table>
                       <thead>
-                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
+                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Cluster</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
                       </thead>
                       <tbody>
                         {b2Filtered.map((r, i) => (
@@ -300,6 +300,7 @@ export default function AdminPage() {
                             <td className="c-email">{r.email}</td>
                             <td className="c-phone">{r.phone || "—"}</td>
                             <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                            <td style={{ fontSize: 12, fontWeight: 600, color: "#7c3aed" }}>{r.learning_cluster || "—"}</td>
                             <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
                             <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
                             <td className="c-date">{fmt(r.created_at)}</td>
