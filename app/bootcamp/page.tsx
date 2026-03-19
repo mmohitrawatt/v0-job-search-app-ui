@@ -501,10 +501,10 @@ const RECOMMEND_OPTIONS = [
   { label: "No", sub: "Not really", icon: <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#f43f5e" stroke="#f43f5e" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
 ]
 
-type ActiveTab = "feedback" | "hackathon" | "resources"
+type ActiveTab = "feedback" | "resources"
 
 export default function FeedbackPage() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("hackathon")
+  const [activeTab, setActiveTab] = useState<ActiveTab>("resources")
 
   // ── Feedback form state ──
   const [form, setForm] = useState({
@@ -657,16 +657,6 @@ export default function FeedbackPage() {
       gradient: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)",
       shimmerClass: "shimmer",
     },
-    hackathon: {
-      badge: "AI Hackathon · March 2026",
-      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
-      title1: "Submit your",
-      title2: "hackathon project",
-      subtitle: "Upload your project details and let the judges see what you built.",
-      stats: [["5 min","to fill"],["6","fields"],["100%","fair judging"]],
-      gradient: "linear-gradient(160deg, #3b1578 0%, #5b21b6 55%, #7c3aed 100%)",
-      shimmerClass: "shimmer-vio",
-    },
     resources: {
       badge: "Bootcamp Resources · Free Access",
       badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
@@ -691,9 +681,9 @@ export default function FeedbackPage() {
             <JobingenLogo height={110} />
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : activeTab === "hackathon" ? "#7c3aed" : "#059669", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : activeTab === "hackathon" ? "#7c3aed20" : "#05966920"}` }} />
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : "#059669", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : "#05966920"}` }} />
             <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
-              {activeTab === "feedback" ? "Bootcamp · Feedback" : activeTab === "hackathon" ? "Hackathon · Submit Project" : "Bootcamp · Resources"}
+              {activeTab === "feedback" ? "Bootcamp · Feedback" : "Bootcamp · Resources"}
             </span>
           </div>
         </nav>
@@ -727,21 +717,6 @@ export default function FeedbackPage() {
         {/* Navigation Cards */}
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "28px 24px 0" }}>
           <div className="nav-cards">
-            {/* Submit Project */}
-            <div
-              className={`nav-card${activeTab === "hackathon" ? " active-hk" : ""}`}
-              onClick={() => setActiveTab("hackathon")}
-            >
-              <div className="nav-card-icon" style={{ background: activeTab === "hackathon" ? "linear-gradient(135deg,#5b21b6,#8b5cf6)" : "var(--vio-l)" }}>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke={activeTab === "hackathon" ? "#fff" : "#7c3aed"} strokeWidth="2" strokeLinejoin="round" fill={activeTab === "hackathon" ? "rgba(255,255,255,0.25)" : "none"}/></svg>
-              </div>
-              <div className="nav-card-title">
-                Submit Project
-                <span className="nav-badge">New</span>
-              </div>
-              <div className="nav-card-desc">Submit your hackathon project for judging</div>
-            </div>
-
             {/* Free Resources */}
             <div
               className={`nav-card${activeTab === "resources" ? " active-rs" : ""}`}
@@ -917,10 +892,8 @@ export default function FeedbackPage() {
             </>
           )}
 
-          {/* ═══════════════════════════════════════════════════ */}
-          {/* ── HACKATHON PROJECT SUBMISSION TAB ── */}
-          {/* ═══════════════════════════════════════════════════ */}
-          {activeTab === "hackathon" && (
+          {/* Hackathon submission removed — time over */}
+          {false && (
             <form onSubmit={handleProjSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
               {/* Section 1 — Team Info */}
