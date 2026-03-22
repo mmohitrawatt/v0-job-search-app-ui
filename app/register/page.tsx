@@ -339,8 +339,8 @@ function SuccessScreen({ name }: { name: string }) {
               { icon:"🔍", text:"We verify your UPI payment within a few hours" },
               { icon:"📧", text:"Confirmation email sent once payment is verified" },
               { icon:"💬", text:"Join the WhatsApp group below to stay updated" },
-              { icon:"📅", text:"Reminder 24hrs before the bootcamp once date is confirmed" },
-              { icon:"🏆", text:"Hackathon problem given at 6 PM on Day 1" },
+              { icon:"📅", text:"Reminder 24hrs before the masterclass on 5 April" },
+              { icon:"⚡", text:"4-hour live session with 3 mentors — be ready to build!" },
             ].map((s,i) => (
               <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
                 <span style={{ fontSize:16, lineHeight:1, marginTop:1, flexShrink:0 }}>{s.icon}</span>
@@ -604,26 +604,30 @@ function RegisterForm() {
           </a>
           <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.22)", fontSize:11, fontWeight:800, color:"var(--grn)", textTransform:"uppercase", letterSpacing:".06em" }}>
             <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
-            Pre-Registration Open
+            Registrations Open
           </div>
         </nav>
 
-        {/* ── Bootcamp Completed Hero Banner ── */}
+        {/* ── Vibe Coding Masterclass Hero Banner ── */}
         <div style={{ background:"linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%)", padding:"52px 28px", position:"relative", overflow:"hidden" }}>
           {/* Decorative orbs */}
-          <div style={{ position:"absolute", top:-60, right:-40, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(59,82,240,.25),transparent 70%)", pointerEvents:"none" }} />
-          <div style={{ position:"absolute", bottom:-40, left:"15%", width:180, height:180, borderRadius:"50%", background:"radial-gradient(circle,rgba(16,185,129,.15),transparent 70%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", top:-60, right:-40, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(124,58,237,.25),transparent 70%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", bottom:-40, left:"15%", width:180, height:180, borderRadius:"50%", background:"radial-gradient(circle,rgba(59,82,240,.18),transparent 70%)", pointerEvents:"none" }} />
 
           <div style={{ maxWidth:1100, margin:"0 auto", position:"relative", zIndex:1 }}>
             {/* Top badges */}
             <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:20 }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(124,58,237,0.15)", border:"1px solid rgba(124,58,237,0.3)", borderRadius:99, padding:"5px 14px" }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6.5 1L1.5 7h4.5l-.5 4 5-6H6l.5-4z" stroke="#a78bfa" strokeWidth="1.3" strokeLinejoin="round"/></svg>
+                <span style={{ fontSize:10, fontWeight:800, color:"#a78bfa", textTransform:"uppercase", letterSpacing:".07em" }}>Live Masterclass</span>
+              </div>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", borderRadius:99, padding:"5px 14px" }}>
+                <span style={{ fontSize:10 }}>📅</span>
+                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>5 April 2026</span>
+              </div>
               <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(16,185,129,0.15)", border:"1px solid rgba(16,185,129,0.3)", borderRadius:99, padding:"5px 14px" }}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 7L5 10L10 3" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 <span style={{ fontSize:10, fontWeight:800, color:"#34d399", textTransform:"uppercase", letterSpacing:".07em" }}>Batch 1 Completed</span>
-              </div>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", borderRadius:99, padding:"5px 14px" }}>
-                <span style={{ fontSize:10 }}>🏆</span>
-                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>Hackathon Done</span>
               </div>
             </div>
 
@@ -631,19 +635,19 @@ function RegisterForm() {
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:32, flexWrap:"wrap" }}>
               <div style={{ flex:1, minWidth:280 }}>
                 <h2 style={{ fontSize:"clamp(24px,3vw,38px)", fontWeight:900, color:"white", margin:"0 0 14px", lineHeight:1.12, letterSpacing:"-.025em" }}>
-                  AI Bootcamp &amp; Hackathon<br />
-                  <span style={{ background:"linear-gradient(90deg,#34d399,#60a5fa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Successfully Completed</span>
+                  Vibe Coding: Build AI Apps with<br />
+                  <span style={{ background:"linear-gradient(90deg,#a78bfa,#60a5fa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Real-Time Problem Solving</span>
                 </h2>
                 <p style={{ fontSize:15, color:"rgba(255,255,255,0.6)", lineHeight:1.75, margin:"0 0 22px", maxWidth:520 }}>
-                  100+ students from top institutes including IITs, NITs, and leading universities came together to learn AI hands-on, build real projects, and compete in a 12-hour hackathon.
+                  4-hour live masterclass with 3 mentors — AI workflows, agentic AI, and building a working prototype using vibe coding. Interactive discussion format.
                 </p>
 
                 {/* Stats row */}
                 <div style={{ display:"flex", gap:0, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:14, overflow:"hidden", width:"fit-content" }}>
                   {[
-                    { value:"100+", label:"Students", color:"#34d399" },
-                    { value:"15+", label:"Projects Built", color:"#60a5fa" },
-                    { value:"2 Days", label:"Intensive", color:"#fbbf24" },
+                    { value:"4 Hrs", label:"Live Session", color:"#a78bfa" },
+                    { value:"3", label:"Mentors", color:"#60a5fa" },
+                    { value:"₹49", label:"Only", color:"#fbbf24" },
                   ].map((s, i) => (
                     <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
                       <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
@@ -653,24 +657,24 @@ function RegisterForm() {
                 </div>
               </div>
 
-              {/* Next batch card */}
+              {/* Event info card */}
               <div style={{ flexShrink:0, background:"rgba(255,255,255,0.06)", border:"1.5px solid rgba(255,255,255,0.12)", borderRadius:20, padding:"24px 28px", textAlign:"center", backdropFilter:"blur(12px)", minWidth:200 }}>
-                <div style={{ width:44, height:44, borderRadius:12, background:"linear-gradient(135deg,#1d3a8f,#3b52f0)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", boxShadow:"0 8px 24px rgba(29,58,143,0.4)" }}>
+                <div style={{ width:44, height:44, borderRadius:12, background:"linear-gradient(135deg,#7c3aed,#3b52f0)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", boxShadow:"0 8px 24px rgba(124,58,237,0.4)" }}>
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2" strokeLinejoin="round"/></svg>
                 </div>
-                <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Next Batch</div>
-                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>Coming Soon</div>
-                <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.5 }}>New projects &amp; mentors</div>
+                <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Masterclass</div>
+                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>5 April</div>
+                <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.5 }}>4-Hour Live Session</div>
                 <div style={{ marginTop:14, padding:"6px 16px", borderRadius:99, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.25)", fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".06em", display:"inline-block" }}>
                   ₹49 Only
                 </div>
               </div>
             </div>
 
-            {/* Institute tags */}
+            {/* What you'll learn tags */}
             <div style={{ marginTop:24, display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
-              <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".06em", marginRight:4 }}>Students from</span>
-              {["IITs","NITs","BITS","DTU","NSUT","VIT","SRM","IIIT","Top Universities"].map(tag => (
+              <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".06em", marginRight:4 }}>You will learn</span>
+              {["AI Workflows","Agentic AI","Vibe Coding","Prototype Dev","Live Discussion"].map(tag => (
                 <span key={tag} style={{ fontSize:10, fontWeight:700, padding:"3px 10px", borderRadius:6, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.55)" }}>{tag}</span>
               ))}
             </div>
@@ -683,19 +687,19 @@ function RegisterForm() {
           {/* Header */}
           <div style={{ marginBottom:32 }}>
             <div style={{ fontSize:12, fontWeight:700, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".07em", marginBottom:10 }}>
-              Batch 2 · Pre-Registration Open
+              Vibe Coding Masterclass · 5 April 2026
             </div>
             <h1 style={{ fontSize:"clamp(28px,3.6vw,44px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 12px", lineHeight:1.08 }}>
-              Secure your spot.<br />Date announced soon.
+              Register for the<br />Vibe Coding Masterclass
             </h1>
             <p style={{ fontSize:15, color:"var(--ink2)", lineHeight:1.7 }}>
-              Online ·{" "}
+              Online · 4-Hour Live Session · 3 Mentors ·{" "}
               <span style={{ textDecoration:"line-through", color:"var(--ink3)", fontSize:14 }}>₹499</span>{" "}
               <strong style={{ color:"var(--ind)" }}>₹49</strong> only · Limited seats
             </p>
             <div style={{ marginTop:12, display:"inline-flex", alignItems:"center", gap:8, padding:"8px 14px", borderRadius:10, background:"var(--amb-l)", border:"1px solid rgba(245,158,11,0.25)", fontSize:12, color:"var(--amb)", fontWeight:700 }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M7 4V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-              Exact date will be announced soon — secure your seat now
+              Saturday, 5 April — limited seats, register now
             </div>
           </div>
 
@@ -833,7 +837,7 @@ function RegisterForm() {
                   style={{ fontSize:15, fontWeight:900, padding:"15px 28px", borderRadius:16, width:"100%", gap:10, transition:"opacity .2s" }}>
                   {loading
                     ? <><Spinner /> Registering...</>
-                    : <>Register for Next Bootcamp — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹49 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
+                    : <>Register for Masterclass — <span style={{ textDecoration:"line-through", opacity:0.55, fontSize:13 }}>₹499</span> ₹49 <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg></>
                   }
                 </button>
 

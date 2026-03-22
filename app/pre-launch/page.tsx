@@ -905,8 +905,8 @@ export default function PreLaunchPage() {
                 {/* Header */}
                 <div className="pl-bc-head">
                   <div className="pl-bc-left">
-                    <div className="pl-live"><span className="pl-live-d" />Next Batch &middot; Date Announce Soon</div>
-                    <div className="pl-bc-h">2-Day AI Bootcamp + Hackathon</div>
+                    <div className="pl-live"><span className="pl-live-d" />Live &middot; 5 April 2026</div>
+                    <div className="pl-bc-h">Vibe Coding: Application-Based Learning</div>
                   </div>
                   <div className="pl-bc-right">
                     <div className="pl-bc-price">
@@ -914,7 +914,7 @@ export default function PreLaunchPage() {
                         <div className="pl-bc-amt">&#8377;49</div>
                         <span style={{ fontSize:16, color:"rgba(255,255,255,0.4)", textDecoration:"line-through", marginBottom:4, fontWeight:700 }}>&#8377;499</span>
                       </div>
-                      <div className="pl-bc-psub">Online &middot; Limited seats</div>
+                      <div className="pl-bc-psub">Online &middot; 4-Hour Live Masterclass</div>
                     </div>
                     <a href="/register" className="pl-bc-reg">
                       Register Now
@@ -930,20 +930,20 @@ export default function PreLaunchPage() {
                     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                       <div className="pl-bc-daterow">
                         <span className="ico">&#128197;</span>
-                        <div><div className="label">Day 1 — AI Bootcamp</div><div className="sub">Full day &middot; 4 hands-on sessions</div></div>
+                        <div><div className="label">Saturday, 5 April</div><div className="sub">4-hour live session &middot; 3 mentors</div></div>
                       </div>
                       <div className="pl-bc-daterow">
                         <span className="ico">&#9889;</span>
-                        <div><div className="label">Day 2 — Hackathon</div><div className="sub">Full day &middot; Build &amp; present projects</div></div>
+                        <div><div className="label">Vibe Coding Format</div><div className="sub">Build a working prototype live</div></div>
                       </div>
                     </div>
                     <div className="pl-bc-hr" />
                     <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                       {[
-                        { icon:"🏆", text:"Winners get paid internships" },
-                        { icon:"📄", text:"ATS-proof resume included" },
-                        { icon:"🤖", text:"Build a real AI project, end-to-end" },
-                        { icon:"👥", text:"Live mentors, no passive watching" },
+                        { icon:"🤖", text:"AI Workflows + Agentic AI deep dive" },
+                        { icon:"⚡", text:"Vibe coding — rapid AI app building" },
+                        { icon:"🛠️", text:"Build a real prototype, end-to-end" },
+                        { icon:"👥", text:"3 mentors, interactive discussion" },
                       ].map((item) => (
                         <div key={item.text} style={{ display:"flex", alignItems:"center", gap:10, fontSize:13, color:"#3d3d52", fontWeight:500 }}>
                           <span style={{ fontSize:15 }}>{item.icon}</span>
@@ -953,24 +953,22 @@ export default function PreLaunchPage() {
                     </div>
                     <div className="pl-bc-interactive">
                       <h5>&#127919; Fully Interactive</h5>
-                      <p>You build throughout. No passive watching — mentors resolve blockers live.</p>
+                      <p>Not a lecture — mentors discuss, debate, and build with you live.</p>
                     </div>
                   </div>
 
                   {/* Right columns */}
                   <div className="pl-bc-cols">
-                    {/* Day 1 */}
+                    {/* Session Timeline */}
                     <div className="pl-daycard">
                       <div className="pl-daypill">
-                        <em style={{ background: "#e8edfe", color: "#1d3a8f" }}>Day 1</em>
-                        <span style={{ color: "#999" }}>Sat</span>
+                        <em style={{ background: "#e8edfe", color: "#1d3a8f" }}>Hour 1</em>
+                        <span style={{ color: "#999" }}>Foundations</span>
                       </div>
-                      <h4 style={{ color: "#0a0a0a" }}>AI/ML/DL + RAG Masterclass</h4>
+                      <h4 style={{ color: "#0a0a0a" }}>AI Workflows vs Agentic AI</h4>
                       {[
-                        { time: "8:30 AM", text: "AI/ML/DL Technical Deep Dive" },
-                        { time: "11:00 AM", text: "RAG Architecture + Implementation" },
-                        { time: "2:00 PM", text: "Live RAG Project Build (hands-on)" },
-                        { time: "6-7 PM", text: "Hackathon problem via Google Form" },
+                        { time: "Session 1", text: "Structured AI workflows deep dive" },
+                        { time: "Session 2", text: "Agent-based systems and reasoning" },
                       ].map((d) => (
                         <div className="pl-dayitem" key={d.time}>
                           <div className="pl-daydot" style={{ background: "#1d3a8f" }} />
@@ -982,18 +980,18 @@ export default function PreLaunchPage() {
                       ))}
                     </div>
 
-                    {/* Day 2 */}
+                    {/* Build Phase */}
                     <div className="pl-daycard d2">
                       <div style={{ position: "relative" }}>
                         <div className="pl-daypill">
-                          <em style={{ background: "rgba(255,255,255,.15)", color: "#fff" }}>Day 2</em>
-                          <span style={{ color: "rgba(255,255,255,.5)" }}>Sun &middot; Hackathon</span>
+                          <em style={{ background: "rgba(255,255,255,.15)", color: "#fff" }}>Hour 3-4</em>
+                          <span style={{ color: "rgba(255,255,255,.5)" }}>Build Phase</span>
                         </div>
-                        <h4 style={{ color: "#fff" }}>Build Real AI in 1 Day</h4>
-                        {["9 AM - 9 PM full-day build", "1 major AI project, end-to-end", "Full mentor support all day", "Winners: paid internships &#127942;"].map((item) => (
+                        <h4 style={{ color: "#fff" }}>Live Prototype Development</h4>
+                        {["Real-world problem discussion", "Multiple solution approaches", "Vibe coding — build live", "Working prototype by session end"].map((item) => (
                           <div className="pl-dayitem" key={item}>
                             <div className="pl-daydot" style={{ background: "rgba(255,255,255,.5)" }} />
-                            <div className="pl-daytxt" style={{ color: "rgba(255,255,255,.85)" }} dangerouslySetInnerHTML={{ __html: item }} />
+                            <div className="pl-daytxt" style={{ color: "rgba(255,255,255,.85)" }}>{item}</div>
                           </div>
                         ))}
                       </div>
@@ -1003,11 +1001,11 @@ export default function PreLaunchPage() {
                     <div className="pl-daycard">
                       <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".08em", color: "#aaa", marginBottom: 16 }}>What You Take Home</div>
                       {[
-                        { icon: "&#128196;", text: "ATS-proof resume" },
-                        { icon: "&#128218;", text: "Full lecture notes" },
-                        { icon: "&#128506;", text: "3-month AI roadmap" },
-                        { icon: "&#128188;", text: "Paid internship (winners)" },
-                        { icon: "&#129309;", text: "Community peer network" },
+                        { icon: "&#9889;", text: "Working AI prototype" },
+                        { icon: "&#128218;", text: "Session recordings + notes" },
+                        { icon: "&#128506;", text: "AI development roadmap" },
+                        { icon: "&#128187;", text: "Vibe coding toolkit" },
+                        { icon: "&#129309;", text: "Community access" },
                       ].map((p) => (
                         <div className="pl-take" key={p.text}>
                           <span dangerouslySetInnerHTML={{ __html: p.icon }} />
