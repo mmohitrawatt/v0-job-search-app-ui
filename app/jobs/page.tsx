@@ -21,17 +21,6 @@ export const revalidate = 60
 
 const STATIC_JOBS: Job[] = [
   {
-    id: "1",
-    title: "Technology Transfer & IP Manager",
-    company: "IIT Kanpur (IITK)",
-    location: "Kanpur, Uttar Pradesh",
-    slug: "ip-manager-iitk",
-    type: "Full Time",
-    department: "Research & Innovation",
-    experience: "3–7 years",
-    mode: "On-site",
-  },
-  {
     id: "2",
     title: "AI Engineer Intern",
     company: "Trippyway",
@@ -275,8 +264,7 @@ const CSS = `
 
 const COMPANY_LOGOS: Record<string, string> = {
   "Trippyway": "/trippyway-logo.jpg",
-  "IIT Kanpur (IITK)": "/iit-kanpur.jpg",
-  "Netflix": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' fill='%23141414'/%3E%3Cpolygon points='9%2C6 16%2C6 35%2C38 28%2C38' fill='%23E50914'/%3E%3Crect x='9' y='6' width='7' height='32' fill='%23E50914'/%3E%3Crect x='28' y='6' width='7' height='32' fill='%23E50914'/%3E%3C%2Fsvg%3E",
+"Netflix": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' fill='%23141414'/%3E%3Cpolygon points='9%2C6 16%2C6 35%2C38 28%2C38' fill='%23E50914'/%3E%3Crect x='9' y='6' width='7' height='32' fill='%23E50914'/%3E%3Crect x='28' y='6' width='7' height='32' fill='%23E50914'/%3E%3C%2Fsvg%3E",
 }
 
 function getInitials(company: string) {

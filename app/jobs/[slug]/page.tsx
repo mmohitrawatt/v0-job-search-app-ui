@@ -17,23 +17,6 @@ type Job = {
 
 const STATIC_JOBS: Job[] = [
   {
-    id: "1",
-    title: "Technology Transfer & IP Manager",
-    company: "IIT Kanpur (IITK)",
-    location: "Kanpur, Uttar Pradesh",
-    slug: "ip-manager-iitk",
-    description: `Handle the end-to-end process of intellectual property management generated at IITK.
-Coordinate technology transfer activities, including valuation, licensing negotiations, and partnership building.
-Develop marketing strategies for technologies through briefs, social media, website updates, and participation in expos/fairs.
-Organize and deliver capacity-building programs, workshops, and presentations on IP management and technology transfer.
-Act as a liaison between researchers, faculty, startups, and industry stakeholders to enable collaborative projects.
-Conduct techno-commercial feasibility studies, market assessments, and due diligence reports for new technologies.
-Support branding initiatives with corporate decks, outreach material, mailers, and event participation.
-Assist in managing IP filings, patent portfolios, and legal compliance for licensed technologies.
-Supervise a small team or coordinate with external consultants for valuation and legal vetting as needed.`,
-    apply_type: "direct",
-  },
-  {
     id: "2",
     title: "AI Engineer Intern",
     company: "Trippyway",
