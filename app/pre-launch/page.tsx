@@ -759,6 +759,78 @@ export default function PreLaunchPage() {
         .pl-cl-card-tag{display:inline-flex;margin-top:12px;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:.03em}
         @media(max-width:900px){.pl-cluster-wrap{grid-template-columns:1fr;gap:40px}}
         @media(max-width:480px){.pl-cluster{padding:52px 18px}.pl-cl-grid{gap:12px}.pl-cl-card{padding:18px 16px}}
+
+        /* ═══ MASTERCLASS ═══ */
+        .pl-mc{padding:80px 32px;background:linear-gradient(180deg,#fafbff 0%,#fff 100%);position:relative;overflow:hidden}
+        .pl-mc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(29,58,143,.12),transparent)}
+        .pl-mc-wrap{max-width:1100px;margin:0 auto}
+
+        /* MC Hero */
+        .pl-mc-hero{border-radius:24px;background:linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%);padding:52px 48px;position:relative;overflow:hidden;margin-bottom:56px}
+        .pl-mc-hero::before{content:'';position:absolute;top:-80px;right:-60px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.25),transparent 70%);pointer-events:none}
+        .pl-mc-hero::after{content:'';position:absolute;bottom:-60px;left:15%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.18),transparent 70%);pointer-events:none}
+        .pl-mc-hero-in{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+        .pl-mc-hero-txt{flex:1;min-width:280px}
+        .pl-mc-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+        .pl-mc-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+        .pl-mc-hero h2{font-size:clamp(26px,3.2vw,40px);font-weight:900;color:#fff;line-height:1.12;letter-spacing:-.03em;margin-bottom:14px}
+        .pl-mc-hero h2 span{background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .pl-mc-hero p{font-size:15px;color:rgba(255,255,255,.6);line-height:1.75;max-width:520px;margin-bottom:24px}
+        .pl-mc-cta{display:inline-flex;align-items:center;gap:8px;padding:15px 36px;border-radius:14px;background:#fff;color:#1d3a8f;font-size:15px;font-weight:800;text-decoration:none;box-shadow:0 6px 28px rgba(0,0,0,.2);transition:all .3s cubic-bezier(.16,1,.3,1)}
+        .pl-mc-cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 10px 36px rgba(0,0,0,.28)}
+        .pl-mc-cta:active{transform:translateY(0) scale(.97)}
+        .pl-mc-info{flex-shrink:0;display:flex;flex-direction:column;gap:0;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:20px;overflow:hidden;backdrop-filter:blur(12px);min-width:200px}
+        .pl-mc-info-row{padding:16px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+        .pl-mc-info-row:last-child{border-bottom:none}
+        .pl-mc-info-ico{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+        .pl-mc-info-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em}
+        .pl-mc-info-val{font-size:14px;font-weight:800;color:#fff;margin-top:1px}
+
+        /* MC Learn cards */
+        .pl-mc-sec-title{text-align:center;margin-bottom:40px}
+        .pl-mc-sec-title .pl-mc-label{font-size:11px;font-weight:700;color:#1d3a8f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+        .pl-mc-sec-title h3{font-size:clamp(24px,2.8vw,34px);font-weight:900;color:#09090f;letter-spacing:-.025em}
+        .pl-mc-sec-title p{font-size:14px;color:#6b7280;margin-top:8px;line-height:1.65}
+        .pl-mc-learn{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:64px}
+        .pl-mc-lcard{padding:28px 22px;border-radius:20px;background:#fff;border:1.5px solid rgba(10,10,20,.06);box-shadow:0 2px 12px rgba(10,10,20,.04);transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+        .pl-mc-lcard:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(29,58,143,.1);border-color:rgba(29,58,143,.12)}
+        .pl-mc-lcard-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative}
+        .pl-mc-lcard-ico::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(to bottom,rgba(255,255,255,.2),transparent);pointer-events:none}
+        .pl-mc-lcard h4{font-size:16px;font-weight:800;color:#09090f;margin-bottom:8px;letter-spacing:-.02em}
+        .pl-mc-lcard p{font-size:13px;color:#6b7280;line-height:1.65}
+
+        /* MC Timeline */
+        .pl-mc-timeline{position:relative;padding-left:32px;margin-bottom:64px;max-width:700px;margin-left:auto;margin-right:auto}
+        .pl-mc-timeline::before{content:'';position:absolute;left:14px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#1d3a8f,#7c3aed,#60a5fa);border-radius:2px}
+        .pl-mc-titem{position:relative;padding:20px 24px;margin-bottom:16px;border-radius:16px;background:#fff;border:1.5px solid rgba(10,10,20,.06);box-shadow:0 2px 10px rgba(10,10,20,.04);transition:all .25s ease}
+        .pl-mc-titem:hover{box-shadow:0 8px 32px rgba(29,58,143,.08);border-color:rgba(29,58,143,.1)}
+        .pl-mc-titem:last-child{margin-bottom:0}
+        .pl-mc-tdot{position:absolute;left:-25px;top:26px;width:12px;height:12px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 0 0 2px rgba(29,58,143,.2)}
+        .pl-mc-thour{font-size:10px;font-weight:800;color:#1d3a8f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+        .pl-mc-titem h4{font-size:15px;font-weight:800;color:#09090f;margin-bottom:4px}
+        .pl-mc-titem p{font-size:13px;color:#6b7280;line-height:1.6}
+
+        /* MC Mentor interaction */
+        .pl-mc-interact{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:64px;max-width:700px;margin-left:auto;margin-right:auto}
+        .pl-mc-icard{padding:18px 20px;border-radius:14px;background:#f8f9ff;border:1px solid rgba(29,58,143,.08);display:flex;align-items:flex-start;gap:12px;transition:all .2s ease}
+        .pl-mc-icard:hover{background:#eef1fd;border-color:rgba(29,58,143,.15)}
+        .pl-mc-icard-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1d3a8f,#3b52f0);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .pl-mc-icard h5{font-size:13px;font-weight:700;color:#09090f;margin-bottom:2px}
+        .pl-mc-icard p{font-size:12px;color:#6b7280;line-height:1.5}
+
+        /* MC Who should join */
+        .pl-mc-who{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:64px}
+        .pl-mc-who-tag{padding:10px 20px;border-radius:12px;background:#fff;border:1.5px solid rgba(10,10,20,.06);font-size:13px;font-weight:600;color:#3d3d52;box-shadow:0 2px 8px rgba(10,10,20,.04);transition:all .2s ease}
+        .pl-mc-who-tag:hover{border-color:rgba(29,58,143,.2);background:#f8f9ff;color:#1d3a8f;transform:translateY(-2px)}
+
+        /* MC Final CTA */
+        .pl-mc-final{border-radius:20px;background:linear-gradient(135deg,#060d24,#1d3a8f);padding:48px 40px;text-align:center;position:relative;overflow:hidden}
+        .pl-mc-final::before{content:'';position:absolute;top:-50px;right:-30px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);pointer-events:none}
+        .pl-mc-final h3{font-size:clamp(22px,2.6vw,32px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:10px}
+        .pl-mc-final p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;max-width:480px;margin:0 auto 24px}
+
+        @media(max-width:900px){.pl-mc-hero-in{flex-direction:column}.pl-mc-info{width:100%}.pl-mc-learn{grid-template-columns:repeat(2,1fr)}.pl-mc-interact{grid-template-columns:1fr}}
+        @media(max-width:640px){.pl-mc{padding:52px 16px}.pl-mc-hero{padding:36px 24px}.pl-mc-learn{grid-template-columns:1fr}.pl-mc-final{padding:36px 24px}}
       `}</style>
 
       <PromoPopup />
@@ -770,6 +842,7 @@ export default function PreLaunchPage() {
             <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}><JobingenLogo height={110} /></a>
             <div className="pl-nav-links">
               <a href="#bootcamp" className="pl-nav-a">Bootcamp</a>
+              <a href="#masterclass" className="pl-nav-a">Masterclass</a>
               <a href="#services" className="pl-nav-a">Services</a>
               <a href="#how" className="pl-nav-a">How it Works</a>
             </div>
@@ -949,6 +1022,159 @@ export default function PreLaunchPage() {
           </div>
         </section>
 
+        {/* ═══ MASTERCLASS ═══ */}
+        <section className="pl-mc" id="masterclass">
+          <div className="pl-mc-wrap">
+
+            {/* Hero Banner */}
+            <Reveal>
+              <div className="pl-mc-hero">
+                <div className="pl-mc-hero-in">
+                  <div className="pl-mc-hero-txt">
+                    <div className="pl-mc-badges">
+                      <span className="pl-mc-badge" style={{ background:"rgba(124,58,237,.15)", border:"1px solid rgba(124,58,237,.3)", color:"#a78bfa" }}>
+                        <svg width="10" height="10" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round"/></svg>
+                        Live Masterclass
+                      </span>
+                      <span className="pl-mc-badge" style={{ background:"rgba(251,191,36,.15)", border:"1px solid rgba(251,191,36,.3)", color:"#fbbf24" }}>
+                        5 April 2026
+                      </span>
+                    </div>
+                    <h2>Vibe Coding: Build AI Applications with <span>Real-Time Problem Solving</span></h2>
+                    <p>Join a 4-hour live masterclass where mentors break down AI workflows, explore agentic AI systems, and guide participants through building a working prototype using vibe coding.</p>
+                    <a href="/register" className="pl-mc-cta">
+                      Register for ₹49
+                      <svg width="14" height="14" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </a>
+                  </div>
+                  <div className="pl-mc-info">
+                    <div className="pl-mc-info-row">
+                      <div className="pl-mc-info-ico">📅</div>
+                      <div><div className="pl-mc-info-lbl">Date</div><div className="pl-mc-info-val">5 April 2026</div></div>
+                    </div>
+                    <div className="pl-mc-info-row">
+                      <div className="pl-mc-info-ico">⏱️</div>
+                      <div><div className="pl-mc-info-lbl">Duration</div><div className="pl-mc-info-val">4 Hours Live</div></div>
+                    </div>
+                    <div className="pl-mc-info-row">
+                      <div className="pl-mc-info-ico">👥</div>
+                      <div><div className="pl-mc-info-lbl">Mentors</div><div className="pl-mc-info-val">3 Expert Mentors</div></div>
+                    </div>
+                    <div className="pl-mc-info-row">
+                      <div className="pl-mc-info-ico">💰</div>
+                      <div><div className="pl-mc-info-lbl">Price</div><div className="pl-mc-info-val">₹49 Only</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* What You Will Learn */}
+            <Reveal>
+              <div className="pl-mc-sec-title">
+                <div className="pl-mc-label">What You Will Learn</div>
+                <h3>Four pillars of modern AI development</h3>
+                <p>Each topic builds on the last — from concepts to a working prototype in 4 hours.</p>
+              </div>
+              <div className="pl-mc-learn">
+                {[
+                  { icon:"🔄", title:"AI Workflows", desc:"Understand how AI workflows automate multi-step processes and power modern AI-driven products.", bg:"linear-gradient(135deg,#1d3a8f,#3b5ff0)" },
+                  { icon:"🤖", title:"Agentic AI", desc:"Learn how autonomous AI systems can reason, plan, and execute complex tasks.", bg:"linear-gradient(135deg,#7c3aed,#a78bfa)" },
+                  { icon:"⚡", title:"Vibe Coding", desc:"Discover rapid application-building techniques using AI-assisted development methods.", bg:"linear-gradient(135deg,#047857,#34d399)" },
+                  { icon:"🚀", title:"Prototype Development", desc:"Watch and participate in building a real working prototype during the live session.", bg:"linear-gradient(135deg,#b45309,#f59e0b)" },
+                ].map(c => (
+                  <div key={c.title} className="pl-mc-lcard">
+                    <div className="pl-mc-lcard-ico" style={{ background:c.bg }}>
+                      <span style={{ fontSize:20 }}>{c.icon}</span>
+                    </div>
+                    <h4>{c.title}</h4>
+                    <p>{c.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Session Structure — Timeline */}
+            <Reveal>
+              <div className="pl-mc-sec-title">
+                <div className="pl-mc-label">Session Structure</div>
+                <h3>4 hours. 4 deep dives. 1 working prototype.</h3>
+              </div>
+              <div className="pl-mc-timeline">
+                {[
+                  { hour:"Hour 1", title:"AI Workflows vs Agentic AI", desc:"Understanding the difference between structured AI workflows and agent-based systems.", color:"#1d3a8f" },
+                  { hour:"Hour 2", title:"Introduction to Vibe Coding", desc:"How developers rapidly build AI-powered applications using modern tools.", color:"#7c3aed" },
+                  { hour:"Hour 3", title:"Live Project Discussion", desc:"Mentors analyze a real-world problem and discuss multiple solution approaches.", color:"#047857" },
+                  { hour:"Hour 4", title:"Prototype Development", desc:"Build a working solution prototype live using vibe coding techniques.", color:"#b45309" },
+                ].map(t => (
+                  <div key={t.hour} className="pl-mc-titem">
+                    <div className="pl-mc-tdot" style={{ background:t.color }} />
+                    <div className="pl-mc-thour">{t.hour}</div>
+                    <h4>{t.title}</h4>
+                    <p>{t.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Mentor Interaction */}
+            <Reveal>
+              <div className="pl-mc-sec-title">
+                <div className="pl-mc-label">Mentor Interaction</div>
+                <h3>Not a lecture — a live discussion</h3>
+                <p>3 mentors, multiple perspectives, one goal: build something real together.</p>
+              </div>
+              <div className="pl-mc-interact">
+                {[
+                  { icon:<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="9" cy="7" r="4" stroke="#fff" strokeWidth="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:"3 Mentors Sharing Insights", desc:"Diverse perspectives from AI practitioners" },
+                  { icon:<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:"Open Discussion", desc:"Real-time problem-solving approaches" },
+                  { icon:<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:"Solution Evaluation", desc:"Compare different implementation strategies" },
+                  { icon:<svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#fff" strokeWidth="2" strokeLinejoin="round"/></svg>, title:"Best Implementation", desc:"Final conclusion with the most effective strategy" },
+                ].map((item, i) => (
+                  <div key={i} className="pl-mc-icard">
+                    <div className="pl-mc-icard-ico">{item.icon}</div>
+                    <div>
+                      <h5>{item.title}</h5>
+                      <p>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Who Should Join */}
+            <Reveal>
+              <div className="pl-mc-sec-title">
+                <div className="pl-mc-label">Who Should Join</div>
+                <h3>Built for the curious and the builders</h3>
+              </div>
+              <div className="pl-mc-who">
+                {[
+                  "🎓 Students interested in AI",
+                  "💻 Developers curious about AI systems",
+                  "🌱 Beginners exploring AI applications",
+                  "🔧 Anyone interested in modern AI workflows",
+                ].map(tag => (
+                  <div key={tag} className="pl-mc-who-tag">{tag}</div>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* Final CTA */}
+            <Reveal>
+              <div className="pl-mc-final">
+                <h3>Don&apos;t Just Learn AI — Build With It</h3>
+                <p>Join the Vibe Coding masterclass and experience real-time AI application development with expert mentors.</p>
+                <a href="/register" className="pl-mc-cta" style={{ display:"inline-flex" }}>
+                  Reserve Your Seat for ₹49
+                  <svg width="14" height="14" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </a>
+              </div>
+            </Reveal>
+
+          </div>
+        </section>
+
         {/* ═══ CLUSTER-BASED LEARNING ═══ */}
         <Reveal>
           <section className="pl-cluster">
@@ -1030,7 +1256,6 @@ export default function PreLaunchPage() {
               </p>
               <div className="pl-jgrid">
               {[
-                { title: "Technology Transfer & IP Manager", company: "IIT Kanpur (IITK)", location: "Kanpur, Uttar Pradesh", type: "Full Time", mode: "On-site", slug: "ip-manager-iitk", logo: "/iit-kanpur.jpg", initials: "IK", gradient: "linear-gradient(135deg,#1d3a8f,#3b52f0)" },
                 { title: "AI Engineer Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "ai-engineer-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
                 { title: "UI/UX Design Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "uiux-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
                 { title: "HR & Talent Acquisition Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "hr-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
