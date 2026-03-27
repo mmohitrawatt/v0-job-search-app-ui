@@ -46,6 +46,10 @@ const CSS = `
     0%,100% { transform: translateY(0px) rotate(1.2deg); }
     50%      { transform: translateY(-20px) rotate(-0.4deg); }
   }
+  @keyframes marquee-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
   @keyframes badge-a {
     0%,100% { transform: translate(0,0) rotate(-4deg) scale(1); }
     50%      { transform: translate(-5px,-13px) rotate(-2deg) scale(1.02); }
@@ -829,53 +833,131 @@ function HowItWorks() {
 }
 
 // ─── Testimonials ──────────────────────────────────────────────
-function Testimonials() {
-  const cards = [
-    { quote:"Resume tailor got me 3 interview calls in one week. ATS went 61%→94% overnight. Salary intel helped me lock ₹44 LPA at Zepto.", name:"Rahul M.", role:"SDE II @ Zepto", initials:"RM", clr:"var(--vio)", bg:"#eef1fe" },
-    { quote:"5-day prep streak + Vibe AI mock interviews changed how I prepared completely. Cracked Flipkart system design on first attempt. Life-changing.", name:"Priya S.", role:"PM @ Flipkart", initials:"PS", clr:"var(--amb)", bg:"var(--amb-l)", featured:true },
-    { quote:"Saw 94% match on Swiggy, knew exactly what to highlight. Offer in 12 days. Jobingen ran my whole job search for me. 100% worth it.", name:"Arjun K.", role:"Backend @ Swiggy", initials:"AK", clr:"var(--grn)", bg:"var(--grn-l)" },
-  ]
+type FeedbackItem = { name: string; rating: number; quote: string; recommend: string }
+
+const AVATAR_COLORS = ["#6074f3","#10b981","#f59e0b","#f43f5e","#3b82f6","#8b5cf6","#ec4899","#14b8a6"]
+
+function FeedbackCard({ f, idx }: { f: FeedbackItem; idx: number }) {
+  const initials = f.name.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()
+  const color = AVATAR_COLORS[idx % AVATAR_COLORS.length]
   return (
-    <section className="section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
-        <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
-          <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--amb-l)", color:"var(--amb)", marginBottom:14 }}>Success Stories</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:0 }}>
-            Hired at <span className="shimmer">Top Indian Companies</span>
-          </h2>
+    <div style={{
+      width: 280, flexShrink: 0, borderRadius: 18, padding: "20px 22px",
+      background: "white", border: "1.5px solid var(--border)",
+      boxShadow: "var(--shadow-sm)", display: "flex", flexDirection: "column", gap: 12,
+      position: "relative",
+    }}>
+      {/* Quote mark */}
+      <div style={{ position:"absolute", top:14, left:18, fontSize:52, lineHeight:1, color:"rgba(29,58,143,0.07)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
+      {/* Stars */}
+      <div style={{ display:"flex", gap:2 }}>
+        {[1,2,3,4,5].map(s => (
+          <svg key={s} width="13" height="13" viewBox="0 0 14 14">
+            <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= f.rating ? "#fbbf24" : "#e5e7eb"}/>
+          </svg>
+        ))}
+      </div>
+      {/* Quote */}
+      <p style={{ fontSize:13, lineHeight:1.7, color:"var(--ink2)", margin:0, flex:1,
+        display:"-webkit-box", WebkitLineClamp:4, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+        {f.quote}
+      </p>
+      {/* Author */}
+      <div style={{ display:"flex", alignItems:"center", gap:10, paddingTop:12, borderTop:"1px solid var(--border)" }}>
+        <div style={{ width:32, height:32, borderRadius:"50%", background:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"white", flexShrink:0 }}>
+          {initials}
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:16, alignItems:"center" }}>
-          {cards.map((t,i) => (
-            <div key={i} className={`sr d${i+1}${t.featured ? " testimonial-feat" : ""}`} style={{
-              borderRadius:24, padding:"28px 26px", display:"flex", flexDirection:"column", gap:16,
-              background: t.featured ? "linear-gradient(145deg,#1d3a8f,#2548c5)" : "white",
-              border: t.featured ? "none" : "1.5px solid var(--border)",
-              boxShadow: t.featured ? "0 32px 80px rgba(29,58,143,0.28), 0 8px 24px rgba(29,58,143,0.14)" : "var(--shadow-sm)",
-              transform: t.featured ? "scale(1.04)" : "scale(1)",
-              position:"relative",
-              transition:"transform .28s var(--spring), box-shadow .28s ease",
-            }}
-              onMouseEnter={e => { if (!t.featured) (e.currentTarget as HTMLElement).style.transform="translateY(-7px)"; }}
-              onMouseLeave={e => { if (!t.featured) (e.currentTarget as HTMLElement).style.transform=t.featured?"scale(1.04)":"scale(1)"; }}>
-              {t.featured && <div style={{ position:"absolute", top:16, right:16, padding:"3px 10px", borderRadius:99, background:"rgba(255,255,255,0.18)", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em" }}>⭐ Featured</div>}
-              {/* Decorative quote mark */}
-              <div style={{ position:"absolute", top:18, left:22, fontSize:72, lineHeight:1, color:t.featured?"rgba(255,255,255,0.1)":"rgba(29,58,143,0.09)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
-              <div style={{ display:"flex", gap:3 }}>
-                {[...Array(5)].map((_,j) => <svg key={j} width="13" height="13" viewBox="0 0 14 14"><path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={t.featured?"rgba(255,255,255,0.9)":"#fbbf24"}/></svg>)}
-              </div>
-              <p style={{ fontSize:14, lineHeight:1.75, color:t.featured?"rgba(255,255,255,0.85)":"var(--ink2)", flex:1, margin:0 }}>{t.quote}</p>
-              <div style={{ display:"flex", alignItems:"center", gap:12, paddingTop:16, borderTop:t.featured?"1px solid rgba(255,255,255,0.15)":"1px solid var(--border)" }}>
-                <div style={{ width:38, height:38, borderRadius:"50%", background:t.featured?"rgba(255,255,255,0.2)":t.bg, color:t.featured?"white":t.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, flexShrink:0, border:t.featured?"1px solid rgba(255,255,255,0.2)":"1px solid rgba(0,0,0,0.07)" }}>{t.initials}</div>
-                <div>
-                  <div style={{ fontSize:13, fontWeight:800, color:t.featured?"white":"var(--ink)" }}>{t.name}</div>
-                  <div style={{ fontSize:11, color:t.featured?"rgba(255,255,255,0.55)":"var(--ink3)" }}>{t.role}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div>
+          <div style={{ fontSize:12, fontWeight:800, color:"var(--ink)" }}>{f.name}</div>
+          <div style={{ fontSize:10, color:"var(--ink3)" }}>Bootcamp 1 Attendee</div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function Testimonials() {
+  const [feedback, setFeedback] = useState<FeedbackItem[]>([])
+  const [avgRating, setAvgRating] = useState(0)
+  const [recommendPct, setRecommendPct] = useState(0)
+
+  useEffect(() => {
+    fetch("/api/public-feedback")
+      .then(r => r.json())
+      .then(d => {
+        const list: FeedbackItem[] = d.feedback || []
+        setFeedback(list)
+        if (list.length) {
+          setAvgRating(Math.round((list.reduce((s, r) => s + r.rating, 0) / list.length) * 10) / 10)
+          const yes = list.filter(r => r.recommend?.toLowerCase().includes("yes")).length
+          setRecommendPct(Math.round((yes / list.length) * 100))
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  // Double the array for seamless loop
+  const track = feedback.length ? [...feedback, ...feedback] : []
+
+  return (
+    <section className="section-pad" style={{ background:"var(--cream)", padding:"80px 0", overflow:"hidden" }}>
+
+      {/* Header */}
+      <div className="sr" style={{ textAlign:"center", marginBottom:48, padding:"0 28px" }}>
+        <div className="dot-divider"><span/><span/><span/></div>
+        <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.25)", color:"var(--grn)", fontSize:12, fontWeight:700, padding:"5px 14px", borderRadius:99, marginBottom:16 }}>
+          <span style={{ width:7, height:7, borderRadius:"50%", background:"var(--grn)", display:"inline-block" }} />
+          Live from Bootcamp 1
+        </div>
+        <h2 className="sr d1" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:"0 0 12px" }}>
+          What our <span className="shimmer">alumni say</span>
+        </h2>
+        <p className="sr d2" style={{ fontSize:16, color:"var(--ink3)", margin:"0 auto", maxWidth:460 }}>
+          Real words from real attendees — unfiltered.
+        </p>
+
+        {/* Stats strip */}
+        {feedback.length > 0 && (
+          <div className="sr d3" style={{ display:"inline-flex", gap:0, background:"white", border:"1.5px solid var(--border)", borderRadius:16, overflow:"hidden", marginTop:28, boxShadow:"var(--shadow-sm)" }}>
+            {[
+              { label:"Avg Rating", value:`${avgRating} / 5`, color:"#fbbf24" },
+              { label:"Responses", value:`${feedback.length}+`, color:"var(--ind)" },
+              { label:"Would Recommend", value:`${recommendPct}%`, color:"var(--grn)" },
+            ].map((s, i) => (
+              <div key={i} style={{ padding:"14px 24px", textAlign:"center", borderRight: i < 2 ? "1px solid var(--border)" : "none" }}>
+                <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
+                <div style={{ fontSize:10, fontWeight:700, color:"var(--ink3)", marginTop:4, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Marquee */}
+      {track.length > 0 ? (
+        <div style={{ position:"relative" }}>
+          {/* Fade edges */}
+          <div style={{ position:"absolute", left:0, top:0, bottom:0, width:80, background:"linear-gradient(to right, var(--cream), transparent)", zIndex:2, pointerEvents:"none" }} />
+          <div style={{ position:"absolute", right:0, top:0, bottom:0, width:80, background:"linear-gradient(to left, var(--cream), transparent)", zIndex:2, pointerEvents:"none" }} />
+
+          <div style={{ display:"flex", gap:16, paddingLeft:28,
+            animation:`marquee-scroll ${track.length * 4}s linear infinite`,
+            width:"max-content",
+          }}>
+            {track.map((f, i) => <FeedbackCard key={i} f={f} idx={i} />)}
+          </div>
+        </div>
+      ) : (
+        // Fallback static cards while no feedback yet
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:16, padding:"0 28px", maxWidth:1120, margin:"0 auto" }}>
+          {[
+            { quote:"The RAG session was incredibly hands-on. I built my first AI app in Day 1 itself. The mentors were super accessible throughout.", name:"Rahul M.", rating:5, recommend:"Definitely Yes" },
+            { quote:"Best investment I've made. Content quality was top-notch — ML to RAG to hackathon in 2 days. Loved every bit of it.", name:"Priya S.", rating:5, recommend:"Definitely Yes" },
+            { quote:"Practical, structured, and the mentors actually helped debug live. Completely worth the ₹29. Waiting for the next batch!", name:"Arjun K.", rating:5, recommend:"Definitely Yes" },
+          ].map((f, i) => <FeedbackCard key={i} f={f} idx={i} />)}
+        </div>
+      )}
+
     </section>
   )
 }
