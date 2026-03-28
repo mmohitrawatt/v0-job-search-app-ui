@@ -859,13 +859,15 @@ function RegisterForm() {
               <div style={{ borderRadius:24, overflow:"hidden", boxShadow:"var(--shadow-md)", border:"1.5px solid var(--border)" }}>
                 <div style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", padding:"20px 24px" }}>
                   <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>What&apos;s Included</div>
-                  <div style={{ fontSize:17, fontWeight:800, color:"white", lineHeight:1.3 }}>2-Day AI Bootcamp + Hackathon</div>
-                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)", marginTop:4 }}>Date · Coming soon</div>
+                  <div style={{ fontSize:17, fontWeight:800, color:"white", lineHeight:1.3 }}>Vibe Coding Masterclass</div>
+                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)", marginTop:4 }}>5 April 2026 · 4-Hour Live Session</div>
                 </div>
                 <div style={{ background:"white", padding:"18px 24px", display:"flex", flexDirection:"column", gap:12 }}>
                   {[
-                    { n:"1", label:"Day 1", detail:"AI/ML/DL + RAG Masterclass", clr:"var(--ind)", bg:"var(--ind-l)" },
-                    { n:"2", label:"Day 2", detail:"Hackathon — Build real AI projects", clr:"var(--vio)", bg:"#f5f3ff" },
+                    { n:"1", label:"AI Workflows", detail:"End-to-end AI application pipelines", clr:"var(--ind)", bg:"var(--ind-l)" },
+                    { n:"2", label:"Agentic AI", detail:"Build autonomous AI agents", clr:"var(--vio)", bg:"#f5f3ff" },
+                    { n:"3", label:"Vibe Coding", detail:"Rapid prototyping with AI-assisted dev", clr:"#0d9488", bg:"#f0fdfa" },
+                    { n:"4", label:"Live Discussion", detail:"Interactive Q&A with 3 mentors", clr:"var(--amb)", bg:"var(--amb-l)" },
                   ].map(s => (
                     <div key={s.n} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
                       <div style={{ width:32, height:32, borderRadius:10, background:s.bg, color:s.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, flexShrink:0 }}>{s.n}</div>
@@ -877,9 +879,9 @@ function RegisterForm() {
                   ))}
                   <div style={{ height:1, background:"var(--border)" }} />
                   {[
-                    { text:"ATS-proof resume review" },
                     { text:"Full lecture notes & resources" },
-                    { text:"Paid internship for top performers" },
+                    { text:"Certificate of completion" },
+                    { text:"Lifetime access to recordings" },
                   ].map((p,i) => (
                     <div key={i} style={{ display:"flex", gap:10, alignItems:"center" }}>
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink:0 }}><circle cx="7" cy="7" r="6" stroke="var(--ind)" strokeWidth="1.2"/><path d="M4.5 7L6.5 9L9.5 5" stroke="var(--ind)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>

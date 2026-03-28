@@ -28,6 +28,10 @@ type HackathonSubmission = {
   project_title: string; description: string; tech_stack: string
   github_link: string; demo_link?: string; screenshot_url?: string; created_at: string
 }
+type StudentInsight = {
+  id: string; problem_categories: string[]; skill_rating: number
+  resume_problem: string; student_insight_text: string; created_at: string
+}
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
@@ -57,6 +61,7 @@ export default function AdminPage() {
   const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
   const [hackathonSubs, setHackathonSubs] = useState<HackathonSubmission[]>([])
+  const [studentInsights, setStudentInsights] = useState<StudentInsight[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -68,7 +73,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -85,6 +90,7 @@ export default function AdminPage() {
     return hackathonSubs.filter(r => r.leader_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.team_name.toLowerCase().includes(s) || r.project_title.toLowerCase().includes(s))
   }, [hackathonSubs, search])
 
+  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
 
   if (!authChecked) return null
@@ -137,6 +143,8 @@ export default function AdminPage() {
         .adm-sec-head{padding:18px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
         .adm-sec-hl{display:flex;align-items:center;gap:10px}
         .adm-sec-title{font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px}
+        .adm-stat{cursor:pointer;transition:transform .15s,box-shadow .15s}
+        .adm-stat:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
         .adm-sec-badge{background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
         .adm-csv{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#475569;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
         .adm-csv:hover{background:#e2e8f0;color:#0f172a}
@@ -196,40 +204,45 @@ export default function AdminPage() {
 
               {/* Stats */}
               <div className="adm-stats">
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-bootcamp1")}>
                   <div className="adm-stat-lbl">Bootcamp 1</div>
                   <div className="adm-stat-val blue">{bootcamp1.length}</div>
                   <div className="adm-stat-sub">Registrations</div>
                 </div>
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-bootcamp2")}>
                   <div className="adm-stat-lbl">Bootcamp 2</div>
                   <div className="adm-stat-val" style={{ color:"#0891b2" }}>{bootcamp2.length}</div>
                   <div className="adm-stat-sub">Registrations</div>
                 </div>
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-feedback")}>
                   <div className="adm-stat-lbl">Feedback</div>
                   <div className="adm-stat-val green">{feedback.length}</div>
                   <div className="adm-stat-sub">Bootcamp 1 responses</div>
                 </div>
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-early-access")}>
                   <div className="adm-stat-lbl">Early Access</div>
                   <div className="adm-stat-val purple">{earlyAccess.length}</div>
                   <div className="adm-stat-sub">Waitlist signups</div>
                 </div>
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-hackathon")}>
                   <div className="adm-stat-lbl">Hackathon</div>
                   <div className="adm-stat-val" style={{ color: "#7c3aed" }}>{hackathonSubs.length}</div>
                   <div className="adm-stat-sub">Project submissions</div>
                 </div>
-                <div className="adm-stat">
+                <div className="adm-stat" onClick={() => scrollTo("sec-ambassadors")}>
                   <div className="adm-stat-lbl">Ambassadors</div>
                   <div className="adm-stat-val orange">{ambassadors.length}</div>
                   <div className="adm-stat-sub">Applications</div>
                 </div>
+                <div className="adm-stat" onClick={() => scrollTo("sec-student-insights")}>
+                  <div className="adm-stat-lbl">Student Insights</div>
+                  <div className="adm-stat-val" style={{ color: "#0d9488" }}>{studentInsights.length}</div>
+                  <div className="adm-stat-sub">Survey responses</div>
+                </div>
               </div>
 
               {/* ── Early Access ── */}
-              <div className="adm-sec">
+              <div id="sec-early-access" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Early Access Users</div>
@@ -270,7 +283,7 @@ export default function AdminPage() {
               </div>
 
               {/* ── Bootcamp 2 Registrations ── */}
-              <div className="adm-sec">
+              <div id="sec-bootcamp2" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Bootcamp 2 — Registrations</div>
@@ -313,7 +326,7 @@ export default function AdminPage() {
               </div>
 
               {/* ── Hackathon Project Submissions ── */}
-              <div className="adm-sec">
+              <div id="sec-hackathon" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Hackathon — Project Submissions</div>
@@ -360,7 +373,7 @@ export default function AdminPage() {
               </div>
 
               {/* ── Bootcamp 1 Feedback ── */}
-              <div className="adm-sec">
+              <div id="sec-feedback" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Bootcamp 1 — Feedback</div>
@@ -405,7 +418,7 @@ export default function AdminPage() {
               </div>
 
               {/* ── Bootcamp 1 Registrations ── */}
-              <div className="adm-sec">
+              <div id="sec-bootcamp1" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Bootcamp 1 — Registrations</div>
@@ -447,7 +460,7 @@ export default function AdminPage() {
               </div>
 
               {/* ── Job Applications ── */}
-              <div className="adm-sec">
+              <div id="sec-jobs" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Job Applications</div>
@@ -501,8 +514,51 @@ export default function AdminPage() {
                 </div>
               </div>
 
+              {/* ── Student Insights ── */}
+              <div id="sec-student-insights" className="adm-sec">
+                <div className="adm-sec-head">
+                  <div className="adm-sec-hl">
+                    <div className="adm-sec-title">Student Insights</div>
+                    <div className="adm-sec-badge">{studentInsights.length} responses</div>
+                  </div>
+                  <button className="adm-csv" onClick={() => exportCSV(studentInsights.map(s => ({ ...s, problem_categories: (s.problem_categories || []).join(", ") })) as unknown as Record<string, unknown>[], "student-insights.csv")}>
+                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Export CSV
+                  </button>
+                </div>
+                <div className="adm-tbl-wrap">
+                  {studentInsights.length === 0 ? (
+                    <div className="adm-empty">
+                      <div className="adm-empty-ico">📭</div>
+                      No student insights yet
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th><th>Problem Categories</th><th>Skill Rating</th>
+                          <th>Resume Challenge</th><th>Open Insight</th><th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {studentInsights.map((s, i) => (
+                          <tr key={s.id}>
+                            <td className="c-num">{i + 1}</td>
+                            <td style={{ fontSize: 12 }}>{(s.problem_categories || []).join(", ") || "—"}</td>
+                            <td style={{ textAlign: "center" }}>{"⭐".repeat(s.skill_rating || 0)}</td>
+                            <td style={{ fontSize: 12 }}>{s.resume_problem || "—"}</td>
+                            <td><span className="c-why" title={s.student_insight_text}>{s.student_insight_text || "—"}</span></td>
+                            <td className="c-date">{fmt(s.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
               {/* ── Campus Ambassadors ── */}
-              <div className="adm-sec">
+              <div id="sec-ambassadors" className="adm-sec">
                 <div className="adm-sec-head">
                   <div className="adm-sec-hl">
                     <div className="adm-sec-title">Campus Ambassador Applications</div>
