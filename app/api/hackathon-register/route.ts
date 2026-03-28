@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
     const phone = (formData.get("phone") as string | null)?.trim() ?? ""
     const college = (formData.get("college") as string | null)?.trim() ?? ""
     const team_name = (formData.get("team_name") as string | null)?.trim() ?? "Individual"
-    const learning_cluster = (formData.get("learning_cluster") as string | null)?.trim() ?? ""
     const upi_transaction_id = (formData.get("upi_transaction_id") as string | null)?.trim() ?? ""
     const screenshot = formData.get("screenshot") as File | null
 
@@ -44,8 +43,8 @@ export async function POST(req: NextRequest) {
         })
 
       if (uploadError) {
-        console.error("Screenshot upload error:", uploadError)
-        // Non-fatal: proceed without screenshot URL
+        console.error("Screenshot upload error:", JSON.stringify(uploadError))
+        return NextResponse.json({ error: `Screenshot upload failed: ${uploadError.message}` }, { status: 500 })
       } else {
         const { data: urlData } = supabase.storage
           .from("hackathon-screenshots")
@@ -61,15 +60,14 @@ export async function POST(req: NextRequest) {
       phone,
       college,
       team_name,
-      learning_cluster: learning_cluster || null,
       upi_transaction_id,
       payment_screenshot_url,
       bootcamp: "bootcamp_2",
     })
 
     if (error) {
-      console.error("Supabase insert error:", error)
-      return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 })
+      console.error("Supabase insert error:", JSON.stringify(error))
+      return NextResponse.json({ error: `Registration failed: ${error.message}` }, { status: 500 })
     }
 
     return NextResponse.json({ success: true }, { status: 201 })

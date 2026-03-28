@@ -565,7 +565,6 @@ function RegisterForm() {
       fd.append("email", form.email.trim())
       fd.append("phone", form.phone.trim())
       fd.append("college", form.org.trim())
-      fd.append("learning_cluster", form.learning_cluster)
       fd.append("upi_transaction_id", form.upi_transaction_id.trim())
       if (screenshot) fd.append("screenshot", screenshot)
 
