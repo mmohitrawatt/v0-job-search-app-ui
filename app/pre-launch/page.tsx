@@ -1254,6 +1254,7 @@ export default function PreLaunchPage() {
               </p>
               <div className="pl-jgrid">
               {[
+                { title: "IP & Technology Transfer Associate", company: "Top Institute of India", location: "Leading Science & Technology Campus", type: "Contractual", mode: "On-site", slug: "patent-research-analyst-intern", logo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231d3a8f'/%3E%3Cpath d='M16 12v24M22 12h8a6 6 0 0 1 0 12H22z' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E", initials: "IP", gradient: "linear-gradient(135deg,#1d3a8f,#3b52f0)" },
                 { title: "AI Engineer Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "ai-engineer-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
                 { title: "UI/UX Design Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "uiux-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },
                 { title: "HR & Talent Acquisition Intern", company: "Trippyway", location: "Remote (India)", type: "Internship", mode: "Remote", slug: "hr-intern-trippyway", logo: "/trippyway-logo.jpg", initials: "TW", gradient: "linear-gradient(135deg,#0f766e,#14b8a6)" },

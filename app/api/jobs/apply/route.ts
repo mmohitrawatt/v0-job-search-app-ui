@@ -11,6 +11,9 @@ export async function POST(req: NextRequest) {
     const linkedin = (formData.get("linkedin") as string | null)?.trim() ?? ""
     const job_slug = (formData.get("job_slug") as string | null)?.trim() ?? ""
     const resume = formData.get("resume") as File | null
+    const college = (formData.get("college") as string | null)?.trim() ?? ""
+    const degree = (formData.get("degree") as string | null)?.trim() ?? ""
+    const quiz_answers = (formData.get("quiz_answers") as string | null)?.trim() ?? ""
 
     // Validate required fields
     const errors: string[] = []
@@ -51,15 +54,31 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Insert application
-    const { error } = await supabase.from("job_applications").insert({
+    // Insert application — try with all fields first, fallback to base fields if columns don't exist
+    const baseData: Record<string, unknown> = {
       name,
       email,
       phone,
       linkedin: linkedin || null,
       resume_url,
       job_slug,
-    })
+    }
+
+    const fullData: Record<string, unknown> = { ...baseData }
+    if (college) fullData.college = college
+    if (degree) fullData.degree = degree
+    if (quiz_answers) {
+      try { fullData.quiz_answers = JSON.parse(quiz_answers) } catch { fullData.quiz_answers = quiz_answers }
+    }
+
+    let { error } = await supabase.from("job_applications").insert(fullData)
+
+    // If insert fails (likely missing columns), retry with base fields only
+    if (error) {
+      console.error("Full insert failed, retrying with base fields:", error.message)
+      const retryResult = await supabase.from("job_applications").insert(baseData)
+      error = retryResult.error
+    }
 
     if (error) {
       console.error("Supabase insert error:", error)

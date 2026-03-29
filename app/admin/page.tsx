@@ -19,9 +19,11 @@ type CampusAmbassador = {
   id: string; name: string; email: string; phone: string; college: string
   course_year: string; linkedin?: string; instagram?: string; why_ambassador: string; created_at: string
 }
+type QuizAnswer = { question: string; answer: string }
 type JobApplication = {
   id: string; name: string; email: string; phone: string
   linkedin?: string; resume_url?: string; job_slug: string; job_title: string; created_at: string
+  college?: string; degree?: string; quiz_answers?: QuizAnswer[]
 }
 type HackathonSubmission = {
   id: string; team_name: string; leader_name: string; email: string
@@ -238,6 +240,11 @@ export default function AdminPage() {
                   <div className="adm-stat-lbl">Student Insights</div>
                   <div className="adm-stat-val" style={{ color: "#0d9488" }}>{studentInsights.length}</div>
                   <div className="adm-stat-sub">Survey responses</div>
+                </div>
+                <div className="adm-stat" onClick={() => scrollTo("sec-jobs")}>
+                  <div className="adm-stat-lbl">Job Applications</div>
+                  <div className="adm-stat-val" style={{ color: "#2563eb" }}>{jobApplications.length}</div>
+                  <div className="adm-stat-sub">Total applications</div>
                 </div>
               </div>
 
@@ -466,7 +473,7 @@ export default function AdminPage() {
                     <div className="adm-sec-title">Job Applications</div>
                     <div className="adm-sec-badge">{jaFiltered.length} applications</div>
                   </div>
-                  <button className="adm-csv" onClick={() => exportCSV(jaFiltered as unknown as Record<string, unknown>[], "job-applications.csv")}>
+                  <button className="adm-csv" onClick={() => exportCSV(jaFiltered.map(a => ({ ...a, quiz_answers: a.quiz_answers ? JSON.stringify(a.quiz_answers) : "" })) as unknown as Record<string, unknown>[], "job-applications.csv")}>
                     <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Export CSV
                   </button>
@@ -482,7 +489,8 @@ export default function AdminPage() {
                       <thead>
                         <tr>
                           <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
-                          <th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Date</th>
+                          <th>College</th><th>Degree</th>
+                          <th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -492,6 +500,8 @@ export default function AdminPage() {
                             <td className="c-name">{a.name}</td>
                             <td className="c-email">{a.email}</td>
                             <td className="c-phone">{a.phone}</td>
+                            <td style={{ fontSize: 13 }}>{a.college || "—"}</td>
+                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.degree || "—"}</td>
                             <td>
                               <span className="c-tag">{a.job_title}</span>
                             </td>
@@ -503,6 +513,16 @@ export default function AdminPage() {
                             <td>
                               {a.resume_url
                                 ? <a className="c-link" href={a.resume_url} target="_blank" rel="noopener noreferrer">Download ↓</a>
+                                : "—"}
+                            </td>
+                            <td>
+                              {a.quiz_answers && a.quiz_answers.length > 0
+                                ? <button className="c-link" style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }} onClick={() => {
+                                    const w = window.open("", "_blank", "width=600,height=700")
+                                    if (!w) return
+                                    w.document.write(`<!DOCTYPE html><html><head><title>Quiz — ${a.name}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;padding:32px 24px}h1{font-size:20px;font-weight:800;color:#0f172a;margin-bottom:6px}p.sub{font-size:14px;color:#64748b;margin-bottom:24px}.q{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;margin-bottom:14px}.q-n{font-size:11px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.q-t{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px}.q-a{font-size:14px;color:#334155;line-height:1.6;background:#f1f5f9;border-radius:8px;padding:12px 14px}</style></head><body><h1>Quiz Answers</h1><p class="sub">${a.name} — ${a.job_title}</p>${(a.quiz_answers as QuizAnswer[]).map((qa, qi) => `<div class="q"><div class="q-n">Question ${qi + 1}</div><div class="q-t">${qa.question}</div><div class="q-a">${qa.answer}</div></div>`).join("")}</body></html>`)
+                                    w.document.close()
+                                  }}>View Answers</button>
                                 : "—"}
                             </td>
                             <td className="c-date">{fmt(a.created_at)}</td>

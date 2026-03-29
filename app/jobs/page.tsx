@@ -21,6 +21,19 @@ export const revalidate = 60
 
 const STATIC_JOBS: Job[] = [
   {
+    id: "10",
+    title: "IP & Technology Transfer Associate",
+    company: "Top Institute of India",
+    location: "Leading Science & Technology Campus",
+    slug: "patent-research-analyst-intern",
+    type: "Contractual",
+    department: "Intellectual Property",
+    experience: "Fresher / 0–2 yr",
+    mode: "On-site",
+    stipend: "\u20B980,000\u20131,00,000/mo",
+    description: "Work at the intersection of innovation, research, and intellectual property. Support patent analysis, technology commercialization, and IP management alongside senior faculty and innovation leaders at one of India\u2019s top institutes.",
+  },
+  {
     id: "2",
     title: "AI Engineer Intern",
     company: "Trippyway",
@@ -264,7 +277,8 @@ const CSS = `
 
 const COMPANY_LOGOS: Record<string, string> = {
   "Trippyway": "/trippyway-logo.jpg",
-"Netflix": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' fill='%23141414'/%3E%3Cpolygon points='9%2C6 16%2C6 35%2C38 28%2C38' fill='%23E50914'/%3E%3Crect x='9' y='6' width='7' height='32' fill='%23E50914'/%3E%3Crect x='28' y='6' width='7' height='32' fill='%23E50914'/%3E%3C%2Fsvg%3E",
+  "Netflix": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' fill='%23141414'/%3E%3Cpolygon points='9%2C6 16%2C6 35%2C38 28%2C38' fill='%23E50914'/%3E%3Crect x='9' y='6' width='7' height='32' fill='%23E50914'/%3E%3Crect x='28' y='6' width='7' height='32' fill='%23E50914'/%3E%3C%2Fsvg%3E",
+  "Top Institute of India": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231d3a8f'/%3E%3Cpath d='M16 12v24M22 12h8a6 6 0 0 1 0 12H22z' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
 }
 
 function getInitials(company: string) {
