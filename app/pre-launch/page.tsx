@@ -8,6 +8,7 @@ import { Testimonials } from "@/components/landing/testimonials"
 import { HowItWorks } from "@/components/landing/how-it-works"
 import { FeaturedJobs } from "@/components/landing/featured-jobs"
 
+import { CampusAmbassador } from "@/components/landing/campus-ambassador"
 import { CTASection } from "@/components/landing/cta-section"
 import { Footer } from "@/components/landing/footer"
 
@@ -21,7 +22,7 @@ export default function PreLaunchPage() {
       <HowItWorks />
       <FeaturedJobs />
       <Testimonials />
-
+      <CampusAmbassador />
       <CTASection />
       <Footer />
     </div>

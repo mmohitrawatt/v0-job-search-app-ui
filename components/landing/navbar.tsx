@@ -54,10 +54,10 @@ export function Navbar() {
           {/* Right — desktop */}
           <div className="hidden lg:flex items-center gap-3">
             <Link
-              href="/dashboard"
-              className="text-[14px] font-medium text-slate-600 hover:text-slate-900 px-4 py-2 rounded-lg transition-colors"
+              href="/campus-ambassador"
+              className="text-[13px] font-semibold text-[#1d3a8f] px-4 py-2 rounded-[10px] border border-[#1d3a8f]/20 hover:bg-indigo-50 transition-all duration-200"
             >
-              Sign In
+              Campus Ambassador
             </Link>
             <Link
               href="/register"
@@ -103,8 +103,8 @@ export function Navbar() {
                 </a>
               ))}
               <div className="border-t border-slate-100 mt-2 pt-3 flex flex-col gap-2">
-                <Link href="/dashboard" className="px-4 py-3 text-[15px] font-medium text-slate-600 text-center rounded-xl hover:bg-slate-50">
-                  Sign In
+                <Link href="/campus-ambassador" onClick={() => setMobileOpen(false)} className="px-4 py-3 text-[15px] font-medium text-[#1d3a8f] text-center rounded-xl border border-[#1d3a8f]/20 hover:bg-indigo-50">
+                  Campus Ambassador
                 </Link>
                 <Link
                   href="/register"

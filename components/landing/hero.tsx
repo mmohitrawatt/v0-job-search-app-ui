@@ -87,10 +87,10 @@ export function Hero() {
 
         {/* Trusted by strip */}
         <FadeIn delay={0.3}>
-          <div className="mt-8 sm:mt-10 flex items-center justify-center gap-2 text-[12px] text-slate-400/60 font-medium">
+          <div className="mt-8 sm:mt-10 flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-[12px] text-slate-400/60 font-medium flex-wrap">
             <span>Students from</span>
             {["IITs", "NITs", "IIITs", "BITS", "DTU", "VIT", "SRM", "NSUT"].map((name, i) => (
-              <span key={name} className="flex items-center gap-2">
+              <span key={name} className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-slate-300">·</span>
                 <span className={i < 4 ? "font-bold text-slate-400/70" : ""}>{name}</span>
               </span>
