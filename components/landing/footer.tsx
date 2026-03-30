@@ -51,11 +51,11 @@ export function Footer() {
     <footer className="bg-slate-950 text-slate-400 pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Top */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-10 mb-14">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-4">
-              <JobingenLogo height={20} style={{ filter: "brightness(0) invert(1)" }} />
+              <JobingenLogo height={70} style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <p className="text-[14px] text-slate-500 leading-[1.7] max-w-[280px] mb-5">
               AI-powered career platform for students and professionals. Find jobs, build skills, and get career-ready.

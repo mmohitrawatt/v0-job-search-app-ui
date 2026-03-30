@@ -11,39 +11,39 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] via-white to-white" />
       <div className="absolute top-[10%] left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(29,58,143,0.04) 0%, transparent 70%)" }} />
 
-      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 py-14 sm:py-20 lg:py-24">
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 lg:pt-20 pb-10 sm:pb-14">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
 
           {/* ── Left — Content ─────────────────── */}
           <div className="flex-1 text-center lg:text-left">
             <FadeIn>
-              <div className="inline-flex items-center gap-2 bg-white border border-slate-200/80 rounded-full px-4 py-1.5 mb-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+              <div className="inline-flex items-center gap-2 bg-white border border-slate-200/80 rounded-full px-4 py-1.5 mb-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
                 <span className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[12px] font-semibold text-slate-500">AI-Powered Career Platform</span>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.06}>
-              <h1 className="text-[clamp(30px,5vw,52px)] font-extrabold text-slate-900 leading-[1.08] tracking-[-0.04em] mb-3">
+              <h1 className="text-[clamp(30px,5vw,52px)] font-extrabold text-slate-900 leading-[1.08] tracking-[-0.04em] mb-2">
                 The Last Engine for
                 <br />
                 <span className="bg-gradient-to-r from-[#1d3a8f] via-[#3b5bdb] to-[#6c8cff] bg-clip-text text-transparent">
                   Job Search.
                 </span>
               </h1>
-              <p className="text-[clamp(14px,1.4vw,16px)] text-slate-400 font-medium mb-5 tracking-wide lg:text-left text-center">
+              <p className="text-[clamp(14px,1.4vw,16px)] text-slate-400 font-medium mb-3 tracking-wide lg:text-left text-center">
                 Find jobs. Build skills. Get career-ready.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.12}>
-              <p className="text-[clamp(15px,1.6vw,18px)] text-slate-500 leading-[1.7] mb-8 max-w-[460px] mx-auto lg:mx-0">
+              <p className="text-[clamp(15px,1.6vw,18px)] text-slate-500 leading-[1.7] mb-6 max-w-[460px] mx-auto lg:mx-0">
                 Smarter job discovery, AI-powered resumes, mock interviews, and hands-on bootcamps — everything in one place.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.18}>
-              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-8">
+              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-6">
                 <Link
                   href="/register"
                   className="w-full sm:w-auto text-[15px] font-bold text-white px-7 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_6px_24px_rgba(29,58,143,0.38)] transition-all duration-300 hover:-translate-y-px"
@@ -84,6 +84,21 @@ export function Hero() {
           </FadeIn>
 
         </div>
+
+        {/* Trusted by strip */}
+        <FadeIn delay={0.3}>
+          <div className="mt-8 sm:mt-10 flex items-center justify-center gap-2 text-[12px] text-slate-400/60 font-medium">
+            <span>Students from</span>
+            {["IITs", "NITs", "IIITs", "BITS", "DTU", "VIT", "SRM", "NSUT"].map((name, i) => (
+              <span key={name} className="flex items-center gap-2">
+                <span className="text-slate-300">·</span>
+                <span className={i < 4 ? "font-bold text-slate-400/70" : ""}>{name}</span>
+              </span>
+            ))}
+            <span className="text-slate-300">·</span>
+            <span>and more</span>
+          </div>
+        </FadeIn>
       </div>
     </section>
   )
