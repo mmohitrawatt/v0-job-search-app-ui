@@ -35,7 +35,7 @@ export function Navbar() {
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
-            <JobingenLogo height={80} />
+            <JobingenLogo height={56} className="sm:!h-[80px]" />
           </Link>
 
           {/* Center nav — desktop */}

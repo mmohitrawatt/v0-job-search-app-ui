@@ -65,7 +65,7 @@ export function CampusAmbassador() {
               <div className="w-full md:w-[280px] shrink-0 p-6 sm:p-8 md:pl-0 flex items-center justify-center">
                 <div className="relative">
                   {/* Avatars grid */}
-                  <div className="grid grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-3 gap-2">
                     {[
                       { initial: "A", color: "#1d3a8f" },
                       { initial: "R", color: "#7c3aed" },
@@ -79,7 +79,7 @@ export function CampusAmbassador() {
                     ].map((a, i) => (
                       <motion.div
                         key={i}
-                        className="w-14 h-14 rounded-xl flex items-center justify-center text-[16px] font-bold text-white shadow-sm"
+                        className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-[14px] sm:text-[16px] font-bold text-white shadow-sm"
                         style={{ background: a.color, opacity: a.initial === "+" ? 0.5 : 0.85 }}
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: a.initial === "+" ? 0.5 : 0.85 }}

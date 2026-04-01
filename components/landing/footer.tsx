@@ -51,7 +51,7 @@ export function Footer() {
     <footer className="bg-slate-950 text-slate-400 pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Top */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 sm:gap-10 mb-14">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-4">

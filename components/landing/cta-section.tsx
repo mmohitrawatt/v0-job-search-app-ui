@@ -27,16 +27,16 @@ export function CTASection() {
               </div>
 
               {/* Right — buttons */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
                 <Link
                   href="/register"
-                  className="text-[14px] font-bold text-slate-900 bg-white px-6 py-3 rounded-xl hover:bg-slate-100 transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.15)] whitespace-nowrap"
+                  className="w-full sm:w-auto text-center text-[14px] font-bold text-slate-900 bg-white px-6 py-3 rounded-xl hover:bg-slate-100 transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.15)] whitespace-nowrap"
                 >
                   Get Started Free
                 </Link>
                 <Link
                   href="/jobs"
-                  className="text-[14px] font-semibold text-white/70 px-6 py-3 rounded-xl border border-white/15 hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
+                  className="w-full sm:w-auto text-center text-[14px] font-semibold text-white/70 px-6 py-3 rounded-xl border border-white/15 hover:bg-white/10 transition-all duration-200 whitespace-nowrap"
                 >
                   Browse Jobs
                 </Link>

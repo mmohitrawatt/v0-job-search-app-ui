@@ -59,7 +59,7 @@ export function Bootcamps() {
                 </div>
 
                 {/* Highlights */}
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1.5 mb-3">
                   {[
                     "Top college students",
                     "Certificates awarded",
@@ -78,7 +78,7 @@ export function Bootcamps() {
                 {/* What was covered — 2 line */}
                 <div className="mb-3">
                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">What Was Covered</div>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5">
                     {["ML Foundations", "RAG Architecture", "Agentic AI", "Hackathon"].map((t) => (
                       <div key={t} className="flex items-center gap-1.5">
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
@@ -91,7 +91,7 @@ export function Bootcamps() {
                 {/* Delivered — 2 line */}
                 <div className="mb-3">
                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">Delivered</div>
-                  <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1">
                     {["Recordings", "Certificates", "Project code", "Community"].map((item) => (
                       <div key={item} className="flex items-center gap-1">
                         <svg width="8" height="8" fill="none" viewBox="0 0 24 24" className="text-slate-300 shrink-0">
@@ -172,7 +172,7 @@ export function Bootcamps() {
                 {/* Session timeline — 2 columns */}
                 <div className="mb-3">
                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">Session Timeline</div>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5">
                     {[
                       { hour: "H1", title: "AI Workflows & Agentic AI", color: "#1d3a8f" },
                       { hour: "H2", title: "Intro to Vibe Coding", color: "#7c3aed" },
@@ -191,7 +191,7 @@ export function Bootcamps() {
                 {/* What you get — 2 columns */}
                 <div className="mb-3">
                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">What You Get</div>
-                  <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1">
                     {["AI prototype", "Recordings", "Roadmap", "Certificate", "Toolkit", "Community"].map((item) => (
                       <div key={item} className="flex items-center gap-1">
                         <svg width="8" height="8" fill="none" viewBox="0 0 24 24" className="text-emerald-500 shrink-0">

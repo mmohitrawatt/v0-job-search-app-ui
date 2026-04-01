@@ -65,7 +65,7 @@ export function Testimonials() {
           </div>
 
           {/* Stats pills */}
-          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap">
             {[
               { value: isLive ? `${avgRating}` : "4.7", label: "Rating", bg: "bg-amber-50", text: "text-amber-600", border: "border-amber-200/50" },
               { value: "85+", label: "Reviews", bg: "bg-indigo-50", text: "text-[#1d3a8f]", border: "border-indigo-200/50" },

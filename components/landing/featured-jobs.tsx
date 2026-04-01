@@ -121,7 +121,7 @@ export function FeaturedJobs() {
               >
                 <div className="p-5">
                   {/* Top row — logo + title + salary */}
-                  <div className="flex items-start gap-3.5 mb-4">
+                  <div className="flex items-start gap-3 sm:gap-3.5 mb-4">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-[13px] font-bold shrink-0 shadow-sm"
                       style={{ background: job.gradient }}
@@ -137,7 +137,7 @@ export function FeaturedJobs() {
                       </div>
                       <p className="text-[12px] text-slate-500">{job.company}</p>
                     </div>
-                    <div className="text-right shrink-0">
+                    <div className="text-right shrink-0 hidden sm:block">
                       <div className="text-[13px] font-extrabold text-slate-900">{job.salary}</div>
                       <div className="text-[10px] text-slate-400">{job.posted}</div>
                     </div>
@@ -159,6 +159,9 @@ export function FeaturedJobs() {
                     ))}
                     <span className="text-[10px] font-semibold px-2 py-1 rounded-md bg-indigo-50 text-[#1d3a8f] border border-indigo-100">
                       {job.dept}
+                    </span>
+                    <span className="sm:hidden text-[10px] font-bold text-slate-600 px-2 py-1 rounded-md bg-slate-50 border border-slate-100">
+                      {job.salary}
                     </span>
                   </div>
                 </div>
