@@ -9,6 +9,7 @@ import { HowItWorks } from "@/components/landing/how-it-works"
 import { FeaturedJobs } from "@/components/landing/featured-jobs"
 
 import { CampusAmbassador } from "@/components/landing/campus-ambassador"
+import { StudentInsightsBanner } from "@/components/landing/student-insights-banner"
 import { CTASection } from "@/components/landing/cta-section"
 import { Footer } from "@/components/landing/footer"
 
@@ -23,6 +24,7 @@ export default function PreLaunchPage() {
       <FeaturedJobs />
       <Testimonials />
       <CampusAmbassador />
+      <StudentInsightsBanner />
       <CTASection />
       <Footer />
     </div>
