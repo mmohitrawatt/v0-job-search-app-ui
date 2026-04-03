@@ -162,7 +162,7 @@ export function Bootcamps() {
                 </p>
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
-                  {["5 Apr 2026", "4 Hours", "Live Online"].map((label) => (
+                  {["12 Apr 2026", "4 Hours", "Live Online"].map((label) => (
                     <span key={label} className="text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded">
                       {label}
                     </span>
