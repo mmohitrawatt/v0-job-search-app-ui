@@ -339,7 +339,7 @@ function SuccessScreen({ name }: { name: string }) {
               { icon:"🔍", text:"We verify your UPI payment within a few hours" },
               { icon:"📧", text:"Confirmation email sent once payment is verified" },
               { icon:"💬", text:"Join the WhatsApp group below to stay updated" },
-              { icon:"📅", text:"Reminder 24hrs before the masterclass on 5 April" },
+              { icon:"📅", text:"Reminder 24hrs before the masterclass on 12 April" },
               { icon:"⚡", text:"4-hour live session with 3 mentors — be ready to build!" },
             ].map((s,i) => (
               <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
@@ -622,7 +622,7 @@ function RegisterForm() {
               </div>
               <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", borderRadius:99, padding:"5px 14px" }}>
                 <span style={{ fontSize:10 }}>📅</span>
-                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>5 April 2026</span>
+                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>12 April 2026</span>
               </div>
               <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(16,185,129,0.15)", border:"1px solid rgba(16,185,129,0.3)", borderRadius:99, padding:"5px 14px" }}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 7L5 10L10 3" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -662,7 +662,7 @@ function RegisterForm() {
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="white" strokeWidth="2" strokeLinejoin="round"/></svg>
                 </div>
                 <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Masterclass</div>
-                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>5 April</div>
+                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>12 April</div>
                 <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.5 }}>4-Hour Live Session</div>
                 <div style={{ marginTop:14, padding:"6px 16px", borderRadius:99, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.25)", fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".06em", display:"inline-block" }}>
                   ₹49 Only
@@ -686,7 +686,7 @@ function RegisterForm() {
           {/* Header */}
           <div style={{ marginBottom:32 }}>
             <div style={{ fontSize:12, fontWeight:700, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".07em", marginBottom:10 }}>
-              Vibe Coding Masterclass · 5 April 2026
+              Vibe Coding Masterclass · 12 April 2026
             </div>
             <h1 style={{ fontSize:"clamp(28px,3.6vw,44px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 12px", lineHeight:1.08 }}>
               Register for the<br />Vibe Coding Masterclass
@@ -698,7 +698,7 @@ function RegisterForm() {
             </p>
             <div style={{ marginTop:12, display:"inline-flex", alignItems:"center", gap:8, padding:"8px 14px", borderRadius:10, background:"var(--amb-l)", border:"1px solid rgba(245,158,11,0.25)", fontSize:12, color:"var(--amb)", fontWeight:700 }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3"/><path d="M7 4V7.5L9 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-              Saturday, 5 April — limited seats, register now
+              Saturday, 12 April — limited seats, register now
             </div>
           </div>
 
@@ -859,7 +859,7 @@ function RegisterForm() {
                 <div style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", padding:"20px 24px" }}>
                   <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.55)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>What&apos;s Included</div>
                   <div style={{ fontSize:17, fontWeight:800, color:"white", lineHeight:1.3 }}>Vibe Coding Masterclass</div>
-                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)", marginTop:4 }}>5 April 2026 · 4-Hour Live Session</div>
+                  <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)", marginTop:4 }}>12 April 2026 · 4-Hour Live Session</div>
                 </div>
                 <div style={{ background:"white", padding:"18px 24px", display:"flex", flexDirection:"column", gap:12 }}>
                   {[
