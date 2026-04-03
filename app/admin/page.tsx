@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, useCallback } from "react"
 
 type EarlyAccessUser = {
   id: string; name: string; email: string; phone?: string; created_at: string
@@ -31,9 +31,27 @@ type HackathonSubmission = {
   github_link: string; demo_link?: string; screenshot_url?: string; created_at: string
 }
 type StudentInsight = {
-  id: string; problem_categories: string[]; skill_rating: number
+  id: string; name?: string; college?: string; email?: string
+  current_situation?: string; career_stuck_at?: string
+  resume_frustrations?: string[]; job_search_methods?: string[]
+  interview_confidence?: number; skill_blockers?: string[]
+  open_answer?: string
+  problem_categories: string[]; skill_rating: number
   resume_problem: string; student_insight_text: string; created_at: string
 }
+
+type TabKey = "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback"
+
+const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
+  { key: "bootcamp2",    label: "Masterclass",       icon: "M4.26 10.15a60.44 60.44 0 0 0-.49 6.33l7.85 4.53L19.47 17a60.2 60.2 0 0 0-.49-6.27L12 14.53Z M2 8.5l10 5.78L22 8.5 12 2.72Z M12 22v-5.72l-7.74-4.47a29 29 0 0 0-.26 4L12 22Z M12 22l7.74-6.19a29 29 0 0 0-.26-4L12 16.28Z", color: "#2563eb" },
+  { key: "bootcamp1",    label: "Bootcamp 1",        icon: "M4.26 10.15a60.44 60.44 0 0 0-.49 6.33l7.85 4.53L19.47 17a60.2 60.2 0 0 0-.49-6.27L12 14.53Z M2 8.5l10 5.78L22 8.5 12 2.72Z", color: "#0891b2" },
+  { key: "jobs",         label: "Job Applications",  icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#7c3aed" },
+  { key: "hackathon",    label: "Hackathon",         icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5 M2 12l10 5 10-5", color: "#ea580c" },
+  { key: "ambassadors",  label: "Ambassadors",       icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#16a34a" },
+  { key: "early-access", label: "Early Access",      icon: "M12 2v4 M12 18v4 M4.93 4.93l2.83 2.83 M16.24 16.24l2.83 2.83 M2 12h4 M18 12h4 M4.93 19.07l2.83-2.83 M16.24 7.76l2.83-2.83", color: "#d946ef" },
+  { key: "insights",     label: "Student Insights",  icon: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z", color: "#0d9488" },
+  { key: "feedback",     label: "Feedback",          icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", color: "#f59e0b" },
+]
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
@@ -68,6 +86,9 @@ export default function AdminPage() {
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
   const [authChecked, setAuthChecked] = useState(false)
+  const [activeTab, setActiveTab] = useState<TabKey>("bootcamp2")
+  const [deleteModal, setDeleteModal] = useState<{ table: string; id: string; name: string } | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     const pwd = typeof window !== "undefined" ? sessionStorage.getItem("adm_auth") : null
@@ -79,6 +100,36 @@ export default function AdminPage() {
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
+
+  const handleDelete = useCallback(async () => {
+    if (!deleteModal) return
+    setDeleting(true)
+    try {
+      const pwd = sessionStorage.getItem("adm_auth")
+      const res = await fetch("/api/admin/delete", {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${pwd}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ table: deleteModal.table, id: deleteModal.id }),
+      })
+      if (!res.ok) throw new Error("Delete failed")
+      // Remove from local state
+      const id = deleteModal.id
+      const tbl = deleteModal.table
+      if (tbl === "early_access") setEarlyAccess(p => p.filter(r => r.id !== id))
+      else if (tbl === "hackathon_registrations" && activeTab === "bootcamp1") setBootcamp1(p => p.filter(r => r.id !== id))
+      else if (tbl === "hackathon_registrations" && activeTab === "bootcamp2") setBootcamp2(p => p.filter(r => r.id !== id))
+      else if (tbl === "bootcamp_feedback") setFeedback(p => p.filter(r => r.id !== id))
+      else if (tbl === "campus_ambassador_applications") setAmbassadors(p => p.filter(r => r.id !== id))
+      else if (tbl === "job_applications") setJobApplications(p => p.filter(r => r.id !== id))
+      else if (tbl === "hackathon_submissions") setHackathonSubs(p => p.filter(r => r.id !== id))
+      else if (tbl === "student_insights") setStudentInsights(p => p.filter(r => r.id !== id))
+    } catch {
+      alert("Failed to delete. Try again.")
+    } finally {
+      setDeleting(false)
+      setDeleteModal(null)
+    }
+  }, [deleteModal, activeTab])
 
   const eaFiltered  = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
   const b1Filtered  = useMemo(() => filterRows(bootcamp1, search), [bootcamp1, search])
@@ -92,8 +143,28 @@ export default function AdminPage() {
     return hackathonSubs.filter(r => r.leader_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.team_name.toLowerCase().includes(s) || r.project_title.toLowerCase().includes(s))
   }, [hackathonSubs, search])
 
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
+  const tabCounts: Record<TabKey, number> = {
+    bootcamp2: bootcamp2.length,
+    bootcamp1: bootcamp1.length,
+    jobs: jobApplications.length,
+    hackathon: hackathonSubs.length,
+    ambassadors: ambassadors.length,
+    "early-access": earlyAccess.length,
+    insights: studentInsights.length,
+    feedback: feedback.length,
+  }
+
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
+
+  const DelBtn = ({ table, id, name }: { table: string; id: string; name: string }) => (
+    <button
+      className="adm-del-btn"
+      title={`Delete ${name}`}
+      onClick={(e) => { e.stopPropagation(); setDeleteModal({ table, id, name }) }}
+    >
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    </button>
+  )
 
   if (!authChecked) return null
 
@@ -101,96 +172,130 @@ export default function AdminPage() {
     <>
       <style dangerouslySetInnerHTML={{ __html: `
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        body{background:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
-        .adm{min-height:100vh;background:#f1f5f9}
+        body{background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+        .adm{min-height:100vh;background:#f8fafc}
+
         /* Header */
-        .adm-hdr{background:#0f172a;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 rgba(255,255,255,.05)}
-        .adm-hdr-l{display:flex;align-items:center;gap:12px}
-        .adm-hdr-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.2);animation:adm-pulse 2s infinite}
-        @keyframes adm-pulse{0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 6px rgba(34,197,94,.08)}}
-        .adm-hdr-title{color:#f8fafc;font-size:17px;font-weight:800;letter-spacing:-.3px}
-        .adm-hdr-sub{color:#475569;font-size:12px;font-weight:500;margin-top:1px}
-        .adm-hdr-r{display:flex;align-items:center;gap:12px}
-        .adm-search{background:#1e293b;border:1.5px solid #334155;border-radius:10px;padding:8px 14px 8px 36px;font-size:13px;color:#f8fafc;outline:none;width:240px;font-family:inherit;transition:all .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%2364748b' stroke-width='2'/%3E%3Cpath d='m21 21-4.35-4.35' stroke='%2364748b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
-        .adm-search:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
-        .adm-search::placeholder{color:#475569}
-        .adm-logout{background:#1e293b;border:1.5px solid #334155;color:#94a3b8;font-size:13px;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .2s}
-        .adm-logout:hover{background:#334155;color:#f8fafc}
-        @media(max-width:640px){.adm-hdr{padding:0 16px;height:56px}.adm-search{width:140px}.adm-hdr-sub{display:none}}
-        /* Body */
-        .adm-body{padding:28px 32px;max-width:1440px;margin:0 auto}
-        @media(max-width:768px){.adm-body{padding:16px}}
-        /* Stats */
-        .adm-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:28px}
-        @media(max-width:1200px){.adm-stats{grid-template-columns:repeat(3,1fr)}}
-        @media(max-width:768px){.adm-stats{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:480px){.adm-stats{grid-template-columns:1fr 1fr}}
-        .adm-stat{background:#fff;border-radius:14px;padding:20px 22px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-        .adm-stat-lbl{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
-        .adm-stat-val{font-size:34px;font-weight:900;line-height:1;color:#0f172a}
-        .adm-stat-val.green{color:#16a34a}
-        .adm-stat-val.blue{color:#2563eb}
-        .adm-stat-val.purple{color:#7c3aed}
-        .adm-stat-val.orange{color:#ea580c}
-        .adm-stat-sub{font-size:11px;color:#94a3b8;margin-top:6px;font-weight:500}
-        /* Error */
+        .adm-hdr{background:#fff;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:50;border-bottom:1px solid #e2e8f0}
+        .adm-hdr-l{display:flex;align-items:center;gap:14px}
+        .adm-hdr-logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:15px}
+        .adm-hdr-title{color:#0f172a;font-size:18px;font-weight:800;letter-spacing:-.4px}
+        .adm-hdr-sub{color:#94a3b8;font-size:12px;font-weight:500}
+        .adm-hdr-r{display:flex;align-items:center;gap:10px}
+        .adm-search{background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:10px;padding:8px 14px 8px 36px;font-size:13px;color:#0f172a;outline:none;width:260px;font-family:inherit;transition:all .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%2394a3b8' stroke-width='2'/%3E%3Cpath d='m21 21-4.35-4.35' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+        .adm-search:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+        .adm-search::placeholder{color:#94a3b8}
+        .adm-logout{background:#fff;border:1.5px solid #e2e8f0;color:#64748b;font-size:13px;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s}
+        .adm-logout:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+        @media(max-width:768px){.adm-hdr{padding:0 16px;height:56px;gap:8px}.adm-search{width:140px;font-size:12px}.adm-hdr-sub{display:none}.adm-hdr-title{font-size:15px}}
+
+        /* Body layout */
+        .adm-body{padding:0 32px 32px;max-width:1440px;margin:0 auto}
+        @media(max-width:768px){.adm-body{padding:0 12px 16px}}
+
+        /* Stat strip */
+        .adm-strip{display:flex;gap:10px;padding:20px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+        .adm-strip::-webkit-scrollbar{display:none}
+        .adm-strip-item{flex:0 0 auto;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 18px;cursor:pointer;transition:all .15s;white-space:nowrap;min-width:0}
+        .adm-strip-item:hover{border-color:#cbd5e1;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+        .adm-strip-item.active{border-color:var(--tab-color);background:color-mix(in srgb, var(--tab-color) 6%, white);box-shadow:0 0 0 3px color-mix(in srgb, var(--tab-color) 10%, transparent)}
+        .adm-strip-num{font-size:22px;font-weight:900;line-height:1;color:var(--tab-color)}
+        .adm-strip-lbl{font-size:12px;font-weight:600;color:#64748b}
+        .adm-strip-item.active .adm-strip-lbl{color:#0f172a}
+
+        /* Tabs - horizontal scrollable */
+        .adm-tabs{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;margin-bottom:20px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+        .adm-tabs::-webkit-scrollbar{display:none}
+        .adm-tab{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:12px 18px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+        .adm-tab:hover{color:#0f172a;background:#f8fafc}
+        .adm-tab.active{color:var(--tab-color);border-bottom-color:var(--tab-color)}
+        .adm-tab-count{font-size:11px;font-weight:700;background:#f1f5f9;color:#64748b;padding:1px 7px;border-radius:10px;min-width:22px;text-align:center}
+        .adm-tab.active .adm-tab-count{background:color-mix(in srgb, var(--tab-color) 12%, white);color:var(--tab-color)}
+
+        /* Section card */
+        .adm-sec{background:#fff;border-radius:14px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden}
+        .adm-sec-head{padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+        .adm-sec-hl{display:flex;align-items:center;gap:10px}
+        .adm-sec-title{font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px}
+        .adm-sec-badge{background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+        .adm-sec-actions{display:flex;align-items:center;gap:8px}
+        .adm-csv{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#475569;font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+        .adm-csv:hover{background:#e2e8f0;color:#0f172a}
+
+        /* Error / Loading */
         .adm-err{background:#fff1f2;border:1px solid #fecdd3;border-radius:12px;padding:16px 20px;color:#be123c;font-size:14px;font-weight:600;margin-bottom:20px}
-        /* Loading */
         .adm-load{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:16px}
         .adm-spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#3b82f6;border-radius:50%;animation:adm-spin .65s linear infinite}
         @keyframes adm-spin{to{transform:rotate(360deg)}}
         .adm-load-txt{color:#64748b;font-size:14px;font-weight:500}
-        /* Section */
-        .adm-sec{background:#fff;border-radius:16px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);margin-bottom:24px;overflow:hidden}
-        .adm-sec-head{padding:18px 24px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-        .adm-sec-hl{display:flex;align-items:center;gap:10px}
-        .adm-sec-title{font-size:15px;font-weight:800;color:#0f172a;letter-spacing:-.2px}
-        .adm-stat{cursor:pointer;transition:transform .15s,box-shadow .15s}
-        .adm-stat:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
-        .adm-sec-badge{background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
-        .adm-csv{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px solid #e2e8f0;color:#475569;font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
-        .adm-csv:hover{background:#e2e8f0;color:#0f172a}
+
         /* Table */
         .adm-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
         table{width:100%;border-collapse:collapse;min-width:600px}
         thead tr{background:#f8fafc}
-        th{padding:10px 18px;text-align:left;font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;border-bottom:1px solid #f1f5f9}
-        td{padding:13px 18px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
+        th{padding:10px 16px;text-align:left;font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;border-bottom:1px solid #f1f5f9}
+        td{padding:12px 16px;font-size:13px;color:#334155;border-bottom:1px solid #f8fafc;vertical-align:middle}
         tr:last-child td{border-bottom:none}
-        tbody tr:hover{background:#fafbfc}
-        .adm-empty{padding:48px 24px;text-align:center;color:#94a3b8;font-size:14px;font-weight:500}
-        .adm-empty-ico{font-size:28px;margin-bottom:10px}
+        tbody tr{transition:background .1s}
+        tbody tr:hover{background:#f8fafc}
+
+        /* Empty */
+        .adm-empty{padding:56px 24px;text-align:center;color:#94a3b8;font-size:14px;font-weight:500}
+        .adm-empty-ico{font-size:32px;margin-bottom:12px;opacity:.6}
+
         /* Cell types */
-        .c-num{color:#94a3b8;font-size:12px;font-weight:600}
+        .c-num{color:#cbd5e1;font-size:12px;font-weight:600;width:40px}
         .c-name{font-weight:700;color:#0f172a}
         .c-email{color:#2563eb;font-size:12px}
-        .c-phone{color:#475569;font-family:monospace;font-size:12px}
+        .c-phone{color:#475569;font-family:'SF Mono',Monaco,monospace;font-size:12px}
         .c-date{color:#94a3b8;font-size:11px;white-space:nowrap}
-        .c-txn{font-family:monospace;font-size:11px;color:#475569;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
-        .c-tag{display:inline-flex;align-items:center;background:#f0fdf4;color:#16a34a;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bbf7d0;white-space:nowrap}
+        .c-txn{font-family:'SF Mono',Monaco,monospace;font-size:11px;color:#475569;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+        .c-tag{display:inline-flex;align-items:center;background:#eff6ff;color:#2563eb;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe;white-space:nowrap}
         .c-link{color:#2563eb;font-size:12px;font-weight:600;text-decoration:none}
         .c-link:hover{text-decoration:underline}
-        .c-why{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#64748b;cursor:help}
+        .c-why{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#64748b;cursor:help;display:block}
+
+        /* Delete button */
+        .adm-del-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;border:1.5px solid transparent;background:transparent;color:#cbd5e1;cursor:pointer;transition:all .15s}
+        .adm-del-btn:hover{background:#fef2f2;border-color:#fecdd3;color:#dc2626}
+
+        /* Delete modal */
+        .adm-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;animation:adm-fade-in .15s ease}
+        @keyframes adm-fade-in{from{opacity:0}to{opacity:1}}
+        .adm-modal{background:#fff;border-radius:16px;padding:28px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15);animation:adm-slide-up .2s ease}
+        @keyframes adm-slide-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .adm-modal-icon{width:48px;height:48px;border-radius:12px;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+        .adm-modal h3{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:8px}
+        .adm-modal p{font-size:14px;color:#64748b;line-height:1.5;margin-bottom:24px}
+        .adm-modal p strong{color:#0f172a;font-weight:700}
+        .adm-modal-btns{display:flex;gap:10px;justify-content:flex-end}
+        .adm-modal-cancel{background:#f1f5f9;border:1.5px solid #e2e8f0;color:#475569;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s}
+        .adm-modal-cancel:hover{background:#e2e8f0}
+        .adm-modal-confirm{background:#dc2626;border:none;color:#fff;font-size:13px;font-weight:700;padding:9px 20px;border-radius:10px;cursor:pointer;font-family:inherit;transition:all .15s;min-width:90px}
+        .adm-modal-confirm:hover{background:#b91c1c}
+        .adm-modal-confirm:disabled{opacity:.6;cursor:not-allowed}
       ` }} />
 
       <div className="adm">
         {/* Header */}
         <header className="adm-hdr">
           <div className="adm-hdr-l">
-            <div className="adm-hdr-dot" />
+            <div className="adm-hdr-logo">J</div>
             <div>
-              <div className="adm-hdr-title">Jobingen Admin</div>
-              <div className="adm-hdr-sub">Internal Dashboard</div>
+              <div className="adm-hdr-title">Admin Panel</div>
+              <div className="adm-hdr-sub">Jobingen Dashboard</div>
             </div>
           </div>
           <div className="adm-hdr-r">
             <input
               className="adm-search"
-              placeholder="Search name or email..."
+              placeholder="Search by name or email..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            <button className="adm-logout" onClick={logout}>Logout</button>
+            <button className="adm-logout" onClick={logout}>
+              Logout
+            </button>
           </div>
         </header>
 
@@ -204,434 +309,471 @@ export default function AdminPage() {
             <>
               {error && <div className="adm-err">{error}</div>}
 
-              {/* Stats */}
-              <div className="adm-stats">
-                <div className="adm-stat" onClick={() => scrollTo("sec-bootcamp1")}>
-                  <div className="adm-stat-lbl">Bootcamp 1</div>
-                  <div className="adm-stat-val blue">{bootcamp1.length}</div>
-                  <div className="adm-stat-sub">Registrations</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-bootcamp2")}>
-                  <div className="adm-stat-lbl">Bootcamp 2</div>
-                  <div className="adm-stat-val" style={{ color:"#0891b2" }}>{bootcamp2.length}</div>
-                  <div className="adm-stat-sub">Registrations</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-feedback")}>
-                  <div className="adm-stat-lbl">Feedback</div>
-                  <div className="adm-stat-val green">{feedback.length}</div>
-                  <div className="adm-stat-sub">Bootcamp 1 responses</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-early-access")}>
-                  <div className="adm-stat-lbl">Early Access</div>
-                  <div className="adm-stat-val purple">{earlyAccess.length}</div>
-                  <div className="adm-stat-sub">Waitlist signups</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-hackathon")}>
-                  <div className="adm-stat-lbl">Hackathon</div>
-                  <div className="adm-stat-val" style={{ color: "#7c3aed" }}>{hackathonSubs.length}</div>
-                  <div className="adm-stat-sub">Project submissions</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-ambassadors")}>
-                  <div className="adm-stat-lbl">Ambassadors</div>
-                  <div className="adm-stat-val orange">{ambassadors.length}</div>
-                  <div className="adm-stat-sub">Applications</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-student-insights")}>
-                  <div className="adm-stat-lbl">Student Insights</div>
-                  <div className="adm-stat-val" style={{ color: "#0d9488" }}>{studentInsights.length}</div>
-                  <div className="adm-stat-sub">Survey responses</div>
-                </div>
-                <div className="adm-stat" onClick={() => scrollTo("sec-jobs")}>
-                  <div className="adm-stat-lbl">Job Applications</div>
-                  <div className="adm-stat-val" style={{ color: "#2563eb" }}>{jobApplications.length}</div>
-                  <div className="adm-stat-sub">Total applications</div>
-                </div>
+              {/* Tab navigation */}
+              <div className="adm-tabs">
+                {TABS.map(t => (
+                  <button
+                    key={t.key}
+                    className={`adm-tab${activeTab === t.key ? " active" : ""}`}
+                    style={{ "--tab-color": t.color } as React.CSSProperties}
+                    onClick={() => setActiveTab(t.key)}
+                  >
+                    {t.label}
+                    <span className="adm-tab-count">{tabCounts[t.key]}</span>
+                  </button>
+                ))}
               </div>
 
-              {/* ── Early Access ── */}
-              <div id="sec-early-access" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Early Access Users</div>
-                    <div className="adm-sec-badge">{eaFiltered.length} users</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(eaFiltered as unknown as Record<string, unknown>[], "early-access.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {eaFiltered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No registrations yet"}
+              {/* ── Masterclass (Bootcamp 2) ── */}
+              {activeTab === "bootcamp2" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Masterclass Registrations</div>
+                      <div className="adm-sec-badge">{b2Filtered.length} registrations</div>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {eaFiltered.map((u, i) => (
-                          <tr key={u.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{u.name}</td>
-                            <td className="c-email">{u.email}</td>
-                            <td className="c-phone">{u.phone || "—"}</td>
-                            <td className="c-date">{fmt(u.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(b2Filtered as unknown as Record<string, unknown>[], "masterclass-registrations.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {b2Filtered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No registrations yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Cluster</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {b2Filtered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td className="c-phone">{r.phone || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                              <td><span className="c-tag" style={{ background: "#f5f3ff", color: "#7c3aed", borderColor: "#ddd6fe" }}>{r.learning_cluster || "—"}</span></td>
+                              <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
+                              <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="hackathon_registrations" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* ── Bootcamp 2 Registrations ── */}
-              <div id="sec-bootcamp2" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Bootcamp 2 — Registrations</div>
-                    <div className="adm-sec-badge">{b2Filtered.length} registrations</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(b2Filtered as unknown as Record<string, unknown>[], "bootcamp2-registrations.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {b2Filtered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No registrations yet"}
+              {/* ── Bootcamp 1 ── */}
+              {activeTab === "bootcamp1" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Bootcamp 1 Registrations</div>
+                      <div className="adm-sec-badge">{b1Filtered.length} registrations</div>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Cluster</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
-                      </thead>
-                      <tbody>
-                        {b2Filtered.map((r, i) => (
-                          <tr key={r.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{r.name}</td>
-                            <td className="c-email">{r.email}</td>
-                            <td className="c-phone">{r.phone || "—"}</td>
-                            <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
-                            <td style={{ fontSize: 12, fontWeight: 600, color: "#7c3aed" }}>{r.learning_cluster || "—"}</td>
-                            <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
-                            <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
-                            <td className="c-date">{fmt(r.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Hackathon Project Submissions ── */}
-              <div id="sec-hackathon" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Hackathon — Project Submissions</div>
-                    <div className="adm-sec-badge">{hsFiltered.length} projects</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(hsFiltered as unknown as Record<string, unknown>[], "hackathon-submissions.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {hsFiltered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No project submissions yet"}
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(b1Filtered as unknown as Record<string, unknown>[], "bootcamp1-registrations.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr><th>#</th><th>Team</th><th>Leader</th><th>Email</th><th>Project</th><th>Tech Stack</th><th>GitHub</th><th>Demo</th><th>Screenshot</th><th>Date</th></tr>
-                      </thead>
-                      <tbody>
-                        {hsFiltered.map((r, i) => (
-                          <tr key={r.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{r.team_name}</td>
-                            <td style={{ fontSize: 13 }}>{r.leader_name}</td>
-                            <td className="c-email">{r.email}</td>
-                            <td>
-                              <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a" }}>{r.project_title}</div>
-                              <span className="c-why" title={r.description}>{r.description}</span>
-                            </td>
-                            <td style={{ fontSize: 12, color: "#64748b", maxWidth: 160 }}>{r.tech_stack}</td>
-                            <td><a className="c-link" href={r.github_link} target="_blank" rel="noopener noreferrer">Repo</a></td>
-                            <td>{r.demo_link ? <a className="c-link" href={r.demo_link} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
-                            <td>{r.screenshot_url ? <a className="c-link" href={r.screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
-                            <td className="c-date">{fmt(r.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Bootcamp 1 Feedback ── */}
-              <div id="sec-feedback" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Bootcamp 1 — Feedback</div>
-                    <div className="adm-sec-badge">{fbFiltered.length} responses</div>
                   </div>
-                  <button className="adm-csv" onClick={() => exportCSV(fbFiltered as unknown as Record<string, unknown>[], "bootcamp1-feedback.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {fbFiltered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No feedback yet"}
-                    </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr><th>#</th><th>Name</th><th>Email</th><th>Overall</th><th>Content</th><th>Mentor</th><th>Liked</th><th>Improve</th><th>Recommend</th><th>Next Topic</th><th>Date</th></tr>
-                      </thead>
-                      <tbody>
-                        {fbFiltered.map((r, i) => (
-                          <tr key={r.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{r.name}</td>
-                            <td className="c-email">{r.email || "—"}</td>
-                            <td style={{ fontSize: 14, fontWeight: 800, color: r.overall_rating >= 4 ? "#16a34a" : r.overall_rating >= 3 ? "#d97706" : "#dc2626" }}>{"★".repeat(r.overall_rating)}{"☆".repeat(5 - r.overall_rating)}</td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.content_rating ? `${r.content_rating}/5` : "—"}</td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.mentor_rating ? `${r.mentor_rating}/5` : "—"}</td>
-                            <td><span className="c-why" title={r.liked}>{r.liked}</span></td>
-                            <td><span className="c-why" title={r.improve}>{r.improve || "—"}</span></td>
-                            <td style={{ fontSize: 12 }}>{r.recommend || "—"}</td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{r.next_topic || "—"}</td>
-                            <td className="c-date">{fmt(r.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Bootcamp 1 Registrations ── */}
-              <div id="sec-bootcamp1" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Bootcamp 1 — Registrations</div>
-                    <div className="adm-sec-badge">{b1Filtered.length} registrations</div>
+                  <div className="adm-tbl-wrap">
+                    {b1Filtered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No registrations yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {b1Filtered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td className="c-phone">{r.phone || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                              <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
+                              <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="hackathon_registrations" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
                   </div>
-                  <button className="adm-csv" onClick={() => exportCSV(b1Filtered as unknown as Record<string, unknown>[], "bootcamp1-registrations.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
                 </div>
-                <div className="adm-tbl-wrap">
-                  {b1Filtered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No registrations"}
-                    </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th></tr>
-                      </thead>
-                      <tbody>
-                        {b1Filtered.map((r, i) => (
-                          <tr key={r.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{r.name}</td>
-                            <td className="c-email">{r.email}</td>
-                            <td className="c-phone">{r.phone || "—"}</td>
-                            <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
-                            <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
-                            <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
-                            <td className="c-date">{fmt(r.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </div>
+              )}
 
               {/* ── Job Applications ── */}
-              <div id="sec-jobs" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Job Applications</div>
-                    <div className="adm-sec-badge">{jaFiltered.length} applications</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(jaFiltered.map(a => ({ ...a, quiz_answers: a.quiz_answers ? JSON.stringify(a.quiz_answers) : "" })) as unknown as Record<string, unknown>[], "job-applications.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {jaFiltered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No job applications yet"}
+              {activeTab === "jobs" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Job Applications</div>
+                      <div className="adm-sec-badge">{jaFiltered.length} applications</div>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
-                          <th>College</th><th>Degree</th>
-                          <th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {jaFiltered.map((a, i) => (
-                          <tr key={a.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{a.name}</td>
-                            <td className="c-email">{a.email}</td>
-                            <td className="c-phone">{a.phone}</td>
-                            <td style={{ fontSize: 13 }}>{a.college || "—"}</td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.degree || "—"}</td>
-                            <td>
-                              <span className="c-tag">{a.job_title}</span>
-                            </td>
-                            <td>
-                              {a.linkedin
-                                ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
-                                : "—"}
-                            </td>
-                            <td>
-                              {a.resume_url
-                                ? <a className="c-link" href={a.resume_url} target="_blank" rel="noopener noreferrer">Download ↓</a>
-                                : "—"}
-                            </td>
-                            <td>
-                              {a.quiz_answers && a.quiz_answers.length > 0
-                                ? <button className="c-link" style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }} onClick={() => {
-                                    const w = window.open("", "_blank", "width=600,height=700")
-                                    if (!w) return
-                                    w.document.write(`<!DOCTYPE html><html><head><title>Quiz — ${a.name}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;padding:32px 24px}h1{font-size:20px;font-weight:800;color:#0f172a;margin-bottom:6px}p.sub{font-size:14px;color:#64748b;margin-bottom:24px}.q{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;margin-bottom:14px}.q-n{font-size:11px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.q-t{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px}.q-a{font-size:14px;color:#334155;line-height:1.6;background:#f1f5f9;border-radius:8px;padding:12px 14px}</style></head><body><h1>Quiz Answers</h1><p class="sub">${a.name} — ${a.job_title}</p>${(a.quiz_answers as QuizAnswer[]).map((qa, qi) => `<div class="q"><div class="q-n">Question ${qi + 1}</div><div class="q-t">${qa.question}</div><div class="q-a">${qa.answer}</div></div>`).join("")}</body></html>`)
-                                    w.document.close()
-                                  }}>View Answers</button>
-                                : "—"}
-                            </td>
-                            <td className="c-date">{fmt(a.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(jaFiltered.map(a => ({ ...a, quiz_answers: a.quiz_answers ? JSON.stringify(a.quiz_answers) : "" })) as unknown as Record<string, unknown>[], "job-applications.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {jaFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No job applications yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Degree</th><th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                          {jaFiltered.map((a, i) => (
+                            <tr key={a.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{a.name}</td>
+                              <td className="c-email">{a.email}</td>
+                              <td className="c-phone">{a.phone}</td>
+                              <td style={{ fontSize: 13 }}>{a.college || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.degree || "—"}</td>
+                              <td><span className="c-tag">{a.job_title}</span></td>
+                              <td>
+                                {a.linkedin
+                                  ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
+                                  : "—"}
+                              </td>
+                              <td>
+                                {a.resume_url
+                                  ? <a className="c-link" href={a.resume_url} target="_blank" rel="noopener noreferrer">Download</a>
+                                  : "—"}
+                              </td>
+                              <td>
+                                {a.quiz_answers && a.quiz_answers.length > 0
+                                  ? <button className="c-link" style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }} onClick={() => {
+                                      const w = window.open("", "_blank", "width=600,height=700")
+                                      if (!w) return
+                                      w.document.write(`<!DOCTYPE html><html><head><title>Quiz — ${a.name}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;padding:32px 24px}h1{font-size:20px;font-weight:800;color:#0f172a;margin-bottom:6px}p.sub{font-size:14px;color:#64748b;margin-bottom:24px}.q{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;margin-bottom:14px}.q-n{font-size:11px;font-weight:800;color:#1d4ed8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}.q-t{font-size:14px;font-weight:700;color:#0f172a;margin-bottom:10px}.q-a{font-size:14px;color:#334155;line-height:1.6;background:#f1f5f9;border-radius:8px;padding:12px 14px}</style></head><body><h1>Quiz Answers</h1><p class="sub">${a.name} — ${a.job_title}</p>${(a.quiz_answers as QuizAnswer[]).map((qa, qi) => `<div class="q"><div class="q-n">Question ${qi + 1}</div><div class="q-t">${qa.question}</div><div class="q-a">${qa.answer}</div></div>`).join("")}</body></html>`)
+                                      w.document.close()
+                                    }}>View Answers</button>
+                                  : "—"}
+                              </td>
+                              <td className="c-date">{fmt(a.created_at)}</td>
+                              <td><DelBtn table="job_applications" id={a.id} name={a.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* ── Student Insights ── */}
-              <div id="sec-student-insights" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Student Insights</div>
-                    <div className="adm-sec-badge">{studentInsights.length} responses</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(studentInsights.map(s => ({ ...s, problem_categories: (s.problem_categories || []).join(", ") })) as unknown as Record<string, unknown>[], "student-insights.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {studentInsights.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      No student insights yet
+              {/* ── Hackathon ── */}
+              {activeTab === "hackathon" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Hackathon Submissions</div>
+                      <div className="adm-sec-badge">{hsFiltered.length} projects</div>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>#</th><th>Problem Categories</th><th>Skill Rating</th>
-                          <th>Resume Challenge</th><th>Open Insight</th><th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {studentInsights.map((s, i) => (
-                          <tr key={s.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td style={{ fontSize: 12 }}>{(s.problem_categories || []).join(", ") || "—"}</td>
-                            <td style={{ textAlign: "center" }}>{"⭐".repeat(s.skill_rating || 0)}</td>
-                            <td style={{ fontSize: 12 }}>{s.resume_problem || "—"}</td>
-                            <td><span className="c-why" title={s.student_insight_text}>{s.student_insight_text || "—"}</span></td>
-                            <td className="c-date">{fmt(s.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(hsFiltered as unknown as Record<string, unknown>[], "hackathon-submissions.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {hsFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No submissions yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Team</th><th>Leader</th><th>Email</th><th>Project</th><th>Tech Stack</th><th>GitHub</th><th>Demo</th><th>Screenshot</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {hsFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.team_name}</td>
+                              <td style={{ fontSize: 13 }}>{r.leader_name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td>
+                                <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a" }}>{r.project_title}</div>
+                                <span className="c-why" title={r.description}>{r.description}</span>
+                              </td>
+                              <td style={{ fontSize: 12, color: "#64748b", maxWidth: 160 }}>{r.tech_stack}</td>
+                              <td><a className="c-link" href={r.github_link} target="_blank" rel="noopener noreferrer">Repo</a></td>
+                              <td>{r.demo_link ? <a className="c-link" href={r.demo_link} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td>{r.screenshot_url ? <a className="c-link" href={r.screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="hackathon_submissions" id={r.id} name={r.team_name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* ── Campus Ambassadors ── */}
-              <div id="sec-ambassadors" className="adm-sec">
-                <div className="adm-sec-head">
-                  <div className="adm-sec-hl">
-                    <div className="adm-sec-title">Campus Ambassador Applications</div>
-                    <div className="adm-sec-badge">{caFiltered.length} applications</div>
-                  </div>
-                  <button className="adm-csv" onClick={() => exportCSV(caFiltered as unknown as Record<string, unknown>[], "campus-ambassadors.csv")}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Export CSV
-                  </button>
-                </div>
-                <div className="adm-tbl-wrap">
-                  {caFiltered.length === 0 ? (
-                    <div className="adm-empty">
-                      <div className="adm-empty-ico">📭</div>
-                      {search ? `No results for "${search}"` : "No applications yet"}
+              {activeTab === "ambassadors" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Campus Ambassador Applications</div>
+                      <div className="adm-sec-badge">{caFiltered.length} applications</div>
                     </div>
-                  ) : (
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
-                          <th>College</th><th>Course / Year</th>
-                          <th>LinkedIn</th><th>Instagram</th><th>Why Ambassador</th><th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {caFiltered.map((a, i) => (
-                          <tr key={a.id}>
-                            <td className="c-num">{i + 1}</td>
-                            <td className="c-name">{a.name}</td>
-                            <td className="c-email">{a.email}</td>
-                            <td className="c-phone">{a.phone}</td>
-                            <td style={{ fontSize: 13 }}>{a.college}</td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.course_year}</td>
-                            <td>
-                              {a.linkedin
-                                ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
-                                : "—"}
-                            </td>
-                            <td style={{ fontSize: 12, color: "#64748b" }}>{a.instagram || "—"}</td>
-                            <td><span className="c-why" title={a.why_ambassador}>{a.why_ambassador}</span></td>
-                            <td className="c-date">{fmt(a.created_at)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(caFiltered as unknown as Record<string, unknown>[], "campus-ambassadors.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {caFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No applications yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Course / Year</th><th>LinkedIn</th><th>Instagram</th><th>Why Ambassador</th><th>Date</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                          {caFiltered.map((a, i) => (
+                            <tr key={a.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{a.name}</td>
+                              <td className="c-email">{a.email}</td>
+                              <td className="c-phone">{a.phone}</td>
+                              <td style={{ fontSize: 13 }}>{a.college}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.course_year}</td>
+                              <td>
+                                {a.linkedin
+                                  ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
+                                  : "—"}
+                              </td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.instagram || "—"}</td>
+                              <td><span className="c-why" title={a.why_ambassador}>{a.why_ambassador}</span></td>
+                              <td className="c-date">{fmt(a.created_at)}</td>
+                              <td><DelBtn table="campus_ambassador_applications" id={a.id} name={a.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* ── Early Access ── */}
+              {activeTab === "early-access" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Early Access Waitlist</div>
+                      <div className="adm-sec-badge">{eaFiltered.length} users</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(eaFiltered as unknown as Record<string, unknown>[], "early-access.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {eaFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No signups yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {eaFiltered.map((u, i) => (
+                            <tr key={u.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{u.name}</td>
+                              <td className="c-email">{u.email}</td>
+                              <td className="c-phone">{u.phone || "—"}</td>
+                              <td className="c-date">{fmt(u.created_at)}</td>
+                              <td><DelBtn table="early_access" id={u.id} name={u.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Student Insights ── */}
+              {activeTab === "insights" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Student Insights Survey</div>
+                      <div className="adm-sec-badge">{studentInsights.length} responses</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(studentInsights.map(s => ({
+                        ...s,
+                        problem_categories: (s.problem_categories || []).join(", "),
+                        resume_frustrations: (s.resume_frustrations || []).join(", "),
+                        job_search_methods: (s.job_search_methods || []).join(", "),
+                        skill_blockers: (s.skill_blockers || []).join(", "),
+                      })) as unknown as Record<string, unknown>[], "student-insights.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {studentInsights.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>No student insights yet</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>#</th><th>Name</th><th>College</th><th>Email</th>
+                            <th>Current Situation</th><th>Stuck At</th>
+                            <th>Resume Issues</th><th>Job Search</th>
+                            <th>Interview Confidence</th><th>Skill Blockers</th>
+                            <th>Open Answer</th><th>Date</th><th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {studentInsights.map((s, i) => (
+                            <tr key={s.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{s.name || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{s.college || "—"}</td>
+                              <td className="c-email">{s.email || "—"}</td>
+                              <td><span className="c-why" title={s.current_situation}>{s.current_situation || "—"}</span></td>
+                              <td><span className="c-why" title={s.career_stuck_at}>{s.career_stuck_at || "—"}</span></td>
+                              <td style={{ fontSize: 12 }}>
+                                {(s.resume_frustrations && s.resume_frustrations.length > 0)
+                                  ? s.resume_frustrations.map((r, ri) => (
+                                      <span key={ri} className="c-tag" style={{ marginRight: 3, marginBottom: 2, fontSize: 10, padding: "2px 7px", display: "inline-block" }}>{r}</span>
+                                    ))
+                                  : "—"}
+                              </td>
+                              <td style={{ fontSize: 12 }}>
+                                {(s.job_search_methods && s.job_search_methods.length > 0)
+                                  ? s.job_search_methods.map((m, mi) => (
+                                      <span key={mi} className="c-tag" style={{ marginRight: 3, marginBottom: 2, fontSize: 10, padding: "2px 7px", background: "#f0fdf4", color: "#16a34a", borderColor: "#bbf7d0", display: "inline-block" }}>{m}</span>
+                                    ))
+                                  : "—"}
+                              </td>
+                              <td style={{ textAlign: "center" }}>
+                                <span style={{
+                                  display: "inline-flex", alignItems: "center", gap: 4,
+                                  fontSize: 13, fontWeight: 800,
+                                  color: (s.interview_confidence ?? 0) >= 4 ? "#16a34a" : (s.interview_confidence ?? 0) >= 3 ? "#d97706" : "#dc2626",
+                                  background: (s.interview_confidence ?? 0) >= 4 ? "#f0fdf4" : (s.interview_confidence ?? 0) >= 3 ? "#fffbeb" : "#fef2f2",
+                                  padding: "3px 10px", borderRadius: 20,
+                                }}>
+                                  {s.interview_confidence ?? s.skill_rating ?? 0}/5
+                                </span>
+                              </td>
+                              <td style={{ fontSize: 12 }}>
+                                {(s.skill_blockers && s.skill_blockers.length > 0)
+                                  ? s.skill_blockers.map((b, bi) => (
+                                      <span key={bi} className="c-tag" style={{ marginRight: 3, marginBottom: 2, fontSize: 10, padding: "2px 7px", background: "#fff7ed", color: "#ea580c", borderColor: "#fed7aa", display: "inline-block" }}>{b}</span>
+                                    ))
+                                  : "—"}
+                              </td>
+                              <td><span className="c-why" title={s.open_answer || s.student_insight_text}>{s.open_answer || s.student_insight_text || "—"}</span></td>
+                              <td className="c-date">{fmt(s.created_at)}</td>
+                              <td><DelBtn table="student_insights" id={s.id} name={s.name || `Insight #${i + 1}`} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Feedback ── */}
+              {activeTab === "feedback" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Bootcamp Feedback</div>
+                      <div className="adm-sec-badge">{fbFiltered.length} responses</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(fbFiltered as unknown as Record<string, unknown>[], "bootcamp-feedback.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {fbFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No feedback yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Overall</th><th>Content</th><th>Mentor</th><th>Liked</th><th>Improve</th><th>Recommend</th><th>Next Topic</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {fbFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email || "—"}</td>
+                              <td>
+                                <span style={{
+                                  display: "inline-flex", alignItems: "center", gap: 4,
+                                  fontSize: 12, fontWeight: 800,
+                                  color: r.overall_rating >= 4 ? "#16a34a" : r.overall_rating >= 3 ? "#d97706" : "#dc2626",
+                                  background: r.overall_rating >= 4 ? "#f0fdf4" : r.overall_rating >= 3 ? "#fffbeb" : "#fef2f2",
+                                  padding: "3px 10px", borderRadius: 20,
+                                }}>
+                                  {r.overall_rating}/5
+                                </span>
+                              </td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.content_rating ? `${r.content_rating}/5` : "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.mentor_rating ? `${r.mentor_rating}/5` : "—"}</td>
+                              <td><span className="c-why" title={r.liked}>{r.liked}</span></td>
+                              <td><span className="c-why" title={r.improve}>{r.improve || "—"}</span></td>
+                              <td style={{ fontSize: 12 }}>{r.recommend || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.next_topic || "—"}</td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="bootcamp_feedback" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
       </div>
+
+      {/* Delete confirmation modal */}
+      {deleteModal && (
+        <div className="adm-modal-bg" onClick={() => !deleting && setDeleteModal(null)}>
+          <div className="adm-modal" onClick={e => e.stopPropagation()}>
+            <div className="adm-modal-icon">
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14Z" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <h3>Delete this entry?</h3>
+            <p>You are about to permanently delete <strong>{deleteModal.name}</strong>. This action cannot be undone.</p>
+            <div className="adm-modal-btns">
+              <button className="adm-modal-cancel" onClick={() => setDeleteModal(null)} disabled={deleting}>Cancel</button>
+              <button className="adm-modal-confirm" onClick={handleDelete} disabled={deleting}>
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
