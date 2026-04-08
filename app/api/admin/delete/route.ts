@@ -9,6 +9,8 @@ const ALLOWED_TABLES = [
   "job_applications",
   "hackathon_submissions",
   "student_insights",
+  "interview_feedback",
+  "mentor_applications",
 ]
 
 export async function DELETE(req: NextRequest) {

@@ -12,10 +12,19 @@ const FOOTER_LINKS = [
     ],
   },
   {
+    title: "Community",
+    links: [
+      { label: "Student Insights", href: "/student-insights" },
+      { label: "Interview Experience", href: "/interview-feedback" },
+      { label: "Become a Mentor", href: "/become-mentor" },
+      { label: "Campus Ambassador", href: "/campus-ambassador" },
+    ],
+  },
+  {
     title: "Company",
     links: [
       { label: "About", href: "#community" },
-      { label: "Campus Ambassador", href: "/campus-ambassador" },
+      { label: "Register", href: "/register" },
       { label: "Contact", href: "mailto:hello@jobingen.com" },
     ],
   },
@@ -51,7 +60,7 @@ export function Footer() {
     <footer className="bg-slate-950 text-slate-400 pt-16 pb-8">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Top */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 sm:gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 sm:gap-10 mb-14">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-4">
