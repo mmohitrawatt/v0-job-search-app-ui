@@ -14,20 +14,21 @@ type Step = {
   label: string
   title: string
   sub: string
-  type: "single" | "multi" | "multi-grid" | "scale" | "text" | "combo"
+  type: "single" | "multi" | "multi-grid" | "scale" | "text" | "combo" | "pricing"
   opts?: { l: string; d?: string }[]
   fields?: { key: string; label: string; placeholder: string; required?: boolean; type?: "dropdown" | "number"; opts?: string[] }[]
-  scaleLabels?: [string, string]
   placeholder?: string
   maxLen?: number
 }
 
+const TOTAL = 11
+
 const STEPS: Step[] = [
   {
     id: 0, chip: "Basic Info", chipColor: "#1d3a8f", chipBg: "#eef1fd",
-    label: "Step 1 of 10",
+    label: `Step 1 of ${TOTAL}`,
     title: "Let\u2019s start with who you are",
-    sub: "Your basic details help us create your mentor profile on Jobingen.",
+    sub: "Your basic details help us create your profile on Jobingen.",
     type: "combo",
     fields: [
       { key: "full_name", label: "Full Name", placeholder: "e.g. Priya Sharma", required: true },
@@ -38,7 +39,7 @@ const STEPS: Step[] = [
   },
   {
     id: 1, chip: "Expertise", chipColor: "#7c3aed", chipBg: "#f5f3ff",
-    label: "Step 2 of 10",
+    label: `Step 2 of ${TOTAL}`,
     title: "What\u2019s your domain of expertise?",
     sub: "Select the area where you can offer the most valuable guidance.",
     type: "single",
@@ -56,7 +57,7 @@ const STEPS: Step[] = [
   },
   {
     id: 2, chip: "Role Info", chipColor: "#0f766e", chipBg: "#ecfdf5",
-    label: "Step 3 of 10",
+    label: `Step 3 of ${TOTAL}`,
     title: "Tell us about your professional background",
     sub: "This helps students understand your credibility and experience level.",
     type: "combo",
@@ -68,27 +69,27 @@ const STEPS: Step[] = [
   },
   {
     id: 3, chip: "Introduction", chipColor: "#b45309", chipBg: "#fffbeb",
-    label: "Step 4 of 10",
+    label: `Step 4 of ${TOTAL}`,
     title: "Write a short introduction about yourself",
-    sub: "This will appear on your mentor profile card. Keep it concise and impactful (2\u20133 lines).",
+    sub: "This will appear on your profile card. Keep it concise and impactful (2\u20133 lines).",
     type: "text",
     placeholder: "e.g. I\u2019m a Senior Product Manager at Razorpay with 6+ years in fintech. I\u2019ve mentored 50+ students on transitioning into PM roles and love helping people crack product interviews.",
     maxLen: 500,
   },
   {
     id: 4, chip: "Bio", chipColor: "#1d3a8f", chipBg: "#eef1fd",
-    label: "Step 5 of 10",
+    label: `Step 5 of ${TOTAL}`,
     title: "Write your professional bio",
-    sub: "Share your career journey, achievements, and what makes you a great mentor. This goes on your full profile page.",
+    sub: "Share your career journey, achievements, and what makes you great at guiding others.",
     type: "text",
     placeholder: "e.g.\n\u2022 Started as an intern at a Series-A startup, now leading product at a unicorn\n\u2022 Helped 3 companies launch products from 0 to 1\n\u2022 Regular speaker at product conferences\n\u2022 Passionate about helping freshers break into product management\n\u2022 I believe in practical, no-BS mentoring",
     maxLen: 1500,
   },
   {
     id: 5, chip: "Topics", chipColor: "#dc2626", chipBg: "#fef2f2",
-    label: "Step 6 of 10",
-    title: "What areas can you mentor in?",
-    sub: "Select all the topics where you can provide valuable guidance to students and professionals.",
+    label: `Step 6 of ${TOTAL}`,
+    title: "What areas can you help with?",
+    sub: "Select all the topics where you can provide valuable guidance.",
     type: "multi-grid",
     opts: [
       { l: "Resume Review" },
@@ -104,39 +105,46 @@ const STEPS: Step[] = [
   },
   {
     id: 6, chip: "Pricing", chipColor: "#0f766e", chipBg: "#ecfdf5",
-    label: "Step 7 of 10",
-    title: "Set your session pricing",
-    sub: "You decide what to charge. Students will see this on your profile.",
-    type: "combo",
-    fields: [
-      { key: "session_price", label: "Session Price (\u20B9)", placeholder: "e.g. 499", required: true, type: "number" },
-      { key: "session_duration", label: "Session Duration", placeholder: "Select...", required: true, type: "dropdown", opts: ["30 minutes", "45 minutes", "60 minutes"] },
-    ],
+    label: `Step 7 of ${TOTAL}`,
+    title: "Session pricing & duration",
+    sub: "Base rate is \u20B9149 for 30 min. Adjust the slider to set your preferred session length. You can also share your own pricing expectation.",
+    type: "pricing",
   },
   {
     id: 7, chip: "Format", chipColor: "#7c3aed", chipBg: "#f5f3ff",
-    label: "Step 8 of 10",
-    title: "How do you prefer to mentor?",
-    sub: "Select all formats you\u2019re comfortable with. You can always change this later.",
+    label: `Step 8 of ${TOTAL}`,
+    title: "How do you prefer to conduct sessions?",
+    sub: "Select all formats you\u2019re comfortable with.",
     type: "multi",
     opts: [
       { l: "1:1 Video Session", d: "Personal mentoring via Google Meet / Zoom" },
-      { l: "Group Session", d: "Mentor multiple students together in a live session" },
-      { l: "Chat-based Mentorship", d: "Async guidance over text — flexible and low-commitment" },
+      { l: "Group Session", d: "Guide multiple students together in a live session" },
+      { l: "Chat-based Mentorship", d: "Async guidance over text \u2014 flexible and low-commitment" },
     ],
   },
   {
-    id: 8, chip: "Motivation", chipColor: "#b45309", chipBg: "#fffbeb",
-    label: "Step 9 of 10",
+    id: 8, chip: "Availability", chipColor: "#0891b2", chipBg: "#ecfeff",
+    label: `Step 9 of ${TOTAL}`,
+    title: "When are you mostly available?",
+    sub: "Select the days you\u2019re typically free for sessions. This helps us match you with the right mentees.",
+    type: "multi-grid",
+    opts: [
+      { l: "Monday" }, { l: "Tuesday" }, { l: "Wednesday" }, { l: "Thursday" },
+      { l: "Friday" }, { l: "Saturday" }, { l: "Sunday" },
+    ],
+  },
+  {
+    id: 9, chip: "Motivation", chipColor: "#b45309", chipBg: "#fffbeb",
+    label: `Step 10 of ${TOTAL}`,
     title: "Why do you want to mentor?",
-    sub: "This helps us understand your mentoring philosophy and match you with the right mentees.",
+    sub: "This helps us understand your philosophy and match you with the right students.",
     type: "text",
-    placeholder: "e.g.\nI struggled a lot during my own placement season and had no guidance. I want to make sure the next generation doesn\u2019t face the same confusion. I\u2019ve helped juniors at my company land offers at FAANG, and I want to scale that impact through Jobingen.",
+    placeholder: "e.g.\nI struggled a lot during my own placement season and had no guidance. I want to make sure the next generation doesn\u2019t face the same confusion. I\u2019ve helped juniors at my company land offers at top companies, and I want to scale that impact through Jobingen.",
     maxLen: 1000,
   },
   {
-    id: 9, chip: "Almost done!", chipColor: "#16a34a", chipBg: "#f0fdf4",
-    label: "Step 10 of 10",
+    id: 10, chip: "Almost done!", chipColor: "#16a34a", chipBg: "#f0fdf4",
+    label: `Step 11 of ${TOTAL}`,
     title: "Anything else you\u2019d like us to know?",
     sub: "Optional \u2014 share your portfolio link, personal website, or any other details.",
     type: "combo",
@@ -147,6 +155,13 @@ const STEPS: Step[] = [
   },
 ]
 
+/* ─── Pricing config ────────────────────────────────── */
+
+const MIN_DURATION = 15
+const MAX_DURATION = 120
+const MIN_PRICE = 49
+const MAX_PRICE = 2000
+
 /* ─── Page ──────────────────────────────────────────── */
 
 export default function BecomeMentorPage() {
@@ -156,11 +171,14 @@ export default function BecomeMentorPage() {
     STEPS.forEach(s => {
       if (s.type === "single" || s.type === "scale") init[s.id] = -1
       else if (s.type === "multi" || s.type === "multi-grid") init[s.id] = []
+      else if (s.type === "pricing") init[s.id] = 30
       else init[s.id] = ""
     })
     return init
   })
   const [comboFields, setComboFields] = useState<Record<string, string>>({})
+  const [pricingExpectation, setPricingExpectation] = useState("")
+  const [mentorPrice, setMentorPrice] = useState(149)
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
@@ -173,6 +191,7 @@ export default function BecomeMentorPage() {
     if (step.type === "single") return a !== -1
     if (step.type === "multi" || step.type === "multi-grid") return (a as number[]).length > 0
     if (step.type === "text") return (a as string).trim().length >= 15
+    if (step.type === "pricing") return true
     if (step.type === "combo") {
       const hasRequired = (step.fields || []).some(f => f.required)
       if (!hasRequired) return true
@@ -210,6 +229,7 @@ export default function BecomeMentorPage() {
       window.scrollTo({ top: 0, behavior: "smooth" })
     } else {
       setLoading(true)
+      const sliderMin = answers[6] as number
       try {
         await fetch("/api/become-mentor", {
           method: "POST",
@@ -226,10 +246,12 @@ export default function BecomeMentorPage() {
             short_intro: (answers[3] as string).trim(),
             professional_bio: (answers[4] as string).trim(),
             mentorship_topics: (answers[5] as number[]).map(i => STEPS[5].opts?.[i]?.l || "").filter(Boolean),
-            session_price: Number(comboFields.session_price) || 0,
-            session_duration: comboFields.session_duration || "",
+            session_price: mentorPrice,
+            session_duration: `${sliderMin} min`,
+            pricing_expectation: pricingExpectation.trim() || null,
             mentorship_format: (answers[7] as number[]).map(i => STEPS[7].opts?.[i]?.l || "").filter(Boolean),
-            motivation: (answers[8] as string).trim(),
+            available_days: (answers[8] as number[]).map(i => STEPS[8].opts?.[i]?.l || "").filter(Boolean),
+            motivation: (answers[9] as string).trim(),
             portfolio_url: comboFields.portfolio_url?.trim() || null,
             additional_note: comboFields.additional_note?.trim() || null,
           }),
@@ -249,7 +271,7 @@ export default function BecomeMentorPage() {
     return (
       <div className="min-h-screen bg-[#fafbff] flex items-center justify-center px-5">
         <div className="max-w-[460px] w-full text-center">
-          <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
+          <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #7c3aed, #3b5bdb)" }}>
             <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 6L9 17l-5-5" />
             </svg>
@@ -260,13 +282,13 @@ export default function BecomeMentorPage() {
           <p className="text-[15px] text-slate-500 leading-relaxed mb-3 max-w-[400px] mx-auto">
             Thank you for applying to become a mentor on Jobingen. Our team will review your profile and get back to you soon.
           </p>
-          <p className="text-[13px] text-slate-400 mb-8">
-            We typically respond within 2-3 business days.
+          <p className="text-[14px] text-[#7c3aed] font-bold mb-8">
+            One mentor. Many lives changed.
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[14px] font-bold text-white px-6 py-3 rounded-xl shadow-[0_2px_8px_rgba(29,58,143,0.3)]"
-            style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}
+            className="inline-flex items-center gap-2 text-[14px] font-bold text-white px-6 py-3 rounded-xl shadow-[0_2px_8px_rgba(124,58,237,0.3)]"
+            style={{ background: "linear-gradient(135deg, #7c3aed, #3b5bdb)" }}
           >
             Back to Home
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -279,6 +301,8 @@ export default function BecomeMentorPage() {
   }
 
   /* ─── Wizard ──────────────────────────────── */
+  const sliderMin = (answers[6] as number) || 30
+
   return (
     <div className="min-h-screen bg-[#fafbff] font-sans">
       {/* Navbar */}
@@ -297,19 +321,52 @@ export default function BecomeMentorPage() {
       <div className="max-w-[680px] mx-auto px-5 py-8 sm:py-12">
         {/* Hero — only on first step */}
         {cur === 0 && (
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200/40 mb-5">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-              <span className="text-[12px] font-bold text-[#7c3aed]">Mentor Program</span>
+          <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200/60 shadow-[0_4px_24px_rgba(124,58,237,0.08)]">
+            {/* Top gradient banner */}
+            <div className="relative px-6 sm:px-8 pt-8 pb-6" style={{ background: "linear-gradient(135deg, #1e1b4b, #312e81, #4c1d95)" }}>
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, #7c3aed 0%, transparent 50%), radial-gradient(circle at 80% 50%, #3b82f6 0%, transparent 50%)" }} />
+              <div className="relative">
+                <div className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 mb-4">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                  <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider">Mentor Program</span>
+                </div>
+                <h1 className="text-[22px] sm:text-[26px] font-black text-white tracking-[-0.03em] leading-[1.2] mb-2">
+                  Your Time Has Value.<br />Your Journey Can Change Someone&rsquo;s Direction.
+                </h1>
+                <p className="text-[13px] text-white/60 leading-[1.6] max-w-[440px]">
+                  You&rsquo;ve been where students are today — confused, searching, figuring it out alone. Now you can change that.
+                </p>
+              </div>
             </div>
-            <h1 className="text-[26px] sm:text-[30px] font-extrabold text-slate-900 tracking-[-0.03em] leading-[1.2] mb-3">
-              Become a Mentor on Jobingen
-            </h1>
-            <p className="text-[15px] text-slate-500 leading-relaxed max-w-[500px] mx-auto">
-              Share your expertise, guide aspiring professionals, and earn by mentoring students and job seekers through paid sessions.
-            </p>
+
+            {/* Feature points */}
+            <div className="px-6 sm:px-8 py-5 bg-white">
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">As a Mentor, you</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                {[
+                  { icon: "M12 2L2 7l10 5 10-5-10-5Z", text: "Share real-world experience & career roadmap" },
+                  { icon: "M22 11.08V12a10 10 0 1 1-5.93-9.14", text: "Guide students toward right opportunities" },
+                  { icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", text: "Answer questions no classroom ever does" },
+                  { icon: "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7Z", text: "Give direction — on your own terms" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: "linear-gradient(135deg, #f5f3ff, #eef1fd)" }}>
+                      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
+                    </div>
+                    <span className="text-[12px] font-medium text-slate-600 leading-snug">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom CTA strip */}
+            <div className="px-6 sm:px-8 py-3.5 border-t border-slate-100" style={{ background: "linear-gradient(90deg, #faf5ff, #eef1fd)" }}>
+              <p className="text-[13px] text-center">
+                <span className="font-bold text-[#7c3aed]">Your experience is their shortcut.</span>
+                <span className="text-slate-400 mx-1.5">|</span>
+                <span className="font-medium text-slate-500">Fill the form below to get started</span>
+              </p>
+            </div>
           </div>
         )}
 
@@ -403,6 +460,116 @@ export default function BecomeMentorPage() {
                   <span className={`text-[11px] font-semibold ${(answers[step.id] as string).length > (step.maxLen || 2000) * 0.9 ? "text-amber-500" : "text-slate-300"}`}>
                     {(answers[step.id] as string).length}/{step.maxLen || 2000}
                   </span>
+                </div>
+              </div>
+            )}
+
+            {/* ── Pricing (custom step) ────── */}
+            {step.type === "pricing" && (
+              <div>
+                {/* Duration slider */}
+                <div className="mb-7">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-[13px] font-semibold text-slate-700">Session Duration</label>
+                    <span className="text-[20px] font-black text-[#7c3aed]">{sliderMin} <span className="text-[12px] font-bold text-slate-400">min</span></span>
+                  </div>
+                  <input
+                    type="range"
+                    min={MIN_DURATION}
+                    max={MAX_DURATION}
+                    step={5}
+                    value={sliderMin}
+                    onChange={e => setAnswers(p => ({ ...p, [step.id]: Number(e.target.value) }))}
+                    className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                    style={{ accentColor: "#7c3aed", background: `linear-gradient(to right, #7c3aed ${((sliderMin - MIN_DURATION) / (MAX_DURATION - MIN_DURATION)) * 100}%, #e2e8f0 0%)` }}
+                  />
+                  <div className="flex justify-between mt-1.5 px-0.5">
+                    <span className="text-[11px] text-slate-400 font-medium">{MIN_DURATION} min</span>
+                    <span className="text-[11px] text-slate-400 font-medium">{MAX_DURATION} min</span>
+                  </div>
+                  {/* Quick presets */}
+                  <div className="flex gap-2 mt-3">
+                    {[15, 30, 45, 60, 90, 120].map(m => (
+                      <button
+                        key={m}
+                        onClick={() => setAnswers(p => ({ ...p, [step.id]: m }))}
+                        className={`flex-1 py-1.5 rounded-lg border text-center transition-all text-[11px] font-bold font-[inherit] cursor-pointer ${sliderMin === m ? "border-[#7c3aed] bg-purple-50 text-[#7c3aed]" : "border-slate-200 text-slate-400 hover:border-slate-300"}`}
+                      >
+                        {m}m
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price slider */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-[13px] font-semibold text-slate-700">Your Price</label>
+                    <span className="text-[20px] font-black text-[#16a34a]">{"\u20B9"}{mentorPrice}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={MIN_PRICE}
+                    max={MAX_PRICE}
+                    step={10}
+                    value={mentorPrice}
+                    onChange={e => setMentorPrice(Number(e.target.value))}
+                    className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                    style={{ accentColor: "#16a34a", background: `linear-gradient(to right, #16a34a ${((mentorPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%, #e2e8f0 0%)` }}
+                  />
+                  <div className="flex justify-between mt-1.5 px-0.5">
+                    <span className="text-[11px] text-slate-400 font-medium">{"\u20B9"}{MIN_PRICE}</span>
+                    <span className="text-[11px] text-slate-400 font-medium">{"\u20B9"}{MAX_PRICE}</span>
+                  </div>
+                  {/* Quick presets */}
+                  <div className="flex gap-2 mt-3">
+                    {[99, 149, 299, 499, 999, 1499].map(p => (
+                      <button
+                        key={p}
+                        onClick={() => setMentorPrice(p)}
+                        className={`flex-1 py-1.5 rounded-lg border text-center transition-all text-[11px] font-bold font-[inherit] cursor-pointer ${mentorPrice === p ? "border-[#16a34a] bg-green-50 text-[#16a34a]" : "border-slate-200 text-slate-400 hover:border-slate-300"}`}
+                      >
+                        {"\u20B9"}{p}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Summary card */}
+                <div className="bg-gradient-to-r from-purple-50 to-green-50 rounded-xl p-5 mb-6 border border-purple-100/50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <div className="text-[28px] font-black text-[#7c3aed] leading-none">{sliderMin}</div>
+                      <div className="text-[13px] font-bold text-slate-400">min session</div>
+                    </div>
+                    <div className="text-[11px] font-bold text-slate-300">for</div>
+                    <div className="flex items-baseline gap-1">
+                      <div className="text-[28px] font-black text-[#16a34a] leading-none">{"\u20B9"}{mentorPrice}</div>
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-2 text-center">
+                    That&apos;s {"\u20B9"}{Math.round(mentorPrice / sliderMin * 10) / 10}/min &middot; You can always adjust later
+                  </div>
+                </div>
+
+                {/* Expectation box */}
+                <div>
+                  <label className="text-[13px] font-semibold text-slate-700 mb-1.5 block">
+                    What&apos;s your expectation for the session charges?
+                    <span className="text-slate-400 font-normal"> (optional)</span>
+                  </label>
+                  <textarea
+                    value={pricingExpectation}
+                    onChange={e => { if (e.target.value.length <= 500) setPricingExpectation(e.target.value) }}
+                    placeholder="e.g. I think ₹299 for a 30-min session would be fair given my 8+ years of experience. Open to discussion based on session type (1:1 vs group)."
+                    rows={3}
+                    className="w-full p-3.5 rounded-xl border border-slate-200 text-[14px] text-slate-800 outline-none transition-all focus:border-[#7c3aed] focus:ring-2 focus:ring-[#7c3aed]/10 placeholder:text-slate-400 font-[inherit] resize-y leading-[1.7]"
+                  />
+                  <div className="flex justify-end mt-1 px-1">
+                    <span className={`text-[11px] font-semibold ${pricingExpectation.length > 450 ? "text-amber-500" : "text-slate-300"}`}>
+                      {pricingExpectation.length}/500
+                    </span>
+                  </div>
                 </div>
               </div>
             )}

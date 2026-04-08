@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { label: "AI Tools", href: "#ai-tools" },
   { label: "Bootcamps", href: "#bootcamps" },
   { label: "Resources", href: "#how-it-works" },
-  { label: "About", href: "#community" },
+  { label: "Mentors", href: "/mentors" },
 ]
 
 export function Navbar() {

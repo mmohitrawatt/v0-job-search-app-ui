@@ -9,7 +9,8 @@ export async function POST(req: NextRequest) {
       domain, job_title, experience, linkedin,
       short_intro, professional_bio,
       mentorship_topics, session_price, session_duration,
-      mentorship_format, motivation,
+      pricing_expectation,
+      mentorship_format, available_days, motivation,
       portfolio_url, additional_note,
     } = body
 
@@ -33,7 +34,9 @@ export async function POST(req: NextRequest) {
       mentorship_topics: mentorship_topics || [],
       session_price: session_price || null,
       session_duration: session_duration || null,
+      pricing_expectation: pricing_expectation || null,
       mentorship_format: mentorship_format || [],
+      available_days: available_days || [],
       motivation: motivation || null,
       portfolio_url: portfolio_url || null,
       additional_note: additional_note || null,

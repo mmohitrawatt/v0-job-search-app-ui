@@ -385,7 +385,7 @@ const CSS = `
 // ─── Navbar ────────────────────────────────────────────────────
 function Navbar({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false)
-  const links = [["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"]]
+  const links = [["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"],["Mentors","/mentors"]]
   return (
     <nav style={{
       position:"fixed", top:0, left:0, right:0, zIndex:100,
@@ -1026,8 +1026,10 @@ function Bootcamp() {
                 <div style={{ fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink3)", marginBottom:10 }}>Your Mentors</div>
                 <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
                   {[
-                    { name:"Aditya Dubey",    role:"Sr. AI Engineer",          initials:"AD", clr:"var(--ind)", bg:"var(--ind-l)" },
-                    { name:"Shubham Kaushik", role:"Gen AI Consultant · KPMG", initials:"SK", clr:"var(--vio)", bg:"#eef1fe"      },
+                    { name:"Aditya Dubey",    role:"AI Consultant · Cograd",    initials:"AD", clr:"var(--ind)", bg:"var(--ind-l)" },
+                    { name:"Sonic Payeng",    role:"SWE2 · Dell Technologies",  initials:"SP", clr:"var(--grn)", bg:"var(--grn-l)" },
+                    { name:"Jitesh Vijaykumar", role:"AI Engineer · KPMG",      initials:"JV", clr:"var(--vio)", bg:"#eef1fe"      },
+                    { name:"Shubham Kaushik", role:"AI Researcher · KPMG",      initials:"SK", clr:"#b45309",    bg:"#fffbeb"      },
                   ].map((s,i) => (
                     <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
                       <div style={{ width:36, height:36, borderRadius:11, background:s.bg, color:s.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:900, flexShrink:0 }}>{s.initials}</div>
@@ -1118,6 +1120,97 @@ function Bootcamp() {
 
         </div>
       </div>
+    </section>
+  )
+}
+
+// ─── MENTORS SECTION ──────────────────────────────────────────
+const MENTORS_DATA = [
+  { name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd", initials: "AD", desc: "Mentored 12,000+ professionals in AI. M.Tech from NIT Allahabad.", color: "#1d3a8f", bg: "#eef1fd" },
+  { name: "Sonic Payeng", role: "Software Engineer 2 (SWE2)", company: "Dell Technologies", initials: "SP", desc: "AI engineer building automation on Dell Platform. M.Tech from MNNIT.", color: "#16a34a", bg: "#f0fdf4" },
+  { name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG", initials: "JV", desc: "5+ years building scalable AI solutions for enterprise systems.", color: "#7c3aed", bg: "#f5f3ff" },
+  { name: "Shubham Kaushik", role: "AI & Financial Intelligence Researcher", company: "KPMG", initials: "SK", desc: "5+ years in AI, ML & full-stack. Research on LLMs & financial AI.", color: "#b45309", bg: "#fffbeb" },
+]
+
+function MentorsSection() {
+  return (
+    <section style={{ padding: "80px 0 60px", background: "#fafbff" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px" }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "#f5f3ff", borderRadius: 20, marginBottom: 16, fontSize: 12, fontWeight: 700, color: "#7c3aed", border: "1px solid #ede9fe" }}>
+            Meet Our Mentors
+          </div>
+          <h2 style={{ fontSize: "clamp(26px, 3vw, 36px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-.03em", lineHeight: 1.15, marginBottom: 12 }}>
+            Learn From Industry Leaders
+          </h2>
+          <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.7, maxWidth: 480, margin: "0 auto" }}>
+            Our mentors are working professionals from top companies who are passionate about guiding the next generation.
+          </p>
+        </div>
+
+        {/* Mentor cards grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+          {MENTORS_DATA.map((m, i) => (
+            <div key={i} style={{
+              background: "#fff", borderRadius: 18, border: "1.5px solid #e8ecf4",
+              padding: "24px 20px", display: "flex", flexDirection: "column", gap: 14,
+              transition: "all .2s", cursor: "default",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 40px rgba(0,0,0,.08)" }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ""; (e.currentTarget as HTMLDivElement).style.boxShadow = "" }}
+            >
+              {/* Avatar */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: 14,
+                  background: `linear-gradient(135deg, ${m.color}, ${m.color}cc)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "#fff", fontSize: 16, fontWeight: 900, flexShrink: 0,
+                }}>
+                  {m.initials}
+                </div>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", lineHeight: 1.2 }}>{m.name}</div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: m.color, lineHeight: 1.4, marginTop: 2 }}>{m.role}</div>
+                </div>
+              </div>
+
+              {/* Company tag */}
+              <div style={{ display: "inline-flex", alignSelf: "flex-start" }}>
+                <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: m.bg, color: m.color, letterSpacing: ".03em" }}>
+                  {m.company}
+                </span>
+              </div>
+
+              {/* Desc */}
+              <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.65, flex: 1 }}>
+                {m.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* View All button */}
+        <div style={{ textAlign: "center", marginTop: 36 }}>
+          <a href="/mentors" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "12px 28px", borderRadius: 12,
+            background: "linear-gradient(135deg, #7c3aed, #3b5bdb)",
+            color: "#fff", fontSize: 14, fontWeight: 700,
+            textDecoration: "none", boxShadow: "0 4px 16px rgba(124,58,237,.2)",
+            transition: "all .15s",
+          }}>
+            View All Mentors
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 900px) { section > div > div:nth-child(2) { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 560px) { section > div > div:nth-child(2) { grid-template-columns: 1fr !important; } }
+      `}} />
     </section>
   )
 }
@@ -1280,6 +1373,7 @@ export default function LandingPage() {
         <Navbar scrolled={scrolled} />
         <Hero />
         <Bootcamp />
+        <MentorsSection />
         <Ticker />
         <Logos />
         <Problems />

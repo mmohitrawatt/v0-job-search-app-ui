@@ -49,11 +49,12 @@ type InterviewFeedback = {
 }
 
 type MentorApplication = {
-  id: string; full_name: string; email: string; phone: string; location?: string
+  id: string; role_type?: string; full_name: string; email: string; phone: string; location?: string
   domain: string; job_title: string; experience: string; linkedin?: string
   short_intro?: string; professional_bio?: string
   mentorship_topics: string[]; session_price?: number; session_duration?: string
-  mentorship_format: string[]; motivation?: string
+  pricing_expectation?: string
+  mentorship_format: string[]; available_days?: string[]; motivation?: string
   portfolio_url?: string; additional_note?: string; created_at: string
 }
 
@@ -744,16 +745,17 @@ export default function AdminPage() {
                       <table>
                         <thead>
                           <tr>
-                            <th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th>
+                            <th>#</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th>
                             <th>Domain</th><th>Role</th><th>Experience</th><th>LinkedIn</th>
                             <th>Topics</th><th>Price</th><th>Duration</th><th>Format</th>
-                            <th>Intro</th><th>Date</th><th></th>
+                            <th>Days</th><th>Intro</th><th>Date</th><th></th>
                           </tr>
                         </thead>
                         <tbody>
                           {mentorApps.map((m, i) => (
                             <tr key={m.id}>
                               <td className="c-num">{i + 1}</td>
+                              <td><span className="c-tag" style={{ background: m.role_type === "Workshop Lead" ? "#fff7ed" : "#f5f3ff", color: m.role_type === "Workshop Lead" ? "#ea580c" : "#7c3aed", borderColor: m.role_type === "Workshop Lead" ? "#fed7aa" : "#ddd6fe" }}>{m.role_type || "Mentor"}</span></td>
                               <td className="c-name">{m.full_name}</td>
                               <td className="c-email">{m.email}</td>
                               <td className="c-phone">{m.phone}</td>
@@ -773,6 +775,12 @@ export default function AdminPage() {
                                 {(m.mentorship_format || []).map((f, fi) => (
                                   <span key={fi} className="c-tag" style={{ marginRight: 3, marginBottom: 2, fontSize: 10, padding: "2px 7px", background: "#ecfdf5", color: "#0f766e", borderColor: "#a7f3d0", display: "inline-block" }}>{f}</span>
                                 ))}
+                              </td>
+                              <td style={{ fontSize: 12 }}>
+                                {(m.available_days || []).map((d, di) => (
+                                  <span key={di} className="c-tag" style={{ marginRight: 3, marginBottom: 2, fontSize: 10, padding: "2px 7px", background: "#ecfeff", color: "#0891b2", borderColor: "#a5f3fc", display: "inline-block" }}>{d.slice(0, 3)}</span>
+                                ))}
+                                {(!m.available_days || m.available_days.length === 0) && "—"}
                               </td>
                               <td><span className="c-why" title={m.short_intro}>{m.short_intro || "—"}</span></td>
                               <td className="c-date">{fmt(m.created_at)}</td>

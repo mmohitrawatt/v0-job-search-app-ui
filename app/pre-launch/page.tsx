@@ -9,6 +9,7 @@ import { HowItWorks } from "@/components/landing/how-it-works"
 import { FeaturedJobs } from "@/components/landing/featured-jobs"
 
 import { CampusAmbassador } from "@/components/landing/campus-ambassador"
+import { MentorsPreview } from "@/components/landing/mentors-preview"
 import { StudentInsightsBanner } from "@/components/landing/student-insights-banner"
 import { CTASection } from "@/components/landing/cta-section"
 import { Footer } from "@/components/landing/footer"
@@ -19,6 +20,7 @@ export default function PreLaunchPage() {
       <Navbar />
       <Hero />
       <Bootcamps />
+      <MentorsPreview />
       <AITools />
       <HowItWorks />
       <FeaturedJobs />
