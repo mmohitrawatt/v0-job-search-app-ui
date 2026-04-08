@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
 import { FadeIn } from "./motion"
 
 type FBItem = { name: string; rating: number; quote: string; recommend: string }
@@ -162,6 +163,17 @@ export function Testimonials() {
               </div>
             )
           })}
+        </div>
+
+        {/* View All */}
+        <div className="text-center mt-10">
+          <Link
+            href="/reviews"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[13px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all"
+          >
+            View All Reviews
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
         </div>
       </div>
     </section>

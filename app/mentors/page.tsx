@@ -76,24 +76,62 @@ export default function MentorsPage() {
       </header>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
-        {/* Hero */}
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <div style={{
-            width: 56, height: 56, borderRadius: 16, margin: "0 auto 20px",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            background: "linear-gradient(135deg, #7c3aed, #3b5bdb)",
-            boxShadow: "0 8px 28px rgba(124,58,237,.25)",
-          }}>
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+
+        {/* ── About / Hero Section ── */}
+        <div style={{ borderRadius: 24, overflow: "hidden", marginBottom: 56 }}>
+          {/* Dark hero banner */}
+          <div style={{ position: "relative", padding: "48px 40px 40px", background: "linear-gradient(135deg, #0f0a2e, #1e1b4b, #312e81)" }}>
+            <div style={{ position: "absolute", inset: 0, opacity: .08, backgroundImage: "radial-gradient(circle at 15% 50%, #7c3aed 0, transparent 50%), radial-gradient(circle at 85% 30%, #3b82f6 0, transparent 50%)" }} />
+            <div style={{ position: "relative", maxWidth: 640 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,.08)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 20, marginBottom: 20, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,.7)", textTransform: "uppercase" as const, letterSpacing: ".06em" }}>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                Mentor Program
+              </div>
+              <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 900, color: "#fff", letterSpacing: "-.04em", lineHeight: 1.15, marginBottom: 14 }}>
+                The right mentor at the right time changes everything.
+              </h1>
+              <p style={{ fontSize: 15, color: "rgba(255,255,255,.55)", lineHeight: 1.7, maxWidth: 520 }}>
+                Our mentors are working professionals from companies like Dell, KPMG, and top startups. They&rsquo;ve walked the path you&rsquo;re on — and they&rsquo;re here to guide you through it.
+              </p>
+            </div>
           </div>
-          <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-.04em", lineHeight: 1.15, marginBottom: 12 }}>
-            Our Mentors
-          </h1>
-          <p style={{ fontSize: 16, color: "#64748b", lineHeight: 1.7, maxWidth: 500, margin: "0 auto" }}>
-            Working professionals from top companies, passionate about guiding the next generation of builders.
-          </p>
+
+          {/* Stats + features strip */}
+          <div style={{ background: "#fff", padding: "0 40px", borderBottom: "1px solid #e8ecf4" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", borderBottom: "none" }}>
+              {[
+                { val: "4", label: "Active Mentors", icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z", color: "#7c3aed" },
+                { val: "12K+", label: "Students Guided", icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", color: "#1d3a8f" },
+                { val: "3+", label: "Top Companies", icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z", color: "#0f766e" },
+                { val: "1:1", label: "Personal Sessions", icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", color: "#b45309" },
+              ].map((s, i) => (
+                <div key={i} style={{ padding: "20px 16px", textAlign: "center" as const, borderRight: i < 3 ? "1px solid #f1f5f9" : "none" }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", background: `${s.color}10` }}>
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={s.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon} /></svg>
+                  </div>
+                  <div style={{ fontSize: 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.val}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", marginTop: 4, textTransform: "uppercase" as const, letterSpacing: ".05em" }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* How it works strip */}
+          <div style={{ background: "#fff", padding: "24px 40px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, border: "1px solid #e8ecf4", borderTop: "none" }}>
+            {[
+              { step: "01", title: "Browse Mentors", desc: "Explore profiles, expertise, and session formats to find your ideal match." },
+              { step: "02", title: "Book a Session", desc: "Choose 1:1 video, group session, or chat-based mentoring — on your terms." },
+              { step: "03", title: "Get Direction", desc: "Resume reviews, mock interviews, career roadmaps — real guidance from real professionals." },
+            ].map((s, i) => (
+              <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 10, background: "linear-gradient(135deg, #7c3aed, #3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 12, fontWeight: 900, flexShrink: 0 }}>{s.step}</div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", marginBottom: 3 }}>{s.title}</div>
+                  <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>{s.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Mentor cards */}
@@ -152,8 +190,71 @@ export default function MentorsPage() {
         </div>
 
         {/* CTA */}
+        {/* ── Consultancy Live Soon ── */}
+        <div style={{ marginTop: 56, borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4" }}>
+          <div style={{ position: "relative", padding: "40px 40px 36px", background: "linear-gradient(135deg, #faf5ff, #eef1fd, #ecfdf5)" }}>
+            <div style={{ position: "absolute", top: 20, right: 24 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 20, background: "#fff", border: "1.5px solid #e2e8f0", fontSize: 11, fontWeight: 800, color: "#7c3aed", textTransform: "uppercase" as const, letterSpacing: ".06em" }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#7c3aed", animation: "livePulse 2s infinite" }} />
+                Coming Soon
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg, #7c3aed, #2563eb)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14" /><rect x="1" y="6" width="14" height="12" rx="2" />
+                </svg>
+              </div>
+              <div>
+                <h3 style={{ fontSize: 22, fontWeight: 900, color: "#0f172a", letterSpacing: "-.03em", lineHeight: 1.2 }}>
+                  Mentor Consultancy — Live Sessions
+                </h3>
+                <p style={{ fontSize: 13, color: "#64748b", marginTop: 3 }}>Book live 1:1 video sessions directly with our mentors</p>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+              {[
+                { icon: "M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14M1 6h14v12H1Z", title: "Live Video Calls", desc: "Face-to-face sessions with mentors via Google Meet / Zoom" },
+                { icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", title: "Personalized Roadmaps", desc: "Get a tailored career plan based on your goals and skills" },
+                { icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2", title: "Resume & Interview Prep", desc: "Real feedback on your resume, mock interviews, and more" },
+              ].map((f, i) => (
+                <div key={i} style={{ background: "rgba(255,255,255,.7)", borderRadius: 14, padding: "16px 14px", border: "1px solid rgba(255,255,255,.8)" }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 9, background: "#f5f3ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={f.icon} /></svg>
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", marginBottom: 3 }}>{f.title}</div>
+                  <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.55 }}>{f.desc}</div>
+                </div>
+              ))}
+            </div>
+
+            <p style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.6 }}>
+              We&rsquo;re building a seamless booking experience where you can schedule paid 1:1 sessions with verified mentors. Pick your mentor, choose a slot, and get career guidance that actually matters — no generic advice, no fluff.
+            </p>
+          </div>
+
+          <div style={{ background: "#fff", padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ display: "flex" }}>
+                {["#1d3a8f", "#16a34a", "#7c3aed", "#b45309"].map((c, i) => (
+                  <div key={i} style={{ width: 28, height: 28, borderRadius: "50%", background: `linear-gradient(135deg, ${c}, ${c}cc)`, border: "2px solid #fff", marginLeft: i > 0 ? -8 : 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 9, fontWeight: 900 }}>
+                    {["AD", "SP", "JV", "SK"][i]}
+                  </div>
+                ))}
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#64748b" }}>4 mentors ready to go live</span>
+            </div>
+            <Link href="/become-mentor" style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+              Want to be a mentor?
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+          </div>
+        </div>
+
+        {/* ── Become a Mentor CTA ── */}
         <div style={{
-          textAlign: "center", marginTop: 56, padding: "40px 24px",
+          textAlign: "center", marginTop: 40, padding: "40px 24px",
           background: "linear-gradient(135deg, #1e1b4b, #312e81)",
           borderRadius: 20, boxShadow: "0 8px 32px rgba(30,27,75,.2)",
         }}>
@@ -176,8 +277,10 @@ export default function MentorsPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes livePulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
         @media (max-width: 700px) {
           div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+          div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
         }
       `}} />
     </div>

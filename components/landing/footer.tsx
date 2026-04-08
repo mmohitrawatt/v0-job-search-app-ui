@@ -17,6 +17,7 @@ const FOOTER_LINKS = [
       { label: "Student Insights", href: "/student-insights" },
       { label: "Interview Experience", href: "/interview-feedback" },
       { label: "Become a Mentor", href: "/become-mentor" },
+      { label: "Reviews", href: "/reviews" },
       { label: "Campus Ambassador", href: "/campus-ambassador" },
     ],
   },
@@ -45,7 +46,7 @@ const SOCIALS = [
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/jobingen",
+    href: "https://www.instagram.com/jobingen.ai/",
     icon: <><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.5" /></>,
   },
   {
