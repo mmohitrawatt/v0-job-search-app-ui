@@ -75,12 +75,12 @@ export default function MentorsPage() {
         </div>
       </header>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <div className="mentors-container" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
 
         {/* ── About / Hero Section ── */}
-        <div style={{ borderRadius: 24, overflow: "hidden", marginBottom: 56 }}>
+        <div className="hero-section" style={{ borderRadius: 24, overflow: "hidden", marginBottom: 56 }}>
           {/* Dark hero banner */}
-          <div style={{ position: "relative", padding: "48px 40px 40px", background: "linear-gradient(135deg, #0f0a2e, #1e1b4b, #312e81)" }}>
+          <div className="hero-banner" style={{ position: "relative", padding: "48px 40px 40px", background: "linear-gradient(135deg, #0f0a2e, #1e1b4b, #312e81)" }}>
             <div style={{ position: "absolute", inset: 0, opacity: .08, backgroundImage: "radial-gradient(circle at 15% 50%, #7c3aed 0, transparent 50%), radial-gradient(circle at 85% 30%, #3b82f6 0, transparent 50%)" }} />
             <div style={{ position: "relative", maxWidth: 640 }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,.08)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 20, marginBottom: 20, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,.7)", textTransform: "uppercase" as const, letterSpacing: ".06em" }}>
@@ -97,8 +97,8 @@ export default function MentorsPage() {
           </div>
 
           {/* Stats + features strip */}
-          <div style={{ background: "#fff", padding: "0 40px", borderBottom: "1px solid #e8ecf4" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", borderBottom: "none" }}>
+          <div className="stats-wrap" style={{ background: "#fff", padding: "0 40px", borderBottom: "1px solid #e8ecf4" }}>
+            <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", borderBottom: "none" }}>
               {[
                 { val: "4", label: "Active Mentors", icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z", color: "#7c3aed" },
                 { val: "12K+", label: "Students Guided", icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", color: "#1d3a8f" },
@@ -117,7 +117,7 @@ export default function MentorsPage() {
           </div>
 
           {/* How it works strip */}
-          <div style={{ background: "#fff", padding: "24px 40px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, border: "1px solid #e8ecf4", borderTop: "none" }}>
+          <div className="how-it-works" style={{ background: "#fff", padding: "24px 40px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, borderBottomLeftRadius: 24, borderBottomRightRadius: 24, border: "1px solid #e8ecf4", borderTop: "none" }}>
             {[
               { step: "01", title: "Browse Mentors", desc: "Explore profiles, expertise, and session formats to find your ideal match." },
               { step: "02", title: "Book a Session", desc: "Choose 1:1 video, group session, or chat-based mentoring — on your terms." },
@@ -135,7 +135,7 @@ export default function MentorsPage() {
         </div>
 
         {/* Mentor cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+        <div className="mentor-cards" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
           {MENTORS.map((m, i) => (
             <div key={i} style={{
               background: "#fff", borderRadius: 20, border: "1.5px solid #e8ecf4",
@@ -191,9 +191,9 @@ export default function MentorsPage() {
 
         {/* CTA */}
         {/* ── Consultancy Live Soon ── */}
-        <div style={{ marginTop: 56, borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4" }}>
-          <div style={{ position: "relative", padding: "40px 40px 36px", background: "linear-gradient(135deg, #faf5ff, #eef1fd, #ecfdf5)" }}>
-            <div style={{ position: "absolute", top: 20, right: 24 }}>
+        <div className="consultancy-section" style={{ marginTop: 56, borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4" }}>
+          <div className="consultancy-body" style={{ position: "relative", padding: "40px 40px 36px", background: "linear-gradient(135deg, #faf5ff, #eef1fd, #ecfdf5)" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 20, background: "#fff", border: "1.5px solid #e2e8f0", fontSize: 11, fontWeight: 800, color: "#7c3aed", textTransform: "uppercase" as const, letterSpacing: ".06em" }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#7c3aed", animation: "livePulse 2s infinite" }} />
                 Coming Soon
@@ -213,7 +213,7 @@ export default function MentorsPage() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+            <div className="consultancy-features" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
               {[
                 { icon: "M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14M1 6h14v12H1Z", title: "Live Video Calls", desc: "Face-to-face sessions with mentors via Google Meet / Zoom" },
                 { icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", title: "Personalized Roadmaps", desc: "Get a tailored career plan based on your goals and skills" },
@@ -234,7 +234,7 @@ export default function MentorsPage() {
             </p>
           </div>
 
-          <div style={{ background: "#fff", padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9" }}>
+          <div className="consultancy-footer" style={{ background: "#fff", padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ display: "flex" }}>
                 {["#1d3a8f", "#16a34a", "#7c3aed", "#b45309"].map((c, i) => (
@@ -279,8 +279,22 @@ export default function MentorsPage() {
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes livePulse { 0%,100% { opacity:1; } 50% { opacity:.3; } }
         @media (max-width: 700px) {
-          div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
-          div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+          .mentors-container { padding: 20px 14px 48px !important; }
+          .hero-section { margin-bottom: 28px !important; }
+          .hero-banner { padding: 28px 18px 24px !important; }
+          .stats-wrap { padding: 0 12px !important; }
+          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .how-it-works { grid-template-columns: 1fr !important; padding: 18px 16px !important; }
+          .mentor-cards { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .consultancy-section { margin-top: 28px !important; }
+          .consultancy-body { padding: 20px 16px 20px !important; }
+          .consultancy-features { grid-template-columns: 1fr !important; }
+          .consultancy-footer {
+            padding: 14px 16px !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            align-items: flex-start !important;
+          }
         }
       `}} />
     </div>
