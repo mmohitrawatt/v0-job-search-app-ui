@@ -35,15 +35,15 @@ export function MentorsPreview() {
           {MENTORS.map((m, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)]"
+              className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)] flex flex-col"
             >
               {/* Photo */}
-              <div className="relative w-full aspect-[4/3] overflow-hidden">
+              <div className="relative w-full aspect-square overflow-hidden flex-shrink-0">
                 <Image
                   src={m.photo}
                   alt={m.name}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                 <span
@@ -55,7 +55,7 @@ export function MentorsPreview() {
               </div>
 
               {/* Info */}
-              <div className="p-4">
+              <div className="p-4 flex-1">
                 <h3 className="text-[14px] font-extrabold text-slate-900 leading-tight mb-0.5">{m.name}</h3>
                 <p className="text-[11px] font-semibold mb-2.5" style={{ color: m.color }}>{m.role}</p>
                 <p className="text-[11.5px] text-slate-500 leading-[1.6]">{m.desc}</p>
