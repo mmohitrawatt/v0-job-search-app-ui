@@ -6,6 +6,8 @@ const MENTORS = [
   { name: "Sonic Payeng", role: "Software Engineer 2", company: "Dell Technologies", photo: "/mentors/sonic-payeng.jpg", color: "#16a34a", bg: "#f0fdf4", desc: "AI engineer building automation platforms. M.Tech from MNNIT." },
   { name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG", photo: "/mentors/jitesh-vijaykumar.jpg", color: "#7c3aed", bg: "#f5f3ff", desc: "5+ years building scalable AI solutions for enterprise systems." },
   { name: "Shubham Kaushik", role: "AI Researcher", company: "KPMG", photo: "/mentors/shubham-kaushik.jpg", color: "#b45309", bg: "#fffbeb", desc: "5+ years in AI, ML & full-stack. Research on LLMs & financial AI." },
+  { name: "Bipin Chaudhary", role: "Full Stack Developer", company: "SAP (Ex-Intern)", photo: "/mentors/bipin-chaudhary.jpg", color: "#0369a1", bg: "#e0f2fe", desc: "2.5+ years in JS, TypeScript, Angular & Node.js. Passionate about teaching." },
+  { name: "Tarsh Vaibhav", role: "Embedded SWE & DSA Trainer", company: "Wabtec Corporation", photo: "/mentors/tarsh-vaibhav.jpg", color: "#dc2626", bg: "#fef2f2", desc: "MNNIT grad, trained 500+ students in DSA. Makes concepts interview-ready." },
 ]
 
 export function MentorsPreview() {
@@ -28,8 +30,8 @@ export function MentorsPreview() {
           </p>
         </div>
 
-        {/* 4 cards in 1 row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Mentor cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
           {MENTORS.map((m, i) => (
             <div
               key={i}

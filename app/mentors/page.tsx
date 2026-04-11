@@ -53,6 +53,30 @@ const MENTORS = [
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
     topics: ["AI Research", "Full-Stack Dev", "Interview Prep", "Salary Negotiation"],
   },
+  {
+    name: "Bipin Chaudhary",
+    role: "Full Stack Developer",
+    company: "SAP (Ex-Intern)",
+    initials: "BC",
+    photo: "/mentors/bipin-chaudhary.jpg",
+    color: "#0369a1",
+    bg: "#e0f2fe",
+    desc: "Bipin Chaudhary is a Full Stack Developer with around 2.5 years of experience working with JavaScript, TypeScript, Angular, Node.js, and SQL. He has worked with SAP as an intern, gaining strong fundamentals in backend systems and databases. Bipin is passionate about building real-world applications and simplifying complex concepts, with a focus on helping students understand programming and computer science in a practical and easy-to-grasp way.",
+    linkedin: "https://www.linkedin.com/in/bipin-chaudhary-39781b152/",
+    topics: ["Full-Stack Dev", "JavaScript/TypeScript", "Backend Systems", "Career Guidance"],
+  },
+  {
+    name: "Tarsh Vaibhav",
+    role: "Embedded Software Engineer & DSA Trainer",
+    company: "Wabtec Corporation",
+    initials: "TV",
+    photo: "/mentors/tarsh-vaibhav.jpg",
+    color: "#dc2626",
+    bg: "#fef2f2",
+    desc: "Tarsh Vaibhav is an Embedded Software Engineer with 1 year of experience at Wabtec Corporation and a graduate of MNNIT Allahabad. Driven by a passion for education, he currently serves as a DSA Trainer at KIET Group of Institutions, Ghaziabad, where he has trained 500+ students in Data Structures and Algorithms. He brings real industry insight into every session — making complex concepts simple, engaging, and interview-ready — helping students confidently crack placements at top tech companies.",
+    linkedin: "https://www.linkedin.com/in/tarsh-vaibhav-4410561b0/",
+    topics: ["DSA", "Interview Prep", "Placement Guidance", "Embedded Systems"],
+  },
 ]
 
 export default function MentorsPage() {
@@ -100,7 +124,7 @@ export default function MentorsPage() {
           <div className="stats-wrap" style={{ background: "#fff", padding: "0 40px", borderBottom: "1px solid #e8ecf4" }}>
             <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", borderBottom: "none" }}>
               {[
-                { val: "4", label: "Active Mentors", icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z", color: "#7c3aed" },
+                { val: "6", label: "Active Mentors", icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z", color: "#7c3aed" },
                 { val: "12K+", label: "Students Guided", icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", color: "#1d3a8f" },
                 { val: "3+", label: "Top Companies", icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z", color: "#0f766e" },
                 { val: "1:1", label: "Personal Sessions", icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", color: "#b45309" },
@@ -149,7 +173,7 @@ export default function MentorsPage() {
                 {/* Header */}
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
                   <div style={{ width: 56, height: 56, borderRadius: 16, flexShrink: 0, overflow: "hidden", border: `2.5px solid ${m.bg}` }}>
-                    <Image src={m.photo} alt={m.name} width={56} height={56} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                    <Image src={m.photo} alt={m.name} width={56} height={56} style={{ objectFit: "cover", objectPosition: "center top", width: "100%", height: "100%" }} />
                   </div>
                   <div>
                     <div style={{ fontSize: 17, fontWeight: 800, color: "#0f172a", lineHeight: 1.2 }}>{m.name}</div>
@@ -175,15 +199,17 @@ export default function MentorsPage() {
                 </div>
 
                 {/* LinkedIn */}
-                <a href={m.linkedin} target="_blank" rel="noopener noreferrer" style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  fontSize: 12, fontWeight: 700, color: "#2563eb", textDecoration: "none",
-                }}>
-                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
-                  </svg>
-                  View LinkedIn Profile
-                </a>
+                {m.linkedin && (
+                  <a href={m.linkedin} target="_blank" rel="noopener noreferrer" style={{
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    fontSize: 12, fontWeight: 700, color: "#2563eb", textDecoration: "none",
+                  }}>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
+                    </svg>
+                    View LinkedIn Profile
+                  </a>
+                )}
               </div>
             </div>
           ))}
@@ -237,13 +263,13 @@ export default function MentorsPage() {
           <div className="consultancy-footer" style={{ background: "#fff", padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ display: "flex" }}>
-                {["#1d3a8f", "#16a34a", "#7c3aed", "#b45309"].map((c, i) => (
+                {["#1d3a8f", "#16a34a", "#7c3aed", "#b45309", "#0369a1", "#dc2626"].map((c, i) => (
                   <div key={i} style={{ width: 28, height: 28, borderRadius: "50%", background: `linear-gradient(135deg, ${c}, ${c}cc)`, border: "2px solid #fff", marginLeft: i > 0 ? -8 : 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 9, fontWeight: 900 }}>
-                    {["AD", "SP", "JV", "SK"][i]}
+                    {["AD", "SP", "JV", "SK", "BC", "TV"][i]}
                   </div>
                 ))}
               </div>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#64748b" }}>4 mentors ready to go live</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#64748b" }}>6 mentors ready to go live</span>
             </div>
             <Link href="/become-mentor" style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
               Want to be a mentor?
