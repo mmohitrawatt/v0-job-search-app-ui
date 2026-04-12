@@ -32,7 +32,7 @@ const STEPS: Step[] = [
     type: "combo",
     fields: [
       { key: "full_name", label: "Full Name", placeholder: "e.g. Priya Sharma", required: true },
-      { key: "email", label: "Email Address", placeholder: "you@email.com", required: true },
+      { key: "email", label: "Email Address", placeholder: "you@email.com" },
       { key: "phone", label: "Phone Number", placeholder: "e.g. +91 98765 43210", required: true },
       { key: "location", label: "City / Location", placeholder: "e.g. Bangalore, Delhi, Remote" },
     ],
@@ -62,8 +62,8 @@ const STEPS: Step[] = [
     sub: "This helps students understand your credibility and experience level.",
     type: "combo",
     fields: [
-      { key: "job_title", label: "Current Role / Job Title", placeholder: "e.g. Senior Software Engineer at Google", required: true },
-      { key: "experience", label: "Years of Experience", placeholder: "Select...", required: true, type: "dropdown", opts: ["0\u20132 years", "3\u20135 years", "5\u201310 years", "10+ years"] },
+      { key: "job_title", label: "Current Role / Job Title", placeholder: "e.g. Senior Software Engineer at Google" },
+      { key: "experience", label: "Years of Experience", placeholder: "Select...", type: "dropdown", opts: ["0\u20132 years", "3\u20135 years", "5\u201310 years", "10+ years"] },
       { key: "linkedin", label: "LinkedIn Profile URL", placeholder: "https://linkedin.com/in/your-profile" },
     ],
   },
@@ -187,16 +187,14 @@ export default function BecomeMentorPage() {
   const pct = ((cur + 1) / totalSteps) * 100
 
   function isValid(): boolean {
-    const a = answers[step.id]
-    if (step.type === "single") return a !== -1
-    if (step.type === "multi" || step.type === "multi-grid") return (a as number[]).length > 0
-    if (step.type === "text") return (a as string).trim().length >= 15
-    if (step.type === "pricing") return true
+    // Only Name and Phone are required (step 0 combo fields marked required)
+    // All other steps are optional — always valid
     if (step.type === "combo") {
       const hasRequired = (step.fields || []).some(f => f.required)
       if (!hasRequired) return true
       return (step.fields || []).filter(f => f.required).every(f => (comboFields[f.key] || "").trim().length > 0)
     }
+    // All non-combo steps are optional
     return true
   }
 
@@ -452,8 +450,8 @@ export default function BecomeMentorPage() {
                 />
                 <div className="flex justify-between mt-2 px-1">
                   <span className="text-[11px] text-slate-400">
-                    {(answers[step.id] as string).trim().length < 15 && (answers[step.id] as string).length > 0
-                      ? "Keep going \u2014 share a bit more detail"
+                    {(answers[step.id] as string).length === 0
+                      ? "Optional \u2014 you can skip this step"
                       : "\u00A0"
                     }
                   </span>

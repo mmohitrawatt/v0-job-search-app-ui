@@ -6,679 +6,382 @@ import { JobingenLogo } from "@/components/jobingen-logo"
 // ─── CSS ────────────────────────────────────────────────────────
 const CSS = `
   :root {
-    --ink:    #09090f;
-    --ink2:   #3d3d52;
-    --ink3:   #8a8aa8;
+    --ink:    #0a0a0f;
+    --ink2:   #3c3c50;
+    --ink3:   #8b8ba0;
     --white:  #ffffff;
-    --cream:  #f7f7fb;
-    --cream2: #f0f0f8;
-    --border: rgba(10,10,20,0.08);
-    --borderM:rgba(10,10,20,0.14);
-    --ind:    #1d3a8f;
-    --ind-l:  #e8edfe;
-    --vio:    #3b52f0;
+    --bg:     #fafafa;
+    --bg2:    #f5f5f7;
+    --border: rgba(0,0,0,.06);
+    --border2:rgba(0,0,0,.1);
+    --accent: #1d3a8f;
+    --accent2:#3b52f0;
     --grn:    #10b981;
     --grn-l:  #ecfdf5;
     --amb:    #f59e0b;
-    --amb-l:  #fffbeb;
     --rose:   #f43f5e;
-    --rose-l: #fff1f2;
-    --shadow-sm:  0 2px 8px rgba(10,10,20,0.05);
-    --shadow-md:  0 4px 24px rgba(10,10,20,0.08);
-    --shadow-lg:  0 12px 48px rgba(10,10,20,0.1);
-    --shadow-xl:  0 24px 80px rgba(10,10,20,0.12);
-    --ind-glow:   0 8px 32px rgba(29,58,143,0.28);
-    --ind-glow-l: 0 4px 16px rgba(29,58,143,0.16);
+    --vio:    #7c3aed;
+    --vio-l:  #f5f3ff;
+    --ease:   cubic-bezier(.16,1,.3,1);
     --spring: cubic-bezier(.34,1.56,.64,1);
-    --ease-out: cubic-bezier(.16,1,.3,1);
   }
+
+  *, *::before, *::after { box-sizing: border-box; }
 
   /* ── Keyframes ─────────────────────────── */
-  @keyframes reveal-up {
-    from { opacity:0; transform:translateY(44px); }
+  @keyframes reveal {
+    from { opacity:0; transform:translateY(32px); }
     to   { opacity:1; transform:translateY(0); }
   }
-  @keyframes reveal-scale {
-    from { opacity:0; transform:scale(.9) translateY(20px); }
-    to   { opacity:1; transform:scale(1)  translateY(0); }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes float-y {
+    0%,100% { transform:translateY(0) }
+    50%     { transform:translateY(-14px) }
   }
-  @keyframes float-phone {
-    0%,100% { transform: translateY(0px) rotate(1.2deg); }
-    50%      { transform: translateY(-20px) rotate(-0.4deg); }
+  @keyframes float-r {
+    0%,100% { transform:translateY(0) rotate(-3deg) }
+    50%     { transform:translateY(-10px) rotate(2deg) }
   }
-  @keyframes marquee-scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  @keyframes badge-a {
-    0%,100% { transform: translate(0,0) rotate(-4deg) scale(1); }
-    50%      { transform: translate(-5px,-13px) rotate(-2deg) scale(1.02); }
-  }
-  @keyframes badge-b {
-    0%,100% { transform: translate(0,0) rotate(3deg) scale(1); }
-    50%      { transform: translate(7px,-9px) rotate(5deg) scale(1.02); }
-  }
-  @keyframes badge-c {
-    0%,100% { transform: translate(0,0) rotate(-1deg) scale(1); }
-    40%      { transform: translate(4px,9px) rotate(1deg) scale(1.01); }
-  }
-  @keyframes ticker-slide {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @keyframes ping {
-    75%,100% { transform: scale(2.4); opacity: 0; }
-  }
+  @keyframes ping { 75%,100% { transform:scale(2.2); opacity:0; } }
   @keyframes shimmer {
-    0%   { background-position: -400% center; }
-    100% { background-position: 400% center; }
+    0%   { background-position:-300% center }
+    100% { background-position:300% center }
   }
-  @keyframes gradient-pan {
-    0%,100% { background-position: 0% 50%; }
-    50%      { background-position: 100% 50%; }
-  }
-  @keyframes pulse-s {
-    0%,100% { transform: scale(1); opacity:.8; }
-    50%      { transform: scale(1.12); opacity:1; }
-  }
-  @keyframes spin-slow {
-    to { transform: rotate(360deg); }
-  }
-  @keyframes sparkle-1 {
-    0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity:.25; }
-    33%      { transform: translate(-8px,-14px) scale(1.15) rotate(30deg); opacity:.5; }
-    66%      { transform: translate(6px,-6px) scale(.9) rotate(-15deg); opacity:.35; }
-  }
-  @keyframes sparkle-2 {
-    0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity:.2; }
-    40%      { transform: translate(10px,-10px) scale(1.2) rotate(-25deg); opacity:.45; }
-    70%      { transform: translate(-4px,8px) scale(.85) rotate(20deg); opacity:.3; }
-  }
-  @keyframes orbit {
-    from { transform: rotate(0deg) translateX(28px) rotate(0deg); }
-    to   { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
-  }
-  @keyframes bar-in {
-    from { width: 0; }
-  }
-  @keyframes count-fade {
-    from { opacity:0; transform: translateY(6px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
-  @keyframes activity-in {
-    from { opacity:0; transform: translateX(-12px); }
-    to   { opacity:1; transform: translateX(0); }
-  }
-  @keyframes underline-grow {
-    from { transform: scaleX(0); transform-origin: left; }
-    to   { transform: scaleX(1); transform-origin: left; }
-  }
+  @keyframes pulse-s { 0%,100%{opacity:.8;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }
+  @keyframes bar-fill { from { width:0 } }
+  @keyframes activity-in { from { opacity:0; transform:translateX(-10px) } to { opacity:1; transform:translateX(0) } }
 
-  /* ── Scroll reveal ──────────────────────── */
-  .sr {
-    opacity: 0;
-    transform: translateY(36px);
-    transition: opacity .75s var(--ease-out), transform .75s var(--ease-out);
-  }
+  /* ── Scroll reveal ─────────────────────── */
+  .sr { opacity:0; transform:translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
   .sr.in { opacity:1; transform:translateY(0); }
-  .d1 { transition-delay:.07s; }
-  .d2 { transition-delay:.14s; }
-  .d3 { transition-delay:.21s; }
-  .d4 { transition-delay:.28s; }
-  .d5 { transition-delay:.35s; }
-  .d6 { transition-delay:.42s; }
+  .d1{transition-delay:.06s} .d2{transition-delay:.12s} .d3{transition-delay:.18s}
+  .d4{transition-delay:.24s} .d5{transition-delay:.3s}  .d6{transition-delay:.36s}
 
-  /* ── Shimmer gradient text ──────────────── */
+  /* ── Shimmer text ──────────────────────── */
   .shimmer {
-    background: linear-gradient(90deg, #1d3a8f 0%, #3b52f0 28%, #5a6ef4 48%, #3b52f0 68%, #1d3a8f 100%);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 5s linear infinite;
+    background: linear-gradient(90deg, #1d3a8f 0%, #3b52f0 30%, #6366f1 50%, #3b52f0 70%, #1d3a8f 100%);
+    background-size: 250% auto;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation: shimmer 4.5s linear infinite;
   }
 
-  /* ── Button system ──────────────────────── */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer; text-decoration: none; border: none; outline: none;
-    transition: transform .22s var(--spring), box-shadow .22s ease, background .15s ease;
-    position: relative; overflow: hidden;
+  /* ── Ticker ────────────────────────────── */
+  .ticker-track { display:flex; width:max-content; animation:marquee 35s linear infinite; }
+  .ticker-track:hover { animation-play-state:paused; }
+
+  /* ── Responsive ────────────────────────── */
+  @media(max-width:768px) {
+    .hero-grid { grid-template-columns:1fr !important; text-align:center !important; }
+    .hero-left { align-items:center !important; }
+    .hero-right { display:none !important; }
+    .hero-ctas { justify-content:center !important; }
+    .hero-proof { justify-content:center !important; }
+    .hero-stats { justify-content:center !important; border-left:none !important; padding-left:0 !important; border-top:1px solid var(--border); padding-top:12px !important; }
+    .hero-live { justify-content:center !important; }
+
+    .stats-row { grid-template-columns:repeat(2,1fr) !important; }
+
+    .boot-head { flex-direction:column !important; align-items:stretch !important; }
+    .boot-price-group { flex-direction:column !important; align-items:flex-start !important; width:100% !important; }
+    .boot-reg-btn { width:100% !important; justify-content:center !important; }
+    .boot-body { grid-template-columns:1fr !important; }
+    .boot-cols { grid-template-columns:1fr !important; }
+
+    .mentors-row { grid-template-columns:1fr !important; }
+    .pain-grid  { grid-template-columns:1fr !important; }
+    .feat-grid  { grid-template-columns:1fr !important; }
+    .journey-line::before { left:19px !important; }
+    .j-dot { width:40px !important; min-width:40px !important; height:40px !important; font-size:15px !important; }
+
+    .cta-inner { padding:48px 20px !important; border-radius:22px !important; }
+    .cta-h2 { font-size:clamp(28px,7.5vw,40px) !important; }
+    .cta-pills { flex-direction:column !important; align-items:center !important; }
+
+    .footer-grid { grid-template-columns:1fr 1fr !important; }
+    .footer-brand { grid-column:1/-1 !important; }
+    .footer-bottom { flex-direction:column !important; align-items:center !important; text-align:center !important; }
   }
-  .btn::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 60%);
-    pointer-events: none;
-    border-radius: inherit;
-  }
-  .btn:hover  { transform: translateY(-3px) scale(1.035); }
-  .btn:active { transform: translateY(0) scale(.97); }
-  .btn-primary {
-    background: linear-gradient(135deg, #1d3a8f 0%, #2548c5 100%);
-    box-shadow: 0 6px 28px rgba(29,58,143,.32), 0 2px 6px rgba(29,58,143,.2);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 12px 40px rgba(29,58,143,.45), 0 4px 12px rgba(29,58,143,.25);
-  }
-  .btn-outline {
-    background: white;
-    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,.8);
-  }
-  .btn-outline:hover { box-shadow: var(--shadow-md); }
-
-  /* ── Cards ──────────────────────────────── */
-  .card {
-    background: white;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    box-shadow: var(--shadow-sm);
-    transition: transform .28s var(--spring), box-shadow .28s ease;
-    position: relative; overflow: hidden;
-  }
-  .card::before {
-    content: '';
-    position: absolute; top:0; left:0; right:0; height:1px;
-    background: linear-gradient(90deg, transparent, rgba(29,58,143,.15), transparent);
-    opacity: 0;
-    transition: opacity .28s ease;
-  }
-  .card:hover { transform: translateY(-7px) scale(1.008); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(29,58,143,.06); }
-  .card:hover::before { opacity: 1; }
-
-  /* ── Feature card icon bounce ── */
-  .card:hover .feat-icon {
-    transform: scale(1.14) rotate(-6deg);
-    transition: transform .3s var(--spring);
-  }
-  .feat-icon {
-    transition: transform .3s ease;
-  }
-
-  /* ── Pill badge ─────────────────────────── */
-  .pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 12px; border-radius: 99px;
-    font-size: 11px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: .065em;
-  }
-
-  /* ── Ticker ─────────────────────────────── */
-  .ticker-wrap { display:flex; width:max-content; animation: ticker-slide 30s linear infinite; }
-
-  /* ── Activity rows ──────────────────────── */
-  .activity-row { animation: activity-in .45s var(--ease-out) both; }
-
-  /* ── Stat underline ─────────────────────── */
-  .stat-line {
-    height: 3px; border-radius:99px; margin: 6px auto 0;
-    animation: underline-grow .8s var(--ease-out) .4s both;
-  }
-
-  /* ── Gradient border card ───────────────── */
-  .grad-border {
-    position: relative;
-  }
-  .grad-border::before {
-    content: '';
-    position: absolute; inset: -1px;
-    border-radius: 21px;
-    background: linear-gradient(135deg, rgba(29,58,143,.35), rgba(59,82,240,.15), transparent);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity .28s ease;
-  }
-  .grad-border:hover::before { opacity: 1; }
-
-  /* ── Pricing popular glow ───────────────── */
-  .pricing-popular {
-    box-shadow: 0 0 0 2px #1d3a8f, 0 28px 80px rgba(29,58,143,.22), 0 8px 24px rgba(29,58,143,.12);
-  }
-
-  /* ── Section divider dots ───────────────── */
-  .dot-divider {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    margin: 0 0 16px;
-  }
-  .dot-divider span {
-    width: 4px; height: 4px; border-radius:50%; background: var(--ind-l);
-    display: inline-block;
-  }
-  .dot-divider span:nth-child(2) { background: rgba(29,58,143,.3); }
-  .dot-divider span:nth-child(3) { background: rgba(29,58,143,.15); }
-
-  /* ── Shimmer top bar ─────────────────────── */
-  .top-bar {
-    height: 3px;
-    background: linear-gradient(90deg, #1d3a8f, #3b52f0, #5a6ef4, #5a6ef4, #5a6ef4, #3b52f0, #1d3a8f);
-    background-size: 200% auto;
-    animation: shimmer 4s linear infinite;
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  }
-
-/* ── Feature card colored glow ───────────── */
-  .feat-card { transition: transform .28s var(--spring), box-shadow .28s ease; }
-
-  /* ── Nav short text ──────────────────────── */
-  .nav-cta-short { display: none; }
-
-  /* ── Nav desktop/mobile visibility ──────── */
-  .nav-links-desk { display:flex; align-items:center; gap:36px; }
-  .nav-ctas-desk  { display:flex; align-items:center; gap:10px; }
-  .nav-mob-right  { display:none; align-items:center; gap:8px; }
-  .nav-mob-menu   { display:none; flex-direction:column; border-top:1px solid var(--border); padding:8px 20px 16px; }
-  .nav-mob-menu.open { display:flex; }
-  .nav-mob-link   { font-size:15px; font-weight:700; color:var(--ink); text-decoration:none; padding:13px 0; border-bottom:1px solid var(--border); transition:color .15s; }
-  .nav-mob-link:last-child { border-bottom:none; }
-  .nav-mob-link:hover { color:var(--ind); }
-  .nav-ham        { width:38px; height:38px; border-radius:10px; background:transparent; border:1.5px solid var(--borderM); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
-
-  /* ── Services bento grid ─────────────────── */
-  .lp-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .lp-scard{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:18px;padding:24px 22px;transition:all .35s cubic-bezier(.16,1,.3,1);overflow:hidden;display:flex;gap:14px;align-items:flex-start}
-  .lp-scard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(29,58,143,.1);border-color:rgba(42,78,207,.08)}
-  .lp-sicon{width:46px;height:46px;min-width:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-  .lp-scard h3{font-size:16px;font-weight:800;margin:0 0 4px;letter-spacing:-.2px;line-height:1.3;color:var(--ink)}
-  .lp-scard p{font-size:13px;color:var(--ink3);line-height:1.5;margin:0}
-  .lp-stag{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:5px}
-
-  /* ── Problem dark card ───────────────────── */
-  .lp-prob-card{border-radius:32px;background:linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#142a6a 100%);padding:64px 48px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(6,13,36,.3)}
-  .lp-prob-card::before{content:'';position:absolute;top:-80px;right:-40px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(59,82,240,.25),transparent 70%);pointer-events:none;animation:float-phone 20s ease-in-out infinite}
-  .lp-prob-card::after{content:'';position:absolute;bottom:-60px;left:15%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(42,78,207,.18),transparent 70%);pointer-events:none;animation:float-phone 24s ease-in-out 2s infinite}
-  .lp-pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;position:relative;z-index:1}
-  .lp-paincard{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;transition:all .35s cubic-bezier(.16,1,.3,1)}
-  .lp-paincard:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
-  .lp-painico{font-size:28px;margin-bottom:12px}
-  .lp-paincard h4{font-size:15px;font-weight:800;color:#fff;margin:0 0 6px}
-  .lp-paincard p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;margin:0}
-
-  /* ── Journey timeline ────────────────────── */
-  .lp-journey{display:flex;flex-direction:column;margin-top:48px;position:relative}
-  .lp-journey::before{content:'';position:absolute;top:24px;bottom:24px;left:23px;width:2px;background:linear-gradient(180deg,#1d3a8f,rgba(29,58,143,.08));z-index:0}
-  .lp-jstep{display:flex;gap:20px;align-items:flex-start;padding:20px 0;position:relative;z-index:1}
-  .lp-jdot{width:48px;min-width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#1d3a8f,#3b52f0);color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(29,58,143,.25),0 0 0 4px var(--white)}
-  .lp-jbody{flex:1;padding:4px 0}
-  .lp-jbody h3{font-size:17px;font-weight:800;margin:0 0 4px;letter-spacing:-.2px;color:var(--ink)}
-  .lp-jbody p{font-size:14px;color:var(--ink2);line-height:1.55;margin:0}
-  .lp-jtags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-  .lp-jtag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--ind-l);color:var(--ind)}
-
-  /* ── Responsive ─────────────────────────── */
-  @media (max-width:768px) {
-    /* Navbar */
-    .nav-inner { padding: 0 16px !important; }
-    .nav-links-desk { display: none !important; }
-    .nav-ctas-desk  { display: none !important; }
-    .nav-mob-right  { display: flex !important; }
-    .nav-inner a img { height: 70px !important; }
-
-    /* Hero */
-    .hero-grid { grid-template-columns: 1fr !important; padding: 76px 20px 44px !important; gap: 0 !important; }
-    .hero-left { display: flex !important; flex-direction: column !important; align-items: center !important; }
-    .hero-h1  { text-align: center !important; font-size: clamp(36px,9vw,52px) !important; margin-bottom: 16px !important; }
-    .hero-desc { text-align: center !important; max-width: 100% !important; font-size: 15px !important; margin-bottom: 22px !important; }
-    .hero-ctas { justify-content: center !important; }
-    .hero-proof { flex-direction: column !important; align-items: center !important; gap: 10px !important; padding-bottom: 14px !important; margin-bottom: 14px !important; }
-    .hero-mini-stats { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 10px; justify-content: center !important; }
-    .hero-live { justify-content: center !important; flex-wrap: wrap !important; gap: 6px !important; }
-    .hero-right { display: none !important; }
-
-    /* Bootcamp */
-    .bootcamp-head { padding: 18px 16px !important; gap: 14px !important; flex-direction: column !important; align-items: stretch !important; }
-    .bootcamp-left-group { flex-wrap: wrap !important; gap: 8px !important; flex-direction: column !important; align-items: flex-start !important; }
-    .bootcamp-title { font-size: 17px !important; line-height: 1.25 !important; }
-    .bootcamp-price-group { flex-direction: column !important; align-items: flex-start !important; width: 100% !important; gap: 10px !important; }
-    .bootcamp-price { text-align: left !important; }
-    .bootcamp-reg-btn { width: 100% !important; justify-content: center !important; }
-    .bootcamp-body { grid-template-columns: 1fr !important; padding: 18px 16px !important; gap: 16px !important; }
-    .bootcamp-cols { grid-template-columns: 1fr !important; }
-
-    /* Problems */
-    .problems-grid { grid-template-columns: 1fr !important; }
-
-    /* Testimonials */
-    .testimonial-feat { transform: scale(1) !important; }
-
-    /* CTA */
-    .cta-inner { padding: 44px 20px !important; border-radius: 20px !important; }
-    .cta-h2   { font-size: clamp(28px,7.5vw,40px) !important; margin-bottom: 12px !important; }
-    .cta-sub  { font-size: 15px !important; margin-bottom: 28px !important; max-width: 100% !important; }
-    .cta-pills { flex-direction: column !important; align-items: center !important; gap: 6px !important; }
-
-    /* Footer */
-    .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
-    .footer-brand { grid-column: 1 / -1 !important; }
-    .footer-bottom { flex-direction: column !important; align-items: center !important; gap: 10px !important; text-align: center !important; }
-
-    /* Sections */
-    .section-pad { padding: 52px 20px !important; }
-
-    /* Services bento */
-    .lp-svc-grid { grid-template-columns: 1fr 1fr !important; }
-
-    /* Problem card */
-    .lp-prob-card { padding: 40px 24px !important; border-radius: 22px !important; }
-    .lp-pain-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
-
-    /* Journey */
-    .lp-journey::before { left: 19px !important; }
-    .lp-jstep { gap: 14px !important; }
-    .lp-jdot { width: 40px !important; min-width: 40px !important; height: 40px !important; font-size: 16px !important; }
-    .lp-jbody h3 { font-size: 15px !important; }
-    .lp-jbody p { font-size: 13px !important; }
-  }
-  @media (max-width:480px) {
-    .nav-inner { padding: 0 14px !important; }
-    .nav-inner a img { height: 55px !important; }
-    .hero-grid { padding: 64px 16px 32px !important; }
-    .hero-h1  { font-size: clamp(32px,8.5vw,42px) !important; }
-    .hero-ctas a { width: 100% !important; justify-content: center !important; }
-    .footer-grid { grid-template-columns: 1fr !important; }
-    .cta-inner { padding: 36px 16px !important; }
-    .cta-pills { flex-direction: column !important; }
-    .lp-svc-grid { grid-template-columns: 1fr !important; }
-    .lp-pain-grid { grid-template-columns: 1fr !important; }
+  @media(max-width:480px) {
+    .hero-grid { padding:60px 16px 32px !important; }
+    .hero-ctas a { width:100% !important; justify-content:center !important; }
+    .footer-grid { grid-template-columns:1fr !important; }
+    .feat-grid { grid-template-columns:1fr !important; }
+    .boot-cols { grid-template-columns:1fr !important; }
   }
 `
 
-// ─── Navbar ────────────────────────────────────────────────────
+// ─── Section wrapper ──────────────────────────────────────────
+function Section({ id, bg = "white", children, className = "", style = {} }: { id?: string; bg?: string; children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  return (
+    <section id={id} className={className} style={{ background: bg, padding: "96px 28px", position: "relative", ...style }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto" }}>{children}</div>
+    </section>
+  )
+}
+
+// ─── Section header ───────────────────────────────────────────
+function SectionHeader({ pill, pillColor = "var(--accent)", pillBg = "#eef1fd", title, titleHighlight, sub, align = "center" }: { pill: string; pillColor?: string; pillBg?: string; title: string; titleHighlight?: string; sub: string; align?: "center" | "left" }) {
+  return (
+    <div className="sr" style={{ textAlign: align, marginBottom: 56 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 16px", borderRadius: 99, background: pillBg, color: pillColor, fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 18, border: `1px solid ${pillColor}15` }}>
+        {pill}
+      </div>
+      <h2 className="sr d1" style={{ fontSize: "clamp(30px,3.8vw,50px)", fontWeight: 900, letterSpacing: "-.04em", color: "var(--ink)", margin: "0 0 16px", lineHeight: 1.06 }}>
+        {title}{titleHighlight && <><br /><span className="shimmer">{titleHighlight}</span></>}
+      </h2>
+      <p className="sr d2" style={{ fontSize: 17, color: "var(--ink3)", maxWidth: 520, margin: align === "center" ? "0 auto" : undefined, lineHeight: 1.7 }}>
+        {sub}
+      </p>
+    </div>
+  )
+}
+
+// ─── Navbar ───────────────────────────────────────────────────
 function Navbar({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false)
-  const links = [["Features","#features"],["How It Works","#how-it-works"],["Bootcamp","#bootcamp"],["Mentors","/mentors"]]
+  const links = [["AI Tools", "/ai-tools"], ["Jobs", "/jobs"], ["Bootcamp", "#bootcamp"], ["Mentors", "/mentors"]]
+
   return (
     <nav style={{
-      position:"fixed", top:0, left:0, right:0, zIndex:100,
-      background: scrolled || open ? "rgba(247,247,251,0.97)" : "rgba(247,247,251,0.55)",
-      backdropFilter:"blur(24px)",
-      borderBottom: scrolled || open ? "1px solid var(--border)" : "1px solid transparent",
-      boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "none",
-      transition: "background .35s ease, border-color .35s ease, box-shadow .35s ease",
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      background: scrolled || open ? "rgba(255,255,255,.92)" : "rgba(255,255,255,.4)",
+      backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+      borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
+      transition: "all .3s ease",
     }}>
-      <div className="nav-inner" style={{ maxWidth:1200, margin:"0 auto", padding:"0 28px", height:64, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-
-        {/* Logo */}
-        <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none", flexShrink:0 }}>
-          <JobingenLogo height={110} />
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0 }}>
+          <JobingenLogo height={100} />
         </a>
 
-        {/* Desktop nav links */}
-        <div className="nav-links-desk">
-          {links.map(([l,href]) => (
-            <a key={l} href={href}
-              style={{ fontSize:13, fontWeight:700, color:"var(--ink2)", textDecoration:"none", transition:"color .15s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--ind)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--ink2)")}>
+        {/* Desktop links */}
+        <div className="nav-links-desk" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          {links.map(([l, href]) => (
+            <a key={l} href={href} style={{ fontSize: 14, fontWeight: 500, color: "var(--ink2)", textDecoration: "none", padding: "8px 16px", borderRadius: 10, transition: "all .15s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--bg2)"; e.currentTarget.style.color = "var(--ink)" }}
+              onMouseLeave={e => { e.currentTarget.style.background = ""; e.currentTarget.style.color = "var(--ink2)" }}>
               {l}
             </a>
           ))}
         </div>
 
-        {/* Desktop CTA buttons */}
-        <div className="nav-ctas-desk">
-          <a href="/dashboard" className="btn btn-outline" style={{ fontSize:13, fontWeight:700, padding:"8px 16px", borderRadius:12, color:"var(--ink2)", border:"1.5px solid var(--borderM)" }}>Open App</a>
-          <a href="/register" className="btn btn-primary" style={{ fontSize:13, fontWeight:800, padding:"9px 20px", borderRadius:12, color:"white" }}>Get Started</a>
+        {/* Desktop CTAs */}
+        <div className="nav-ctas-desk" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <a href="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: "var(--ink2)", textDecoration: "none", padding: "8px 16px", borderRadius: 12, border: "1.5px solid var(--border2)", transition: "all .15s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "var(--bg2)" }}
+            onMouseLeave={e => { e.currentTarget.style.background = "" }}>
+            Open App
+          </a>
+          <a href="/register" style={{ fontSize: 14, fontWeight: 700, color: "white", textDecoration: "none", padding: "9px 22px", borderRadius: 12, background: "var(--ink)", transition: "all .2s" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.15)" }}
+            onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
+            Get Started
+          </a>
         </div>
 
-        {/* Mobile: Join + Hamburger */}
-        <div className="nav-mob-right">
-          <a href="/register" className="btn btn-primary" style={{ fontSize:12, fontWeight:800, padding:"8px 16px", borderRadius:10, color:"white" }}>Join Now</a>
-          <button className="nav-ham" onClick={() => setOpen(o => !o)} aria-label="Menu">
+        {/* Mobile */}
+        <div className="nav-mob-right" style={{ display: "none", alignItems: "center", gap: 8 }}>
+          <a href="/register" style={{ fontSize: 13, fontWeight: 700, color: "white", textDecoration: "none", padding: "8px 18px", borderRadius: 10, background: "var(--ink)" }}>Join</a>
+          <button onClick={() => setOpen(o => !o)} aria-label="Menu" style={{ width: 38, height: 38, borderRadius: 10, background: "transparent", border: "1.5px solid var(--border2)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
             {open
-              ? <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="var(--ink)" strokeWidth="2.2" strokeLinecap="round"/></svg>
-              : <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M2 8h10M2 12h12" stroke="var(--ink)" strokeWidth="2.2" strokeLinecap="round"/></svg>
+              ? <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" /></svg>
+              : <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M2 8h10M2 12h12" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" /></svg>
             }
           </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      <div className={`nav-mob-menu${open ? " open" : ""}`}>
-        {links.map(([l,href]) => (
-          <a key={l} href={href} className="nav-mob-link" onClick={() => setOpen(false)}>{l}</a>
-        ))}
-        <a href="/dashboard" className="nav-mob-link" onClick={() => setOpen(false)} style={{ color:"var(--ink2)" }}>Open App</a>
-      </div>
+      {open && (
+        <div style={{ display: "flex", flexDirection: "column", borderTop: "1px solid var(--border)", padding: "8px 20px 16px", background: "rgba(255,255,255,.97)" }}>
+          {links.map(([l, href]) => (
+            <a key={l} href={href} onClick={() => setOpen(false)} style={{ fontSize: 16, fontWeight: 600, color: "var(--ink)", textDecoration: "none", padding: "14px 0", borderBottom: "1px solid var(--border)" }}>{l}</a>
+          ))}
+          <a href="/dashboard" onClick={() => setOpen(false)} style={{ fontSize: 16, fontWeight: 600, color: "var(--ink2)", textDecoration: "none", padding: "14px 0" }}>Open App</a>
+        </div>
+      )}
     </nav>
   )
 }
 
-// ─── Hero ──────────────────────────────────────────────────────
+// ─── Hero ─────────────────────────────────────────────────────
 function Hero() {
   const [liveIdx, setLiveIdx] = useState(0)
   const wins = [
-    { emoji:"🎉", text:"Rahul M. received ₹44 LPA offer at Zepto" },
-    { emoji:"🏆", text:"Priya S. cracked the Flipkart PM interview" },
-    { emoji:"🚀", text:"Arjun K. got SDE-2 at Swiggy in just 12 days" },
-    { emoji:"💰", text:"Sneha K.'s ATS score jumped from 61 to 94" },
+    { emoji: "🎉", text: "Rahul M. received ₹44 LPA offer at Zepto" },
+    { emoji: "🏆", text: "Priya S. cracked the Flipkart PM interview" },
+    { emoji: "🚀", text: "Arjun K. got SDE-2 at Swiggy in 12 days" },
+    { emoji: "💰", text: "Sneha K.'s ATS score jumped from 61 to 94" },
   ]
   useEffect(() => {
-    const t = setInterval(() => setLiveIdx(i => (i + 1) % wins.length), 3000)
+    const t = setInterval(() => setLiveIdx(i => (i + 1) % wins.length), 3200)
     return () => clearInterval(t)
   }, [])
 
   return (
-    <section style={{ minHeight:"100vh", display:"flex", alignItems:"center", paddingTop:64, background:"linear-gradient(170deg,#eef2ff 0%,#f8f9ff 35%,#fff 65%,#f0f4ff 100%)", position:"relative", overflow:"hidden" }}>
+    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: 64, background: "white", position: "relative", overflow: "hidden" }}>
+      {/* Subtle grid */}
+      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)", backgroundSize: "80px 80px", maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, black, transparent)", pointerEvents: "none", opacity: .5 }} />
 
-      {/* Dot grid */}
-      <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle, rgba(29,58,143,0.09) 1px, transparent 1px)", backgroundSize:"32px 32px", maskImage:"radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 100%)", pointerEvents:"none" }} />
+      <div className="hero-grid" style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 28px 56px", width: "100%", display: "grid", gridTemplateColumns: "1.1fr .9fr", gap: 80, alignItems: "center" }}>
 
-      {/* Orbs */}
-      <div style={{ position:"absolute", top:"5%", left:"-8%", width:560, height:560, borderRadius:"50%", background:"radial-gradient(circle, rgba(29,58,143,0.1) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:"5%", right:"-5%", width:440, height:440, borderRadius:"50%", background:"radial-gradient(circle, rgba(59,82,240,0.09) 0%, transparent 70%)", filter:"blur(72px)", pointerEvents:"none" }} />
-
-      {/* Sparkles */}
-      {[
-        { top:"14%", left:"3%", size:18, anim:"sparkle-1 5s ease-in-out infinite" },
-        { top:"80%", left:"6%", size:12, anim:"sparkle-2 4s ease-in-out 1s infinite" },
-        { top:"20%", right:"3%", size:14, anim:"sparkle-1 6s ease-in-out .5s infinite" },
-        { top:"85%", right:"5%", size:10, anim:"sparkle-2 4.5s ease-in-out 1.5s infinite" },
-      ].map((s,i) => (
-        <div key={i} style={{ position:"absolute", ...s, width:s.size, height:s.size, pointerEvents:"none", animation:s.anim }}>
-          <svg viewBox="0 0 24 24"><path d="M12 2L13.5 10L22 12L13.5 14L12 22L10.5 14L2 12L10.5 10Z" fill="#1d3a8f" /></svg>
-        </div>
-      ))}
-
-      <div className="hero-grid" style={{ maxWidth:1240, margin:"0 auto", padding:"56px 32px 48px", width:"100%", display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:80, alignItems:"center" }}>
-
-        {/* ── LEFT ── */}
-        <div className="hero-left" style={{ animation:"reveal-up .8s var(--ease-out) both" }}>
+        {/* Left */}
+        <div className="hero-left" style={{ animation: "reveal .8s var(--ease) both", display: "flex", flexDirection: "column" }}>
 
           {/* Badge */}
-          <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px 6px 8px", borderRadius:99, background:"var(--ind-l)", border:"1px solid rgba(29,58,143,.22)", marginBottom:28 }}>
-            <div style={{ background:"linear-gradient(135deg,#1d3a8f,#3b52f0)", borderRadius:99, padding:"3px 10px", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em" }}>✦ NEW</div>
-            <span style={{ fontSize:12, fontWeight:700, color:"var(--ind)" }}>Vibe AI mock interviews are live 🎤</span>
+          <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, padding: "5px 16px 5px 6px", borderRadius: 99, background: "var(--bg2)", border: "1px solid var(--border)", marginBottom: 28 }}>
+            <span style={{ background: "var(--ink)", borderRadius: 99, padding: "3px 10px", fontSize: 9, fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: ".06em" }}>New</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)" }}>Vibe AI mock interviews are live</span>
           </div>
 
           {/* H1 */}
-          <h1 className="hero-h1" style={{ fontSize:"clamp(44px,5.2vw,68px)", fontWeight:900, lineHeight:1.06, letterSpacing:"-.036em", color:"var(--ink)", margin:"0 0 22px" }}>
-            Get Hired at<br />
-            India&apos;s Best<br />
-            <span className="shimmer">Tech Companies.</span>
+          <h1 style={{ fontSize: "clamp(46px,5.5vw,72px)", fontWeight: 900, lineHeight: 1.04, letterSpacing: "-.045em", color: "var(--ink)", margin: "0 0 24px" }}>
+            Get hired at<br />India&apos;s best<br />
+            <span className="shimmer">tech companies.</span>
           </h1>
 
-          {/* Description */}
-          <p className="hero-desc" style={{ fontSize:"clamp(15px,1.4vw,17px)", lineHeight:1.72, color:"var(--ink2)", margin:"0 0 34px", maxWidth:460 }}>
-            AI resume tailoring, real ₹ LPA salary benchmarks, smart job match scoring, and Vibe AI interview coaching — everything built for India&apos;s tech market.
+          {/* Sub */}
+          <p style={{ fontSize: "clamp(16px,1.4vw,18px)", lineHeight: 1.7, color: "var(--ink3)", margin: "0 0 36px", maxWidth: 480 }}>
+            AI-powered resume tailoring, real salary data in ₹ LPA, smart job matching, and Vibe AI coaching — built for India&apos;s tech market.
           </p>
 
           {/* CTAs */}
-          <div className="hero-ctas" style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:36 }}>
-            <a href="/register" className="btn btn-primary" style={{ fontSize:15, fontWeight:800, padding:"14px 28px", borderRadius:16, color:"white", gap:8, display:"inline-flex", alignItems:"center" }}>
-              Get Started Now
-              <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <div className="hero-ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>
+            <a href="/register" style={{ fontSize: 16, fontWeight: 700, padding: "16px 32px", borderRadius: 16, color: "white", background: "var(--ink)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.12)" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,.18)" }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,.12)" }}>
+              Get Started Free
+              <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
-            <a href="/" className="btn btn-outline" style={{ fontSize:15, fontWeight:700, padding:"14px 22px", borderRadius:16, color:"var(--ink)", border:"1.5px solid var(--borderM)", gap:8, display:"inline-flex", alignItems:"center" }}>
-              <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="var(--ink)" strokeWidth="1.5"/><polygon points="6.5,5 11.5,8 6.5,11" fill="var(--ind)"/></svg>
-              Watch Demo
+            <a href="/ai-tools" style={{ fontSize: 16, fontWeight: 600, padding: "16px 28px", borderRadius: 16, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, border: "1.5px solid var(--border2)", transition: "all .2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--bg2)" }}
+              onMouseLeave={e => { e.currentTarget.style.background = "white" }}>
+              Explore AI Tools
             </a>
           </div>
 
           {/* Social proof */}
-          <div className="hero-proof" style={{ display:"flex", alignItems:"center", gap:16, paddingBottom:22, borderBottom:"1px solid var(--border)", marginBottom:22 }}>
-            <div style={{ display:"flex" }}>
-              {["#1d3a8f","#10b981","#f59e0b","#f43f5e","#3b52f0"].map((c,i) => (
-                <div key={i} style={{ width:32, height:32, borderRadius:"50%", background:c, border:"2.5px solid white", marginLeft:i?-10:0, fontSize:10, fontWeight:900, color:"white", display:"flex", alignItems:"center", justifyContent:"center", zIndex:5-i }}>
-                  {["A","P","R","S","M"][i]}
+          <div className="hero-proof" style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ display: "flex" }}>
+              {["#1d3a8f", "#10b981", "#f59e0b", "#f43f5e", "#3b52f0"].map((c, i) => (
+                <div key={i} style={{ width: 30, height: 30, borderRadius: "50%", background: c, border: "2.5px solid white", marginLeft: i ? -9 : 0, fontSize: 10, fontWeight: 900, color: "white", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 5 - i }}>
+                  {["A", "P", "R", "S", "M"][i]}
                 </div>
               ))}
             </div>
-            <div>
-              <div style={{ display:"flex", gap:1, marginBottom:3 }}>
-                {[...Array(5)].map((_,i) => <svg key={i} width="12" height="12" viewBox="0 0 12 12"><path d="M6 1l1.3 3.7H11L8.2 6.5l1 3.7L6 8.2 2.8 10.2l1-3.7L1 4.7h3.7z" fill="#f59e0b"/></svg>)}
-              </div>
-              <div style={{ fontSize:12, color:"var(--ink3)" }}><strong style={{ color:"var(--ink)" }}>50,000+</strong> hired · <strong style={{ color:"var(--ind)" }}>4.9★</strong> rating</div>
+            <div style={{ fontSize: 13, color: "var(--ink3)" }}>
+              <strong style={{ color: "var(--ink)" }}>50,000+</strong> users &middot; <strong style={{ color: "var(--amb)" }}>4.9★</strong>
             </div>
-            <div className="hero-mini-stats" style={{ display:"flex", gap:20, paddingLeft:16, borderLeft:"1px solid var(--border)" }}>
-              {[{ v:"12d", l:"avg. to offer" }, { v:"94%", l:"interview pass" }].map(m => (
+            <div className="hero-stats" style={{ display: "flex", gap: 20, paddingLeft: 16, borderLeft: "1px solid var(--border)" }}>
+              {[{ v: "12d", l: "avg. to offer" }, { v: "94%", l: "interview pass" }].map(m => (
                 <div key={m.l}>
-                  <div style={{ fontSize:20, fontWeight:900, color:"var(--ind)", lineHeight:1 }}>{m.v}</div>
-                  <div style={{ fontSize:10, color:"var(--ink3)", marginTop:2 }}>{m.l}</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: "var(--accent)", lineHeight: 1 }}>{m.v}</div>
+                  <div style={{ fontSize: 10, color: "var(--ink3)", marginTop: 2 }}>{m.l}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Live ticker */}
-          <div className="hero-live" style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
-              <div style={{ position:"relative", width:8, height:8 }}>
-                <div style={{ width:8, height:8, borderRadius:"50%", background:"var(--grn)" }} />
-                <div style={{ position:"absolute", inset:0, borderRadius:"50%", background:"var(--grn)", animation:"ping 1.7s ease-out infinite" }} />
+          <div className="hero-live" style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <div style={{ position: "relative", width: 7, height: 7 }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--grn)" }} />
+                <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--grn)", animation: "ping 1.8s ease-out infinite" }} />
               </div>
-              <span style={{ fontSize:10, fontWeight:800, color:"var(--grn)", textTransform:"uppercase", letterSpacing:".06em" }}>Live</span>
+              <span style={{ fontSize: 10, fontWeight: 800, color: "var(--grn)", textTransform: "uppercase", letterSpacing: ".06em" }}>Live</span>
             </div>
-            <div key={liveIdx} style={{ fontSize:13, fontWeight:600, color:"var(--ink2)", animation:"activity-in .4s var(--ease-out)" }}>
+            <div key={liveIdx} style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)", animation: "activity-in .4s var(--ease)" }}>
               {wins[liveIdx].emoji} {wins[liveIdx].text}
             </div>
           </div>
         </div>
 
-        {/* ── RIGHT ── */}
-        <div className="hero-right" style={{ position:"relative", height:560, animation:"reveal-up .8s var(--ease-out) .22s both" }}>
-
+        {/* Right — floating card */}
+        <div className="hero-right" style={{ position: "relative", height: 540, animation: "reveal .8s var(--ease) .2s both" }}>
           {/* Glow */}
-          <div style={{ position:"absolute", top:"50%", left:"50%", translate:"-50% -50%", width:420, height:420, borderRadius:"50%", background:"radial-gradient(circle, rgba(29,58,143,0.2) 0%, transparent 70%)", filter:"blur(56px)", pointerEvents:"none" }} />
+          <div style={{ position: "absolute", top: "50%", left: "50%", translate: "-50% -50%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(29,58,143,.12), transparent 70%)", filter: "blur(48px)", pointerEvents: "none" }} />
 
-          {/* ── MAIN MATCH CARD ── */}
+          {/* Main card */}
           <div style={{
-            position:"absolute", top:"50%", left:"50%", translate:"-50% -50%",
-            width:330, borderRadius:28,
-            background:"linear-gradient(148deg, #142a6a 0%, #2548c5 100%)",
-            padding:"26px 24px",
-            boxShadow:"0 40px 100px rgba(29,58,143,0.38), 0 8px 24px rgba(29,58,143,0.22)",
-            overflow:"hidden",
-            animation:"float-phone 8s ease-in-out infinite",
-            zIndex:2,
+            position: "absolute", top: "50%", left: "50%", translate: "-50% -50%",
+            width: 320, borderRadius: 24, background: "var(--ink)", padding: "24px 22px",
+            boxShadow: "0 32px 80px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.1)",
+            animation: "float-y 7s ease-in-out infinite", zIndex: 2,
           }}>
-            <div style={{ position:"absolute", top:-40, right:-40, width:160, height:160, borderRadius:"50%", background:"rgba(255,255,255,0.07)" }} />
-            <div style={{ position:"absolute", bottom:-20, left:-20, width:90, height:90, borderRadius:"50%", background:"rgba(255,255,255,0.05)" }} />
-
-            <div style={{ fontSize:9, fontWeight:700, color:"rgba(255,255,255,0.45)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:16, position:"relative" }}>⚡ Top Match · Today</div>
-
-            <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:20, position:"relative" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-                <div style={{ width:46, height:46, borderRadius:14, background:"rgba(255,255,255,0.18)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, fontWeight:900, color:"white", flexShrink:0 }}>SW</div>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,.4)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 16 }}>⚡ Top Match &middot; Today</div>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 13, background: "rgba(255,255,255,.12)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, color: "white" }}>SW</div>
                 <div>
-                  <div style={{ fontSize:16, fontWeight:900, color:"white", lineHeight:1.2 }}>SDE II — AI/ML</div>
-                  <div style={{ fontSize:11, color:"rgba(255,255,255,0.55)", marginTop:3 }}>Swiggy · Bengaluru</div>
-                  <div style={{ fontSize:11, color:"rgba(255,255,255,0.38)", marginTop:1 }}>₹32–52 LPA</div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: "white", lineHeight: 1.2 }}>SDE II — AI/ML</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,.45)", marginTop: 3 }}>Swiggy &middot; Bengaluru</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,.3)", marginTop: 1 }}>₹32–52 LPA</div>
                 </div>
               </div>
-              <div style={{ textAlign:"center", flexShrink:0 }}>
-                <div style={{ fontSize:40, fontWeight:900, color:"white", lineHeight:1 }}>94</div>
-                <div style={{ fontSize:8, color:"rgba(255,255,255,0.4)", letterSpacing:".05em" }}>% MATCH</div>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 36, fontWeight: 900, color: "white", lineHeight: 1 }}>94</div>
+                <div style={{ fontSize: 8, color: "rgba(255,255,255,.3)", letterSpacing: ".05em" }}>% MATCH</div>
               </div>
             </div>
-
-            <div style={{ marginBottom:20, position:"relative" }}>
-              {[{ l:"Skills", p:95 }, { l:"Experience", p:88 }, { l:"Culture Fit", p:91 }].map(b => (
-                <div key={b.l} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
-                  <span style={{ fontSize:10, color:"rgba(255,255,255,0.45)", width:68, flexShrink:0 }}>{b.l}</span>
-                  <div style={{ flex:1, height:5, borderRadius:99, background:"rgba(255,255,255,0.14)" }}>
-                    <div style={{ height:"100%", borderRadius:99, background:"rgba(255,255,255,0.88)", width:`${b.p}%` }} />
-                  </div>
-                  <span style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.6)", width:20, textAlign:"right" }}>{b.p}</span>
+            {[{ l: "Skills", p: 95 }, { l: "Experience", p: 88 }, { l: "Culture Fit", p: 91 }].map(b => (
+              <div key={b.l} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+                <span style={{ fontSize: 10, color: "rgba(255,255,255,.4)", width: 64, flexShrink: 0 }}>{b.l}</span>
+                <div style={{ flex: 1, height: 4, borderRadius: 99, background: "rgba(255,255,255,.1)" }}>
+                  <div style={{ height: "100%", borderRadius: 99, background: "rgba(255,255,255,.8)", width: `${b.p}%` }} />
                 </div>
-              ))}
-            </div>
-
-            <div style={{ display:"flex", gap:8, position:"relative" }}>
-              <div style={{ flex:1, height:42, borderRadius:14, background:"rgba(255,255,255,0.95)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:900, color:"#1d3a8f", cursor:"pointer", gap:6 }}>
-                <span>✦</span> Smart Apply
+                <span style={{ fontSize: 10, fontWeight: 800, color: "rgba(255,255,255,.5)", width: 20, textAlign: "right" }}>{b.p}</span>
               </div>
-              <div style={{ width:42, height:42, borderRadius:14, background:"rgba(255,255,255,0.14)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer" }}>
-                <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2.5l1.8 4.2 4.5.4-3.3 2.9 1 4.3L8 11.8l-4 2.5 1-4.3-3.3-2.9 4.5-.4z" fill="rgba(255,255,255,0.65)"/></svg>
+            ))}
+            <div style={{ display: "flex", gap: 8, marginTop: 18 }}>
+              <div style={{ flex: 1, height: 42, borderRadius: 13, background: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, color: "var(--ink)", cursor: "pointer" }}>Smart Apply</div>
+              <div style={{ width: 42, height: 42, borderRadius: 13, background: "rgba(255,255,255,.1)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2.5l1.8 4.2 4.5.4-3.3 2.9 1 4.3L8 11.8l-4 2.5 1-4.3-3.3-2.9 4.5-.4z" fill="rgba(255,255,255,.5)" /></svg>
               </div>
-            </div>
-
-            <div style={{ marginTop:16, paddingTop:14, borderTop:"1px solid rgba(255,255,255,0.12)", display:"flex", justifyContent:"space-between", position:"relative" }}>
-              {[{ l:"Applied", n:12 }, { l:"Screen", n:5 }, { l:"Interview", n:3 }, { l:"Offer", n:1 }].map((s,i) => (
-                <div key={s.l} style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:16, fontWeight:900, color:["rgba(255,255,255,0.9)","rgba(255,255,255,0.65)","rgba(255,255,255,0.5)","rgba(255,255,255,0.35)"][i] }}>{s.n}</div>
-                  <div style={{ fontSize:8, color:"rgba(255,255,255,0.28)", marginTop:1 }}>{s.l}</div>
-                </div>
-              ))}
             </div>
           </div>
 
-          {/* ── ATS badge — top right ── */}
-          <div style={{ position:"absolute", top:28, right:-16, background:"white", borderRadius:20, padding:"11px 15px", boxShadow:"0 16px 48px rgba(0,0,0,0.11), 0 4px 12px rgba(0,0,0,0.06)", animation:"badge-a 4.5s ease-in-out infinite", display:"flex", alignItems:"center", gap:10, border:"1.5px solid rgba(16,185,129,0.15)", zIndex:3 }}>
-            <div style={{ width:36, height:36, borderRadius:11, background:"var(--grn-l)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:17 }}>📄</div>
+          {/* Floating badges */}
+          <div style={{ position: "absolute", top: 20, right: -10, background: "white", borderRadius: 16, padding: "10px 14px", boxShadow: "0 12px 40px rgba(0,0,0,.08)", animation: "float-r 5s ease-in-out infinite", display: "flex", alignItems: "center", gap: 10, border: "1px solid var(--border)", zIndex: 3 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 10, background: "var(--grn-l)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>📄</div>
             <div>
-              <div style={{ fontSize:13, fontWeight:900, color:"var(--ink)" }}>ATS Score <span style={{ color:"var(--grn)" }}>92</span></div>
-              <div style={{ fontSize:10, color:"var(--ink3)" }}>↑ +31 pts this week</div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)" }}>ATS Score <span style={{ color: "var(--grn)" }}>92</span></div>
+              <div style={{ fontSize: 10, color: "var(--ink3)" }}>↑ +31 pts this week</div>
             </div>
           </div>
 
-          {/* ── Offer badge — bottom left ── */}
-          <div style={{ position:"absolute", bottom:48, left:-16, background:"white", borderRadius:20, padding:"11px 16px", boxShadow:"0 16px 48px rgba(0,0,0,0.11), 0 4px 12px rgba(0,0,0,0.06)", animation:"badge-b 5.5s ease-in-out infinite", border:"1.5px solid rgba(16,185,129,0.18)", zIndex:3 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:3 }}>
-              <span style={{ fontSize:16 }}>🎉</span>
-              <span style={{ fontSize:16, fontWeight:900, color:"var(--grn)" }}>₹44 LPA!</span>
+          <div style={{ position: "absolute", bottom: 50, left: -10, background: "white", borderRadius: 16, padding: "10px 14px", boxShadow: "0 12px 40px rgba(0,0,0,.08)", animation: "float-y 6s ease-in-out 1s infinite", border: "1px solid var(--border)", zIndex: 3 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+              <span style={{ fontSize: 14 }}>🎉</span>
+              <span style={{ fontSize: 15, fontWeight: 900, color: "var(--grn)" }}>₹44 LPA!</span>
             </div>
-            <div style={{ fontSize:10, color:"var(--ink3)" }}>Offer received · Zepto</div>
+            <div style={{ fontSize: 10, color: "var(--ink3)" }}>Offer received &middot; Zepto</div>
           </div>
 
-          {/* ── Interview badge — mid left ── */}
-          <div style={{ position:"absolute", top:146, left:-12, background:"var(--ind-l)", borderRadius:18, padding:"10px 14px", boxShadow:"0 12px 36px rgba(29,58,143,0.16)", animation:"badge-c 6s ease-in-out infinite", display:"flex", alignItems:"center", gap:8, border:"1.5px solid rgba(29,58,143,0.2)", zIndex:3 }}>
-            <span style={{ fontSize:18 }}>📩</span>
+          <div style={{ position: "absolute", top: 140, left: -8, background: "#eef1fd", borderRadius: 14, padding: "9px 13px", boxShadow: "0 8px 28px rgba(29,58,143,.1)", animation: "float-r 5.5s ease-in-out .5s infinite", display: "flex", alignItems: "center", gap: 8, border: "1px solid rgba(29,58,143,.12)", zIndex: 3 }}>
+            <span style={{ fontSize: 16 }}>📩</span>
             <div>
-              <div style={{ fontSize:11, fontWeight:800, color:"var(--ind)" }}>Interview Invite!</div>
-              <div style={{ fontSize:9, color:"var(--ind)", opacity:.65 }}>Razorpay · SDE II</div>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--accent)" }}>Interview Invite!</div>
+              <div style={{ fontSize: 9, color: "var(--accent)", opacity: .6 }}>Razorpay &middot; SDE II</div>
             </div>
-          </div>
-
-          {/* ── Salary badge — mid right ── */}
-          <div style={{ position:"absolute", bottom:156, right:-12, background:"white", borderRadius:18, padding:"10px 15px", boxShadow:"0 12px 36px rgba(0,0,0,0.1)", animation:"badge-a 5s ease-in-out 1.5s infinite", border:"1.5px solid rgba(245,158,11,0.2)", zIndex:3 }}>
-            <div style={{ fontSize:10, color:"var(--ink3)", marginBottom:2 }}>Salary Intel · ML Eng</div>
-            <div style={{ fontSize:17, fontWeight:900, color:"var(--amb)" }}>₹42–48 LPA</div>
-            <div style={{ fontSize:10, color:"var(--grn)", fontWeight:700 }}>↑ 18% YoY</div>
           </div>
         </div>
-
       </div>
     </section>
   )
 }
 
-// ─── Ticker ────────────────────────────────────────────────────
+// ─── Ticker ───────────────────────────────────────────────────
 function Ticker() {
-  const items = [
-    "AI Resume Tailoring ✦","Salary Intelligence ₹ LPA ✦","5-Day Prep Streak ✦","Smart Job Matching ✦",
-    "Application Pipeline ✦","Vibe AI Coach ✦","ATS Optimizer ✦","Platform Comparison ✦","Job Alerts ✦",
-    "AI Resume Tailoring ✦","Salary Intelligence ₹ LPA ✦","5-Day Prep Streak ✦","Smart Job Matching ✦",
-    "Application Pipeline ✦","Vibe AI Coach ✦","ATS Optimizer ✦","Platform Comparison ✦","Job Alerts ✦",
-  ]
+  const items = ["AI Resume Tailoring", "Salary Intelligence", "Smart Job Matching", "Vibe AI Coach", "ATS Optimizer", "Job Alerts", "Application Pipeline", "Mock Interviews"]
+  const all = [...items, ...items]
   return (
-    <div style={{ background:"linear-gradient(135deg,#142a6a,#2548c5)", padding:"15px 0", overflow:"hidden", position:"relative" }}>
-      <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px)", backgroundSize:"20px 20px", pointerEvents:"none" }} />
-      {/* Edge fades */}
-      <div style={{ position:"absolute", top:0, bottom:0, left:0, width:140, background:"linear-gradient(to right, #142a6a, transparent)", zIndex:2, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:0, bottom:0, right:0, width:140, background:"linear-gradient(to left, #2548c5, transparent)", zIndex:2, pointerEvents:"none" }} />
-      <div className="ticker-wrap">
-        {items.map((item,i) => (
-          <span key={i} style={{ fontSize:12, fontWeight:800, color:"rgba(255,255,255,0.9)", textTransform:"uppercase", letterSpacing:".09em", whiteSpace:"nowrap", marginRight:48 }}>{item}</span>
+    <div className="sr" style={{ background: "var(--ink)", padding: "14px 0", overflow: "hidden" }}>
+      <div className="ticker-track">
+        {all.map((item, i) => (
+          <span key={i} style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,.6)", textTransform: "uppercase", letterSpacing: ".08em", whiteSpace: "nowrap", marginRight: 48, display: "inline-flex", alignItems: "center", gap: 12 }}>
+            {item}
+            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,.25)", display: "inline-block" }} />
+          </span>
         ))}
       </div>
     </div>
@@ -687,20 +390,20 @@ function Ticker() {
 
 // ─── Logos ─────────────────────────────────────────────────────
 function Logos() {
-  const logos = ["Swiggy","Flipkart","CRED","PhonePe","Razorpay","Zepto","Meesho","Groww","Nykaa","Paytm","Juspay","Dunzo"]
-  const clrs  = ["#ff6b35","#2874f0","#00bcd4","#6739b7","#02042b","#3a0ca3","#f43f5e","#00c27e","#fc2779","#00b9f1","#2563eb","#f59e0b"]
-  const all   = [...logos,...logos]
+  const logos = ["Swiggy", "Flipkart", "CRED", "PhonePe", "Razorpay", "Zepto", "Meesho", "Groww", "Nykaa", "Paytm", "Juspay", "Dunzo"]
+  const clrs = ["#ff6b35", "#2874f0", "#00bcd4", "#6739b7", "#02042b", "#3a0ca3", "#f43f5e", "#00c27e", "#fc2779", "#00b9f1", "#2563eb", "#f59e0b"]
+  const all = [...logos, ...logos]
   return (
-    <section className="sr" style={{ background:"var(--cream)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)", padding:"30px 0" }}>
-      <div style={{ textAlign:"center", marginBottom:18 }}>
-        <span style={{ fontSize:11, fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink3)" }}>Our users got hired at</span>
+    <section className="sr" style={{ background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "28px 0" }}>
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", color: "var(--ink3)" }}>Our users got hired at</span>
       </div>
-      <div style={{ overflow:"hidden" }}>
-        <div className="ticker-wrap" style={{ animationDuration:"34s" }}>
-          {all.map((c,i) => (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:8, marginRight:20, padding:"7px 14px", borderRadius:14, background:"white", border:"1px solid var(--border)", boxShadow:"var(--shadow-sm)", flexShrink:0 }}>
-              <div style={{ width:22, height:22, borderRadius:6, background:clrs[i%clrs.length]+"20", color:clrs[i%clrs.length], fontSize:10, fontWeight:900, display:"flex", alignItems:"center", justifyContent:"center" }}>{c[0]}</div>
-              <span style={{ fontSize:12, fontWeight:700, color:"var(--ink2)", whiteSpace:"nowrap" }}>{c}</span>
+      <div style={{ overflow: "hidden" }}>
+        <div className="ticker-track" style={{ animationDuration: "40s" }}>
+          {all.map((c, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 16, padding: "6px 14px", borderRadius: 12, background: "white", border: "1px solid var(--border)", flexShrink: 0 }}>
+              <div style={{ width: 20, height: 20, borderRadius: 5, background: clrs[i % clrs.length] + "18", color: clrs[i % clrs.length], fontSize: 9, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>{c[0]}</div>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)", whiteSpace: "nowrap" }}>{c}</span>
             </div>
           ))}
         </div>
@@ -709,167 +412,296 @@ function Logos() {
   )
 }
 
-// ─── Problems ──────────────────────────────────────────────────
+// ─── Problems ─────────────────────────────────────────────────
 function Problems() {
   const pains = [
-    { icon:"🌀", title:"10 portals, zero clarity", desc:"Switching tabs every morning. Naukri, LinkedIn, Wellfound, Internshala — same listings, different formats. Hours wasted, opportunities missed." },
-    { icon:"🤖", title:"Resume rejected before humans see it", desc:"ATS bots filter out 75% of applications. Your generic resume is probably one of them. You'll never know." },
-    { icon:"💸", title:"No idea what salary to ask", desc:"Quoting too low costs you lakhs. Quoting too high loses the offer. Real ₹ LPA data is nowhere to be found." },
-    { icon:"😰", title:"Blanking in technical interviews", desc:"You know the answers — but freeze under pressure. No structured prep, no real feedback, no second chances." },
-    { icon:"🕳️", title:"Applications vanish into a black hole", desc:"Applied to 80 jobs. Heard from 3. No visibility into what stage anything is. Complete silence." },
-    { icon:"📋", title:"Same resume, 50 companies, zero calls", desc:"Generic templates get ignored. Recruiters spot a copy-paste resume in seconds and move on." },
+    { icon: "🌀", title: "10 portals, zero clarity", desc: "Hours wasted switching between Naukri, LinkedIn, Wellfound. Same listings, different formats." },
+    { icon: "🤖", title: "Resume rejected by bots", desc: "ATS filters out 75% of applications. Your generic resume never reaches a human." },
+    { icon: "💸", title: "No salary transparency", desc: "Quoting too low costs you lakhs. Too high loses the offer. Real ₹ LPA data doesn't exist." },
+    { icon: "😰", title: "Freeze in interviews", desc: "You know the answers but blank under pressure. No structured prep, no real feedback." },
+    { icon: "🕳️", title: "Applications vanish", desc: "Applied to 80 jobs. Heard from 3. No visibility into what stage anything is at." },
+    { icon: "📋", title: "Same resume, zero calls", desc: "Generic templates get ignored. Recruiters spot copy-paste in seconds and move on." },
   ]
   return (
-    <section id="problems" style={{ background:"var(--white)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1100, margin:"0 auto" }}>
-        <div className="lp-prob-card sr">
-          {/* Decorative orbs */}
-          <div style={{ position:"absolute", top:-80, right:-40, width:320, height:320, borderRadius:"50%", background:"radial-gradient(circle,rgba(59,82,240,.22),transparent 70%)", pointerEvents:"none" }} />
-          <div style={{ position:"absolute", bottom:-60, left:"12%", width:240, height:240, borderRadius:"50%", background:"radial-gradient(circle,rgba(42,78,207,.16),transparent 70%)", pointerEvents:"none" }} />
-          {/* Dot grid */}
-          <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px)", backgroundSize:"24px 24px", borderRadius:"inherit", pointerEvents:"none" }} />
-
-          <div style={{ position:"relative", zIndex:1, textAlign:"center", marginBottom:48 }}>
-            <div className="pill" style={{ background:"rgba(96,116,243,.18)", color:"#a5b4fc", marginBottom:16 }}>The Real Problem</div>
-            <h2 style={{ fontSize:"clamp(28px,3.8vw,48px)", fontWeight:900, letterSpacing:"-.035em", color:"#fff", margin:"0 0 18px", lineHeight:1.05 }}>
-              Job search in India<br />is completely broken.
-            </h2>
-            <p style={{ fontSize:16, color:"rgba(255,255,255,.55)", maxWidth:520, margin:"0 auto", lineHeight:1.75 }}>
-              You spend hours every week on the same painful loop. Jobingen fixes every part of it — in one app.
-            </p>
-          </div>
-
-          <div className="lp-pain-grid">
-            {pains.map((p,i) => (
-              <div key={i} className={`lp-paincard sr d${(i%3)+1}`}>
-                <div className="lp-painico">{p.icon}</div>
-                <h4>{p.title}</h4>
-                <p>{p.desc}</p>
-              </div>
-            ))}
-          </div>
+    <Section bg="var(--ink)" style={{ padding: "96px 28px" }}>
+      <div className="sr" style={{ textAlign: "center", marginBottom: 56 }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 16px", borderRadius: 99, background: "rgba(255,255,255,.08)", color: "rgba(255,255,255,.6)", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 18, border: "1px solid rgba(255,255,255,.08)" }}>
+          The Real Problem
         </div>
+        <h2 className="sr d1" style={{ fontSize: "clamp(30px,4vw,50px)", fontWeight: 900, letterSpacing: "-.04em", color: "white", margin: "0 0 16px", lineHeight: 1.06 }}>
+          Job search in India is<br />completely broken.
+        </h2>
+        <p className="sr d2" style={{ fontSize: 17, color: "rgba(255,255,255,.45)", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+          You spend hours every week on the same painful loop. Jobingen fixes every part of it.
+        </p>
       </div>
-    </section>
+      <div className="pain-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+        {pains.map((p, i) => (
+          <div key={i} className={`sr d${(i % 3) + 1}`} style={{ background: "rgba(255,255,255,.04)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 20, padding: "28px 24px", transition: "all .25s var(--ease)" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,.08)"; e.currentTarget.style.transform = "translateY(-4px)" }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,.04)"; e.currentTarget.style.transform = "" }}>
+            <div style={{ fontSize: 28, marginBottom: 14 }}>{p.icon}</div>
+            <h4 style={{ fontSize: 16, fontWeight: 800, color: "white", margin: "0 0 8px", letterSpacing: "-.02em" }}>{p.title}</h4>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,.45)", lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
   )
 }
 
-// ─── Features ──────────────────────────────────────────────────
+// ─── Features ─────────────────────────────────────────────────
 function Features() {
   const services = [
-    { icon:"🔍", bg:"var(--ind-l)",  title:"Unified Job Feed",      tag:"Core",      tagBg:"var(--ind-l)",  tagC:"var(--ind)",  desc:"Every portal in one feed — Naukri, LinkedIn, Indeed, Wellfound ranked by your personal AI fit score." },
-    { icon:"📄", bg:"var(--grn-l)",  title:"AI Resume Tailor",      tag:"Most Used", tagBg:"var(--grn-l)",  tagC:"var(--grn)",  desc:"Paste any JD → instant keyword-matched resume. ATS score jumps 40+ points. Zero guesswork." },
-    { icon:"💰", bg:"#fffbeb",       title:"Salary Intelligence",   tag:"Live Data", tagBg:"#fffbeb",       tagC:"var(--amb)",  desc:"Real ₹ LPA benchmarks by role, city, and company. Know your exact market rate before any negotiation." },
-    { icon:"🎤", bg:"#fdf2f8",       title:"Vibe AI Coach",         tag:"AI",        tagBg:"#fdf2f8",       tagC:"#db2777",     desc:"Mock interviews with real-time feedback. 5-day structured prep. 93% of users crack their first interview." },
-    { icon:"📊", bg:"#edf2ff",       title:"Application Pipeline",  tag:"Tracker",   tagBg:"#edf2ff",       tagC:"#4361ee",     desc:"Visual kanban from Applied → Offer. Know exactly where each application stands in real time." },
-    { icon:"🔔", bg:"var(--rose-l)", title:"Smart Job Alerts",      tag:"Auto",      tagBg:"var(--rose-l)", tagC:"var(--rose)", desc:"Set your criteria once. Get notified the moment matching jobs appear — before they go viral." },
+    { icon: "🔍", color: "var(--accent)", bg: "#eef1fd", title: "Unified Job Feed", tag: "Core", desc: "Every portal in one feed — Naukri, LinkedIn, Indeed, Wellfound — ranked by your AI fit score." },
+    { icon: "📄", color: "var(--grn)", bg: "var(--grn-l)", title: "AI Resume Tailor", tag: "Most Used", desc: "Paste any JD → instant keyword-matched resume. ATS score jumps 40+ points. Zero guesswork." },
+    { icon: "💰", color: "var(--amb)", bg: "#fffbeb", title: "Salary Intelligence", tag: "Live Data", desc: "Real ₹ LPA benchmarks by role, city, and company. Know your market rate before negotiation." },
+    { icon: "🎤", color: "#db2777", bg: "#fdf2f8", title: "Vibe AI Coach", tag: "AI", desc: "Mock interviews with real-time feedback. Structured prep. 93% of users crack their first interview." },
+    { icon: "📊", color: "#4361ee", bg: "#edf2ff", title: "Application Pipeline", tag: "Tracker", desc: "Visual kanban from Applied → Offer. Know exactly where each application stands." },
+    { icon: "🔔", color: "var(--rose)", bg: "#fff1f2", title: "Smart Job Alerts", tag: "Auto", desc: "Set criteria once. Get notified when matching jobs appear — before they go viral." },
   ]
   return (
-    <section id="features" style={{ background:"#f8f9ff", padding:"80px 28px", position:"relative" }}>
-      <div style={{ position:"absolute", top:0, left:0, right:0, height:1, background:"linear-gradient(90deg,transparent,rgba(42,78,207,.08),transparent)" }} />
-      <div style={{ maxWidth:1100, margin:"0 auto" }}>
-        <div className="sr" style={{ textAlign:"center", marginBottom:52 }}>
-          <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--ind-l)", color:"var(--ind)", marginBottom:14 }}>Everything You Need</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,48px)", fontWeight:900, letterSpacing:"-.03em", color:"var(--ink)", margin:"0 0 14px", lineHeight:1.05 }}>
-            Built to get you<br /><span className="shimmer">hired faster.</span>
-          </h2>
-          <p className="sr d3" style={{ fontSize:17, color:"var(--ink2)", maxWidth:520, margin:"0 auto", lineHeight:1.65 }}>One platform. Every tool India&apos;s job seekers need — from resume to offer letter.</p>
-        </div>
-        <div className="lp-svc-grid">
-          {services.map((s,i) => (
-            <div key={i} className={`lp-scard sr d${(i%3)+1}`}>
-              <div className="lp-sicon" style={{ background:s.bg }}>{s.icon}</div>
-              <div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                <span className="lp-stag" style={{ background:s.tagBg, color:s.tagC }}>{s.tag}</span>
-              </div>
+    <Section id="features" bg="var(--bg)">
+      <SectionHeader pill="Everything You Need" title="Built to get you" titleHighlight="hired faster." sub="One platform. Every tool India's job seekers need — from resume to offer letter." />
+      <div className="feat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+        {services.map((s, i) => (
+          <div key={i} className={`sr d${(i % 3) + 1}`} style={{ background: "white", borderRadius: 20, border: "1px solid var(--border)", padding: "28px 24px", transition: "all .25s var(--ease)", cursor: "default" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,.06)" }}
+            onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: s.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{s.icon}</div>
+              <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: s.bg, color: s.color, textTransform: "uppercase", letterSpacing: ".04em" }}>{s.tag}</span>
             </div>
-          ))}
-        </div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: "var(--ink)", margin: "0 0 8px", letterSpacing: "-.02em" }}>{s.title}</h3>
+            <p style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.65, margin: 0 }}>{s.desc}</p>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   )
 }
 
-// ─── How It Works ──────────────────────────────────────────────
+// ─── How It Works ─────────────────────────────────────────────
 function HowItWorks() {
   const steps = [
-    { n:"1", title:"Build your profile in 5 minutes", desc:"Upload your resume — Vibe AI scores it, finds skill gaps, and suggests fixes before you apply to a single job.", tags:["Resume Score","Gap Analysis"] },
-    { n:"2", title:"Discover jobs from every portal", desc:"One search. Naukri, LinkedIn, Indeed, Wellfound and 6+ portals — all ranked by your personal AI fit percentage.", tags:["Naukri","LinkedIn","6+ portals"] },
-    { n:"3", title:"Apply with a JD-tailored resume", desc:"For each role, AI rewrites your resume with matching keywords. ATS score hits 90+ automatically. Stand out every time.", tags:["ATS Optimized","Per-JD Resume"] },
-    { n:"4", title:"Prep with Vibe AI mock interviews", desc:"5-day structured roadmap + AI mock coach. Real-time feedback on DSA, system design, and HR rounds. No guesswork.", tags:["5-Day Prep","Vibe AI Coach"] },
-    { n:"5", title:"Accept your offer, negotiate confidently", desc:"Real ₹ LPA data for your exact role, city, and company. Walk into every salary conversation fully prepared.", tags:["Salary Intel","Offer Letter"] },
+    { n: "1", title: "Build your profile in 5 minutes", desc: "Upload your resume — Vibe AI scores it, finds skill gaps, and suggests fixes.", tags: ["Resume Score", "Gap Analysis"] },
+    { n: "2", title: "Discover jobs from every portal", desc: "One search across Naukri, LinkedIn, Indeed, Wellfound — ranked by AI fit percentage.", tags: ["Multi-Portal", "AI Matching"] },
+    { n: "3", title: "Apply with a JD-tailored resume", desc: "AI rewrites your resume with matching keywords for each role. ATS score hits 90+.", tags: ["ATS Optimized", "Per-JD Resume"] },
+    { n: "4", title: "Prep with Vibe AI mock interviews", desc: "5-day structured roadmap + AI mock coach. Real-time feedback on DSA, design, and HR rounds.", tags: ["Vibe AI Coach", "5-Day Prep"] },
+    { n: "5", title: "Negotiate and accept your offer", desc: "Real ₹ LPA data for your role, city, and company. Walk into salary talks fully prepared.", tags: ["Salary Intel", "Offer Letter"] },
   ]
   return (
-    <section id="how-it-works" style={{ background:"var(--white)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:900, margin:"0 auto" }}>
-        <div className="sr" style={{ textAlign:"center" }}>
-          <div className="dot-divider"><span/><span/><span/></div>
-          <div className="pill sr d1" style={{ background:"var(--grn-l)", color:"var(--grn)", marginBottom:14 }}>Your Journey on Jobingen</div>
-          <h2 className="sr d2" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:"0 0 14px" }}>
-            From sign-up to<br /><span className="shimmer">offer letter.</span>
-          </h2>
-          <p className="sr d3" style={{ fontSize:16, color:"var(--ink2)", maxWidth:440, margin:"0 auto", lineHeight:1.7 }}>A clear path — no guesswork, no wasted effort, no missed opportunities.</p>
-        </div>
-        <div className="lp-journey">
-          {steps.map((s,i) => (
-            <div key={i} className={`lp-jstep sr d${(i%3)+1}`}>
-              <div className="lp-jdot">{s.n}</div>
-              <div className="lp-jbody">
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                <div className="lp-jtags">
-                  {s.tags.map(t => <span key={t} className="lp-jtag">{t}</span>)}
+    <Section id="how-it-works">
+      <SectionHeader pill="Your Journey" pillColor="var(--grn)" pillBg="var(--grn-l)" title="From sign-up to" titleHighlight="offer letter." sub="A clear path — no guesswork, no wasted effort, no missed opportunities." />
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div className="journey-line" style={{ display: "flex", flexDirection: "column", position: "relative" }}>
+          <div style={{ position: "absolute", top: 24, bottom: 24, left: 23, width: 2, background: "linear-gradient(180deg, var(--accent), rgba(29,58,143,.08))", zIndex: 0 }} />
+          {steps.map((s, i) => (
+            <div key={i} className={`sr d${(i % 3) + 1}`} style={{ display: "flex", gap: 20, alignItems: "flex-start", padding: "24px 0", position: "relative", zIndex: 1 }}>
+              <div className="j-dot" style={{ width: 48, minWidth: 48, height: 48, borderRadius: "50%", background: "var(--ink)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(0,0,0,.12), 0 0 0 4px white" }}>{s.n}</div>
+              <div style={{ flex: 1, paddingTop: 4 }}>
+                <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 6px", letterSpacing: "-.02em", color: "var(--ink)" }}>{s.title}</h3>
+                <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.6, margin: "0 0 10px" }}>{s.desc}</p>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {s.tags.map(t => <span key={t} style={{ fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 99, background: "#eef1fd", color: "var(--accent)" }}>{t}</span>)}
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+    </Section>
+  )
+}
+
+// ─── Bootcamp ─────────────────────────────────────────────────
+function Bootcamp() {
+  const day1 = [
+    { time: "8:30 AM", item: "AI/ML/DL Technical Deep Dive" },
+    { time: "11:00 AM", item: "RAG Architecture + Implementation" },
+    { time: "2:00 PM", item: "Live RAG Project Build" },
+    { time: "6–7 PM", item: "Hackathon problem statement" },
+  ]
+  return (
+    <section id="bootcamp" style={{ background: "var(--bg)", padding: "40px 28px" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+        <div className="sr" style={{ overflow: "hidden", borderRadius: 24, border: "1px solid var(--border)", background: "white" }}>
+          {/* Header */}
+          <div className="boot-head" style={{ background: "var(--ink)", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", borderRadius: 99, background: "rgba(255,255,255,.1)", border: "1px solid rgba(255,255,255,.15)", fontSize: 10, fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: ".06em", whiteSpace: "nowrap" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#f87171", animation: "pulse-s 1.5s ease-in-out infinite" }} />
+                Live &middot; 14–15 March 2026
+              </div>
+              <div style={{ fontSize: 19, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>2-Day AI Bootcamp + Hackathon</div>
+            </div>
+            <div className="boot-price-group" style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "white", lineHeight: 1 }}>₹29</div>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,.45)" }}>Online &middot; Limited seats</div>
+              </div>
+              <a href="/register" className="boot-reg-btn" style={{ fontSize: 13, fontWeight: 800, padding: "11px 24px", borderRadius: 12, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .15s" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)" }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "" }}>
+                Register Now
+                <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Body */}
+          <div className="boot-body" style={{ padding: "22px 28px", display: "grid", gridTemplateColumns: "210px 1fr", gap: 24 }}>
+            {/* Left */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {[
+                { emoji: "📅", day: "Saturday, 14 March", time: "8:30 AM – 6 PM" },
+                { emoji: "⚡", day: "Sunday, 15 March", time: "9 AM – 9 PM &middot; Hackathon" },
+              ].map((d, i) => (
+                <div key={i} style={{ display: "flex", gap: 10 }}>
+                  <span style={{ fontSize: 15 }}>{d.emoji}</span>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}>{d.day}</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }} dangerouslySetInnerHTML={{ __html: d.time }} />
+                  </div>
+                </div>
+              ))}
+              <div style={{ height: 1, background: "var(--border)" }} />
+              <div>
+                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 10 }}>Your Mentors</div>
+                {[
+                  { name: "Aditya Dubey", role: "AI Consultant &middot; Cograd", initials: "AD", clr: "var(--accent)" },
+                  { name: "Sonic Payeng", role: "SWE2 &middot; Dell Technologies", initials: "SP", clr: "var(--grn)" },
+                  { name: "Jitesh Vijaykumar", role: "AI Engineer &middot; KPMG", initials: "JV", clr: "var(--vio)" },
+                  { name: "Shubham Kaushik", role: "AI Researcher &middot; KPMG", initials: "SK", clr: "#b45309" },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                    <div style={{ width: 34, height: 34, borderRadius: 10, background: "var(--bg2)", color: s.clr, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, flexShrink: 0 }}>{s.initials}</div>
+                    <div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}>{s.name}</div>
+                      <div style={{ fontSize: 10, color: "var(--ink3)" }} dangerouslySetInnerHTML={{ __html: s.role }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — 3 cols */}
+            <div className="boot-cols" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+              <div style={{ padding: 16, borderRadius: 16, background: "var(--bg)", border: "1px solid var(--border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+                  <span style={{ padding: "2px 9px", borderRadius: 99, background: "#eef1fd", fontSize: 9, fontWeight: 800, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".05em" }}>Day 1</span>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)", marginBottom: 12 }}>AI/ML + RAG Masterclass</div>
+                {day1.map((d, i) => (
+                  <div key={i} style={{ display: "flex", gap: 7, marginBottom: 8 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--accent)", flexShrink: 0, marginTop: 5 }} />
+                    <div>
+                      <div style={{ fontSize: 9, fontWeight: 800, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".04em" }}>{d.time}</div>
+                      <div style={{ fontSize: 11, color: "var(--ink2)", lineHeight: 1.4 }}>{d.item}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ padding: 16, borderRadius: 16, background: "var(--ink)", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: -16, right: -16, width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,.05)" }} />
+                <div style={{ position: "relative" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+                    <span style={{ padding: "2px 9px", borderRadius: 99, background: "rgba(255,255,255,.12)", fontSize: 9, fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: ".05em" }}>Day 2</span>
+                    <span style={{ fontSize: 9, color: "rgba(255,255,255,.4)", fontWeight: 600 }}>Hackathon</span>
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: "white", marginBottom: 12 }}>Build Real AI in 1 Day</div>
+                  {["9 AM – 9 PM full-day build", "1 major AI project, end-to-end", "Full mentor support all day", "Winners: paid internships 🏆"].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 7, marginBottom: 8 }}>
+                      <div style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,.4)", flexShrink: 0, marginTop: 5 }} />
+                      <div style={{ fontSize: 11, color: "rgba(255,255,255,.75)", lineHeight: 1.4 }}>{item}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ padding: 16, borderRadius: 16, background: "var(--bg)", border: "1px solid var(--border)" }}>
+                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>What You Take Home</div>
+                {[
+                  { icon: "📄", text: "ATS-proof resume" },
+                  { icon: "📚", text: "Full lecture notes" },
+                  { icon: "🗺️", text: "3-month AI roadmap" },
+                  { icon: "💼", text: "Paid internship (winners)" },
+                  { icon: "🤝", text: "Community peer network" },
+                ].map((p, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 13 }}>{p.icon}</span>
+                    <span style={{ fontSize: 12, color: "var(--ink2)", fontWeight: 600 }}>{p.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
 
-// ─── Testimonials ──────────────────────────────────────────────
-type FeedbackItem = { name: string; rating: number; quote: string; recommend: string }
-
-const AVATAR_COLORS = ["#6074f3","#10b981","#f59e0b","#f43f5e","#3b82f6","#8b5cf6","#ec4899","#14b8a6"]
-
-function FeedbackCard({ f, idx }: { f: FeedbackItem; idx: number }) {
-  const initials = f.name.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()
-  const color = AVATAR_COLORS[idx % AVATAR_COLORS.length]
+// ─── Mentors ──────────────────────────────────────────────────
+function MentorsSection() {
+  const mentors = [
+    { name: "Shubham Kaushik", role: "AI Researcher", company: "KPMG", initials: "SK", color: "#b45309", desc: "5+ years in AI/ML & full-stack. Research on LLMs & financial AI." },
+    { name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG", initials: "JV", color: "var(--vio)", desc: "5+ years building scalable AI solutions for enterprise systems." },
+    { name: "Sonic Payeng", role: "SWE2", company: "Dell Technologies", initials: "SP", color: "var(--grn)", desc: "AI engineer building automation on Dell Platform. M.Tech from MNNIT." },
+    { name: "Aditya Dubey", role: "AI Consultant", company: "Cograd", initials: "AD", color: "var(--accent)", desc: "Mentored 12,000+ professionals in AI. M.Tech from NIT Allahabad." },
+  ]
   return (
-    <div style={{
-      width: 280, flexShrink: 0, borderRadius: 18, padding: "20px 22px",
-      background: "white", border: "1.5px solid var(--border)",
-      boxShadow: "var(--shadow-sm)", display: "flex", flexDirection: "column", gap: 12,
-      position: "relative",
-    }}>
-      {/* Quote mark */}
-      <div style={{ position:"absolute", top:14, left:18, fontSize:52, lineHeight:1, color:"rgba(29,58,143,0.07)", fontFamily:"Georgia,serif", fontWeight:900, pointerEvents:"none", userSelect:"none" }}>&ldquo;</div>
-      {/* Stars */}
-      <div style={{ display:"flex", gap:2 }}>
-        {[1,2,3,4,5].map(s => (
-          <svg key={s} width="13" height="13" viewBox="0 0 14 14">
-            <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= f.rating ? "#fbbf24" : "#e5e7eb"}/>
-          </svg>
+    <Section bg="var(--bg)">
+      <SectionHeader pill="Meet Our Mentors" pillColor="var(--vio)" pillBg="var(--vio-l)" title="Learn from industry leaders" sub="Working professionals from top companies, passionate about guiding the next generation." />
+      <div className="mentors-row" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+        {mentors.map((m, i) => (
+          <div key={i} className={`sr d${i + 1}`} style={{ background: "white", borderRadius: 20, border: "1px solid var(--border)", padding: "28px 22px", transition: "all .25s var(--ease)", cursor: "default" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,.06)" }}
+            onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: "var(--bg2)", color: m.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 900, flexShrink: 0 }}>{m.initials}</div>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "var(--ink)", lineHeight: 1.2 }}>{m.name}</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: m.color, marginTop: 2 }}>{m.role}</div>
+              </div>
+            </div>
+            <span style={{ display: "inline-block", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: "var(--bg2)", color: "var(--ink2)", marginBottom: 12, letterSpacing: ".02em" }}>{m.company}</span>
+            <p style={{ fontSize: 13, color: "var(--ink3)", lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
+          </div>
         ))}
       </div>
-      {/* Quote */}
-      <p style={{ fontSize:13, lineHeight:1.7, color:"var(--ink2)", margin:0, flex:1,
-        display:"-webkit-box", WebkitLineClamp:4, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
-        {f.quote}
-      </p>
-      {/* Author */}
-      <div style={{ display:"flex", alignItems:"center", gap:10, paddingTop:12, borderTop:"1px solid var(--border)" }}>
-        <div style={{ width:32, height:32, borderRadius:"50%", background:color, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"white", flexShrink:0 }}>
-          {initials}
-        </div>
+      <div style={{ textAlign: "center", marginTop: 36 }}>
+        <a href="/mentors" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px", borderRadius: 14, background: "var(--ink)", color: "white", fontSize: 14, fontWeight: 700, textDecoration: "none", transition: "all .2s var(--spring)", boxShadow: "0 4px 16px rgba(0,0,0,.1)" }}
+          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,.15)" }}
+          onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.1)" }}>
+          View All 20+ Mentors
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </a>
+      </div>
+    </Section>
+  )
+}
+
+// ─── Testimonials ─────────────────────────────────────────────
+type FeedbackItem = { name: string; rating: number; quote: string; recommend: string }
+
+function FeedbackCard({ f, idx }: { f: FeedbackItem; idx: number }) {
+  const colors = ["#1d3a8f", "#10b981", "#f59e0b", "#f43f5e", "#3b82f6", "#8b5cf6", "#ec4899", "#14b8a6"]
+  const initials = f.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()
+  return (
+    <div style={{ width: 300, flexShrink: 0, borderRadius: 20, padding: "22px 20px", background: "white", border: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ display: "flex", gap: 2 }}>
+        {[1, 2, 3, 4, 5].map(s => (
+          <svg key={s} width="14" height="14" viewBox="0 0 14 14"><path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= f.rating ? "#fbbf24" : "#e5e7eb"} /></svg>
+        ))}
+      </div>
+      <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--ink2)", margin: 0, flex: 1, display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{f.quote}</p>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, paddingTop: 14, borderTop: "1px solid var(--border)" }}>
+        <div style={{ width: 30, height: 30, borderRadius: "50%", background: colors[idx % colors.length], display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 900, color: "white" }}>{initials}</div>
         <div>
-          <div style={{ fontSize:12, fontWeight:800, color:"var(--ink)" }}>{f.name}</div>
-          <div style={{ fontSize:10, color:"var(--ink3)" }}>Bootcamp 1 Attendee</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>{f.name}</div>
+          <div style={{ fontSize: 10, color: "var(--ink3)" }}>Bootcamp Attendee</div>
         </div>
       </div>
     </div>
@@ -882,458 +714,153 @@ function Testimonials() {
   const [recommendPct, setRecommendPct] = useState(0)
 
   useEffect(() => {
-    fetch("/api/public-feedback")
-      .then(r => r.json())
-      .then(d => {
-        const list: FeedbackItem[] = d.feedback || []
-        setFeedback(list)
-        if (list.length) {
-          setAvgRating(Math.round((list.reduce((s, r) => s + r.rating, 0) / list.length) * 10) / 10)
-          const yes = list.filter(r => r.recommend?.toLowerCase().includes("yes")).length
-          setRecommendPct(Math.round((yes / list.length) * 100))
-        }
-      })
-      .catch(() => {})
+    fetch("/api/public-feedback").then(r => r.json()).then(d => {
+      const list: FeedbackItem[] = d.feedback || []
+      setFeedback(list)
+      if (list.length) {
+        setAvgRating(Math.round((list.reduce((s, r) => s + r.rating, 0) / list.length) * 10) / 10)
+        setRecommendPct(Math.round((list.filter(r => r.recommend?.toLowerCase().includes("yes")).length / list.length) * 100))
+      }
+    }).catch(() => { })
   }, [])
 
-  // Double the array for seamless loop
   const track = feedback.length ? [...feedback, ...feedback] : []
+  const fallback: FeedbackItem[] = [
+    { quote: "The RAG session was incredibly hands-on. Built my first AI app on Day 1. Mentors were super accessible.", name: "Rahul M.", rating: 5, recommend: "Yes" },
+    { quote: "Best investment. ML to RAG to hackathon in 2 days. Content quality was top-notch.", name: "Priya S.", rating: 5, recommend: "Yes" },
+    { quote: "Practical, structured, and mentors helped debug live. Completely worth ₹29.", name: "Arjun K.", rating: 5, recommend: "Yes" },
+  ]
 
   return (
-    <section className="section-pad" style={{ background:"var(--cream)", padding:"80px 0", overflow:"hidden" }}>
-
-      {/* Header */}
-      <div className="sr" style={{ textAlign:"center", marginBottom:48, padding:"0 28px" }}>
-        <div className="dot-divider"><span/><span/><span/></div>
-        <div style={{ display:"inline-flex", alignItems:"center", gap:7, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.25)", color:"var(--grn)", fontSize:12, fontWeight:700, padding:"5px 14px", borderRadius:99, marginBottom:16 }}>
-          <span style={{ width:7, height:7, borderRadius:"50%", background:"var(--grn)", display:"inline-block" }} />
-          Live from Bootcamp 1
+    <Section bg="var(--bg)" style={{ overflow: "hidden" }}>
+      <div className="sr" style={{ textAlign: "center", marginBottom: 48 }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--grn-l)", border: "1px solid rgba(16,185,129,.2)", color: "var(--grn)", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 99, marginBottom: 18, textTransform: "uppercase", letterSpacing: ".06em" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--grn)" }} />
+          Live from Bootcamp
         </div>
-        <h2 className="sr d1" style={{ fontSize:"clamp(28px,3.4vw,44px)", fontWeight:900, letterSpacing:"-.025em", color:"var(--ink)", margin:"0 0 12px" }}>
+        <h2 className="sr d1" style={{ fontSize: "clamp(30px,3.8vw,46px)", fontWeight: 900, letterSpacing: "-.035em", color: "var(--ink)", margin: "0 0 14px" }}>
           What our <span className="shimmer">alumni say</span>
         </h2>
-        <p className="sr d2" style={{ fontSize:16, color:"var(--ink3)", margin:"0 auto", maxWidth:460 }}>
-          Real words from real attendees — unfiltered.
-        </p>
-
-        {/* Stats strip */}
         {feedback.length > 0 && (
-          <div className="sr d3" style={{ display:"inline-flex", gap:0, background:"white", border:"1.5px solid var(--border)", borderRadius:16, overflow:"hidden", marginTop:28, boxShadow:"var(--shadow-sm)" }}>
+          <div className="sr d2" style={{ display: "inline-flex", gap: 0, background: "white", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", marginTop: 20 }}>
             {[
-              { label:"Avg Rating", value:`${avgRating} / 5`, color:"#fbbf24" },
-              { label:"Responses", value:`${feedback.length}+`, color:"var(--ind)" },
-              { label:"Would Recommend", value:`${recommendPct}%`, color:"var(--grn)" },
+              { label: "Avg Rating", value: `${avgRating}/5`, color: "#fbbf24" },
+              { label: "Responses", value: `${feedback.length}+`, color: "var(--accent)" },
+              { label: "Would Recommend", value: `${recommendPct}%`, color: "var(--grn)" },
             ].map((s, i) => (
-              <div key={i} style={{ padding:"14px 24px", textAlign:"center", borderRight: i < 2 ? "1px solid var(--border)" : "none" }}>
-                <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
-                <div style={{ fontSize:10, fontWeight:700, color:"var(--ink3)", marginTop:4, textTransform:"uppercase", letterSpacing:".06em" }}>{s.label}</div>
+              <div key={i} style={{ padding: "14px 24px", textAlign: "center", borderRight: i < 2 ? "1px solid var(--border)" : "none" }}>
+                <div style={{ fontSize: 20, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", marginTop: 4, textTransform: "uppercase", letterSpacing: ".06em" }}>{s.label}</div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Marquee */}
       {track.length > 0 ? (
-        <div style={{ position:"relative" }}>
-          {/* Fade edges */}
-          <div style={{ position:"absolute", left:0, top:0, bottom:0, width:80, background:"linear-gradient(to right, var(--cream), transparent)", zIndex:2, pointerEvents:"none" }} />
-          <div style={{ position:"absolute", right:0, top:0, bottom:0, width:80, background:"linear-gradient(to left, var(--cream), transparent)", zIndex:2, pointerEvents:"none" }} />
-
-          <div style={{ display:"flex", gap:16, paddingLeft:28,
-            animation:`marquee-scroll ${track.length * 4}s linear infinite`,
-            width:"max-content",
-          }}>
+        <div style={{ position: "relative" }}>
+          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right, var(--bg), transparent)", zIndex: 2, pointerEvents: "none" }} />
+          <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left, var(--bg), transparent)", zIndex: 2, pointerEvents: "none" }} />
+          <div style={{ display: "flex", gap: 16, animation: `marquee ${track.length * 4}s linear infinite`, width: "max-content" }}>
             {track.map((f, i) => <FeedbackCard key={i} f={f} idx={i} />)}
           </div>
         </div>
       ) : (
-        // Fallback static cards while no feedback yet
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:16, padding:"0 28px", maxWidth:1120, margin:"0 auto" }}>
-          {[
-            { quote:"The RAG session was incredibly hands-on. I built my first AI app in Day 1 itself. The mentors were super accessible throughout.", name:"Rahul M.", rating:5, recommend:"Definitely Yes" },
-            { quote:"Best investment I've made. Content quality was top-notch — ML to RAG to hackathon in 2 days. Loved every bit of it.", name:"Priya S.", rating:5, recommend:"Definitely Yes" },
-            { quote:"Practical, structured, and the mentors actually helped debug live. Completely worth the ₹29. Waiting for the next batch!", name:"Arjun K.", rating:5, recommend:"Definitely Yes" },
-          ].map((f, i) => <FeedbackCard key={i} f={f} idx={i} />)}
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+          {fallback.map((f, i) => <FeedbackCard key={i} f={f} idx={i} />)}
         </div>
       )}
-
-    </section>
+    </Section>
   )
 }
 
-// ─── Bootcamp ──────────────────────────────────────────────────
-function Bootcamp() {
-  const day1 = [
-    { time:"8:30 AM",  item:"AI/ML/DL Technical Deep Dive" },
-    { time:"11:00 AM", item:"RAG Architecture + Implementation" },
-    { time:"2:00 PM",  item:"Live RAG Project Build (hands-on)" },
-    { time:"6–7 PM",   item:"Hackathon problem via Google Form" },
-  ]
-  return (
-    <section id="bootcamp" style={{ background:"var(--cream)", padding:"36px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
-        <div className="sr card" style={{ overflow:"hidden", padding:0, borderRadius:24 }}>
-
-          {/* ── Header band ── */}
-          <div className="bootcamp-head" style={{ background:"linear-gradient(135deg,#1d3a8f 0%,#2548c5 100%)", padding:"18px 28px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
-            <div className="bootcamp-left-group" style={{ display:"flex", alignItems:"center", gap:14 }}>
-              <div style={{ display:"flex", alignItems:"center", gap:7, padding:"4px 12px", borderRadius:99, background:"rgba(255,255,255,0.15)", border:"1px solid rgba(255,255,255,0.25)", fontSize:10, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".07em", whiteSpace:"nowrap" }}>
-                <div style={{ width:6, height:6, borderRadius:"50%", background:"#f87171", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
-                Live · 14–15 March 2026
-              </div>
-              <div className="bootcamp-title" style={{ fontSize:20, fontWeight:900, color:"white", letterSpacing:"-.025em", lineHeight:1.2 }}>
-                2-Day AI Bootcamp <span style={{ opacity:.7 }}>+</span> Hackathon
-              </div>
-            </div>
-            <div className="bootcamp-price-group" style={{ display:"flex", alignItems:"center", gap:16, flexShrink:0 }}>
-              <div className="bootcamp-price" style={{ textAlign:"right" }}>
-                <div style={{ fontSize:30, fontWeight:900, color:"white", lineHeight:1 }}>₹29</div>
-                <div style={{ fontSize:10, color:"rgba(255,255,255,0.55)", marginTop:1 }}>Online · Limited seats</div>
-              </div>
-              <a href="/register" className="btn bootcamp-reg-btn" style={{ fontSize:13, fontWeight:900, padding:"11px 24px", borderRadius:14, color:"#1d3a8f", background:"white", boxShadow:"0 4px 20px rgba(0,0,0,0.18)", display:"inline-flex", alignItems:"center", gap:8, whiteSpace:"nowrap" }}>
-                Register Now
-                <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </a>
-            </div>
-          </div>
-
-          {/* ── Body ── */}
-          <div className="bootcamp-body" style={{ padding:"22px 28px", display:"grid", gridTemplateColumns:"220px 1fr", gap:24, background:"white" }}>
-
-            {/* Left: meta + speakers */}
-            <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-              {/* Dates */}
-              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-                {[
-                  { emoji:"📅", day:"Saturday, 14 March", time:"8:30 AM – 6 PM · 4 sessions" },
-                  { emoji:"⚡", day:"Sunday, 15 March",   time:"9 AM – 9 PM · Hackathon" },
-                ].map((d,i) => (
-                  <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
-                    <span style={{ fontSize:16, lineHeight:1, marginTop:1 }}>{d.emoji}</span>
-                    <div>
-                      <div style={{ fontSize:12, fontWeight:700, color:"var(--ink)" }}>{d.day}</div>
-                      <div style={{ fontSize:11, color:"var(--ink3)" }}>{d.time}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ height:1, background:"var(--border)" }} />
-
-              {/* Speakers */}
-              <div>
-                <div style={{ fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink3)", marginBottom:10 }}>Your Mentors</div>
-                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-                  {[
-                    { name:"Aditya Dubey",    role:"AI Consultant · Cograd",    initials:"AD", clr:"var(--ind)", bg:"var(--ind-l)" },
-                    { name:"Sonic Payeng",    role:"SWE2 · Dell Technologies",  initials:"SP", clr:"var(--grn)", bg:"var(--grn-l)" },
-                    { name:"Jitesh Vijaykumar", role:"AI Engineer · KPMG",      initials:"JV", clr:"var(--vio)", bg:"#eef1fe"      },
-                    { name:"Shubham Kaushik", role:"AI Researcher · KPMG",      initials:"SK", clr:"#b45309",    bg:"#fffbeb"      },
-                  ].map((s,i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                      <div style={{ width:36, height:36, borderRadius:11, background:s.bg, color:s.clr, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:900, flexShrink:0 }}>{s.initials}</div>
-                      <div>
-                        <div style={{ fontSize:12, fontWeight:800, color:"var(--ink)" }}>{s.name}</div>
-                        <div style={{ fontSize:10, color:"var(--ink3)", lineHeight:1.4 }}>{s.role}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ padding:"10px 12px", borderRadius:12, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.2)", marginTop:"auto" }}>
-                <div style={{ fontSize:11, fontWeight:700, color:"var(--grn)", marginBottom:2 }}>🎯 Fully Interactive</div>
-                <div style={{ fontSize:10, color:"var(--ink3)", lineHeight:1.55 }}>You build throughout. No passive watching — mentors resolve blockers live.</div>
-              </div>
-            </div>
-
-            {/* Right: 3 info columns */}
-            <div className="bootcamp-cols" style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:14 }}>
-
-              {/* Day 1 */}
-              <div style={{ padding:"16px 16px", borderRadius:16, background:"var(--cream)", border:"1px solid var(--border)" }}>
-                <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:12 }}>
-                  <div style={{ padding:"2px 9px", borderRadius:99, background:"var(--ind-l)", fontSize:9, fontWeight:900, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".06em" }}>Day 1</div>
-                  <div style={{ fontSize:9, color:"var(--ink3)", fontWeight:600 }}>Sat</div>
-                </div>
-                <div style={{ fontSize:12, fontWeight:800, color:"var(--ink)", marginBottom:12, lineHeight:1.3 }}>AI/ML/DL + RAG Masterclass</div>
-                <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                  {day1.map((d,i) => (
-                    <div key={i} style={{ display:"flex", gap:7, alignItems:"flex-start" }}>
-                      <div style={{ width:5, height:5, borderRadius:"50%", background:"var(--ind)", flexShrink:0, marginTop:4 }} />
-                      <div>
-                        <div style={{ fontSize:9, fontWeight:800, color:"var(--ind)", textTransform:"uppercase", letterSpacing:".04em" }}>{d.time}</div>
-                        <div style={{ fontSize:11, color:"var(--ink2)", lineHeight:1.4 }}>{d.item}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Day 2 — Hackathon */}
-              <div style={{ padding:"16px 16px", borderRadius:16, background:"linear-gradient(145deg,#1d3a8f,#2548c5)", position:"relative", overflow:"hidden" }}>
-                <div style={{ position:"absolute", top:-16, right:-16, width:70, height:70, borderRadius:"50%", background:"rgba(255,255,255,0.07)", pointerEvents:"none" }} />
-                <div style={{ position:"relative" }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:12 }}>
-                    <div style={{ padding:"2px 9px", borderRadius:99, background:"rgba(255,255,255,0.18)", fontSize:9, fontWeight:900, color:"white", textTransform:"uppercase", letterSpacing:".06em" }}>Day 2</div>
-                    <div style={{ fontSize:9, color:"rgba(255,255,255,0.55)", fontWeight:600 }}>Sun · Hackathon</div>
-                  </div>
-                  <div style={{ fontSize:12, fontWeight:800, color:"white", marginBottom:12, lineHeight:1.3 }}>Build Real AI in 1 Day</div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                    {[
-                      "9 AM – 9 PM full-day build",
-                      "1 major AI project, end-to-end",
-                      "Full mentor support all day",
-                      "Winners: paid internships 🏆",
-                    ].map((item,i) => (
-                      <div key={i} style={{ display:"flex", gap:7, alignItems:"flex-start" }}>
-                        <div style={{ width:5, height:5, borderRadius:"50%", background:"rgba(255,255,255,0.55)", flexShrink:0, marginTop:4 }} />
-                        <div style={{ fontSize:11, color:"rgba(255,255,255,0.85)", lineHeight:1.4 }}>{item}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* What You Get */}
-              <div style={{ padding:"16px 16px", borderRadius:16, background:"var(--cream)", border:"1px solid var(--border)" }}>
-                <div style={{ fontSize:9, fontWeight:800, textTransform:"uppercase", letterSpacing:".07em", color:"var(--ink3)", marginBottom:12 }}>What You Take Home</div>
-                <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
-                  {[
-                    { icon:"📄", text:"ATS-proof resume" },
-                    { icon:"📚", text:"Full lecture notes" },
-                    { icon:"🗺️", text:"3-month AI roadmap" },
-                    { icon:"💼", text:"Paid internship (winners)" },
-                    { icon:"🤝", text:"Community peer network" },
-                  ].map((p,i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"center", gap:8 }}>
-                      <span style={{ fontSize:13, flexShrink:0 }}>{p.icon}</span>
-                      <span style={{ fontSize:11, color:"var(--ink2)", fontWeight:600 }}>{p.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── MENTORS SECTION ──────────────────────────────────────────
-const MENTORS_DATA = [
-  { name: "Aditya Dubey", role: "AI Strategy & Implementation Consultant", company: "Cograd", initials: "AD", desc: "Mentored 12,000+ professionals in AI. M.Tech from NIT Allahabad.", color: "#1d3a8f", bg: "#eef1fd" },
-  { name: "Sonic Payeng", role: "Software Engineer 2 (SWE2)", company: "Dell Technologies", initials: "SP", desc: "AI engineer building automation on Dell Platform. M.Tech from MNNIT.", color: "#16a34a", bg: "#f0fdf4" },
-  { name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG", initials: "JV", desc: "5+ years building scalable AI solutions for enterprise systems.", color: "#7c3aed", bg: "#f5f3ff" },
-  { name: "Shubham Kaushik", role: "AI & Financial Intelligence Researcher", company: "KPMG", initials: "SK", desc: "5+ years in AI, ML & full-stack. Research on LLMs & financial AI.", color: "#b45309", bg: "#fffbeb" },
-]
-
-function MentorsSection() {
-  return (
-    <section style={{ padding: "80px 0 60px", background: "#fafbff" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "#f5f3ff", borderRadius: 20, marginBottom: 16, fontSize: 12, fontWeight: 700, color: "#7c3aed", border: "1px solid #ede9fe" }}>
-            Meet Our Mentors
-          </div>
-          <h2 style={{ fontSize: "clamp(26px, 3vw, 36px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-.03em", lineHeight: 1.15, marginBottom: 12 }}>
-            Learn From Industry Leaders
-          </h2>
-          <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.7, maxWidth: 480, margin: "0 auto" }}>
-            Our mentors are working professionals from top companies who are passionate about guiding the next generation.
-          </p>
-        </div>
-
-        {/* Mentor cards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
-          {MENTORS_DATA.map((m, i) => (
-            <div key={i} style={{
-              background: "#fff", borderRadius: 18, border: "1.5px solid #e8ecf4",
-              padding: "24px 20px", display: "flex", flexDirection: "column", gap: 14,
-              transition: "all .2s", cursor: "default",
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 40px rgba(0,0,0,.08)" }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ""; (e.currentTarget as HTMLDivElement).style.boxShadow = "" }}
-            >
-              {/* Avatar */}
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{
-                  width: 52, height: 52, borderRadius: 14,
-                  background: `linear-gradient(135deg, ${m.color}, ${m.color}cc)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#fff", fontSize: 16, fontWeight: 900, flexShrink: 0,
-                }}>
-                  {m.initials}
-                </div>
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", lineHeight: 1.2 }}>{m.name}</div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: m.color, lineHeight: 1.4, marginTop: 2 }}>{m.role}</div>
-                </div>
-              </div>
-
-              {/* Company tag */}
-              <div style={{ display: "inline-flex", alignSelf: "flex-start" }}>
-                <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: m.bg, color: m.color, letterSpacing: ".03em" }}>
-                  {m.company}
-                </span>
-              </div>
-
-              {/* Desc */}
-              <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.65, flex: 1 }}>
-                {m.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* View All button */}
-        <div style={{ textAlign: "center", marginTop: 36 }}>
-          <a href="/mentors" style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "12px 28px", borderRadius: 12,
-            background: "linear-gradient(135deg, #7c3aed, #3b5bdb)",
-            color: "#fff", fontSize: 14, fontWeight: 700,
-            textDecoration: "none", boxShadow: "0 4px 16px rgba(124,58,237,.2)",
-            transition: "all .15s",
-          }}>
-            View All Mentors
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-          </a>
-        </div>
-      </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (max-width: 900px) { section > div > div:nth-child(2) { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 560px) { section > div > div:nth-child(2) { grid-template-columns: 1fr !important; } }
-      `}} />
-    </section>
-  )
-}
-
-// ─── CTA ───────────────────────────────────────────────────────
+// ─── CTA ──────────────────────────────────────────────────────
 function CTA() {
-  const avatars = ["#6074f3","#34d399","#fb7185","#fbbf24","#60a5fa"]
   return (
-    <section className="sr section-pad" style={{ background:"var(--cream)", padding:"80px 28px" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto" }}>
-        <div className="cta-inner" style={{
-          borderRadius:32, padding:"72px 48px", textAlign:"center", position:"relative", overflow:"hidden",
-          background:"linear-gradient(145deg,#1d3a8f 0%,#2548c5 100%)",
-          boxShadow:"0 32px 100px rgba(29,58,143,0.28), 0 8px 32px rgba(29,58,143,0.14)",
-        }}>
-          {/* Decorative orbs — same pattern as Pricing Pro card */}
-          <div style={{ position:"absolute", top:-60, right:-60, width:260, height:260, borderRadius:"50%", background:"rgba(255,255,255,0.07)", pointerEvents:"none" }} />
-          <div style={{ position:"absolute", bottom:-44, left:-44, width:190, height:190, borderRadius:"50%", background:"rgba(255,255,255,0.05)", pointerEvents:"none" }} />
-          <div style={{ position:"absolute", top:"30%", left:"50%", width:440, height:220, borderRadius:"50%", background:"rgba(255,255,255,0.04)", filter:"blur(40px)", translate:"-50% -50%", pointerEvents:"none" }} />
-          {/* Dot grid overlay */}
-          <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px)", backgroundSize:"22px 22px", pointerEvents:"none" }} />
+    <Section bg="white">
+      <div className="cta-inner sr" style={{
+        borderRadius: 32, padding: "80px 48px", textAlign: "center", position: "relative", overflow: "hidden",
+        background: "var(--ink)", boxShadow: "0 32px 80px rgba(0,0,0,.15)",
+      }}>
+        <div style={{ position: "absolute", top: -60, right: -60, width: 240, height: 240, borderRadius: "50%", background: "rgba(255,255,255,.04)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: -40, left: -40, width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,.03)", pointerEvents: "none" }} />
 
-          <div style={{ position:"relative" }}>
-            {/* Badge */}
-            <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 16px", borderRadius:99, background:"rgba(255,255,255,0.14)", border:"1px solid rgba(255,255,255,0.22)", fontSize:12, fontWeight:700, color:"white", marginBottom:28 }}>
-              ✦ Join 1,200+ job seekers · Launching March 2026
-            </div>
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 99, background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.1)", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,.7)", marginBottom: 28 }}>
+            Join 1,200+ job seekers
+          </div>
 
-            {/* Headline */}
-            <h2 className="cta-h2" style={{ fontSize:"clamp(32px,4.2vw,54px)", fontWeight:900, letterSpacing:"-.035em", color:"white", margin:"0 0 18px", lineHeight:1.05 }}>
-              Your next offer is<br />closer than you think.
-            </h2>
+          <h2 className="cta-h2" style={{ fontSize: "clamp(32px,4.5vw,56px)", fontWeight: 900, letterSpacing: "-.04em", color: "white", margin: "0 0 18px", lineHeight: 1.06 }}>
+            Your next offer is<br />closer than you think.
+          </h2>
+          <p className="cta-sub" style={{ fontSize: 17, color: "rgba(255,255,255,.5)", margin: "0 auto 40px", maxWidth: 500, lineHeight: 1.7 }}>
+            AI resume tailor, salary intel, 5-day prep, and Vibe AI coaching — built for India&apos;s tech market.
+          </p>
 
-            {/* Subtext */}
-            <p className="cta-sub" style={{ fontSize:17, color:"rgba(255,255,255,0.72)", margin:"0 auto 40px", maxWidth:500, lineHeight:1.7 }}>
-              AI resume tailor, salary intel, 5-day prep, and Vibe AI coaching — everything built for India&apos;s tech market.
-            </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap", marginBottom: 48 }}>
+            <a href="/register" style={{ fontSize: 16, fontWeight: 800, padding: "16px 36px", borderRadius: 16, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.15)" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)" }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "" }}>
+              Get Started Free
+              <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </a>
+          </div>
 
-            {/* CTAs */}
-            <div style={{ display:"flex", justifyContent:"center", gap:12, flexWrap:"wrap", marginBottom:48 }}>
-              <a href="/register" className="btn" style={{ fontSize:15, fontWeight:900, padding:"15px 32px", borderRadius:16, color:"#1d3a8f", background:"white", boxShadow:"0 8px 32px rgba(0,0,0,0.18)", gap:8, display:"inline-flex", alignItems:"center" }}>
-                Get Started Now
-                <svg width="16" height="16" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </a>
-              <a href="/" className="btn" style={{ fontSize:14, fontWeight:700, padding:"15px 24px", borderRadius:16, color:"rgba(255,255,255,0.88)", background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.22)", gap:8, display:"inline-flex", alignItems:"center" }}>
-                <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5"/><polygon points="6.5,5 11.5,8 6.5,11" fill="currentColor"/></svg>
-                Watch Demo
-              </a>
-            </div>
-
-            {/* Social proof */}
-            <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:16, marginBottom:24 }}>
-              <div style={{ display:"flex" }}>
-                {avatars.map((c,i) => (
-                  <div key={i} style={{ width:30, height:30, borderRadius:"50%", background:c, border:"2px solid rgba(255,255,255,0.3)", marginLeft:i===0?0:-9, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:900, color:"white" }}>
-                    {["A","R","P","S","M"][i]}
-                  </div>
-                ))}
+          <div className="cta-pills" style={{ display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" }}>
+            {["⚡ 12 days avg. to offer", "📄 3× more interview calls", "🎯 93% success with Vibe AI"].map((s, i) => (
+              <div key={i} style={{ padding: "6px 16px", borderRadius: 99, background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.08)", fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,.55)" }}>
+                {s}
               </div>
-              <div style={{ fontSize:13, fontWeight:700, color:"rgba(255,255,255,0.85)" }}>
-                50,000+ users &nbsp;·&nbsp; ★ 4.9 rating
-              </div>
-            </div>
-
-            {/* Micro-stat pills */}
-            <div className="cta-pills" style={{ display:"flex", justifyContent:"center", gap:8, flexWrap:"wrap" }}>
-              {["⚡ 12 days avg. to offer","📄 3× more interview calls","🎯 93% success with Vibe AI"].map((s,i) => (
-                <div key={i} style={{ padding:"5px 14px", borderRadius:99, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.18)", fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.75)" }}>
-                  {s}
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 
-// ─── Footer ────────────────────────────────────────────────────
+// ─── Footer ───────────────────────────────────────────────────
 function Footer() {
-  const cols: Record<string,string[]> = {
-    Product:["Features","How It Works","Pricing","Changelog"],
-    Company:["About","Blog","Careers","Press"],
-    Legal:  ["Privacy Policy","Terms","Cookies"],
+  const cols: Record<string, [string, string][]> = {
+    Product: [["Jobs", "/jobs"], ["AI Tools", "/ai-tools"], ["Bootcamp", "/#bootcamp"], ["Mentors", "/mentors"]],
+    Company: [["About", "/"], ["Blog", "/"], ["Careers", "/"], ["Press", "/"]],
+    Legal: [["Privacy Policy", "/"], ["Terms", "/"], ["Cookies", "/"]],
   }
   return (
-    <footer style={{ background:"white", borderTop:"1px solid var(--border)" }}>
-      <div style={{ maxWidth:1120, margin:"0 auto", padding:"56px 28px 32px" }}>
-        <div className="footer-grid" style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:48 }}>
+    <footer style={{ background: "white", borderTop: "1px solid var(--border)" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "56px 28px 32px" }}>
+        <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 32, marginBottom: 48 }}>
           <div className="footer-brand">
-            <div style={{ marginBottom:16 }}>
-              <JobingenLogo height={80} />
-            </div>
-            <p style={{ fontSize:13, color:"var(--ink3)", lineHeight:1.72, maxWidth:200, margin:"0 0 20px" }}>AI-powered job search for India&apos;s tech job market.</p>
-            <div style={{ display:"flex", gap:8 }}>
-              {["in","𝕏"].map((s,i) => (
-                <a key={i} href="/" style={{ width:32, height:32, borderRadius:10, background:"var(--cream)", border:"1px solid var(--border)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:900, color:"var(--ink2)", textDecoration:"none", transition:"all .2s var(--spring)" }}
-                  onMouseEnter={e => { const el=e.currentTarget as HTMLElement; el.style.background="var(--ind-l)"; el.style.color="var(--ind)"; el.style.transform="translateY(-3px)"; }}
-                  onMouseLeave={e => { const el=e.currentTarget as HTMLElement; el.style.background="var(--cream)"; el.style.color="var(--ink2)"; el.style.transform="none"; }}>
+            <div style={{ marginBottom: 14 }}><JobingenLogo height={80} /></div>
+            <p style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.7, maxWidth: 220, margin: "0 0 18px" }}>AI-powered job search for India&apos;s tech job market.</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              {["in", "𝕏"].map((s, i) => (
+                <a key={i} href="/" style={{ width: 32, height: 32, borderRadius: 10, background: "var(--bg2)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "var(--ink2)", textDecoration: "none", transition: "all .15s" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#eef1fd"; e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.transform = "translateY(-2px)" }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "var(--bg2)"; e.currentTarget.style.color = "var(--ink2)"; e.currentTarget.style.transform = "" }}>
                   {s}
                 </a>
               ))}
             </div>
           </div>
-          {Object.entries(cols).map(([sec,items]) => (
+          {Object.entries(cols).map(([sec, items]) => (
             <div key={sec}>
-              <div style={{ fontSize:10, fontWeight:800, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink3)", marginBottom:16 }}>{sec}</div>
-              <ul style={{ listStyle:"none", margin:0, padding:0, display:"flex", flexDirection:"column", gap:10 }}>
-                {items.map(item => (
-                  <li key={item}><a href="/" style={{ fontSize:13, fontWeight:500, color:"var(--ink2)", textDecoration:"none", transition:"color .15s" }}
-                    onMouseEnter={e=>(e.currentTarget.style.color="var(--ind)")}
-                    onMouseLeave={e=>(e.currentTarget.style.color="var(--ink2)")}>{item}</a></li>
+              <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".08em", color: "var(--ink3)", marginBottom: 16 }}>{sec}</div>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                {items.map(([label, href]) => (
+                  <li key={label}><a href={href} style={{ fontSize: 14, fontWeight: 500, color: "var(--ink2)", textDecoration: "none", transition: "color .15s" }}
+                    onMouseEnter={e => (e.currentTarget.style.color = "var(--ink)")}
+                    onMouseLeave={e => (e.currentTarget.style.color = "var(--ink2)")}>{label}</a></li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="footer-bottom" style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, paddingTop:24, borderTop:"1px solid var(--border)", flexWrap:"wrap" }}>
-          <span style={{ fontSize:12, color:"var(--ink3)" }}>© 2026 Jobingen. Built with ❤️ for India&apos;s job seekers.</span>
-          <div style={{ display:"flex", alignItems:"center", gap:6, padding:"5px 12px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.15)" }}>
-            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 2s ease-in-out infinite" }} />
-            <span style={{ fontSize:11, fontWeight:700, color:"var(--grn)" }}>All systems operational</span>
+        <div className="footer-bottom" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, paddingTop: 24, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}>
+          <span style={{ fontSize: 13, color: "var(--ink3)" }}>&copy; 2026 Jobingen. Built for India&apos;s job seekers.</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 99, background: "var(--grn-l)", border: "1px solid rgba(16,185,129,.12)" }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--grn)", animation: "pulse-s 2s ease-in-out infinite" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--grn)" }}>All systems operational</span>
           </div>
         </div>
       </div>
@@ -1341,7 +868,7 @@ function Footer() {
   )
 }
 
-// ─── Page ──────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
 
@@ -1352,14 +879,14 @@ export default function LandingPage() {
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40)
-    window.addEventListener("scroll", fn, { passive:true })
+    window.addEventListener("scroll", fn, { passive: true })
     return () => window.removeEventListener("scroll", fn)
   }, [])
 
   useEffect(() => {
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in") }),
-      { threshold:.08, rootMargin:"0px 0px -40px 0px" }
+      { threshold: .08, rootMargin: "0px 0px -40px 0px" }
     )
     document.querySelectorAll(".sr").forEach(el => obs.observe(el))
     return () => obs.disconnect()
@@ -1368,14 +895,13 @@ export default function LandingPage() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div className="top-bar" />
-      <div style={{ fontFamily:"var(--font-inter,-apple-system,system-ui,sans-serif)", background:"white" }}>
+      <div style={{ fontFamily: "var(--font-inter,-apple-system,system-ui,sans-serif)", background: "white" }}>
         <Navbar scrolled={scrolled} />
         <Hero />
-        <Bootcamp />
-        <MentorsSection />
         <Ticker />
         <Logos />
+        <Bootcamp />
+        <MentorsSection />
         <Problems />
         <Features />
         <HowItWorks />

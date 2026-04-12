@@ -6,9 +6,9 @@ const FOOTER_LINKS = [
     title: "Product",
     links: [
       { label: "Jobs", href: "/jobs" },
-      { label: "AI Tools", href: "#ai-tools" },
-      { label: "Bootcamps", href: "#bootcamps" },
-      { label: "Resources", href: "#how-it-works" },
+      { label: "AI Tools", href: "/ai-tools" },
+      { label: "Bootcamps", href: "/#bootcamps" },
+      { label: "Resources", href: "/#how-it-works" },
     ],
   },
   {
