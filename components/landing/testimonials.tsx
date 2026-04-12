@@ -41,23 +41,13 @@ export function Testimonials() {
   const isLive = items.length > 0
 
   return (
-    <section className="py-16 sm:py-20 bg-white overflow-hidden">
+    <section className="py-20 sm:py-28 bg-white overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-        {/* Header — left aligned with stats right */}
+        {/* Header */}
         <FadeIn className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <svg key={s} width="18" height="18" viewBox="0 0 14 14">
-                    <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= 4 ? "#fbbf24" : "#fde68a"} />
-                  </svg>
-                ))}
-              </div>
-              <span className="text-[14px] font-bold text-slate-900">{isLive ? avgRating : "4.7"}</span>
-              <span className="text-[13px] text-slate-400">from 85+ reviews</span>
-            </div>
-            <h2 className="text-[clamp(24px,3vw,36px)] font-extrabold text-slate-900 tracking-[-0.03em] mb-2">
+            <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Reviews</p>
+            <h2 className="text-[clamp(24px,3vw,36px)] font-black text-slate-900 tracking-[-0.03em] mb-2">
               Loved by our community
             </h2>
             <p className="text-[15px] text-slate-500 max-w-[380px] leading-relaxed">
@@ -65,16 +55,16 @@ export function Testimonials() {
             </p>
           </div>
 
-          {/* Stats pills */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap">
+          {/* Stats */}
+          <div className="flex items-center gap-6 shrink-0 flex-wrap">
             {[
-              { value: isLive ? `${avgRating}` : "4.7", label: "Rating", bg: "bg-amber-50", text: "text-amber-600", border: "border-amber-200/50" },
-              { value: "85+", label: "Reviews", bg: "bg-indigo-50", text: "text-[#1d3a8f]", border: "border-indigo-200/50" },
-              { value: "95%", label: "Recommend", bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-200/50" },
+              { value: isLive ? `${avgRating}` : "4.7", label: "Rating" },
+              { value: "85+", label: "Reviews" },
+              { value: "95%", label: "Recommend" },
             ].map((s) => (
-              <div key={s.label} className={`${s.bg} border ${s.border} rounded-xl px-4 py-2.5 text-center`}>
-                <div className={`text-[18px] font-extrabold leading-none ${s.text}`}>{s.value}</div>
-                <div className="text-[9px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">{s.label}</div>
+              <div key={s.label} className="text-center">
+                <div className="text-[22px] font-black text-slate-900 leading-none">{s.value}</div>
+                <div className="text-[11px] font-medium text-slate-400 mt-1">{s.label}</div>
               </div>
             ))}
           </div>

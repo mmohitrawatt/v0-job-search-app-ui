@@ -5,7 +5,7 @@ import { FadeIn, motion } from "./motion"
 
 export function CampusAmbassador() {
   return (
-    <section className="py-12 sm:py-16 bg-[#fafbff]">
+    <section className="py-20 sm:py-28 bg-[#f8fafc]">
       <div className="max-w-[900px] mx-auto px-5 sm:px-8">
         <FadeIn>
           <motion.div
@@ -15,18 +15,9 @@ export function CampusAmbassador() {
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-0">
               {/* Left — content */}
               <div className="flex-1 p-6 sm:p-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-[#1d3a8f] text-[10px] font-bold px-3 py-1 rounded-full border border-indigo-200/50 uppercase tracking-wider">
-                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    Open Program
-                  </span>
-                </div>
+                <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Open Program</p>
 
-                <h3 className="text-[22px] sm:text-[24px] font-extrabold text-slate-900 tracking-[-0.03em] mb-2 leading-tight">
+                <h3 className="text-[22px] sm:text-[24px] font-black text-slate-900 tracking-[-0.03em] mb-2 leading-tight">
                   Become a Campus Ambassador
                 </h3>
                 <p className="text-[14px] text-slate-500 leading-[1.7] mb-5 max-w-[400px]">

@@ -32,7 +32,7 @@ export function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <JobingenLogo height={56} className="sm:!h-[80px]" />
@@ -89,7 +89,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[72px] z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg lg:hidden"
+            className="fixed inset-x-0 top-[68px] z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg lg:hidden"
           >
             <nav className="flex flex-col p-4 gap-1">
               {NAV_LINKS.map((link) => (

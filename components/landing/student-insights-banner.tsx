@@ -5,7 +5,7 @@ import { FadeIn, motion } from "./motion"
 
 export function StudentInsightsBanner() {
   return (
-    <section className="py-6 sm:py-8 bg-white">
+    <section className="py-10 sm:py-12 bg-white border-t border-slate-100">
       <div className="max-w-[900px] mx-auto px-5 sm:px-8">
         <FadeIn>
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>

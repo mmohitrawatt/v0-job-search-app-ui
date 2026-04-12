@@ -60,26 +60,20 @@ const TOOLS = [
 
 export function AITools() {
   return (
-    <section id="ai-tools" className="py-16 sm:py-20 bg-white relative overflow-hidden">
+    <section id="ai-tools" className="py-20 sm:py-28 bg-[#f8fafc] relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Header */}
-        <FadeIn className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+        <FadeIn className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
           <div>
-            <span className="inline-flex items-center gap-2 bg-indigo-50 text-[#1d3a8f] text-[12px] font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide uppercase border border-indigo-200/40">
-              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              AI-Powered Tools
-            </span>
-            <h2 className="text-[clamp(26px,3.5vw,40px)] font-extrabold text-slate-900 tracking-[-0.03em] mb-3">
+            <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">AI Tools</p>
+            <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] mb-3">
               Your AI career toolkit
             </h2>
             <p className="text-[16px] text-slate-500 max-w-[420px] leading-relaxed">
               Three powerful tools that work together to get you hired faster.
             </p>
           </div>
-          <span className="text-[13px] font-semibold text-slate-400 flex items-center gap-1.5 shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          <span className="text-[13px] font-medium text-slate-400 shrink-0">
             Launching soon
           </span>
         </FadeIn>

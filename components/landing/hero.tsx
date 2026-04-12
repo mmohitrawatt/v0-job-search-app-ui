@@ -6,54 +6,44 @@ import { FadeIn, motion, AnimatePresence } from "./motion"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-[72px]">
+    <section className="relative overflow-hidden pt-[68px]">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] via-white to-white" />
-      <div className="absolute top-[10%] left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(29,58,143,0.04) 0%, transparent 70%)" }} />
 
-      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 lg:pt-20 pb-10 sm:pb-14">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-16 sm:pt-20 lg:pt-28 pb-12 sm:pb-16">
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
           {/* ── Left — Content ─────────────────── */}
           <div className="flex-1 text-center lg:text-left">
-            <FadeIn>
-              <div className="inline-flex items-center gap-2 bg-white border border-slate-200/80 rounded-full px-4 py-1.5 mb-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-                <span className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[12px] font-semibold text-slate-500">AI-Powered Career Platform</span>
-              </div>
-            </FadeIn>
-
             <FadeIn delay={0.06}>
-              <h1 className="text-[clamp(30px,5vw,52px)] font-extrabold text-slate-900 leading-[1.08] tracking-[-0.04em] mb-2">
-                The Last Engine for
+              <h1 className="text-[clamp(32px,5.5vw,56px)] font-black text-slate-900 leading-[1.06] tracking-[-0.04em] mb-5">
+                The Last Engine
                 <br />
-                <span className="bg-gradient-to-r from-[#1d3a8f] via-[#3b5bdb] to-[#6c8cff] bg-clip-text text-transparent">
+                you need for{" "}
+                <span className="bg-gradient-to-r from-[#1d3a8f] to-[#3b5bdb] bg-clip-text text-transparent">
                   Job Search.
                 </span>
               </h1>
-              <p className="text-[clamp(14px,1.4vw,16px)] text-slate-400 font-medium mb-3 tracking-wide lg:text-left text-center">
-                Find jobs. Build skills. Get career-ready.
-              </p>
             </FadeIn>
 
             <FadeIn delay={0.12}>
-              <p className="text-[clamp(15px,1.6vw,18px)] text-slate-500 leading-[1.7] mb-6 max-w-[460px] mx-auto lg:mx-0">
+              <p className="text-[clamp(16px,1.6vw,19px)] text-slate-500 leading-[1.75] mb-8 max-w-[480px] mx-auto lg:mx-0">
                 Smarter job discovery, AI-powered resumes, mock interviews, and hands-on bootcamps — everything in one place.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.18}>
-              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-6">
+              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-8">
                 <Link
                   href="/register"
-                  className="w-full sm:w-auto text-[15px] font-bold text-white px-7 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_6px_24px_rgba(29,58,143,0.38)] transition-all duration-300 hover:-translate-y-px"
+                  className="w-full sm:w-auto text-[15px] font-bold text-white px-8 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_8px_24px_rgba(29,58,143,0.35)] transition-all duration-300 hover:-translate-y-0.5"
                   style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
                 >
                   Get Started — It&apos;s Free
                 </Link>
                 <a
                   href="#ai-tools"
-                  className="w-full sm:w-auto text-[15px] font-semibold text-slate-600 px-7 py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200"
+                  className="w-full sm:w-auto text-[15px] font-semibold text-slate-600 px-8 py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200"
                 >
                   Explore Tools
                 </a>
@@ -61,17 +51,11 @@ export function Hero() {
             </FadeIn>
 
             <FadeIn delay={0.24}>
-              <div className="flex items-center gap-5 justify-center lg:justify-start text-[13px] text-slate-400 font-medium flex-wrap">
-                {[
-                  { label: "AI Resume Builder", icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6" },
-                  { label: "Smart Job Matching", icon: "M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" },
-                  { label: "Mock Interviews", icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
-                ].map((f) => (
-                  <span key={f.label} className="flex items-center gap-1.5">
-                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#1d3a8f]/40">
-                      <path d={f.icon} />
-                    </svg>
-                    {f.label}
+              <div className="flex items-center gap-6 justify-center lg:justify-start text-[13px] text-slate-400 font-medium flex-wrap">
+                {["AI Resume Builder", "Smart Job Matching", "Mock Interviews"].map((label) => (
+                  <span key={label} className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full bg-[#1d3a8f]/40" />
+                    {label}
                   </span>
                 ))}
               </div>
@@ -87,16 +71,13 @@ export function Hero() {
 
         {/* Trusted by strip */}
         <FadeIn delay={0.3}>
-          <div className="mt-8 sm:mt-10 flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-[12px] text-slate-400/60 font-medium flex-wrap">
-            <span>Students from</span>
-            {["IITs", "NITs", "IIITs", "BITS", "DTU", "VIT", "SRM", "NSUT"].map((name, i) => (
-              <span key={name} className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-slate-300">·</span>
-                <span className={i < 4 ? "font-bold text-slate-400/70" : ""}>{name}</span>
-              </span>
-            ))}
-            <span className="text-slate-300">·</span>
-            <span>and more</span>
+          <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-100">
+            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.1em] text-center mb-4">Trusted by students from</p>
+            <div className="flex items-center justify-center gap-4 sm:gap-8 text-[13px] sm:text-[14px] text-slate-300 font-bold flex-wrap">
+              {["IITs", "NITs", "IIITs", "BITS", "DTU", "VIT", "SRM", "NSUT"].map((name) => (
+                <span key={name} className="hover:text-slate-500 transition-colors duration-200">{name}</span>
+              ))}
+            </div>
           </div>
         </FadeIn>
       </div>

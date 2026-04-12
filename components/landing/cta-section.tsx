@@ -5,20 +5,18 @@ import { FadeIn } from "./motion"
 
 export function CTASection() {
   return (
-    <section className="py-12 sm:py-16 bg-white">
+    <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-[900px] mx-auto px-5 sm:px-8">
         <FadeIn>
           <div
-            className="relative overflow-hidden rounded-2xl px-6 py-10 sm:px-12 sm:py-12"
+            className="relative overflow-hidden rounded-3xl px-8 py-12 sm:px-14 sm:py-16"
             style={{ background: "linear-gradient(135deg, #0f172a 0%, #1d3a8f 100%)" }}
           >
-            {/* Subtle grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
 
             <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-10">
               {/* Left — text */}
               <div className="flex-1 text-center md:text-left">
-                <h2 className="text-[clamp(20px,3vw,28px)] font-extrabold text-white tracking-[-0.03em] mb-2 leading-[1.2]">
+                <h2 className="text-[clamp(22px,3vw,32px)] font-black text-white tracking-[-0.03em] mb-3 leading-[1.2]">
                   Ready to get career-ready?
                 </h2>
                 <p className="text-[14px] text-slate-400 leading-relaxed max-w-[360px] mx-auto md:mx-0">

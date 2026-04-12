@@ -68,16 +68,13 @@ const JOBS = [
 
 export function FeaturedJobs() {
   return (
-    <section className="py-16 sm:py-20 bg-[#fafbff]">
+    <section className="py-20 sm:py-28 bg-[#f8fafc]" id="featured-jobs">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Header */}
-        <FadeIn className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10">
+        <FadeIn className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-12">
           <div>
-            <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-600 text-[12px] font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide uppercase border border-emerald-200/40">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Live Openings
-            </span>
-            <h2 className="text-[clamp(26px,3.5vw,40px)] font-extrabold text-slate-900 tracking-[-0.03em] mb-2">
+            <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Opportunities</p>
+            <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] mb-2">
               Featured Opportunities
             </h2>
             <p className="text-[15px] text-slate-500 leading-relaxed">

@@ -12,16 +12,11 @@ const MENTORS = [
 
 export function MentorsPreview() {
   return (
-    <section className="py-20 bg-[#fafbff]" id="mentors">
+    <section className="py-20 sm:py-28 bg-white" id="mentors">
       <div className="max-w-[1100px] mx-auto px-5 sm:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-4">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-            <span className="text-[12px] font-bold text-[#7c3aed]">Our Mentors</span>
-          </div>
+        <div className="text-center mb-14">
+          <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Mentors</p>
           <h2 className="text-[clamp(26px,3.5vw,38px)] font-black text-slate-900 tracking-[-0.03em] leading-[1.15] mb-3">
             Learn From Industry Leaders
           </h2>

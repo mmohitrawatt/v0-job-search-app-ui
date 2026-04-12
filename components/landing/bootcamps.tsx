@@ -12,13 +12,11 @@ const MENTORS = [
 
 export function Bootcamps() {
   return (
-    <section id="bootcamps" className="py-16 sm:py-20 bg-[#fafbff]">
+    <section id="bootcamps" className="py-20 sm:py-28 bg-[#f8fafc]">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-        <FadeIn className="text-center mb-10">
-          <span className="inline-flex items-center gap-2 bg-amber-50 text-amber-600 text-[12px] font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide uppercase">
-            Learn &amp; Build
-          </span>
-          <h2 className="text-[clamp(26px,3.5vw,40px)] font-extrabold text-slate-900 tracking-[-0.03em] mb-4">
+        <FadeIn className="text-center mb-12">
+          <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Bootcamps</p>
+          <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] mb-4">
             Hands-on Learning Experiences
           </h2>
           <p className="text-[16px] text-slate-500 max-w-[480px] mx-auto leading-relaxed">

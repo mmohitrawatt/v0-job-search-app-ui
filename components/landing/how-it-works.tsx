@@ -46,20 +46,12 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-16 sm:py-20 bg-[#fafbff] relative overflow-hidden">
-      {/* Subtle bg pattern */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, rgba(29,58,143,0.03) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
-
+    <section id="how-it-works" className="py-20 sm:py-28 bg-white relative overflow-hidden">
       <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8">
         {/* Header */}
         <FadeIn className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 bg-white text-slate-600 text-[12px] font-bold px-4 py-1.5 rounded-full mb-5 tracking-wide uppercase border border-slate-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#1d3a8f]">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-            How It Works
-          </span>
-          <h2 className="text-[clamp(26px,3.5vw,40px)] font-extrabold text-slate-900 tracking-[-0.03em] mb-3">
+          <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">How It Works</p>
+          <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] mb-3">
             From zero to job-ready
           </h2>
           <p className="text-[16px] text-slate-500 max-w-[440px] mx-auto leading-relaxed">
