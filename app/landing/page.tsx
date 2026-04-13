@@ -514,38 +514,32 @@ function HowItWorks() {
   )
 }
 
-// ─── Bootcamp ─────────────────────────────────────────────────
+// ─── Bootcamp (Completed) ─────────────────────────────────────
 function Bootcamp() {
-  const day1 = [
-    { time: "8:30 AM", item: "AI/ML/DL Technical Deep Dive" },
-    { time: "11:00 AM", item: "RAG Architecture + Implementation" },
-    { time: "2:00 PM", item: "Live RAG Project Build" },
-    { time: "6–7 PM", item: "Hackathon problem statement" },
-  ]
   return (
     <section id="bootcamp" style={{ background: "var(--bg)", padding: "40px 28px" }}>
       <div style={{ maxWidth: 1120, margin: "0 auto" }}>
         <div className="sr" style={{ overflow: "hidden", borderRadius: 24, border: "1px solid var(--border)", background: "white" }}>
-          {/* Header */}
+          {/* Header — Completed */}
           <div className="boot-head" style={{ background: "var(--ink)", padding: "18px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", borderRadius: 99, background: "rgba(255,255,255,.1)", border: "1px solid rgba(255,255,255,.15)", fontSize: 10, fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: ".06em", whiteSpace: "nowrap" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#f87171", animation: "pulse-s 1.5s ease-in-out infinite" }} />
-                Live &middot; 14–15 March 2026
+              <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "4px 12px", borderRadius: 99, background: "rgba(16,185,129,.15)", border: "1px solid rgba(16,185,129,.25)", fontSize: 10, fontWeight: 800, color: "#34d399", textTransform: "uppercase", letterSpacing: ".06em", whiteSpace: "nowrap" }}>
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                Completed &middot; 12 April 2026
               </div>
-              <div style={{ fontSize: 19, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>2-Day AI Bootcamp + Hackathon</div>
+              <div style={{ fontSize: 19, fontWeight: 800, color: "white", letterSpacing: "-.02em" }}>AI/ML Masterclass + Hackathon</div>
             </div>
-            <div className="boot-price-group" style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 900, color: "white", lineHeight: 1 }}>₹29</div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,.45)" }}>Online &middot; Limited seats</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "flex" }}>
+                  {["#1d3a8f", "#10b981", "#f59e0b", "#f43f5e", "#7c3aed"].map((c, i) => (
+                    <div key={i} style={{ width: 24, height: 24, borderRadius: "50%", background: c, border: "2px solid var(--ink)", marginLeft: i ? -7 : 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, fontWeight: 900, color: "white" }}>
+                      {["A", "S", "J", "B", "T"][i]}
+                    </div>
+                  ))}
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 800, color: "white" }}>300+ students</span>
               </div>
-              <a href="/register" className="boot-reg-btn" style={{ fontSize: 13, fontWeight: 800, padding: "11px 24px", borderRadius: 12, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .15s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)" }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "" }}>
-                Register Now
-                <svg width="13" height="13" fill="none" viewBox="0 0 18 18"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </a>
             </div>
           </div>
 
@@ -553,21 +547,26 @@ function Bootcamp() {
           <div className="boot-body" style={{ padding: "22px 28px", display: "grid", gridTemplateColumns: "210px 1fr", gap: 24 }}>
             {/* Left */}
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {[
-                { emoji: "📅", day: "Saturday, 14 March", time: "8:30 AM – 6 PM" },
-                { emoji: "⚡", day: "Sunday, 15 March", time: "9 AM – 9 PM &middot; Hackathon" },
-              ].map((d, i) => (
-                <div key={i} style={{ display: "flex", gap: 10 }}>
-                  <span style={{ fontSize: 15 }}>{d.emoji}</span>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}>{d.day}</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)" }} dangerouslySetInnerHTML={{ __html: d.time }} />
+              {/* Success stats */}
+              <div style={{ padding: "14px 16px", borderRadius: 14, background: "var(--grn-l)", border: "1px solid rgba(16,185,129,.15)" }}>
+                <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", color: "var(--grn)", marginBottom: 10 }}>Event Highlights</div>
+                {[
+                  { val: "300+", label: "Students attended" },
+                  { val: "4.8", label: "Average rating" },
+                  { val: "100%", label: "Hands-on projects" },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: "var(--grn)", lineHeight: 1 }}>{s.val}</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{s.label}</div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
               <div style={{ height: 1, background: "var(--border)" }} />
+
+              {/* Mentors */}
               <div>
-                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 10 }}>Your Mentors</div>
+                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 10 }}>Led By</div>
                 {[
                   { name: "Aditya Dubey", role: "AI Consultant &middot; Cograd", initials: "AD", clr: "var(--accent)" },
                   { name: "Sonic Payeng", role: "SWE2 &middot; Dell Technologies", initials: "SP", clr: "var(--grn)" },
@@ -587,14 +586,20 @@ function Bootcamp() {
 
             {/* Right — 3 cols */}
             <div className="boot-cols" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+              {/* What was covered */}
               <div style={{ padding: 16, borderRadius: 16, background: "var(--bg)", border: "1px solid var(--border)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
-                  <span style={{ padding: "2px 9px", borderRadius: 99, background: "#eef1fd", fontSize: 9, fontWeight: 800, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".05em" }}>Day 1</span>
+                  <span style={{ padding: "2px 9px", borderRadius: 99, background: "#eef1fd", fontSize: 9, fontWeight: 800, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".05em" }}>Covered</span>
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)", marginBottom: 12 }}>AI/ML + RAG Masterclass</div>
-                {day1.map((d, i) => (
+                {[
+                  { time: "Session 1", item: "AI/ML/DL Technical Deep Dive" },
+                  { time: "Session 2", item: "RAG Architecture + Implementation" },
+                  { time: "Session 3", item: "Live RAG Project Build" },
+                  { time: "Session 4", item: "Hackathon + Live Mentoring" },
+                ].map((d, i) => (
                   <div key={i} style={{ display: "flex", gap: 7, marginBottom: 8 }}>
-                    <div style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--accent)", flexShrink: 0, marginTop: 5 }} />
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--grn)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M20 6L9 17l-5-5" /></svg>
                     <div>
                       <div style={{ fontSize: 9, fontWeight: 800, color: "var(--accent)", textTransform: "uppercase", letterSpacing: ".04em" }}>{d.time}</div>
                       <div style={{ fontSize: 11, color: "var(--ink2)", lineHeight: 1.4 }}>{d.item}</div>
@@ -603,31 +608,34 @@ function Bootcamp() {
                 ))}
               </div>
 
+              {/* Hackathon results */}
               <div style={{ padding: 16, borderRadius: 16, background: "var(--ink)", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: -16, right: -16, width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,.05)" }} />
                 <div style={{ position: "relative" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
-                    <span style={{ padding: "2px 9px", borderRadius: 99, background: "rgba(255,255,255,.12)", fontSize: 9, fontWeight: 800, color: "white", textTransform: "uppercase", letterSpacing: ".05em" }}>Day 2</span>
-                    <span style={{ fontSize: 9, color: "rgba(255,255,255,.4)", fontWeight: 600 }}>Hackathon</span>
+                    <span style={{ padding: "2px 9px", borderRadius: 99, background: "rgba(16,185,129,.18)", fontSize: 9, fontWeight: 800, color: "#34d399", textTransform: "uppercase", letterSpacing: ".05em" }}>Hackathon</span>
+                    <span style={{ fontSize: 9, color: "rgba(255,255,255,.4)", fontWeight: 600 }}>Completed</span>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: "white", marginBottom: 12 }}>Build Real AI in 1 Day</div>
-                  {["9 AM – 9 PM full-day build", "1 major AI project, end-to-end", "Full mentor support all day", "Winners: paid internships 🏆"].map((item, i) => (
+                  <div style={{ fontSize: 13, fontWeight: 800, color: "white", marginBottom: 12 }}>Results &amp; Outcomes</div>
+                  {["300+ students participated live", "Real AI projects built end-to-end", "Top performers got paid internships", "Full mentor support throughout", "Community network formed"].map((item, i) => (
                     <div key={i} style={{ display: "flex", gap: 7, marginBottom: 8 }}>
-                      <div style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,.4)", flexShrink: 0, marginTop: 5 }} />
+                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}><path d="M20 6L9 17l-5-5" /></svg>
                       <div style={{ fontSize: 11, color: "rgba(255,255,255,.75)", lineHeight: 1.4 }}>{item}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
+              {/* What students got */}
               <div style={{ padding: 16, borderRadius: 16, background: "var(--bg)", border: "1px solid var(--border)" }}>
-                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>What You Take Home</div>
+                <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>What Students Got</div>
                 {[
                   { icon: "📄", text: "ATS-proof resume" },
-                  { icon: "📚", text: "Full lecture notes" },
+                  { icon: "📚", text: "Full lecture recordings" },
                   { icon: "🗺️", text: "3-month AI roadmap" },
                   { icon: "💼", text: "Paid internship (winners)" },
                   { icon: "🤝", text: "Community peer network" },
+                  { icon: "🏆", text: "Certificates of completion" },
                 ].map((p, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     <span style={{ fontSize: 13 }}>{p.icon}</span>
@@ -636,6 +644,19 @@ function Bootcamp() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Next batch teaser */}
+          <div style={{ padding: "14px 28px", borderTop: "1px solid var(--border)", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 14 }}>🚀</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Next batch coming soon</span>
+              <span style={{ fontSize: 12, color: "var(--ink3)" }}>&mdash; join the waitlist to get early access</span>
+            </div>
+            <a href="/register" style={{ fontSize: 12, fontWeight: 700, color: "var(--accent)", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+              Join Waitlist
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </a>
           </div>
         </div>
       </div>
