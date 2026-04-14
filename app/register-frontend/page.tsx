@@ -127,6 +127,20 @@ const CSS = `
   .success-check { animation: check-pop .5s var(--spring) both; }
   .fade-up { animation: fade-up .6s var(--ease-out) both; }
 
+  /* ═══ HERO ═══ */
+  .hero-banner { padding: 52px 28px; }
+  .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .hero-row { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .hero-main { flex: 1; min-width: 260px; }
+  .hero-title { font-size: clamp(22px,3vw,38px); font-weight: 900; color: white; margin: 0 0 10px; line-height: 1.12; letter-spacing: -.025em; }
+  .hero-subtitle { font-size: 15px; font-weight: 600; color: #a5b4fc; margin: 0 0 12px; }
+  .hero-desc { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.75; margin: 0 0 22px; max-width: 520px; }
+  .hero-stats { display: flex; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; overflow: hidden; width: fit-content; max-width: 100%; }
+  .hero-event-card { flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 24px 28px; text-align: center; backdrop-filter: blur(12px); min-width: 190px; }
+  .hero-tags { margin-top: 24px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .nav-badge { display: flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 99px; background: var(--grn-l); border: 1px solid rgba(16,185,129,0.22); font-size: 11px; font-weight: 800; color: var(--grn); text-transform: uppercase; letter-spacing: .06em; }
+  .nav-badge-text { display: inline; }
+
   @media (max-width: 900px) {
     .reg-grid { grid-template-columns: 1fr !important; }
     .reg-sticky { position: static !important; }
@@ -135,13 +149,23 @@ const CSS = `
     .hint-right { display: none !important; }
     .hint-mobile { display: inline !important; }
   }
+  @media (max-width: 640px) {
+    .hero-banner { padding: 32px 16px; }
+    .hero-event-card { display: none; }
+    .hero-stats { width: 100%; }
+    .hero-tags { margin-top: 14px; }
+    .hero-badges { gap: 6px; margin-bottom: 14px; }
+    .hero-desc { font-size: 14px; margin-bottom: 16px; }
+  }
   @media (max-width: 600px) {
     .reg-wrap { padding: 20px 12px !important; }
     .reg-form-card { padding: 18px 14px !important; }
     .reg-nav { padding: 0 14px !important; }
     .radio-card { min-width: calc(50% - 4px); text-align: center; }
+    .nav-badge-text { display: none; }
   }
   @media (max-width: 380px) {
+    .hero-banner { padding: 24px 12px; }
     .reg-wrap { padding: 16px 10px !important; }
     .reg-form-card { padding: 14px 12px !important; }
     .radio-card { min-width: 100%; }
@@ -441,19 +465,19 @@ function RegisterForm() {
           <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
             <JobingenLogo height={110} />
           </a>
-          <div style={{ display:"flex", alignItems:"center", gap:8, padding:"5px 14px", borderRadius:99, background:"var(--grn-l)", border:"1px solid rgba(16,185,129,0.22)", fontSize:11, fontWeight:800, color:"var(--grn)", textTransform:"uppercase", letterSpacing:".06em" }}>
-            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite" }} />
-            Registrations Open
+          <div className="nav-badge">
+            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
+            <span className="nav-badge-text">Registrations Open</span>
           </div>
         </nav>
 
         {/* ── Hero Banner ── */}
-        <div style={{ background:"linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%)", padding:"52px 28px", position:"relative", overflow:"hidden" }}>
+        <div className="hero-banner" style={{ background:"linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%)", position:"relative", overflow:"hidden" }}>
           <div style={{ position:"absolute", top:-60, right:-40, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(99,102,241,.25),transparent 70%)", pointerEvents:"none" }} />
           <div style={{ position:"absolute", bottom:-40, left:"15%", width:180, height:180, borderRadius:"50%", background:"radial-gradient(circle,rgba(79,70,229,.18),transparent 70%)", pointerEvents:"none" }} />
 
           <div style={{ maxWidth:1100, margin:"0 auto", position:"relative", zIndex:1 }}>
-            <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:20 }}>
+            <div className="hero-badges">
               <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(99,102,241,0.15)", border:"1px solid rgba(99,102,241,0.3)", borderRadius:99, padding:"5px 14px" }}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6.5 1L1.5 7h4.5l-.5 4 5-6H6l.5-4z" stroke="#a5b4fc" strokeWidth="1.3" strokeLinejoin="round"/></svg>
                 <span style={{ fontSize:10, fontWeight:800, color:"#a5b4fc", textTransform:"uppercase", letterSpacing:".07em" }}>Live Masterclass</span>
@@ -468,24 +492,20 @@ function RegisterForm() {
               </div>
             </div>
 
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:32, flexWrap:"wrap" }}>
-              <div style={{ flex:1, minWidth:280 }}>
-                <h2 style={{ fontSize:"clamp(24px,3vw,38px)", fontWeight:900, color:"white", margin:"0 0 10px", lineHeight:1.12, letterSpacing:"-.025em" }}>
-                  Frontend Engineering Masterclass
-                </h2>
-                <p style={{ fontSize:16, fontWeight:600, color:"#a5b4fc", margin:"0 0 12px" }}>
-                  Stop Building To-Do Apps. Start Building Systems.
-                </p>
-                <p style={{ fontSize:15, color:"rgba(255,255,255,0.6)", lineHeight:1.75, margin:"0 0 22px", maxWidth:520 }}>
+            <div className="hero-row">
+              <div className="hero-main">
+                <h2 className="hero-title">Frontend Engineering Masterclass</h2>
+                <p className="hero-subtitle">Stop Building To-Do Apps. Start Building Systems.</p>
+                <p className="hero-desc">
                   3-hour live session — JavaScript internals, frontend system design, and building a YouTube-style React app from scratch with Bipin Chaudhary.
                 </p>
-                <div style={{ display:"flex", gap:0, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:14, overflow:"hidden", width:"fit-content" }}>
+                <div className="hero-stats">
                   {[
                     { value:"3 Hrs", label:"Live Session", color:"#a5b4fc" },
                     { value:"1", label:"Mentor", color:"#60a5fa" },
                     { value:"₹29", label:"Only", color:"#fbbf24" },
                   ].map((s, i) => (
-                    <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
+                    <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none", flex:1 }}>
                       <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
                       <div style={{ fontSize:9, fontWeight:700, color:"rgba(255,255,255,0.45)", marginTop:4, textTransform:"uppercase", letterSpacing:".07em" }}>{s.label}</div>
                     </div>
@@ -493,7 +513,7 @@ function RegisterForm() {
                 </div>
               </div>
 
-              <div style={{ flexShrink:0, background:"rgba(255,255,255,0.06)", border:"1.5px solid rgba(255,255,255,0.12)", borderRadius:20, padding:"24px 28px", textAlign:"center", backdropFilter:"blur(12px)", minWidth:200 }}>
+              <div className="hero-event-card">
                 <div style={{ width:44, height:44, borderRadius:12, background:"linear-gradient(135deg,#4f46e5,#6366f1)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", boxShadow:"0 8px 24px rgba(79,70,229,0.4)" }}>
                   <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
@@ -506,7 +526,7 @@ function RegisterForm() {
               </div>
             </div>
 
-            <div style={{ marginTop:24, display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+            <div className="hero-tags">
               <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".06em", marginRight:4 }}>You will learn</span>
               {["JavaScript Internals","Event Loop","Closures","Frontend System Design","React","YouTube Clone"].map(tag => (
                 <span key={tag} style={{ fontSize:10, fontWeight:700, padding:"3px 10px", borderRadius:6, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.55)" }}>{tag}</span>
