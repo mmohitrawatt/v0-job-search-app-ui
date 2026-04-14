@@ -128,16 +128,28 @@ const CSS = `
   .fade-up { animation: fade-up .6s var(--ease-out) both; }
 
   /* ═══ HERO ═══ */
-  .hero-banner { padding: 52px 28px; }
-  .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-  .hero-row { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
-  .hero-main { flex: 1; min-width: 260px; }
-  .hero-title { font-size: clamp(22px,3vw,38px); font-weight: 900; color: white; margin: 0 0 10px; line-height: 1.12; letter-spacing: -.025em; }
-  .hero-subtitle { font-size: 15px; font-weight: 600; color: #a5b4fc; margin: 0 0 12px; }
-  .hero-desc { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.75; margin: 0 0 22px; max-width: 520px; }
-  .hero-stats { display: flex; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; overflow: hidden; width: fit-content; max-width: 100%; }
-  .hero-event-card { flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 24px 28px; text-align: center; backdrop-filter: blur(12px); min-width: 190px; }
-  .hero-tags { margin-top: 24px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .hero-banner { padding: 60px 28px 52px; }
+  .hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 99px; padding: 6px 14px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+  .hero-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; }
+  .hero-main { flex: 1; min-width: 0; }
+  .hero-title { font-size: clamp(26px,3.5vw,44px); font-weight: 900; color: white; margin: 0 0 10px; line-height: 1.1; letter-spacing: -.03em; }
+  .hero-subtitle { font-size: clamp(14px,1.5vw,17px); font-weight: 600; color: #a5b4fc; margin: 0 0 14px; line-height: 1.5; }
+  .hero-desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.8; margin: 0 0 28px; }
+  .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+  .hero-stat { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px 18px; }
+  .hero-stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hero-stat-val { font-size: 20px; font-weight: 900; line-height: 1; }
+  .hero-stat-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
+  .hero-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 0 0 24px; }
+  .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .hero-tag { font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+  .hero-event-card { flex-shrink: 0; width: 220px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 28px 24px; backdrop-filter: blur(16px); }
+  .hero-event-icon { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg,#4f46e5,#6366f1); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(79,70,229,0.4); }
+  .hero-event-label { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+  .hero-event-date { font-size: 32px; font-weight: 900; color: white; line-height: 1; margin-bottom: 4px; }
+  .hero-event-time { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 500; margin-bottom: 16px; }
+  .hero-event-price { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 10px 0; border-radius: 12px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25); font-size: 18px; font-weight: 900; color: #fbbf24; letter-spacing: -.01em; }
   .nav-badge { display: flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 99px; background: var(--grn-l); border: 1px solid rgba(16,185,129,0.22); font-size: 11px; font-weight: 800; color: var(--grn); text-transform: uppercase; letter-spacing: .06em; }
   .nav-badge-text { display: inline; }
 
@@ -148,14 +160,15 @@ const CSS = `
     .reg-wrap { padding: 28px 20px !important; }
     .hint-right { display: none !important; }
     .hint-mobile { display: inline !important; }
+    .hero-row { gap: 32px; }
+    .hero-event-card { width: 190px; padding: 22px 18px; }
+    .hero-event-date { font-size: 26px; }
   }
-  @media (max-width: 640px) {
-    .hero-banner { padding: 32px 16px; }
+  @media (max-width: 700px) {
     .hero-event-card { display: none; }
-    .hero-stats { width: 100%; }
-    .hero-tags { margin-top: 14px; }
-    .hero-badges { gap: 6px; margin-bottom: 14px; }
-    .hero-desc { font-size: 14px; margin-bottom: 16px; }
+    .hero-banner { padding: 40px 20px 36px; }
+    .hero-stats { gap: 8px; }
+    .hero-stat { padding: 10px 14px; }
   }
   @media (max-width: 600px) {
     .reg-wrap { padding: 20px 12px !important; }
@@ -163,12 +176,17 @@ const CSS = `
     .reg-nav { padding: 0 14px !important; }
     .radio-card { min-width: calc(50% - 4px); text-align: center; }
     .nav-badge-text { display: none; }
+    .hero-banner { padding: 32px 16px 28px; }
+    .hero-stat-val { font-size: 17px; }
+    .hero-stat-icon { width: 30px; height: 30px; }
   }
   @media (max-width: 380px) {
-    .hero-banner { padding: 24px 12px; }
+    .hero-banner { padding: 24px 14px 22px; }
     .reg-wrap { padding: 16px 10px !important; }
     .reg-form-card { padding: 14px 12px !important; }
     .radio-card { min-width: 100%; }
+    .hero-stats { gap: 6px; }
+    .hero-stat { padding: 9px 12px; gap: 8px; }
   }
   .hint-right  { display: inline; }
   .hint-mobile { display: none; }
@@ -472,65 +490,100 @@ function RegisterForm() {
         </nav>
 
         {/* ── Hero Banner ── */}
-        <div className="hero-banner" style={{ background:"linear-gradient(135deg,#060d24 0%,#0d1b45 40%,#1d3a8f 100%)", position:"relative", overflow:"hidden" }}>
-          <div style={{ position:"absolute", top:-60, right:-40, width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(99,102,241,.25),transparent 70%)", pointerEvents:"none" }} />
-          <div style={{ position:"absolute", bottom:-40, left:"15%", width:180, height:180, borderRadius:"50%", background:"radial-gradient(circle,rgba(79,70,229,.18),transparent 70%)", pointerEvents:"none" }} />
+        <div className="hero-banner" style={{ background:"linear-gradient(135deg,#06091a 0%,#0d1440 50%,#1a2a6e 100%)", position:"relative", overflow:"hidden" }}>
+          {/* Decorative glows */}
+          <div style={{ position:"absolute", top:-80, right:-60, width:360, height:360, borderRadius:"50%", background:"radial-gradient(circle,rgba(99,102,241,.2),transparent 65%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", bottom:-60, left:"10%", width:280, height:280, borderRadius:"50%", background:"radial-gradient(circle,rgba(79,70,229,.15),transparent 65%)", pointerEvents:"none" }} />
+          <div style={{ position:"absolute", top:"30%", left:"40%", width:200, height:200, borderRadius:"50%", background:"radial-gradient(circle,rgba(139,92,246,.08),transparent 70%)", pointerEvents:"none" }} />
 
           <div style={{ maxWidth:1100, margin:"0 auto", position:"relative", zIndex:1 }}>
+
+            {/* Badges row */}
             <div className="hero-badges">
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(99,102,241,0.15)", border:"1px solid rgba(99,102,241,0.3)", borderRadius:99, padding:"5px 14px" }}>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6.5 1L1.5 7h4.5l-.5 4 5-6H6l.5-4z" stroke="#a5b4fc" strokeWidth="1.3" strokeLinejoin="round"/></svg>
-                <span style={{ fontSize:10, fontWeight:800, color:"#a5b4fc", textTransform:"uppercase", letterSpacing:".07em" }}>Live Masterclass</span>
-              </div>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", borderRadius:99, padding:"5px 14px" }}>
-                <span style={{ fontSize:10 }}>📅</span>
-                <span style={{ fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".07em" }}>19 April 2026</span>
-              </div>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(16,185,129,0.15)", border:"1px solid rgba(16,185,129,0.3)", borderRadius:99, padding:"5px 14px" }}>
-                <div style={{ width:6, height:6, borderRadius:"50%", background:"#34d399" }} />
-                <span style={{ fontSize:10, fontWeight:800, color:"#34d399", textTransform:"uppercase", letterSpacing:".07em" }}>Registrations Open</span>
-              </div>
+              <span className="hero-badge" style={{ background:"rgba(99,102,241,0.15)", border:"1px solid rgba(99,102,241,0.35)", color:"#a5b4fc" }}>
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6.5 1L1.5 7h4.5l-.5 4 5-6H6l.5-4z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>
+                Live Masterclass
+              </span>
+              <span className="hero-badge" style={{ background:"rgba(251,191,36,0.12)", border:"1px solid rgba(251,191,36,0.3)", color:"#fbbf24" }}>
+                📅 19 April 2026
+              </span>
+              <span className="hero-badge" style={{ background:"rgba(16,185,129,0.12)", border:"1px solid rgba(16,185,129,0.3)", color:"#34d399" }}>
+                <div style={{ width:6, height:6, borderRadius:"50%", background:"#34d399", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
+                Registrations Open
+              </span>
             </div>
 
+            {/* Main row */}
             <div className="hero-row">
+
+              {/* Left: content */}
               <div className="hero-main">
-                <h2 className="hero-title">Frontend Engineering Masterclass</h2>
+                <h1 className="hero-title">Frontend Engineering<br />Masterclass</h1>
                 <p className="hero-subtitle">Stop Building To-Do Apps. Start Building Systems.</p>
                 <p className="hero-desc">
-                  3-hour live session — JavaScript internals, frontend system design, and building a YouTube-style React app from scratch with Bipin Chaudhary.
+                  A 3-hour intensive live session covering JavaScript internals, frontend system design, and building a YouTube-style React app — with Bipin Chaudhary.
                 </p>
+
+                {/* Stats cards */}
                 <div className="hero-stats">
-                  {[
-                    { value:"3 Hrs", label:"Live Session", color:"#a5b4fc" },
-                    { value:"1", label:"Mentor", color:"#60a5fa" },
-                    { value:"₹29", label:"Only", color:"#fbbf24" },
-                  ].map((s, i) => (
-                    <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none", flex:1 }}>
-                      <div style={{ fontSize:20, fontWeight:900, color:s.color, lineHeight:1 }}>{s.value}</div>
-                      <div style={{ fontSize:9, fontWeight:700, color:"rgba(255,255,255,0.45)", marginTop:4, textTransform:"uppercase", letterSpacing:".07em" }}>{s.label}</div>
+                  <div className="hero-stat">
+                    <div className="hero-stat-icon" style={{ background:"rgba(165,180,252,0.15)" }}>
+                      <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#a5b4fc" strokeWidth="2"/><path d="M12 6v6l4 2" stroke="#a5b4fc" strokeWidth="2" strokeLinecap="round"/></svg>
+                    </div>
+                    <div>
+                      <div className="hero-stat-val" style={{ color:"#a5b4fc" }}>3 Hours</div>
+                      <div className="hero-stat-lbl">Live Session</div>
+                    </div>
+                  </div>
+                  <div className="hero-stat">
+                    <div className="hero-stat-icon" style={{ background:"rgba(96,165,250,0.15)" }}>
+                      <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="#60a5fa" strokeWidth="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/></svg>
+                    </div>
+                    <div>
+                      <div className="hero-stat-val" style={{ color:"#60a5fa" }}>1 Mentor</div>
+                      <div className="hero-stat-lbl">Expert Instructor</div>
+                    </div>
+                  </div>
+                  <div className="hero-stat">
+                    <div className="hero-stat-icon" style={{ background:"rgba(251,191,36,0.15)" }}>
+                      <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z" fill="#fbbf24" fillOpacity=".9"/></svg>
+                    </div>
+                    <div>
+                      <div className="hero-stat-val" style={{ color:"#fbbf24" }}>₹29 Only</div>
+                      <div className="hero-stat-lbl">Registration Fee</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tags */}
+                <div className="hero-divider" />
+                <div className="hero-tags">
+                  <span style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.3)", textTransform:"uppercase", letterSpacing:".06em", marginRight:2 }}>Topics</span>
+                  {["JavaScript","Event Loop","Closures","System Design","React","YouTube Clone"].map(tag => (
+                    <span key={tag} className="hero-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: event card */}
+              <div className="hero-event-card">
+                <div className="hero-event-icon">
+                  <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <div className="hero-event-label">Next Masterclass</div>
+                <div className="hero-event-date">19 Apr</div>
+                <div className="hero-event-time">Sunday · 11 AM – 2 PM</div>
+                <div className="hero-event-price">₹29</div>
+                <div style={{ marginTop:14, display:"flex", flexDirection:"column", gap:8 }}>
+                  {["Live Online","3 Hours","Certificate"].map(item => (
+                    <div key={item} style={{ display:"flex", alignItems:"center", gap:8 }}>
+                      <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" stroke="rgba(165,180,252,0.5)" strokeWidth="1"/><path d="M3.5 6L5.5 8L8.5 4" stroke="#a5b4fc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      <span style={{ fontSize:12, color:"rgba(255,255,255,0.5)", fontWeight:500 }}>{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="hero-event-card">
-                <div style={{ width:44, height:44, borderRadius:12, background:"linear-gradient(135deg,#4f46e5,#6366f1)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px", boxShadow:"0 8px 24px rgba(79,70,229,0.4)" }}>
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <div style={{ fontSize:10, fontWeight:800, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:".08em", marginBottom:6 }}>Masterclass</div>
-                <div style={{ fontSize:22, fontWeight:900, color:"white", lineHeight:1.1, marginBottom:4 }}>19 April</div>
-                <div style={{ fontSize:12, color:"rgba(255,255,255,0.45)", lineHeight:1.5 }}>11:00 AM – 2:00 PM</div>
-                <div style={{ marginTop:14, padding:"6px 16px", borderRadius:99, background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.25)", fontSize:10, fontWeight:800, color:"#fbbf24", textTransform:"uppercase", letterSpacing:".06em", display:"inline-block" }}>
-                  ₹29 Only
-                </div>
-              </div>
-            </div>
-
-            <div className="hero-tags">
-              <span style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".06em", marginRight:4 }}>You will learn</span>
-              {["JavaScript Internals","Event Loop","Closures","Frontend System Design","React","YouTube Clone"].map(tag => (
-                <span key={tag} style={{ fontSize:10, fontWeight:700, padding:"3px 10px", borderRadius:6, background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.1)", color:"rgba(255,255,255,0.55)" }}>{tag}</span>
-              ))}
             </div>
           </div>
         </div>
