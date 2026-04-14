@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { FadeIn, StaggerContainer, StaggerItem, motion } from "./motion"
+import { FadeIn, StaggerContainer, StaggerItem } from "./motion"
 
 const MENTORS = [
   { initials: "AD", color: "#1d3a8f" },
@@ -9,6 +9,8 @@ const MENTORS = [
   { initials: "JV", color: "#7c3aed" },
   { initials: "SK", color: "#b45309" },
 ]
+
+const FRONTEND_MENTOR = { initials: "BC", color: "#0891b2" }
 
 export function Bootcamps() {
   return (
@@ -24,7 +26,7 @@ export function Bootcamps() {
           </p>
         </FadeIn>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[860px] mx-auto">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
 
           {/* ── Completed — Bootcamp 1 ─────────── */}
           <StaggerItem>
@@ -197,6 +199,102 @@ export function Bootcamps() {
                   </svg>
                   Completed Successfully
                 </div>
+              </div>
+            </div>
+          </StaggerItem>
+
+          {/* ── Upcoming — Bootcamp 3 (Frontend Engineering Masterclass) ── */}
+          <StaggerItem>
+            <div className="relative overflow-hidden rounded-2xl border border-indigo-200/70 bg-white h-full flex flex-col shadow-sm">
+              <div className="h-1.5 w-full bg-indigo-400" />
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-indigo-200/60">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="12" r="12" fillOpacity="0.2" />
+                      <circle cx="12" cy="12" r="5" />
+                    </svg>
+                    Upcoming
+                  </span>
+                  <span className="text-[10px] font-semibold text-slate-400">Bootcamp 3 &middot; 19 Apr 2026</span>
+                </div>
+
+                <h3 className="text-[17px] font-extrabold text-slate-900 tracking-[-0.02em] mb-0.5">
+                  Frontend Engineering Masterclass
+                </h3>
+                <p className="text-[11px] font-semibold text-indigo-500 mb-2">
+                  Stop Building To-Do Apps. Start Building Systems.
+                </p>
+                <p className="text-[12px] text-slate-500 leading-[1.55] mb-3">
+                  3-hour live session — JavaScript internals, frontend system design, and building a YouTube-style React app from scratch.
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {["19 Apr 2026", "3 Hours", "₹29"].map((label) => (
+                    <span key={label} className="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                      {label}
+                    </span>
+                  ))}
+                  <span className="text-[10px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded">
+                    Live Online
+                  </span>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {["React", "JavaScript", "Frontend", "System Design"].map((tag) => (
+                    <span key={tag} className="text-[9px] font-semibold text-indigo-500 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* What you'll learn */}
+                <div className="mb-3">
+                  <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">What You'll Learn</div>
+                  <div className="grid grid-cols-1 gap-y-1.5">
+                    {[
+                      "JavaScript execution context & hoisting",
+                      "Event loop, call stack, async behavior",
+                      "Closures, scope, and the 'this' keyword",
+                      "Frontend system design concepts",
+                      "Component architecture & reusable UI",
+                      "Performance: debouncing & lazy loading",
+                      "YouTube-style React frontend features",
+                    ].map((t) => (
+                      <div key={t} className="flex items-start gap-1.5">
+                        <svg width="9" height="9" fill="none" viewBox="0 0 24 24" className="text-indigo-400 shrink-0 mt-[1px]">
+                          <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[10px] font-medium text-slate-600">{t}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Mentor + Time */}
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white"
+                      style={{ background: FRONTEND_MENTOR.color }}
+                    >
+                      {FRONTEND_MENTOR.initials}
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-semibold text-slate-600">Bipin Chaudhary</span>
+                      <p className="text-[9px] text-slate-400">Full Stack Dev, SAP Ex-Intern</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-medium text-slate-400">11 AM – 2 PM</span>
+                </div>
+
+                <Link
+                  href="/register-frontend"
+                  className="mt-3 w-full flex items-center justify-center gap-2 text-[12px] font-bold text-white py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors cursor-pointer"
+                >
+                  Register Now – ₹29
+                </Link>
               </div>
             </div>
           </StaggerItem>
