@@ -568,7 +568,7 @@ function Bootcamp() {
               <div>
                 <div style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 10 }}>Led By</div>
                 {[
-                  { name: "Aditya Dubey", role: "AI Consultant &middot; Cograd", initials: "AD", clr: "var(--accent)" },
+                  { name: "Aditya Dubey", role: "AI Engineer &middot; Cograd", initials: "AD", clr: "var(--accent)" },
                   { name: "Sonic Payeng", role: "SWE2 &middot; Dell Technologies", initials: "SP", clr: "var(--grn)" },
                   { name: "Jitesh Vijaykumar", role: "AI Engineer &middot; KPMG", initials: "JV", clr: "var(--vio)" },
                   { name: "Shubham Kaushik", role: "AI Researcher &middot; KPMG", initials: "SK", clr: "#b45309" },
@@ -670,7 +670,7 @@ function MentorsSection() {
     { name: "Shubham Kaushik", role: "AI Researcher", company: "KPMG", initials: "SK", color: "#b45309", desc: "5+ years in AI/ML & full-stack. Research on LLMs & financial AI." },
     { name: "Jitesh Vijaykumar", role: "AI Engineer", company: "KPMG", initials: "JV", color: "var(--vio)", desc: "5+ years building scalable AI solutions for enterprise systems." },
     { name: "Sonic Payeng", role: "SWE2", company: "Dell Technologies", initials: "SP", color: "var(--grn)", desc: "AI engineer building automation on Dell Platform. M.Tech from MNNIT." },
-    { name: "Aditya Dubey", role: "AI Consultant", company: "Cograd", initials: "AD", color: "var(--accent)", desc: "Mentored 12,000+ professionals in AI. M.Tech from NIT Allahabad." },
+    { name: "Aditya Dubey", role: "AI Engineer", company: "Cograd", initials: "AD", color: "var(--accent)", desc: "Mentored 12,000+ professionals in AI. M.Tech from NIT Allahabad." },
   ]
   return (
     <Section bg="var(--bg)">
