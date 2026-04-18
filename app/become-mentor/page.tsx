@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, ChangeEvent } from "react"
 import Link from "next/link"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
@@ -179,6 +179,10 @@ export default function BecomeMentorPage() {
   const [comboFields, setComboFields] = useState<Record<string, string>>({})
   const [pricingExpectation, setPricingExpectation] = useState("")
   const [mentorPrice, setMentorPrice] = useState(149)
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState("")
+  const [photoError, setPhotoError] = useState("")
+  const photoRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
@@ -186,15 +190,23 @@ export default function BecomeMentorPage() {
   const totalSteps = STEPS.length
   const pct = ((cur + 1) / totalSteps) * 100
 
+  function handlePhoto(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPhoto(file)
+    setPhotoPreview(URL.createObjectURL(file))
+    setPhotoError("")
+  }
+
   function isValid(): boolean {
-    // Only Name and Phone are required (step 0 combo fields marked required)
-    // All other steps are optional — always valid
     if (step.type === "combo") {
       const hasRequired = (step.fields || []).some(f => f.required)
       if (!hasRequired) return true
-      return (step.fields || []).filter(f => f.required).every(f => (comboFields[f.key] || "").trim().length > 0)
+      const fieldsOk = (step.fields || []).filter(f => f.required).every(f => (comboFields[f.key] || "").trim().length > 0)
+      // On step 0, photo is also required
+      if (step.id === 0) return fieldsOk && !!photo
+      return fieldsOk
     }
-    // All non-combo steps are optional
     return true
   }
 
@@ -229,31 +241,30 @@ export default function BecomeMentorPage() {
       setLoading(true)
       const sliderMin = answers[6] as number
       try {
-        await fetch("/api/become-mentor", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            full_name: comboFields.full_name?.trim() || "",
-            email: comboFields.email?.trim() || "",
-            phone: comboFields.phone?.trim() || "",
-            location: comboFields.location?.trim() || null,
-            domain: STEPS[1].opts?.[answers[1] as number]?.l || "",
-            job_title: comboFields.job_title?.trim() || "",
-            experience: comboFields.experience || "",
-            linkedin: comboFields.linkedin?.trim() || null,
-            short_intro: (answers[3] as string).trim(),
-            professional_bio: (answers[4] as string).trim(),
-            mentorship_topics: (answers[5] as number[]).map(i => STEPS[5].opts?.[i]?.l || "").filter(Boolean),
-            session_price: mentorPrice,
-            session_duration: `${sliderMin} min`,
-            pricing_expectation: pricingExpectation.trim() || null,
-            mentorship_format: (answers[7] as number[]).map(i => STEPS[7].opts?.[i]?.l || "").filter(Boolean),
-            available_days: (answers[8] as number[]).map(i => STEPS[8].opts?.[i]?.l || "").filter(Boolean),
-            motivation: (answers[9] as string).trim(),
-            portfolio_url: comboFields.portfolio_url?.trim() || null,
-            additional_note: comboFields.additional_note?.trim() || null,
-          }),
-        })
+        const fd = new FormData()
+        fd.append("data", JSON.stringify({
+          full_name: comboFields.full_name?.trim() || "",
+          email: comboFields.email?.trim() || "",
+          phone: comboFields.phone?.trim() || "",
+          location: comboFields.location?.trim() || null,
+          domain: STEPS[1].opts?.[answers[1] as number]?.l || "",
+          job_title: comboFields.job_title?.trim() || "",
+          experience: comboFields.experience || "",
+          linkedin: comboFields.linkedin?.trim() || null,
+          short_intro: (answers[3] as string).trim(),
+          professional_bio: (answers[4] as string).trim(),
+          mentorship_topics: (answers[5] as number[]).map(i => STEPS[5].opts?.[i]?.l || "").filter(Boolean),
+          session_price: mentorPrice,
+          session_duration: `${sliderMin} min`,
+          pricing_expectation: pricingExpectation.trim() || null,
+          mentorship_format: (answers[7] as number[]).map(i => STEPS[7].opts?.[i]?.l || "").filter(Boolean),
+          available_days: (answers[8] as number[]).map(i => STEPS[8].opts?.[i]?.l || "").filter(Boolean),
+          motivation: (answers[9] as string).trim(),
+          portfolio_url: comboFields.portfolio_url?.trim() || null,
+          additional_note: comboFields.additional_note?.trim() || null,
+        }))
+        if (photo) fd.append("photo", photo)
+        await fetch("/api/become-mentor", { method: "POST", body: fd })
         setDone(true)
         window.scrollTo({ top: 0, behavior: "smooth" })
       } catch {
@@ -575,6 +586,49 @@ export default function BecomeMentorPage() {
             {/* ── Combo (multiple fields) ──── */}
             {step.type === "combo" && (
               <div className="flex flex-col gap-4">
+                {step.id === 0 && (
+                  <div>
+                    <label className="text-[13px] font-semibold text-slate-700 mb-1.5 block">
+                      Profile Photo <span className="text-red-400">*</span>
+                    </label>
+                    <input ref={photoRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
+                    <div
+                      onClick={() => photoRef.current?.click()}
+                      className={`flex items-center gap-4 p-4 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+                        photoPreview
+                          ? "border-[#7c3aed] bg-purple-50/40"
+                          : photoError
+                          ? "border-red-300 bg-red-50/30"
+                          : "border-slate-200 hover:border-[#7c3aed]/40 hover:bg-purple-50/20"
+                      }`}
+                    >
+                      {photoPreview ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={photoPreview} alt="Preview" className="w-14 h-14 rounded-xl object-cover shrink-0 border-2 border-[#7c3aed]/30" />
+                          <div>
+                            <div className="text-[13px] font-700 text-[#7c3aed] font-bold">{photo?.name}</div>
+                            <div className="text-[11px] text-slate-400 mt-0.5">Click to change photo</div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex items-center gap-3 w-full">
+                          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
+                            <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                              <circle cx="12" cy="8" r="4" stroke={photoError ? "#f87171" : "#94a3b8"} strokeWidth="1.7"/>
+                              <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke={photoError ? "#f87171" : "#94a3b8"} strokeWidth="1.7" strokeLinecap="round"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <div className={`text-[13px] font-semibold ${photoError ? "text-red-400" : "text-slate-500"}`}>Upload your profile photo</div>
+                            <div className="text-[11px] text-slate-400 mt-0.5">PNG, JPG — will appear on your mentor card</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {photoError && <div className="text-[11px] text-red-400 font-semibold mt-1.5">{photoError}</div>}
+                  </div>
+                )}
                 {step.fields?.map(f => (
                   <div key={f.key}>
                     <label className="text-[13px] font-semibold text-slate-700 mb-1.5 block">

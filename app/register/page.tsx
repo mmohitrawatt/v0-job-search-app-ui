@@ -509,10 +509,15 @@ function RegisterForm() {
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [screenshotName, setScreenshotName] = useState("")
   const [screenshotError, setScreenshotError] = useState("")
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoName, setPhotoName] = useState("")
+  const [photoPreview, setPhotoPreview] = useState("")
+  const [photoError, setPhotoError] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState("")
   const fileRef = useRef<HTMLInputElement>(null)
+  const photoRef = useRef<HTMLInputElement>(null)
 
   // Auto-fill cluster from URL param and scroll to form
   useEffect(() => {
@@ -539,6 +544,15 @@ function RegisterForm() {
     setScreenshotError("")
   }
 
+  function handlePhoto(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPhoto(file)
+    setPhotoName(file.name)
+    setPhotoPreview(URL.createObjectURL(file))
+    setPhotoError("")
+  }
+
   function validate() {
     const e: Partial<Record<keyof FormState, string>> = {}
     if (!form.name.trim())  e.name  = "Name is required"
@@ -556,7 +570,8 @@ function RegisterForm() {
     e.preventDefault()
     const errs = validate()
     if (!screenshot) setScreenshotError("Please upload your payment screenshot")
-    if (Object.keys(errs).length || !screenshot) { setErrors(errs); return }
+    if (!photo) setPhotoError("Please upload your profile photo")
+    if (Object.keys(errs).length || !screenshot || !photo) { setErrors(errs); return }
     setLoading(true)
     setServerError("")
     try {
@@ -567,6 +582,7 @@ function RegisterForm() {
       fd.append("college", form.org.trim())
       fd.append("upi_transaction_id", form.upi_transaction_id.trim())
       if (screenshot) fd.append("screenshot", screenshot)
+      if (photo) fd.append("photo", photo)
 
       const res = await fetch("/api/hackathon-register", { method:"POST", body:fd })
       const data = await res.json()
@@ -727,6 +743,40 @@ function RegisterForm() {
                   <Field label="College / Company *" error={errors.org}>
                     <input className={`field-input${errors.org?" err":""}`} placeholder="IIT Delhi / Swiggy" value={form.org} onChange={e => set("org", e.target.value)} />
                   </Field>
+                </div>
+
+                {/* Profile Photo */}
+                <div>
+                  <label style={{ fontSize:12, fontWeight:700, color:"var(--ink2)", letterSpacing:".01em", display:"block", marginBottom:6 }}>
+                    Profile Photo <span style={{ color:"var(--rose)" }}>*</span>
+                  </label>
+                  <input ref={photoRef} type="file" accept="image/*" style={{ display:"none" }} onChange={handlePhoto} />
+                  <div
+                    className={`upload-zone${photoName ? " has-file" : ""}${photoError ? " err" : ""}`}
+                    onClick={() => photoRef.current?.click()}
+                    style={{ ...(photoError ? { borderColor:"var(--rose)", borderStyle:"dashed" } : {}), display:"flex", alignItems:"center", justifyContent:"center", gap:14, padding:"14px 16px" }}
+                  >
+                    {photoPreview ? (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photoPreview} alt="Preview" style={{ width:52, height:52, borderRadius:12, objectFit:"cover", flexShrink:0, border:"2px solid var(--grn)" }} />
+                        <div>
+                          <div style={{ fontSize:13, fontWeight:700, color:"var(--grn)" }}>{photoName}</div>
+                          <div style={{ fontSize:11, color:"var(--ink3)", marginTop:2 }}>Click to change photo</div>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ textAlign:"center" }}>
+                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" style={{ margin:"0 auto 6px", display:"block" }}>
+                          <circle cx="12" cy="8" r="4" stroke={photoError?"var(--rose)":"var(--ink3)"} strokeWidth="1.7"/>
+                          <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke={photoError?"var(--rose)":"var(--ink3)"} strokeWidth="1.7" strokeLinecap="round"/>
+                        </svg>
+                        <div style={{ fontSize:13, fontWeight:600, color:photoError?"var(--rose)":"var(--ink3)" }}>Upload your profile photo</div>
+                        <div style={{ fontSize:11, color:"var(--ink3)", marginTop:3 }}>PNG, JPG — used for your participant profile</div>
+                      </div>
+                    )}
+                  </div>
+                  {photoError && <div style={{ fontSize:11, color:"var(--rose)", fontWeight:600, marginTop:4 }}>{photoError}</div>}
                 </div>
 
                 {/* Status */}
