@@ -21,7 +21,10 @@ export function Navbar() {
   const { open: openWaitlist } = useWaitlist()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 10)
+      if (window.scrollY > 80) setStripVisible(false)
+    }
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
@@ -29,48 +32,43 @@ export function Navbar() {
   return (
     <>
       {/* ── Announcement Strip ── */}
-      {stripVisible && (
-        <div
-          className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-center gap-2 sm:gap-3 px-8 py-2"
-          style={{ background: "linear-gradient(135deg, #0a1533 0%, #1d3a8f 100%)", minHeight: 40 }}
-        >
-          {/* NEW pill */}
-          <span
-            className="shrink-0 text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded"
-            style={{ background: "rgba(255,255,255,0.18)", color: "white" }}
+      <AnimatePresence>
+        {stripVisible && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -40 }}
+            transition={{ duration: 0.25, ease: "easeIn" }}
+            className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-center gap-2 sm:gap-3 px-8 py-2"
+            style={{ background: "linear-gradient(135deg, #0a1533 0%, #1d3a8f 100%)", minHeight: 40 }}
           >
-            New
-          </span>
+            {/* NEW pill */}
+            <span
+              className="shrink-0 text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded"
+              style={{ background: "rgba(255,255,255,0.18)", color: "white" }}
+            >
+              New
+            </span>
 
-          {/* Text — truncated on mobile, full on desktop */}
-          <p className="text-white/85 leading-tight font-medium truncate" style={{ fontSize: 12 }}>
-            <span className="sm:hidden">Frontend Masterclass · 19 Apr · ₹29</span>
-            <span className="hidden sm:inline">Frontend Engineering Masterclass — Live on 19 Apr 2026 · Only ₹29</span>
-          </p>
+            {/* Text — truncated on mobile, full on desktop */}
+            <p className="text-white/85 leading-tight font-medium truncate" style={{ fontSize: 12 }}>
+              <span className="sm:hidden">Frontend Masterclass · Session Complete · 200+ students</span>
+              <span className="hidden sm:inline">Frontend Engineering Masterclass · Session Complete — 200+ students joined 🎉</span>
+            </p>
 
-          {/* Register link */}
-          <a
-            href="/register-frontend"
-            className="shrink-0 font-bold whitespace-nowrap transition-opacity hover:opacity-80"
-            style={{ fontSize: 12, color: "rgba(255,255,255,0.9)" }}
-          >
-            <span className="sm:hidden">Register →</span>
-            <span className="hidden sm:inline">Register now →</span>
-          </a>
-
-          {/* Dismiss */}
-          <button
-            onClick={() => setStripVisible(false)}
-            className="absolute right-2.5 sm:right-5 flex items-center justify-center w-5 h-5 rounded-full transition-all hover:bg-white/20"
-            style={{ color: "rgba(255,255,255,0.5)" }}
-            aria-label="Dismiss"
-          >
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      )}
+            {/* Dismiss */}
+            <button
+              onClick={() => setStripVisible(false)}
+              className="absolute right-2.5 sm:right-5 flex items-center justify-center w-5 h-5 rounded-full transition-all hover:bg-white/20"
+              style={{ color: "rgba(255,255,255,0.5)" }}
+              aria-label="Dismiss"
+            >
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <header
         className={`fixed left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-xl border-b ${
@@ -80,7 +78,7 @@ export function Navbar() {
         }`}
         style={{ top: stripVisible ? 40 : 0 }}
       >
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-10 h-[68px] flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <JobingenLogo height={56} className="sm:!h-[80px]" />

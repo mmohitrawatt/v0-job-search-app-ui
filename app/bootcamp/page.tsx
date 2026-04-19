@@ -28,8 +28,8 @@ const CSS = `
     --spring:   cubic-bezier(.34,1.56,.64,1);
     --ease-out: cubic-bezier(.16,1,.3,1);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--ink); }
+  .fb-page *, .fb-page *::before, .fb-page *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .fb-page { font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--ink); }
 
   @keyframes fade-up {
     from { opacity:0; transform:translateY(24px); }
@@ -646,100 +646,48 @@ export default function FeedbackPage() {
     </>
   )
 
-  // ── Hero content per tab ──
-  const heroMap = {
-    feedback: {
-      badge: "2-Day AI Bootcamp · March 2026",
-      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
-      title1: "How was your",
-      title2: "bootcamp experience?",
-      subtitle: "Takes 2 minutes. Your honest feedback shapes everything we build next.",
-      stats: [["~2 min","to complete"],["5","questions"],["100%","anonymous"]],
-      gradient: "linear-gradient(160deg, #0f2260 0%, #1d3a8f 55%, #1e3fa0 100%)",
-      shimmerClass: "shimmer",
-    },
-    resources: {
-      badge: "Bootcamp Resources · Free Access",
-      badgeIcon: <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-      title1: "Free bootcamp",
-      title2: "resources for you",
-      subtitle: "All slides, notebooks, cheat sheets and reference materials from the bootcamp.",
-      stats: [["100%","free forever"],["4+","resource types"],["Google","Drive access"]],
-      gradient: "linear-gradient(160deg, #064e3b 0%, #047857 55%, #059669 100%)",
-      shimmerClass: "shimmer-grn",
-    },
-  }
-  const heroContent = heroMap[activeTab]
-
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
-        <Navbar />
+      <Navbar />
+      <div style={{ height: 108 }} />
+      <div className="fb-page" style={{ minHeight: "calc(100vh - 108px)", background: "var(--cream)" }}>
 
         {/* Hero */}
-        <div className="fb-hero" style={{ background: heroContent.gradient, padding: "52px 28px 48px", paddingTop: 160, position: "relative", overflow: "hidden", transition: "background .4s ease" }}>
-          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
-          <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 99, padding: "5px 14px", marginBottom: 18 }}>
-              {heroContent.badgeIcon}
-              <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: ".07em" }}>{heroContent.badge}</span>
+        <div style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", padding: "44px 24px 40px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(29,58,143,0.035) 1px,transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
+          <div style={{ position: "relative", maxWidth: 560, margin: "0 auto" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 18, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Frontend Masterclass · 19 Apr 2026</span>
             </div>
-            <h1 style={{ fontSize: "clamp(28px,4vw,46px)", fontWeight: 900, color: "white", lineHeight: 1.1, letterSpacing: "-.025em", marginBottom: 14 }}>
-              {heroContent.title1}<br />
-              <span className={heroContent.shimmerClass}>{heroContent.title2}</span>
+            <h1 style={{ fontSize: "clamp(26px,4vw,42px)", fontWeight: 900, color: "#0f172a", lineHeight: 1.08, letterSpacing: "-0.04em", marginBottom: 12 }}>
+              How was your{" "}
+              <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                bootcamp experience?
+              </span>
             </h1>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 24px" }}>
-              {heroContent.subtitle}
+            <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.75, maxWidth: 400, margin: "0 auto 22px" }}>
+              Takes 2 minutes. Your honest feedback shapes everything we build next.
             </p>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.08)", borderRadius: 14, padding: "10px 20px", border: "1px solid rgba(255,255,255,0.1)" }}>
-              {heroContent.stats.map(([v, l]) => (
-                <div key={v} style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "white" }}>{v}</div>
-                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>{l}</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 0, background: "white", border: "1.5px solid #e0e7ff", borderRadius: 14, padding: "10px 4px", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
+              {[["~2 min","to complete"],["5","questions"],["100%","anonymous"]].map(([v, l], i) => (
+                <div key={v} style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
+                  <div style={{ textAlign: "center", padding: "0 20px" }}>
+                    <div style={{ fontSize: 14, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.02em" }}>{v}</div>
+                    <div style={{ fontSize: 10, color: "#94a3b8", fontWeight: 500, marginTop: 1 }}>{l}</div>
+                  </div>
+                  {i < 2 && <div style={{ width: 1, background: "#e0e7ff", alignSelf: "center", height: 24 }} />}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Navigation Cards */}
-        <div style={{ maxWidth: 720, margin: "0 auto", padding: "28px 24px 0" }}>
-          <div className="nav-cards">
-            {/* Free Resources */}
-            <div
-              className={`nav-card${activeTab === "resources" ? " active-rs" : ""}`}
-              onClick={() => setActiveTab("resources")}
-            >
-              <div className="nav-card-icon" style={{ background: activeTab === "resources" ? "linear-gradient(135deg,#047857,#34d399)" : "var(--grn-l)" }}>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke={activeTab === "resources" ? "#fff" : "#10b981"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke={activeTab === "resources" ? "#fff" : "#10b981"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <div className="nav-card-title">Free Resources</div>
-              <div className="nav-card-desc">Slides, notebooks, cheat sheets — all free</div>
-            </div>
-
-            {/* Bootcamp Feedback */}
-            <div
-              className={`nav-card${activeTab === "feedback" ? " active-fb" : ""}`}
-              onClick={() => setActiveTab("feedback")}
-            >
-              <div className="nav-card-icon" style={{ background: activeTab === "feedback" ? "linear-gradient(135deg,#1d3a8f,#3b5ff0)" : "var(--ind-l)" }}>
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke={activeTab === "feedback" ? "#fff" : "#1d3a8f"} strokeWidth="2" strokeLinejoin="round" fill={activeTab === "feedback" ? "rgba(255,255,255,0.25)" : "none"}/></svg>
-              </div>
-              <div className="nav-card-title">Bootcamp Feedback</div>
-              <div className="nav-card-desc">Share your bootcamp experience and help us improve</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Content */}
+        {/* Feedback Form */}
         <div className="fb-wrap" style={{ maxWidth: 680, margin: "0 auto", padding: "24px 24px 60px" }}>
+          <>
 
-          {/* ═══════════════════════════════════════════════════ */}
-          {/* ── FEEDBACK TAB ── */}
-          {/* ═══════════════════════════════════════════════════ */}
-          {activeTab === "feedback" && (
-            <>
               <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
                 {/* Section 1 — About You */}
@@ -878,8 +826,7 @@ export default function FeedbackPage() {
                 </p>
               </form>
 
-            </>
-          )}
+          </>
 
           {/* Hackathon submission removed — time over */}
           {false && (
@@ -1077,9 +1024,8 @@ export default function FeedbackPage() {
           )}
 
           {/* ═══════════════════════════════════════════════════ */}
-          {/* ── FREE RESOURCES TAB ── */}
-          {/* ═══════════════════════════════════════════════════ */}
-          {activeTab === "resources" && (
+          {/* ── FREE RESOURCES (hidden) ── */}
+          {false && (
             <div className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
               {/* Main resource card */}

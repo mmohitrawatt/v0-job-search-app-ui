@@ -194,13 +194,14 @@ function CompanyIcon({ name, size = 52 }: { name: string; size?: number }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ACTIVELY HIRING CARD  (Naukri-style: centered logo, name, tagline, CTA)
+   ACTIVELY HIRING CARD
 ───────────────────────────────────────────────────────────────────────────── */
 function ActiveCard({ company, jobCount, onClick, index }: {
   company: typeof FEATURED_COMPANIES[0]; jobCount: number; onClick: () => void; index: number
 }) {
   const [hov, setHov] = useState(false)
   const color = COMPANY_COLORS[company.name] || "#1d3a8f"
+  const letter = company.name.trim()[0].toUpperCase()
 
   return (
     <div
@@ -208,45 +209,75 @@ function ActiveCard({ company, jobCount, onClick, index }: {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        background: "white", borderRadius: 18, textAlign: "center",
-        border: hov ? `1.5px solid ${color}45` : "1.5px solid #eef0f6",
-        padding: "28px 20px 22px",
+        background: "white", borderRadius: 20, overflow: "hidden",
+        border: `1.5px solid ${hov ? color + "35" : "#eef0f6"}`,
         cursor: "pointer", width: "100%",
-        transform: hov ? "translateY(-5px)" : "translateY(0)",
-        boxShadow: hov ? `0 20px 56px ${color}1c` : "0 2px 8px rgba(0,0,0,0.04)",
-        transition: "all 0.28s cubic-bezier(0.16,1,0.3,1)",
-        animation: `fadeUp 0.45s ease ${index * 0.08}s both`,
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 0,
+        transform: hov ? "translateY(-6px)" : "translateY(0)",
+        boxShadow: hov ? `0 24px 64px ${color}22` : "0 2px 12px rgba(0,0,0,0.06)",
+        transition: "all 0.3s cubic-bezier(0.16,1,0.3,1)",
+        animation: `fadeUp 0.45s ease ${index * 0.09}s both`,
       }}
     >
-      {/* Icon */}
-      <CompanyIcon name={company.name} size={64} />
-
-      {/* Name */}
-      <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", marginTop: 14, marginBottom: 4, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{company.name}</div>
-
-      {/* Industry */}
-      <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>{company.industry}</div>
-
-      {/* Tagline */}
-      <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>{company.tagline}</div>
-
-      {/* Badges */}
-      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", marginBottom: 18 }}>
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 10px", borderRadius: 99 }}>{company.stage}</span>
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 10px", borderRadius: 99 }}>{company.size}</span>
+      {/* Top area — clean off-white */}
+      <div style={{
+        height: 72, background: "#f8f9fc", borderBottom: "1px solid #eef0f6",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 18px", position: "relative",
+      }}>
+        {/* Letter icon */}
+        <div style={{
+          width: 52, height: 52, borderRadius: 14,
+          background: "white", border: `1.5px solid ${color}28`,
+          boxShadow: `0 2px 12px ${color}18`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 22, fontWeight: 900, color: color,
+          fontFamily: "-apple-system,'SF Pro Display',system-ui,sans-serif",
+          letterSpacing: "-0.02em",
+          transition: "transform 0.25s ease",
+          transform: hov ? "scale(1.06)" : "scale(1)",
+          flexShrink: 0,
+        }}>
+          {letter}
+        </div>
+        {/* Hiring badge */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 5,
+          background: "#f0fdf4", border: "1px solid #bbf7d0",
+          borderRadius: 99, padding: "5px 11px",
+          fontSize: 10, fontWeight: 700, color: "#15803d",
+        }}>
+          <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
+          Hiring Now
+        </div>
       </div>
 
-      {/* CTA */}
-      <div style={{ width: "100%", borderTop: "1px solid #f4f6fb", paddingTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#16a34a" }}>
-          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-          Hiring Now
-        </span>
-        <span style={{ fontSize: 12, fontWeight: 700, color: color, background: `${color}12`, padding: "6px 14px", borderRadius: 99, display: "flex", alignItems: "center", gap: 4 }}>
-          {jobCount} role{jobCount !== 1 ? "s" : ""}
-          <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </span>
+      {/* Body */}
+      <div style={{ padding: "16px 18px 18px" }}>
+        <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.025em" }}>{company.name}</div>
+        <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>{company.industry}</div>
+
+        <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.65, marginBottom: 14,
+          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden"
+        }}>{company.tagline}</div>
+
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: color, background: `${color}10`, border: `1px solid ${color}20`, padding: "3px 9px", borderRadius: 99 }}>{company.stage}</span>
+          <span style={{ fontSize: 10, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", border: "1px solid #eef0f6", padding: "3px 9px", borderRadius: 99 }}>{company.size} employees</span>
+        </div>
+
+        <button style={{
+          width: "100%", padding: "11px 0", borderRadius: 12,
+          border: `1.5px solid ${color}35`,
+          background: hov ? `linear-gradient(135deg, ${color}, ${color}cc)` : "white",
+          color: hov ? "white" : color,
+          fontSize: 13, fontWeight: 700, cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+          transition: "all 0.25s ease",
+          boxShadow: hov ? `0 4px 16px ${color}28` : "none",
+        } as React.CSSProperties}>
+          View {jobCount} open role{jobCount !== 1 ? "s" : ""}
+          <svg width="12" height="12" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
       </div>
     </div>
   )
@@ -462,6 +493,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
   const [types, setTypes]       = useState<string[]>([])
   const [modes, setModes]       = useState<string[]>([])
   const [sort, setSort]         = useState<"newest" | "az">("newest")
+  const [filterOpen, setFilterOpen] = useState(false)
   const jobsRef = useRef<HTMLDivElement>(null)
 
   const toggle = (arr: string[], set: (v: string[]) => void, val: string) =>
@@ -498,34 +530,60 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.7)} }
-        @keyframes marqueeScroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes floatChip {
-          0%,100% { transform: translateY(0px); opacity: 0.7; }
-          50%      { transform: translateY(-10px); opacity: 1; }
-        }
+        @keyframes marqueeScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+        @keyframes floatChip { 0%,100%{transform:translateY(0px);opacity:.7} 50%{transform:translateY(-10px);opacity:1} }
         .ji-cat-scroll::-webkit-scrollbar{display:none}
         .ji-inp{border:none;background:transparent;font-size:14px;color:#0f172a;width:100%;padding:18px 0;}
         .ji-inp:focus{outline:none;}
         .ji-inp::placeholder{color:#94a3b8;}
+
         @media(max-width:960px){
           .ji-layout{flex-direction:column!important}
           .ji-sidebar{width:100%!important;position:static!important;flex-direction:row!important;flex-wrap:wrap;gap:12px!important}
           .ji-fbox{flex:1;min-width:180px}
           .ji-active-grid{grid-template-columns:repeat(3,1fr)!important}
         }
+
         @media(max-width:640px){
-          .ji-hero-h{font-size:28px!important;letter-spacing:-.03em!important}
+          /* Hero */
+          .ji-float-chips{display:none!important}
+          .ji-hero-pad{padding:36px 16px 32px!important}
+          .ji-hero-h{font-size:26px!important;letter-spacing:-.03em!important}
+          .ji-hero-sub{font-size:14px!important;margin-bottom:24px!important}
+          .ji-live-pill{font-size:11px!important}
+
+          /* Search */
           .ji-searchbar{flex-direction:column!important;border-radius:16px!important}
           .ji-sdiv{display:none!important}
-          .ji-active-grid{grid-template-columns:1fr 1fr!important}
-          .ji-cat-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
-          .ji-stats{gap:20px!important}
+          .ji-inp{padding:14px 0!important}
+          .ji-search-row{border-bottom:1px solid #eef0f6!important}
+          .ji-loc-row{border-bottom:1px solid #eef0f6!important}
+          .ji-search-btn{width:100%!important;padding:14px 0!important;border-radius:0 0 14px 14px!important;justify-content:center!important}
+
+          /* Stats */
+          .ji-stats{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important}
+          .ji-stat-div{display:none!important}
+
+          /* Active cards */
+          .ji-active-grid{grid-template-columns:1fr!important}
+
+          /* Filters */
+          .ji-sidebar{display:none!important}
+          .ji-sidebar.open{display:flex!important}
+          .ji-filter-toggle{display:flex!important}
+
+          /* Layout */
+          .ji-layout{gap:0!important}
+          .ji-jobs-wrap{padding:16px 14px 60px!important}
         }
+
         @media(min-width:641px) and (max-width:960px){
-          .ji-cat-grid{grid-template-columns:repeat(3,1fr)!important}
+          .ji-filter-toggle{display:none!important}
+          .ji-active-grid{grid-template-columns:repeat(3,1fr)!important}
+        }
+        @media(min-width:961px){
+          .ji-filter-toggle{display:none!important}
+          .ji-sidebar{display:flex!important}
         }
       `}</style>
 
@@ -541,8 +599,8 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(29,58,143,0.035) 1px,transparent 1px)", backgroundSize: "32px 32px" }} />
         </div>
 
-        {/* Floating company chips */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+        {/* Floating company chips — hidden on mobile */}
+        <div className="ji-float-chips" style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
           {[
             { name: "Google",    top: "18%", left: "5%",   delay: "0s"   },
             { name: "Netflix",   top: "28%", right: "6%",  delay: "0.5s" },
@@ -574,15 +632,14 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
         </div>
 
         {/* Main content */}
-        <div style={{ position: "relative", maxWidth: 860, margin: "0 auto", padding: "64px 24px 60px", textAlign: "center" }}>
+        <div className="ji-hero-pad" style={{ position: "relative", maxWidth: 860, margin: "0 auto", padding: "64px 20px 60px", textAlign: "center" }}>
 
           {/* Live pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)", animation: "fadeUp 0.5s ease both" }}>
+          <div className="ji-live-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 22, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)", animation: "fadeUp 0.5s ease both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
             <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Updated Daily — New roles every morning</span>
           </div>
 
-          {/* Headline — matches landing page style */}
           <h1 className="ji-hero-h" style={{ fontSize: "clamp(32px,5.5vw,56px)", fontWeight: 900, color: "#0f172a", marginBottom: 14, letterSpacing: "-0.04em", lineHeight: 1.08, animation: "fadeUp 0.5s ease 0.1s both" }}>
             Find your next role at<br />
             <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
@@ -590,23 +647,23 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
             </span>
           </h1>
 
-          <p style={{ fontSize: 17, color: "#64748b", fontWeight: 400, maxWidth: 460, margin: "0 auto 36px", lineHeight: 1.72, animation: "fadeUp 0.5s ease 0.18s both" }}>
+          <p className="ji-hero-sub" style={{ fontSize: 17, color: "#64748b", fontWeight: 400, maxWidth: 460, margin: "0 auto 36px", lineHeight: 1.72, animation: "fadeUp 0.5s ease 0.18s both" }}>
             Curated roles from top startups &amp; companies — no noise, only the best.
           </p>
 
-          {/* Search bar — on-brand white elevated */}
+          {/* Search bar */}
           <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, border: "1.5px solid #dde3f5", boxShadow: "0 8px 48px rgba(29,58,143,0.12)", maxWidth: 800, margin: "0 auto 22px", overflow: "hidden", animation: "fadeUp 0.5s ease 0.25s both" }}>
-            <div style={{ flex: 1.8, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
+            <div className="ji-search-row" style={{ flex: 1.8, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
               <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               <input className="ji-inp" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="Job title, company, or skill..." />
             </div>
             <div className="ji-sdiv" style={{ width: 1, background: "#eef0f6", margin: "12px 0" }} />
-            <div style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
+            <div className="ji-loc-row" style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <input className="ji-inp" value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="City or Remote" />
             </div>
-            <button onClick={scrollToJobs}
-              style={{ padding: "0 32px", background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "opacity 0.15s", flexShrink: 0, letterSpacing: "-0.01em" }}
+            <button className="ji-search-btn" onClick={scrollToJobs}
+              style={{ display: "flex", alignItems: "center", padding: "0 32px", background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "opacity 0.15s", flexShrink: 0, letterSpacing: "-0.01em" }}
               onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
               onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
               Search
@@ -614,7 +671,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           </div>
 
           {/* Quick tags */}
-          <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 40, animation: "fadeUp 0.5s ease 0.32s both" }}>
+          <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 36, animation: "fadeUp 0.5s ease 0.32s both" }}>
             {["Remote", "Internship", "AI & ML", "Design", "Engineering", "Full Time"].map(tag => (
               <button key={tag}
                 onClick={() => {
@@ -623,7 +680,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
                   else setSearch(tag)
                   scrollToJobs()
                 }}
-                style={{ padding: "6px 16px", borderRadius: 99, border: "1.5px solid #e0e7ff", background: "white", color: "#4b5563", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", boxShadow: "0 1px 4px rgba(29,58,143,0.05)" }}
+                style={{ padding: "6px 14px", borderRadius: 99, border: "1.5px solid #e0e7ff", background: "white", color: "#4b5563", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", boxShadow: "0 1px 4px rgba(29,58,143,0.05)" }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#1d3a8f"; e.currentTarget.style.color = "#1d3a8f"; e.currentTarget.style.background = "#eff6ff" }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "#e0e7ff"; e.currentTarget.style.color = "#4b5563"; e.currentTarget.style.background = "white" }}>
                 {tag}
@@ -640,11 +697,11 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
               { val: "Daily", label: "New listings" },
             ].map((s, i) => (
               <React.Fragment key={s.label}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "0 24px" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "12px 20px" }}>
                   <span style={{ fontSize: 20, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em" }}>{s.val}</span>
-                  <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{s.label}</span>
+                  <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>{s.label}</span>
                 </div>
-                {i < 3 && <div style={{ width: 1, height: 28, background: "#e0e7ff" }} />}
+                {i < 3 && <div className="ji-stat-div" style={{ width: 1, height: 28, background: "#e0e7ff" }} />}
               </React.Fragment>
             ))}
           </div>
@@ -739,14 +796,22 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           JOB LISTINGS
       ══════════════════════════════════════════════════════ */}
       <section ref={jobsRef} style={{ background: "#f4f6fb" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 24px 80px" }}>
-          <div style={{ marginBottom: 24 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>All Open Positions</h2>
-            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{jobs.length} roles · updated daily</p>
+        <div className="ji-jobs-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 24px 80px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 10 }}>
+            <div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>All Open Positions</h2>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{jobs.length} roles · updated daily</p>
+            </div>
+            {/* Mobile filter toggle */}
+            <button className="ji-filter-toggle" onClick={() => setFilterOpen(f => !f)}
+              style={{ display: "none", alignItems: "center", gap: 6, padding: "9px 16px", borderRadius: 10, border: "1.5px solid #e0e7ff", background: "white", fontSize: 13, fontWeight: 700, color: "#1d3a8f", cursor: "pointer" }}>
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+              Filters {activeFilters > 0 ? `(${activeFilters})` : ""}
+            </button>
           </div>
 
           <div className="ji-layout" style={{ display: "flex", gap: 22, alignItems: "flex-start" }}>
-            <aside className="ji-sidebar" style={{ width: 228, flexShrink: 0, position: "sticky", top: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+            <aside className={`ji-sidebar${filterOpen ? " open" : ""}`} style={{ width: 228, flexShrink: 0, position: "sticky", top: 20, display: "flex", flexDirection: "column", gap: 12 }}>
               <div className="ji-fbox" style={{ background: "white", borderRadius: 14, border: "1px solid #eef0f6", padding: "16px 14px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Filters</span>
