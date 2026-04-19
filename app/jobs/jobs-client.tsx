@@ -5,79 +5,57 @@ import Link from "next/link"
 import type { Job } from "./page"
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   COMPANY DATA
+   DATA
 ───────────────────────────────────────────────────────────────────────────── */
 
-const COMPANY_DOMAINS: Record<string, string> = {
-  "Google":               "google.com",
-  "Microsoft":            "microsoft.com",
-  "Amazon":               "amazon.com",
-  "Meta":                 "meta.com",
-  "Netflix":              "netflix.com",
-  "Apple":                "apple.com",
-  "Flipkart":             "flipkart.com",
-  "Zomato":               "zomato.com",
-  "Swiggy":               "swiggy.com",
-  "CRED":                 "cred.club",
-  "Razorpay":             "razorpay.com",
-  "Zepto":                "zeptonow.com",
-  "Meesho":               "meesho.com",
-  "PhonePe":              "phonepe.com",
-  "Ola":                  "olacabs.com",
-  "Groww":                "groww.in",
-  "BrowserStack":         "browserstack.com",
-}
-
 const COMPANY_COLORS: Record<string, string> = {
-  "Google":               "#4285F4",
-  "Microsoft":            "#00A4EF",
-  "Amazon":               "#FF9900",
-  "Meta":                 "#0866FF",
-  "Netflix":              "#E50914",
-  "Apple":                "#374151",
-  "Flipkart":             "#2874F0",
-  "Zomato":               "#E23744",
-  "Swiggy":               "#FC8019",
-  "CRED":                 "#1A1A1A",
-  "Razorpay":             "#072654",
-  "Zepto":                "#8B31F5",
-  "Meesho":               "#9B51E0",
-  "PhonePe":              "#5F259F",
-  "Ola":                  "#2D2D2D",
-  "Groww":                "#5367FF",
-  "BrowserStack":         "#F1692F",
-  "Trippyway":            "#0F766E",
+  "Google":                 "#4285F4",
+  "Microsoft":              "#00A4EF",
+  "Amazon":                 "#FF9900",
+  "Meta":                   "#0866FF",
+  "Netflix":                "#E50914",
+  "Apple":                  "#374151",
+  "Flipkart":               "#2874F0",
+  "Zomato":                 "#E23744",
+  "Swiggy":                 "#FC8019",
+  "CRED":                   "#111827",
+  "Razorpay":               "#2563EB",
+  "Zepto":                  "#8B31F5",
+  "Meesho":                 "#9B51E0",
+  "PhonePe":                "#5F259F",
+  "Ola":                    "#111827",
+  "Groww":                  "#5367FF",
+  "BrowserStack":           "#F1692F",
+  "Trippyway":              "#0F766E",
   "Top Institute of India": "#1D3A8F",
+  "Paytm":                  "#00BAF2",
+  "Byju's":                 "#6D28D9",
+  "InMobi":                 "#E11D48",
+  "Freshworks":             "#0ea5e9",
 }
 
-const STATIC_LOGOS: Record<string, string> = {
-  Trippyway: "/trippyway-logo.jpg",
-}
-
-function getCompanyLogo(name: string): string | null {
-  if (STATIC_LOGOS[name]) return STATIC_LOGOS[name]
-  const domain = COMPANY_DOMAINS[name]
-  if (domain) return `https://logo.clearbit.com/${domain}`
-  return null
-}
-
-const FEATURED_COMPANIES_LIST = [
-  { name: "Trippyway",             industry: "Travel · AI",         stage: "Seed",     size: "50+",    active: true  },
-  { name: "Netflix",               industry: "Streaming · Tech",    stage: "Public",   size: "12k+",   active: true  },
-  { name: "Top Institute of India",industry: "Research · Academia", stage: "Govt.",    size: "10k+",   active: true  },
-  { name: "Google",                industry: "Big Tech",            stage: "Public",   size: "182k+",  active: false },
-  { name: "Microsoft",             industry: "Cloud · AI",          stage: "Public",   size: "220k+",  active: false },
-  { name: "Flipkart",              industry: "E-Commerce",          stage: "Public",   size: "55k+",   active: false },
-  { name: "Zomato",                industry: "Food Tech",           stage: "Public",   size: "5.8k+",  active: false },
-  { name: "Razorpay",              industry: "Fintech",             stage: "Series F", size: "3.2k+",  active: false },
-  { name: "CRED",                  industry: "Consumer Fintech",    stage: "Series E", size: "1.5k+",  active: false },
-  { name: "Zepto",                 industry: "Quick Commerce",      stage: "Series D", size: "2.4k+",  active: false },
-  { name: "Meesho",                industry: "Social Commerce",     stage: "Series F", size: "11k+",   active: false },
-  { name: "PhonePe",               industry: "Payments",            stage: "Public",   size: "4.2k+",  active: false },
-  { name: "Swiggy",                industry: "Food Delivery",       stage: "Public",   size: "6.5k+",  active: false },
-  { name: "Groww",                 industry: "Wealthtech",          stage: "Series F", size: "2.1k+",  active: false },
-  { name: "BrowserStack",          industry: "Dev Tools · SaaS",    stage: "Series B", size: "1.1k+",  active: false },
-  { name: "Ola",                   industry: "Mobility",            stage: "Public",   size: "8k+",    active: false },
+const FEATURED_COMPANIES: Array<{
+  name: string; industry: string; stage: string; size: string;
+  tagline: string; active: boolean; roles?: number
+}> = [
+  { name: "Trippyway",             industry: "Travel · AI",            stage: "Seed",     size: "50+",    tagline: "AI-powered travel discovery startup",         active: true,  roles: 3 },
+  { name: "Netflix",               industry: "Streaming · Tech",       stage: "Public",   size: "12k+",   tagline: "World's leading entertainment platform",       active: true,  roles: 1 },
+  { name: "Top Institute of India",industry: "Research · Academia",    stage: "Govt.",    size: "10k+",   tagline: "India's premier science & tech institution",   active: true,  roles: 1 },
+  { name: "Google",                industry: "Big Tech · AI",          stage: "Public",   size: "182k+",  tagline: "Organizing the world's information",           active: false },
+  { name: "Microsoft",             industry: "Cloud · SaaS",           stage: "Public",   size: "220k+",  tagline: "Empowering every person and organization",     active: false },
+  { name: "Flipkart",              industry: "E-Commerce",             stage: "Public",   size: "55k+",   tagline: "India's largest e-commerce marketplace",       active: false },
+  { name: "Zomato",                industry: "Food Tech",              stage: "Public",   size: "5.8k+",  tagline: "Delivering food, joy, and happiness",          active: false },
+  { name: "Razorpay",              industry: "Fintech",                stage: "Series F", size: "3.2k+",  tagline: "India's leading full-stack payments platform",  active: false },
+  { name: "CRED",                  industry: "Consumer Fintech",       stage: "Series E", size: "1.5k+",  tagline: "Rewarding India's most creditworthy citizens", active: false },
+  { name: "Zepto",                 industry: "Quick Commerce",         stage: "Series D", size: "2.4k+",  tagline: "Groceries delivered in 10 minutes",            active: false },
+  { name: "Meesho",                industry: "Social Commerce",        stage: "Series F", size: "11k+",   tagline: "Democratizing internet commerce for Bharat",   active: false },
+  { name: "PhonePe",               industry: "Payments",               stage: "Public",   size: "4.2k+",  tagline: "India's most trusted digital payments app",    active: false },
+  { name: "Swiggy",                industry: "Food Delivery",          stage: "Public",   size: "6.5k+",  tagline: "Delivering everyday convenience to millions",  active: false },
+  { name: "Groww",                 industry: "Wealthtech",             stage: "Series F", size: "2.1k+",  tagline: "Simplifying investments for everyday Indians", active: false },
+  { name: "BrowserStack",          industry: "Dev Tools · SaaS",       stage: "Series B", size: "1.1k+",  tagline: "The world's leading software testing platform",active: false },
+  { name: "Ola",                   industry: "Mobility · EV",          stage: "Public",   size: "8k+",    tagline: "Redefining mobility and clean energy for India",active: false },
+  { name: "Freshworks",            industry: "B2B SaaS",               stage: "Public",   size: "5k+",    tagline: "Modern software for the modern world",         active: false },
+  { name: "InMobi",                industry: "AdTech",                 stage: "Series B", size: "1.8k+",  tagline: "Driving real connections between brands",      active: false },
 ]
 
 const INDUSTRIES = [
@@ -105,152 +83,175 @@ const MODE_S: Record<string, { bg: string; color: string; border: string }> = {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   LOGO COMPONENT  (tries image → falls back to initials)
+   COMPANY LETTER ICON  (first word, first letter — styled)
 ───────────────────────────────────────────────────────────────────────────── */
-function CompanyAvatar({ name, size = 48 }: { name: string; size?: number }) {
-  const [imgErr, setImgErr] = useState(false)
-  const logo = getCompanyLogo(name)
+function CompanyIcon({ name, size = 52 }: { name: string; size?: number }) {
   const color = COMPANY_COLORS[name] || "#1d3a8f"
-  const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
+  const letter = name.trim()[0].toUpperCase()
   const r = Math.round(size * 0.22)
-
   return (
     <div style={{
       width: size, height: size, borderRadius: r, flexShrink: 0,
-      background: logo && !imgErr ? "#fff" : color,
-      border: "1.5px solid #eef0f6",
+      background: `${color}14`,
+      border: `2px solid ${color}28`,
       display: "flex", alignItems: "center", justifyContent: "center",
-      overflow: "hidden",
-      fontSize: Math.round(size * 0.3), fontWeight: 800, color: "white",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+      fontSize: Math.round(size * 0.42), fontWeight: 900,
+      color: color, lineHeight: 1,
+      fontFamily: "-apple-system, 'SF Pro Display', system-ui, sans-serif",
+      letterSpacing: "-0.02em",
     }}>
-      {logo && !imgErr
-        ? <img src={logo} alt={name} onError={() => setImgErr(true)} style={{ width: "80%", height: "80%", objectFit: "contain" }} />
-        : initials
-      }
+      {letter}
     </div>
   )
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ACTIVELY HIRING CARD
+   ACTIVELY HIRING CARD  (Naukri-style: centered logo, name, tagline, CTA)
 ───────────────────────────────────────────────────────────────────────────── */
-function ActiveCompanyCard({ company, jobCount, onClick, index }: {
-  company: typeof FEATURED_COMPANIES_LIST[0]; jobCount: number; onClick: () => void; index: number
+function ActiveCard({ company, jobCount, onClick, index }: {
+  company: typeof FEATURED_COMPANIES[0]; jobCount: number; onClick: () => void; index: number
 }) {
   const [hov, setHov] = useState(false)
   const color = COMPANY_COLORS[company.name] || "#1d3a8f"
 
   return (
-    <button
+    <div
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        background: "white", borderRadius: 18, textAlign: "left",
-        border: hov ? `1.5px solid ${color}50` : "1.5px solid #eef0f6",
-        padding: "20px", cursor: "pointer", width: "100%",
-        transform: hov ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hov ? `0 16px 48px ${color}1a` : "0 2px 8px rgba(0,0,0,0.04)",
-        transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
-        animation: `fadeUp 0.45s ease ${index * 0.07}s both`,
-        position: "relative", overflow: "hidden",
+        background: "white", borderRadius: 18, textAlign: "center",
+        border: hov ? `1.5px solid ${color}45` : "1.5px solid #eef0f6",
+        padding: "28px 20px 22px",
+        cursor: "pointer", width: "100%",
+        transform: hov ? "translateY(-5px)" : "translateY(0)",
+        boxShadow: hov ? `0 20px 56px ${color}1c` : "0 2px 8px rgba(0,0,0,0.04)",
+        transition: "all 0.28s cubic-bezier(0.16,1,0.3,1)",
+        animation: `fadeUp 0.45s ease ${index * 0.08}s both`,
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 0,
       }}
     >
-      {/* Gradient top bar */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${color}, ${color}88)` }} />
+      {/* Icon */}
+      <CompanyIcon name={company.name} size={64} />
 
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
-        <CompanyAvatar name={company.name} size={48} />
-        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "4px 10px", borderRadius: 99 }}>
+      {/* Name */}
+      <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", marginTop: 14, marginBottom: 4, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{company.name}</div>
+
+      {/* Industry */}
+      <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>{company.industry}</div>
+
+      {/* Tagline */}
+      <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.6, marginBottom: 16, maxWidth: 220 }}>{company.tagline}</div>
+
+      {/* Badges */}
+      <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap", marginBottom: 18 }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 10px", borderRadius: 99 }}>{company.stage}</span>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 10px", borderRadius: 99 }}>{company.size}</span>
+      </div>
+
+      {/* CTA */}
+      <div style={{ width: "100%", borderTop: "1px solid #f4f6fb", paddingTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#16a34a" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-          Hiring
+          Hiring Now
         </span>
-      </div>
-
-      {/* Info */}
-      <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.02em" }}>{company.name}</div>
-      <div style={{ fontSize: 12, color: "#9ca3af", fontWeight: 500, marginBottom: 12 }}>{company.industry}</div>
-
-      <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 9px", borderRadius: 99 }}>{company.stage}</span>
-        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 9px", borderRadius: 99 }}>{company.size}</span>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid #f4f6fb" }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: color }}>
-          {jobCount} open role{jobCount !== 1 ? "s" : ""}
-        </span>
-        <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, color: color, background: `${color}10`, padding: "5px 12px", borderRadius: 99, transition: "background 0.15s" }}>
-          View roles
+        <span style={{ fontSize: 12, fontWeight: 700, color: color, background: `${color}12`, padding: "6px 14px", borderRadius: 99, display: "flex", alignItems: "center", gap: 4 }}>
+          {jobCount} role{jobCount !== 1 ? "s" : ""}
           <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </div>
+        </span>
       </div>
-    </button>
+    </div>
   )
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   COMING SOON CARD  — modern horizontal list style
+   COMING SOON MARQUEE CARD
 ───────────────────────────────────────────────────────────────────────────── */
-function ComingSoonCard({ company, index }: { company: typeof FEATURED_COMPANIES_LIST[0]; index: number }) {
-  const [hov, setHov] = useState(false)
+function MarqueeCard({ company }: { company: typeof FEATURED_COMPANIES[0] }) {
   const [watching, setWatching] = useState(false)
   const color = COMPANY_COLORS[company.name] || "#1d3a8f"
 
   return (
-    <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        background: "white", borderRadius: 14,
-        border: hov ? "1.5px solid #e0e7ff" : "1.5px solid #f0f2f8",
-        padding: "14px 18px",
-        display: "flex", alignItems: "center", gap: 14,
-        transform: hov ? "translateY(-2px)" : "translateY(0)",
-        boxShadow: hov ? "0 8px 28px rgba(29,58,143,0.07)" : "0 1px 4px rgba(0,0,0,0.03)",
-        transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
-        animation: `fadeUp 0.4s ease ${index * 0.04}s both`,
-      }}
-    >
-      <CompanyAvatar name={company.name} size={44} />
+    <div style={{
+      background: "white", borderRadius: 18,
+      border: "1.5px solid #eef0f6",
+      padding: "22px 22px 18px",
+      width: 240, flexShrink: 0,
+      display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 0,
+      boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
+    }}>
+      {/* Top row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", marginBottom: 14 }}>
+        <CompanyIcon name={company.name} size={46} />
+        <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", background: "#f4f6fb", padding: "3px 9px", borderRadius: 99, border: "1px solid #eef0f6" }}>
+          Coming Soon
+        </span>
+      </div>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.01em" }}>{company.name}</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500 }}>{company.industry}</span>
-          <span style={{ fontSize: 10, color: "#c4c9d4" }}>·</span>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "1px 7px", borderRadius: 99 }}>{company.stage}</span>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "1px 7px", borderRadius: 99 }}>{company.size}</span>
-        </div>
+      <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", marginBottom: 3, letterSpacing: "-0.015em" }}>{company.name}</div>
+      <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 8, fontWeight: 500 }}>{company.industry}</div>
+      <div style={{ fontSize: 11.5, color: "#64748b", lineHeight: 1.6, marginBottom: 14, minHeight: 38 }}>{company.tagline}</div>
+
+      <div style={{ display: "flex", gap: 5, marginBottom: 14, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 10, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "2px 8px", borderRadius: 99 }}>{company.stage}</span>
+        <span style={{ fontSize: 10, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "2px 8px", borderRadius: 99 }}>{company.size}</span>
       </div>
 
       <button
         onClick={() => setWatching(w => !w)}
         style={{
-          flexShrink: 0,
-          padding: "7px 16px", borderRadius: 99, border: "none",
+          width: "100%", padding: "9px 0", borderRadius: 10, border: "none",
           background: watching ? color : "#f4f6fb",
           color: watching ? "white" : "#6b7280",
           fontSize: 12, fontWeight: 700, cursor: "pointer",
-          display: "flex", alignItems: "center", gap: 5,
-          transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
-          transform: watching ? "scale(1.04)" : "scale(1)",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+          transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
+          transform: watching ? "scale(1.02)" : "scale(1)",
         }}
       >
         {watching ? (
           <>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             Watching
           </>
         ) : (
           <>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            Watch
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Watch Company
           </>
         )}
       </button>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MARQUEE WRAPPER
+───────────────────────────────────────────────────────────────────────────── */
+function CompanyMarquee({ companies }: { companies: typeof FEATURED_COMPANIES }) {
+  const track = useRef<HTMLDivElement>(null)
+  const items = [...companies, ...companies]
+
+  return (
+    <div style={{ overflow: "hidden", position: "relative" }}>
+      {/* Fade edges */}
+      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(90deg,#f7f8fc,transparent)", zIndex: 2, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(270deg,#f7f8fc,transparent)", zIndex: 2, pointerEvents: "none" }} />
+
+      <div
+        ref={track}
+        style={{
+          display: "flex", gap: 14,
+          animation: "marqueeScroll 40s linear infinite",
+          width: "fit-content",
+        }}
+        onMouseEnter={() => { if (track.current) track.current.style.animationPlayState = "paused" }}
+        onMouseLeave={() => { if (track.current) track.current.style.animationPlayState = "running" }}
+      >
+        {items.map((c, i) => (
+          <MarqueeCard key={`${c.name}-${i}`} company={c} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -277,15 +278,15 @@ function JobCard({ job, index }: { job: Job; index: number }) {
         boxShadow: hov ? `0 8px 32px ${color}12` : "0 1px 4px rgba(0,0,0,0.03)",
         overflow: "hidden",
         transform: hov ? "translateY(-2px)" : "translateY(0)",
-        transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
+        transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
         animation: `fadeUp 0.4s ease ${index * 0.055}s both`,
         position: "relative",
       }}
     >
-      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: `linear-gradient(180deg,${color},${color}66)` }} />
+      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: `linear-gradient(180deg,${color},${color}55)` }} />
       <div style={{ padding: "18px 20px 16px 23px" }}>
         <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-          <CompanyAvatar name={job.company} size={50} />
+          <CompanyIcon name={job.company} size={50} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
               <div>
@@ -401,13 +402,18 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
   }, [jobs, search, location, types, modes, sort])
 
   const activeFilters = types.length + modes.length + (search ? 1 : 0)
+  const comingSoon = FEATURED_COMPANIES.filter(c => !c.active)
+  const activeCompanies = FEATURED_COMPANIES.filter(c => c.active)
 
   return (
     <>
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.7)} }
-        @keyframes slideRight { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes marqueeScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
         .ji-inp{border:none;background:transparent;font-size:14px;color:#0f172a;width:100%;padding:18px 0;}
         .ji-inp:focus{outline:none;}
         .ji-inp::placeholder{color:#94a3b8;}
@@ -416,14 +422,12 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           .ji-sidebar{width:100%!important;position:static!important;flex-direction:row!important;flex-wrap:wrap;gap:12px!important}
           .ji-fbox{flex:1;min-width:180px}
           .ji-active-grid{grid-template-columns:repeat(3,1fr)!important}
-          .ji-soon-grid{grid-template-columns:repeat(2,1fr)!important}
         }
         @media(max-width:640px){
           .ji-hero-h{font-size:28px!important;letter-spacing:-.03em!important}
           .ji-searchbar{flex-direction:column!important;border-radius:16px!important}
           .ji-sdiv{display:none!important}
           .ji-active-grid{grid-template-columns:1fr 1fr!important}
-          .ji-soon-grid{grid-template-columns:1fr!important}
           .ji-industries{grid-template-columns:repeat(3,1fr)!important}
           .ji-stats{gap:20px!important}
         }
@@ -434,35 +438,28 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "linear-gradient(175deg,#eef2ff 0%,#f0f4ff 45%,#fff 100%)", borderBottom: "1px solid #e8edf8" }}>
         <div style={{ maxWidth: 980, margin: "0 auto", padding: "56px 24px 52px", textAlign: "center" }}>
-
           <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
             <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Updated Daily — New roles every morning</span>
           </div>
 
-          <h1 className="ji-hero-h" style={{ fontSize: "clamp(32px,5vw,54px)", fontWeight: 900, color: "#0f172a", marginBottom: 14, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
+          <h1 className="ji-hero-h" style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", marginBottom: 14, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
             Find your next<br/>
-            <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b52f0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              dream opportunity
-            </span>
+            <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b52f0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>dream opportunity</span>
           </h1>
-          <p style={{ fontSize: 17, color: "#64748b", marginBottom: 38, fontWeight: 400, maxWidth: 480, margin: "0 auto 38px", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 17, color: "#64748b", marginBottom: 38, fontWeight: 400, maxWidth: 460, margin: "0 auto 38px", lineHeight: 1.7 }}>
             Curated roles from India's top startups &amp; companies.<br/>No noise. Only the best.
           </p>
 
-          {/* Search */}
+          {/* Search bar */}
           <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, border: "1.5px solid #dde3f5", boxShadow: "0 8px 48px rgba(29,58,143,0.11)", maxWidth: 820, margin: "0 auto 30px", overflow: "hidden" }}>
             <div style={{ flex: 1.8, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
-              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
-                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-              </svg>
+              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               <input className="ji-inp" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="Job title, company, or skill..." />
             </div>
             <div className="ji-sdiv" style={{ width: 1, background: "#e8edf8", margin: "12px 0" }} />
             <div style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-              </svg>
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <input className="ji-inp" value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="City or Remote" />
             </div>
             <button onClick={scrollToJobs}
@@ -478,12 +475,12 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
             {[
               { val: `${jobs.length}+`, label: "Open roles" },
               { val: `${Object.keys(companiesMap).length}`, label: "Hiring now" },
-              { val: `${FEATURED_COMPANIES_LIST.length}+`, label: "Companies tracked" },
+              { val: `${FEATURED_COMPANIES.length}+`, label: "Companies tracked" },
               { val: "Daily", label: "New listings" },
             ].map((s, i) => (
               <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6, animation: `fadeUp 0.4s ease ${0.1 + i * 0.07}s both` }}>
                 <span style={{ fontSize: 15, fontWeight: 800, color: "#1d3a8f" }}>{s.val}</span>
-                <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 400 }}>{s.label}</span>
+                <span style={{ fontSize: 13, color: "#94a3b8" }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -503,7 +500,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
                 onClick={() => {
                   if (cat.type) { setTypes([cat.type]); setModes([]); setSearch("") }
                   else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
-                  else if (cat.search) { setSearch(cat.search); setTypes([]); setModes([]) }
+                  else { setSearch(cat.search!); setTypes([]); setModes([]) }
                   scrollToJobs()
                 }}
                 style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "18px 10px", borderRadius: 14, border: "1.5px solid #eef0f6", background: "white", cursor: "pointer", transition: "all 0.2s ease", animation: `fadeUp 0.4s ease ${i * 0.04}s both` }}
@@ -518,49 +515,50 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          FEATURED COMPANIES
+          FEATURED COMPANIES — ACTIVELY HIRING
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "#f7f8fc", borderBottom: "1px solid #eef0f6" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "44px 24px" }}>
-
-          {/* Actively hiring */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "44px 24px 0" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 22, flexWrap: "wrap", gap: 10 }}>
             <div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>Companies Actively Hiring</h2>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 4px", letterSpacing: "-0.025em" }}>Companies Actively Hiring</h2>
               <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Live openings — apply directly through Jobingen</p>
             </div>
             <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "6px 14px", borderRadius: 99 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-              {FEATURED_COMPANIES_LIST.filter(c => c.active).length} companies live
+              {activeCompanies.length} companies live
             </span>
           </div>
 
-          <div className="ji-active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 44 }}>
-            {FEATURED_COMPANIES_LIST.filter(c => c.active).map((company, i) => (
-              <ActiveCompanyCard key={company.name} company={company} index={i}
-                jobCount={companiesMap[company.name]?.length || 0}
-                onClick={() => { setSearch(company.name); scrollToJobs() }}
+          <div className="ji-active-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${activeCompanies.length}, 1fr)`, gap: 16, paddingBottom: 44 }}>
+            {activeCompanies.map((c, i) => (
+              <ActiveCard key={c.name} company={c} index={i}
+                jobCount={companiesMap[c.name]?.length || 0}
+                onClick={() => { setSearch(c.name); scrollToJobs() }}
               />
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Coming soon */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+      {/* ══════════════════════════════════════════════════════
+          COMING SOON — AUTO-SCROLL MARQUEE
+      ══════════════════════════════════════════════════════ */}
+      <section style={{ background: "#f7f8fc", borderBottom: "1px solid #eef0f6", paddingBottom: 44 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 0 0 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "36px 24px 22px 0", flexWrap: "wrap", gap: 10 }}>
             <div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>Coming Soon</h2>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Watch top companies — get notified when they go live</p>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 4px", letterSpacing: "-0.025em" }}>
+                Coming Soon
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", background: "#f0f2f8", border: "1px solid #e8eaf0", padding: "3px 10px", borderRadius: 99, marginLeft: 10, verticalAlign: "middle" }}>
+                  {comingSoon.length} tracked
+                </span>
+              </h2>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Watch companies — get notified when they go live. Hover to pause.</p>
             </div>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", background: "#f4f6fb", border: "1px solid #e8eaf0", padding: "6px 14px", borderRadius: 99 }}>
-              {FEATURED_COMPANIES_LIST.filter(c => !c.active).length} companies tracked
-            </span>
-          </div>
-
-          <div className="ji-soon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
-            {FEATURED_COMPANIES_LIST.filter(c => !c.active).map((company, i) => (
-              <ComingSoonCard key={company.name} company={company} index={i} />
-            ))}
           </div>
         </div>
+        <CompanyMarquee companies={comingSoon} />
       </section>
 
       {/* ══════════════════════════════════════════════════════
@@ -574,8 +572,6 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           </div>
 
           <div className="ji-layout" style={{ display: "flex", gap: 22, alignItems: "flex-start" }}>
-
-            {/* Sidebar */}
             <aside className="ji-sidebar" style={{ width: 228, flexShrink: 0, position: "sticky", top: 20, display: "flex", flexDirection: "column", gap: 12 }}>
               <div className="ji-fbox" style={{ background: "white", borderRadius: 14, border: "1px solid #eef0f6", padding: "16px 14px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
@@ -588,20 +584,18 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
                 <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Work Mode</p>
                 {["Remote", "On-site", "Hybrid"].map(m => <Checkbox key={m} label={m} checked={modes.includes(m)} onChange={() => toggle(modes, setModes, m)} />)}
               </div>
-
               <div style={{ background: "linear-gradient(145deg,#0f172a,#1d3a8f)", borderRadius: 14, padding: "20px 16px" }}>
                 <div style={{ fontSize: 22, marginBottom: 10 }}>🔔</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "white", marginBottom: 6 }}>Job Alerts</div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: 14 }}>Be first to know when new roles go live. No spam — ever.</div>
                 <button style={{ width: "100%", padding: "9px 0", borderRadius: 9, border: "1.5px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.15s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.2)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)" }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)" }}>
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.2)" }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)" }}>
                   Enable Alerts
                 </button>
               </div>
             </aside>
 
-            {/* Job list */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
