@@ -72,7 +72,7 @@ export default function RegisterFrontendPage() {
           {/* Stats row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 40, animation: "fadeUp 0.5s ease 0.2s both" }}>
             {[
-              { val: "200+", label: "Students joined" },
+              { val: "1", label: "Session held" },
               { val: "1", label: "Live session" },
               { val: "₹29", label: "Accessible price" },
             ].map((s, i) => (

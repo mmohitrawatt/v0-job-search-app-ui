@@ -51,8 +51,8 @@ export function Navbar() {
 
             {/* Text — truncated on mobile, full on desktop */}
             <p className="text-white/85 leading-tight font-medium truncate" style={{ fontSize: 12 }}>
-              <span className="sm:hidden">Frontend Masterclass · Session Complete · 200+ students</span>
-              <span className="hidden sm:inline">Frontend Engineering Masterclass · Session Complete — 200+ students joined 🎉</span>
+              <span className="sm:hidden">Frontend Masterclass · Session Complete 🎉</span>
+              <span className="hidden sm:inline">Frontend Engineering Masterclass · Session Complete — Thank you for joining! 🎉</span>
             </p>
 
             {/* Dismiss */}
