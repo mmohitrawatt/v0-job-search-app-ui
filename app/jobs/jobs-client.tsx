@@ -414,6 +414,10 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        @keyframes floatChip {
+          0%,100% { transform: translateY(0px); opacity: 0.7; }
+          50%      { transform: translateY(-10px); opacity: 1; }
+        }
         .ji-inp{border:none;background:transparent;font-size:14px;color:#0f172a;width:100%;padding:18px 0;}
         .ji-inp:focus{outline:none;}
         .ji-inp::placeholder{color:#94a3b8;}
@@ -434,54 +438,124 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       `}</style>
 
       {/* ══════════════════════════════════════════════════════
-          HERO
+          HERO — dark premium
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "linear-gradient(175deg,#eef2ff 0%,#f0f4ff 45%,#fff 100%)", borderBottom: "1px solid #e8edf8" }}>
-        <div style={{ maxWidth: 980, margin: "0 auto", padding: "56px 24px 52px", textAlign: "center" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Updated Daily — New roles every morning</span>
+      <section style={{ background: "#060e27", position: "relative", overflow: "hidden" }}>
+
+        {/* Mesh / glow blobs */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <div style={{ position: "absolute", top: -120, left: "10%",  width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(59,82,240,0.18) 0%,transparent 70%)" }} />
+          <div style={{ position: "absolute", top: 60,  right: "5%",  width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle,rgba(29,58,143,0.22) 0%,transparent 70%)" }} />
+          <div style={{ position: "absolute", bottom: -60, left: "35%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 70%)" }} />
+          {/* Dot grid overlay */}
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px)", backgroundSize: "28px 28px" }} />
+        </div>
+
+        {/* Floating company chips — decorative */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
+          {[
+            { name: "Google",    top: "12%", left: "6%",   delay: "0s"    },
+            { name: "Netflix",   top: "22%", right: "7%",  delay: "0.4s"  },
+            { name: "Microsoft", top: "60%", left: "4%",   delay: "0.8s"  },
+            { name: "Zomato",    top: "70%", right: "8%",  delay: "0.2s"  },
+            { name: "Razorpay",  top: "40%", left: "2%",   delay: "1.1s"  },
+            { name: "Flipkart",  top: "80%", left: "20%",  delay: "0.6s"  },
+            { name: "Zepto",     top: "15%", right: "22%", delay: "0.9s"  },
+            { name: "Groww",     top: "75%", right: "22%", delay: "0.3s"  },
+          ].map(c => {
+            const col = COMPANY_COLORS[c.name] || "#1d3a8f"
+            const letter = c.name[0]
+            return (
+              <div key={c.name} style={{
+                position: "absolute", top: c.top, left: c.left, right: c.right,
+                display: "flex", alignItems: "center", gap: 7,
+                background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 99, padding: "7px 14px 7px 8px",
+                animation: `floatChip 6s ease-in-out ${c.delay} infinite`,
+              }}>
+                <div style={{ width: 26, height: 26, borderRadius: "50%", background: `${col}30`, border: `1.5px solid ${col}60`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: col }}>
+                  {letter}
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)", whiteSpace: "nowrap" }}>{c.name}</span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Main content */}
+        <div style={{ position: "relative", maxWidth: 860, margin: "0 auto", padding: "72px 24px 64px", textAlign: "center" }}>
+
+          {/* Live pill */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24, padding: "6px 18px", borderRadius: 99, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(8px)", animation: "fadeUp 0.5s ease both" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", animation: "pulseDot 2s infinite", display: "inline-block" }} />
+            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.8)", letterSpacing: "0.02em" }}>Updated Daily — New roles every morning</span>
           </div>
 
-          <h1 className="ji-hero-h" style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", marginBottom: 14, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
-            Find your next<br/>
-            <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b52f0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>dream opportunity</span>
+          {/* Headline */}
+          <h1 className="ji-hero-h" style={{ fontSize: "clamp(32px,5.5vw,58px)", fontWeight: 900, color: "white", marginBottom: 16, letterSpacing: "-0.04em", lineHeight: 1.08, animation: "fadeUp 0.5s ease 0.1s both" }}>
+            Find your next<br />
+            <span style={{ background: "linear-gradient(90deg,#818cf8,#a5b4fc,#c7d2fe)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              dream opportunity
+            </span>
           </h1>
-          <p style={{ fontSize: 17, color: "#64748b", marginBottom: 38, fontWeight: 400, maxWidth: 460, margin: "0 auto 38px", lineHeight: 1.7 }}>
-            Curated roles from India's top startups &amp; companies.<br/>No noise. Only the best.
+
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.55)", marginBottom: 40, fontWeight: 400, maxWidth: 440, margin: "0 auto 40px", lineHeight: 1.7, animation: "fadeUp 0.5s ease 0.18s both" }}>
+            Curated roles from India's top startups &amp; companies.<br />No noise. Only the best.
           </p>
 
           {/* Search bar */}
-          <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, border: "1.5px solid #dde3f5", boxShadow: "0 8px 48px rgba(29,58,143,0.11)", maxWidth: 820, margin: "0 auto 30px", overflow: "hidden" }}>
+          <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, boxShadow: "0 16px 64px rgba(0,0,0,0.4)", maxWidth: 800, margin: "0 auto 32px", overflow: "hidden", animation: "fadeUp 0.5s ease 0.25s both" }}>
             <div style={{ flex: 1.8, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
               <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               <input className="ji-inp" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="Job title, company, or skill..." />
             </div>
-            <div className="ji-sdiv" style={{ width: 1, background: "#e8edf8", margin: "12px 0" }} />
+            <div className="ji-sdiv" style={{ width: 1, background: "#f0f0f0", margin: "12px 0" }} />
             <div style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <input className="ji-inp" value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="City or Remote" />
             </div>
             <button onClick={scrollToJobs}
-              style={{ padding: "0 32px", background: "#1d3a8f", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "background 0.15s", flexShrink: 0 }}
-              onMouseEnter={e => e.currentTarget.style.background = "#1e40af"}
-              onMouseLeave={e => e.currentTarget.style.background = "#1d3a8f"}>
+              style={{ padding: "0 32px", background: "linear-gradient(135deg,#1d3a8f,#3b52f0)", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "opacity 0.15s", flexShrink: 0 }}
+              onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+              onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
               Search
             </button>
           </div>
 
+          {/* Quick tags */}
+          <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 44, animation: "fadeUp 0.5s ease 0.32s both" }}>
+            {["Remote", "Internship", "AI & ML", "Design", "Engineering", "Full Time"].map(tag => (
+              <button key={tag}
+                onClick={() => {
+                  if (tag === "Remote") { setModes(["Remote"]); setTypes([]); setSearch("") }
+                  else if (tag === "Internship" || tag === "Full Time") { setTypes([tag]); setModes([]); setSearch("") }
+                  else setSearch(tag)
+                  scrollToJobs()
+                }}
+                style={{ padding: "6px 14px", borderRadius: 99, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", backdropFilter: "blur(4px)" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.color = "white"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)" }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)" }}>
+                {tag}
+              </button>
+            ))}
+          </div>
+
           {/* Stats */}
-          <div className="ji-stats" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 36, flexWrap: "wrap" }}>
+          <div className="ji-stats" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, flexWrap: "wrap", animation: "fadeUp 0.5s ease 0.38s both" }}>
             {[
               { val: `${jobs.length}+`, label: "Open roles" },
               { val: `${Object.keys(companiesMap).length}`, label: "Hiring now" },
               { val: `${FEATURED_COMPANIES.length}+`, label: "Companies tracked" },
               { val: "Daily", label: "New listings" },
             ].map((s, i) => (
-              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6, animation: `fadeUp 0.4s ease ${0.1 + i * 0.07}s both` }}>
-                <span style={{ fontSize: 15, fontWeight: 800, color: "#1d3a8f" }}>{s.val}</span>
-                <span style={{ fontSize: 13, color: "#94a3b8" }}>{s.label}</span>
-              </div>
+              <>
+                <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "0 28px" }}>
+                  <span style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.03em" }}>{s.val}</span>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontWeight: 500 }}>{s.label}</span>
+                </div>
+                {i < 3 && <div key={`d${i}`} style={{ width: 1, height: 32, background: "rgba(255,255,255,0.1)" }} />}
+              </>
             ))}
           </div>
         </div>
