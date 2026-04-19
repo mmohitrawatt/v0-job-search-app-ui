@@ -63,56 +63,46 @@ const INDUSTRIES: Array<{
   label: string; sub: string; color: string; bg: string;
   icon: React.ReactNode; search?: string; mode?: string; type?: string
 }> = [
-  {
-    label: "Engineering", sub: "Software & Dev", color: "#1d3a8f", bg: "#eff6ff",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
-    search: "Engineer",
-  },
-  {
-    label: "Design", sub: "UI/UX & Visual", color: "#7c3aed", bg: "#f5f3ff",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>,
-    search: "Design",
-  },
-  {
-    label: "AI & ML", sub: "Machine Learning", color: "#0891b2", bg: "#ecfeff",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V6a4 4 0 0 1 4-4z"/></svg>,
-    search: "AI",
-  },
-  {
-    label: "Product", sub: "PM & Strategy", color: "#0f766e", bg: "#f0fdfa",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>,
-    search: "Product",
-  },
-  {
-    label: "Marketing", sub: "Growth & Brand", color: "#b45309", bg: "#fffbeb",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
-    search: "Marketing",
-  },
-  {
-    label: "Finance", sub: "Fintech & Banking", color: "#15803d", bg: "#f0fdf4",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-    search: "Finance",
-  },
-  {
-    label: "HR & People", sub: "Talent & Culture", color: "#be185d", bg: "#fdf2f8",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-    search: "HR",
-  },
-  {
-    label: "Research", sub: "Science & Labs", color: "#6d28d9", bg: "#f5f3ff",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-3 7h12l-3-7M9 14h6"/></svg>,
-    search: "Research",
-  },
-  {
-    label: "Remote", sub: "Work from anywhere", color: "#059669", bg: "#f0fdf4",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-    mode: "Remote",
-  },
-  {
-    label: "Internship", sub: "For students & freshers", color: "#c2410c", bg: "#fff7ed",
-    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>,
-    type: "Internship",
-  },
+  { label: "Engineering",    sub: "Software & Dev",       color: "#1d3a8f", bg: "#eff6ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>, search: "Engineer" },
+  { label: "Design",         sub: "UI/UX & Visual",       color: "#7c3aed", bg: "#f5f3ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>, search: "Design" },
+  { label: "AI & ML",        sub: "Machine Learning",     color: "#0891b2", bg: "#ecfeff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>, search: "AI" },
+  { label: "Product",        sub: "PM & Strategy",        color: "#0f766e", bg: "#f0fdfa",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>, search: "Product" },
+  { label: "Marketing",      sub: "Growth & Brand",       color: "#b45309", bg: "#fffbeb",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>, search: "Marketing" },
+  { label: "Finance",        sub: "Fintech & Banking",    color: "#15803d", bg: "#f0fdf4",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>, search: "Finance" },
+  { label: "HR & People",    sub: "Talent & Culture",     color: "#be185d", bg: "#fdf2f8",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>, search: "HR" },
+  { label: "Research",       sub: "Science & Labs",       color: "#6d28d9", bg: "#f5f3ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-3 7h12l-3-7M9 14h6"/></svg>, search: "Research" },
+  { label: "Medical",        sub: "Healthcare & Pharma",  color: "#dc2626", bg: "#fef2f2",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 3-4-6-3 3H2"/></svg>, search: "Medical" },
+  { label: "Legal",          sub: "Law & Compliance",     color: "#374151", bg: "#f9fafb",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>, search: "Legal" },
+  { label: "Sales",          sub: "Business Dev",         color: "#ea580c", bg: "#fff7ed",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>, search: "Sales" },
+  { label: "Operations",     sub: "Ops & Supply Chain",   color: "#0369a1", bg: "#f0f9ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>, search: "Operations" },
+  { label: "Data & Analytics", sub: "BI & Insights",     color: "#7c3aed", bg: "#f5f3ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>, search: "Data" },
+  { label: "Content",        sub: "Writing & Media",      color: "#0891b2", bg: "#ecfeff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>, search: "Content" },
+  { label: "Education",      sub: "Teaching & EdTech",    color: "#f59e0b", bg: "#fffbeb",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>, search: "Education" },
+  { label: "Cybersecurity",  sub: "Infosec & Privacy",    color: "#1d4ed8", bg: "#eff6ff",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>, search: "Security" },
+  { label: "Consulting",     sub: "Strategy & Advisory",  color: "#92400e", bg: "#fef3c7",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, search: "Consulting" },
+  { label: "Remote",         sub: "Work from anywhere",   color: "#059669", bg: "#f0fdf4",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>, mode: "Remote" },
+  { label: "Internship",     sub: "Students & Freshers",  color: "#c2410c", bg: "#fff7ed",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>, type: "Internship" },
+  { label: "Logistics",      sub: "Supply & Delivery",    color: "#0f766e", bg: "#f0fdfa",
+    icon: <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>, search: "Logistics" },
 ]
 
 const TYPE_S: Record<string, { bg: string; color: string; border: string }> = {
@@ -462,6 +452,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           0%,100% { transform: translateY(0px); opacity: 0.7; }
           50%      { transform: translateY(-10px); opacity: 1; }
         }
+        .ji-cat-scroll::-webkit-scrollbar{display:none}
         .ji-inp{border:none;background:transparent;font-size:14px;color:#0f172a;width:100%;padding:18px 0;}
         .ji-inp:focus{outline:none;}
         .ji-inp::placeholder{color:#94a3b8;}
@@ -607,70 +598,75 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          BROWSE BY CATEGORY
+          BROWSE BY CATEGORY — horizontal scroll
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "white", borderBottom: "1px solid #eef0f6" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 8 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 0 36px 24px" }}>
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20, paddingRight: 24, flexWrap: "wrap", gap: 8 }}>
             <div>
               <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 4px", letterSpacing: "-0.025em" }}>Browse by Category</h2>
-              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Tap a category to jump straight to matching roles</p>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>All fields — tech, medical, legal, business &amp; more</p>
             </div>
-            <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{INDUSTRIES.length} categories</span>
+            <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{INDUSTRIES.length} categories · scroll →</span>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }} className="ji-cat-grid">
-            {INDUSTRIES.map((cat, i) => (
-              <button
-                key={cat.label}
-                onClick={() => {
-                  if (cat.type)   { setTypes([cat.type]); setModes([]); setSearch("") }
-                  else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
-                  else            { setSearch(cat.search!); setTypes([]); setModes([]) }
-                  scrollToJobs()
-                }}
-                style={{
-                  display: "flex", flexDirection: "column", alignItems: "flex-start",
-                  padding: "18px 18px 16px", borderRadius: 16, textAlign: "left",
-                  border: "1.5px solid #f0f2f8", background: "white", cursor: "pointer",
-                  transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
-                  animation: `fadeUp 0.4s ease ${i * 0.04}s both`,
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = `${cat.color}40`
-                  e.currentTarget.style.background = cat.bg
-                  e.currentTarget.style.transform = "translateY(-3px)"
-                  e.currentTarget.style.boxShadow = `0 12px 32px ${cat.color}14`
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "#f0f2f8"
-                  e.currentTarget.style.background = "white"
-                  e.currentTarget.style.transform = "translateY(0)"
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)"
-                }}
-              >
-                {/* Icon box */}
-                <div style={{
-                  width: 44, height: 44, borderRadius: 12, marginBottom: 14,
-                  background: cat.bg, color: cat.color,
-                  border: `1.5px solid ${cat.color}20`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0,
-                }}>
-                  {cat.icon}
-                </div>
+          {/* Scroll track */}
+          <div style={{ position: "relative" }}>
+            {/* Right fade */}
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 60, background: "linear-gradient(270deg,white,transparent)", zIndex: 2, pointerEvents: "none" }} />
 
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 3, letterSpacing: "-0.01em" }}>{cat.label}</div>
-                <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500, marginBottom: 12 }}>{cat.sub}</div>
-
-                {/* Arrow */}
-                <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: cat.color, marginTop: "auto" }}>
-                  Explore
-                  <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-              </button>
-            ))}
+            <div
+              style={{ display: "flex", gap: 12, overflowX: "auto", paddingRight: 60, paddingBottom: 4, scrollbarWidth: "none" }}
+              className="ji-cat-scroll"
+            >
+              {INDUSTRIES.map((cat, i) => (
+                <button
+                  key={cat.label}
+                  onClick={() => {
+                    if (cat.type)      { setTypes([cat.type]); setModes([]); setSearch("") }
+                    else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
+                    else               { setSearch(cat.search!); setTypes([]); setModes([]) }
+                    scrollToJobs()
+                  }}
+                  style={{
+                    display: "flex", flexDirection: "column", alignItems: "flex-start",
+                    padding: "16px 16px 14px", borderRadius: 16, textAlign: "left",
+                    border: "1.5px solid #f0f2f8", background: "white", cursor: "pointer",
+                    transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
+                    animation: `fadeUp 0.4s ease ${Math.min(i, 8) * 0.04}s both`,
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+                    flexShrink: 0, width: 160,
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = `${cat.color}40`
+                    e.currentTarget.style.background = cat.bg
+                    e.currentTarget.style.transform = "translateY(-3px)"
+                    e.currentTarget.style.boxShadow = `0 10px 28px ${cat.color}14`
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = "#f0f2f8"
+                    e.currentTarget.style.background = "white"
+                    e.currentTarget.style.transform = "translateY(0)"
+                    e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)"
+                  }}
+                >
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 11, marginBottom: 12,
+                    background: cat.bg, color: cat.color,
+                    border: `1.5px solid ${cat.color}22`,
+                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                  }}>
+                    {cat.icon}
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.01em", lineHeight: 1.3 }}>{cat.label}</div>
+                  <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500, marginBottom: 10, lineHeight: 1.4 }}>{cat.sub}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 3, fontSize: 11, fontWeight: 700, color: cat.color, marginTop: "auto" }}>
+                    Explore
+                    <svg width="10" height="10" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
