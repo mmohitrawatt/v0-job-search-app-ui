@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Footer } from "@/components/landing/footer"
@@ -16,7 +17,7 @@ const MENTORS = [
     photo: "/mentors/shubham-kaushik.jpg",
     color: "#b45309",
     bg: "#fffbeb",
-    desc: "5+ years in AI, ML, and full-stack development. Focuses on LLMs, intelligent data systems, and scalable applications for financial analysis and enterprise solutions.",
+    desc: "Shubham Kaushik is an AI and financial intelligence researcher with more than five years of experience in artificial intelligence, machine learning, and full-stack development. His work focuses on applied AI research, including large language models, intelligent data systems, and scalable applications for financial analysis and enterprise solutions.",
     linkedin: "https://www.linkedin.com/in/eskaykaushik/",
     topics: ["AI Research", "Full-Stack Dev", "Interview Prep", "Salary Negotiation"],
     active: true,
@@ -29,7 +30,7 @@ const MENTORS = [
     photo: "/mentors/jitesh-vijaykumar.jpg",
     color: "#7c3aed",
     bg: "#f5f3ff",
-    desc: "M.Tech in AI & Data Science. Builds scalable enterprise AI solutions at KPMG — automation, decision intelligence, and operational efficiency.",
+    desc: "Jitesh Vijaykumar is an AI engineer with over five years of experience building scalable artificial intelligence solutions for enterprise systems. With an M.Tech in Artificial Intelligence and Data Science, his work focuses on developing practical machine learning applications that solve real-world business problems. At KPMG, he contributes to designing and implementing AI-powered solutions that improve decision-making, automation, and operational efficiency.",
     linkedin: "https://www.linkedin.com/in/jitesh-vijaykumar-b2786814b/",
     topics: ["AI Engineering", "Career Guidance", "Portfolio Review", "Mock Interviews"],
     active: true,
@@ -42,7 +43,7 @@ const MENTORS = [
     photo: "/mentors/sonic-payeng.jpg",
     color: "#16a34a",
     bg: "#f0fdf4",
-    desc: "MNNIT M.Tech in AI & DS. Builds AI-driven automation on Dell's platform — spanning on-prem, SaaS, and hybrid cloud environments.",
+    desc: "Sonic Payeng is an AI engineer specializing in applied machine learning, intelligent automation, and large language model systems. He completed his M.Tech in Artificial Intelligence and Data Science from NIT Allahabad (MNNIT) and currently works at Dell Technologies on the Dell Automation Platform. His work focuses on building AI-driven automation solutions across on-premise, SaaS, and hybrid cloud environments.",
     linkedin: "https://www.linkedin.com/in/sonic-payeng-7ab8a8212/",
     topics: ["System Design", "AI/ML", "Interview Prep", "Skill Roadmap"],
     active: true,
@@ -55,7 +56,7 @@ const MENTORS = [
     photo: "/mentors/aditya-dubey.jpg",
     color: "#1d3a8f",
     bg: "#eef1fd",
-    desc: "M.Tech from NIT Allahabad. Mentored 12,000+ students in AI and practical industry applications. Translates complex AI into measurable business impact.",
+    desc: "Aditya Dubey is an AI Engineer focused on building and deploying intelligent systems that help organizations leverage artificial intelligence for business growth, automation, and operational transformation. He has mentored more than 12,000 professionals and students in AI technologies and practical industry applications. With an M.Tech in Information Systems from NIT Allahabad, Aditya works on translating complex AI concepts into real-world solutions that drive measurable impact for businesses and startups.",
     linkedin: "https://www.linkedin.com/in/aditya-dubey-4092b1214/",
     topics: ["AI/ML Strategy", "Career Guidance", "Resume Review", "Mock Interviews"],
     active: true,
@@ -68,7 +69,7 @@ const MENTORS = [
     photo: "/mentors/bipin-chaudhary.jpg",
     color: "#0369a1",
     bg: "#e0f2fe",
-    desc: "2.5 years in JS, TypeScript, Angular, Node.js, and SQL. Ex-SAP intern. Passionate about making programming and CS accessible for beginners.",
+    desc: "Bipin Chaudhary is a Full Stack Developer with around 2.5 years of experience working with JavaScript, TypeScript, Angular, Node.js, and SQL. He has worked with SAP as an intern, gaining strong fundamentals in backend systems and databases. Bipin is passionate about building real-world applications and simplifying complex concepts, with a focus on helping students understand programming and computer science in a practical and easy-to-grasp way.",
     linkedin: "https://www.linkedin.com/in/bipin-chaudhary-39781b152/",
     topics: ["Full-Stack Dev", "JavaScript/TypeScript", "Backend Systems", "Career Guidance"],
     active: true,
@@ -81,7 +82,7 @@ const MENTORS = [
     photo: "/mentors/tarsh-vaibhav.jpg",
     color: "#dc2626",
     bg: "#fef2f2",
-    desc: "MNNIT graduate & DSA Trainer at KIET. Trained 500+ students in Data Structures and Algorithms — making complex concepts simple, engaging, and interview-ready.",
+    desc: "Tarsh Vaibhav is an Embedded Software Engineer with 1 year of experience at Wabtec Corporation and a graduate of MNNIT Allahabad. Driven by a passion for education, he currently serves as a DSA Trainer at KIET Group of Institutions, Ghaziabad, where he has trained 500+ students in Data Structures and Algorithms. He brings real industry insight into every session — making complex concepts simple, engaging, and interview-ready — helping students confidently crack placements at top tech companies.",
     linkedin: "https://www.linkedin.com/in/tarsh-vaibhav-4410561b0/",
     topics: ["DSA", "Interview Prep", "Placement Guidance", "Embedded Systems"],
     active: true,
@@ -318,6 +319,15 @@ export default function MentorsPage() {
   const avgRating = 4.6
   const activeMentors = MENTORS.filter(m => m.active)
   const extendedMentors = MENTORS.filter(m => !m.active)
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set())
+
+  const toggleExpand = (i: number) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev)
+      next.has(i) ? next.delete(i) : next.add(i)
+      return next
+    })
+  }
 
   const COMPANIES = ["KPMG", "Dell Technologies", "PhonePe", "Zepto", "SAP", "HCLTech", "Wabtec", "Cograd"]
 
@@ -389,7 +399,7 @@ export default function MentorsPage() {
           </div>
           <p style={{ fontSize: 13, color: "#64748b", marginBottom: 32 }}>Currently taking 1:1 training, mock interviews &amp; mentoring sessions</p>
 
-          <div className="active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+          <div className="active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
             {activeMentors.map((m, i) => (
               <div key={i} className="mentor-card-active" style={{
                 background: "white",
@@ -426,7 +436,33 @@ export default function MentorsPage() {
                   </div>
 
                   {/* Description */}
-                  <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.7, marginBottom: 16 }}>{m.desc}</p>
+                  <div style={{ marginBottom: 16 }}>
+                    <p style={{
+                      fontSize: 13, color: "#64748b", lineHeight: 1.7, margin: 0,
+                      display: "-webkit-box",
+                      WebkitLineClamp: expandedCards.has(i) ? "unset" : 3,
+                      WebkitBoxOrient: "vertical" as const,
+                      overflow: expandedCards.has(i) ? "visible" : "hidden",
+                      transition: "all .2s",
+                    }}>{m.desc}</p>
+                    <button
+                      onClick={() => toggleExpand(i)}
+                      style={{
+                        marginTop: 6, fontSize: 12, fontWeight: 700,
+                        color: "#1d3a8f", background: "none", border: "none",
+                        padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 4,
+                      }}
+                    >
+                      {expandedCards.has(i) ? "View less" : "View more"}
+                      <svg
+                        width="12" height="12" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                        style={{ transform: expandedCards.has(i) ? "rotate(180deg)" : "rotate(0deg)", transition: "transform .2s" }}
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+                  </div>
 
                   {/* Topics */}
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
@@ -471,63 +507,65 @@ export default function MentorsPage() {
             From KPMG, Dell, PhonePe, SAP, HCLTech, Zepto &amp; growing startups
           </p>
 
-          <div className="all-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          <div className="all-grid" style={{ display: "flex", flexDirection: "row", overflowX: "auto", gap: 14, paddingBottom: 14, paddingTop: 2, scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
             {extendedMentors.map((m, i) => (
               <div key={i} className="mentor-card-sm" style={{
+                flexShrink: 0,
+                width: 260,
+                scrollSnapAlign: "start",
                 background: "white",
-                borderRadius: 20,
-                border: "1.5px solid #e8ecf4",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-                overflow: "hidden",
+                borderRadius: 16,
+                border: "1.5px solid #eaecf0",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.03)",
+                padding: "20px 18px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 0,
                 transition: "box-shadow .2s, transform .2s",
               }}>
-                {/* Colored header band */}
-                <div style={{ height: 56, background: m.bg, position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 0 }}>
-                  <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${m.color}18 0%, ${m.color}08 100%)` }} />
-                  {/* Avatar — overlaps the band */}
-                  <div style={{
-                    position: "absolute",
-                    bottom: -26,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: 52, height: 52, borderRadius: 16,
-                    background: `linear-gradient(135deg, ${m.color}, ${m.color}bb)`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "#fff", fontSize: 17, fontWeight: 900,
-                    border: "3px solid white",
-                    boxShadow: `0 4px 14px ${m.color}40`,
-                    zIndex: 1,
-                  }}>
-                    {m.initials}
+
+                {/* Top row: avatar + name/role */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13, marginBottom: 14 }}>
+                  {/* Circle avatar with ring */}
+                  <div style={{ position: "relative", flexShrink: 0 }}>
+                    <div style={{
+                      width: 48, height: 48, borderRadius: "50%",
+                      background: `linear-gradient(135deg, ${m.color} 0%, ${m.color}88 100%)`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "#fff", fontSize: 15, fontWeight: 900,
+                      boxShadow: `0 0 0 3px ${m.color}18`,
+                    }}>
+                      {m.initials}
+                    </div>
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.name}</div>
+                    <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.4, marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.role}</div>
                   </div>
                 </div>
 
-                {/* Card body */}
-                <div style={{ padding: "34px 18px 18px", textAlign: "center" }}>
-                  {/* Name + role */}
-                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", lineHeight: 1.25, marginBottom: 3 }}>{m.name}</div>
-                  <div style={{ fontSize: 11.5, fontWeight: 500, color: "#64748b", marginBottom: 10, lineHeight: 1.4 }}>{m.role}</div>
+                {/* Company badge */}
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 5, alignSelf: "flex-start",
+                  fontSize: 11, fontWeight: 700, padding: "4px 10px",
+                  borderRadius: 99, background: m.bg, color: m.color,
+                  border: `1px solid ${m.color}25`, marginBottom: 12,
+                }}>
+                  <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-4 0v2" /></svg>
+                  {m.company}
+                </span>
 
-                  {/* Company badge */}
-                  <span style={{
-                    display: "inline-flex", alignItems: "center", gap: 4,
-                    fontSize: 11, fontWeight: 700, padding: "4px 12px",
-                    borderRadius: 99, background: m.bg, color: m.color,
-                    border: `1.5px solid ${m.color}25`, marginBottom: 14,
-                  }}>
-                    <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-4 0v2" /></svg>
-                    {m.company}
-                  </span>
+                {/* Description */}
+                <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.7, margin: "0 0 14px", flexGrow: 1 }}>{m.desc}</p>
 
-                  {/* Divider */}
-                  <div style={{ height: 1, background: "#f1f5f9", marginBottom: 14 }} />
+                {/* Divider */}
+                <div style={{ height: 1, background: "#f1f5f9", marginBottom: 12 }} />
 
-                  {/* Topics */}
-                  <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 6 }}>
-                    {m.topics.map(t => (
-                      <span key={t} style={{ fontSize: 10.5, fontWeight: 600, padding: "4px 10px", borderRadius: 99, background: "#f8faff", color: "#334155", border: "1px solid #e0e7ff" }}>{t}</span>
-                    ))}
-                  </div>
+                {/* Topics */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                  {m.topics.map(t => (
+                    <span key={t} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 99, background: "#f8faff", color: "#334155", border: "1px solid #e0e7ff" }}>{t}</span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -599,11 +637,12 @@ export default function MentorsPage() {
             </div>
           </div>
 
-          <div className="reviews-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          <div className="reviews-grid" style={{ display: "flex", flexDirection: "row", overflowX: "auto", gap: 16, paddingBottom: 12, scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
             {REVIEWS.map((r, i) => (
               <div key={i} style={{
                 background: "white", borderRadius: 16, padding: "20px 18px",
                 border: "1.5px solid #e8ecf4", boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
+                flexShrink: 0, width: 300, scrollSnapAlign: "start",
               }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                   <Stars rating={r.rating} />
@@ -662,57 +701,51 @@ export default function MentorsPage() {
 
         {/* ── Become a Mentor CTA ── */}
         <div style={{
-          textAlign: "center", padding: "52px 24px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          gap: 20, padding: "28px 36px",
           background: "linear-gradient(135deg, #1d3a8f 0%, #2d4fd4 60%, #3b5bdb 100%)",
-          borderRadius: 24, boxShadow: "0 8px 40px rgba(29,58,143,0.28)",
-          position: "relative", overflow: "hidden",
+          borderRadius: 18, boxShadow: "0 4px 24px rgba(29,58,143,0.22)",
+          flexWrap: "wrap",
         }}>
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-            <div style={{ position: "absolute", top: "-20%", right: "-5%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)" }} />
-            <div style={{ position: "absolute", bottom: "-30%", left: "-3%", width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)" }} />
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: ".07em", textTransform: "uppercase", marginBottom: 6 }}>For Professionals</div>
+            <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", marginBottom: 4 }}>Want to mentor students?</div>
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>Your experience is their shortcut. Your time is their turning point.</div>
           </div>
-          <div style={{ position: "relative" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 16px", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 99, marginBottom: 20, fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.8)", letterSpacing: ".06em", textTransform: "uppercase" }}>
-              For Professionals
-            </div>
-            <h3 style={{ fontSize: 26, fontWeight: 900, color: "#fff", marginBottom: 10, letterSpacing: "-0.03em" }}>
-              Want to mentor students?
-            </h3>
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", marginBottom: 28, maxWidth: 400, margin: "0 auto 28px", lineHeight: 1.7 }}>
-              Your experience is their shortcut. Your time is their turning point.
-            </p>
-            <Link href="/become-mentor" style={{
-              display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px",
-              background: "white", color: "#1d3a8f", borderRadius: 12,
-              fontSize: 14, fontWeight: 800, textDecoration: "none",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-              transition: "transform .15s",
-            }}>
-              Apply as Mentor
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-            </Link>
-          </div>
+          <Link href="/become-mentor" style={{
+            display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 26px",
+            background: "white", color: "#1d3a8f", borderRadius: 10, flexShrink: 0,
+            fontSize: 13, fontWeight: 800, textDecoration: "none",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
+          }}>
+            Apply as Mentor
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
         </div>
 
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes livePulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(1.3); } }
+        .all-grid::-webkit-scrollbar { display: none; }
+        .all-grid { scrollbar-width: none; }
+        .reviews-grid::-webkit-scrollbar { display: none; }
+        .reviews-grid { scrollbar-width: none; }
         .mentor-card-active:hover { box-shadow:0 8px 32px rgba(0,0,0,0.09) !important; transform:translateY(-2px); }
         .mentor-card-sm:hover { box-shadow:0 6px 20px rgba(0,0,0,0.07) !important; transform:translateY(-2px); }
         @media (max-width: 640px) {
           .m-wrap { padding: 40px 16px 56px !important; }
           .hero-stats { flex-direction: column !important; width: 100% !important; }
-          .active-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
-          .all-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
+          .active-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+          .all-grid { gap: 14px !important; }
           .quotes-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-          .reviews-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .reviews-grid { gap: 12px !important; }
           .consultancy-features { grid-template-columns: 1fr !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
-          .active-grid { grid-template-columns: 1fr !important; }
-          .all-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .reviews-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .active-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .all-grid { gap: 14px !important; }
+          .reviews-grid { gap: 14px !important; }
         }
       `}} />
 
