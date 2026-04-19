@@ -5,79 +5,93 @@ import Link from "next/link"
 import type { Job } from "./page"
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   DATA
+   COMPANY DATA
 ───────────────────────────────────────────────────────────────────────────── */
 
-const COMPANY_LOGOS: Record<string, string> = {
-  Trippyway: "/trippyway-logo.jpg",
+const COMPANY_DOMAINS: Record<string, string> = {
+  "Google":               "google.com",
+  "Microsoft":            "microsoft.com",
+  "Amazon":               "amazon.com",
+  "Meta":                 "meta.com",
+  "Netflix":              "netflix.com",
+  "Apple":                "apple.com",
+  "Flipkart":             "flipkart.com",
+  "Zomato":               "zomato.com",
+  "Swiggy":               "swiggy.com",
+  "CRED":                 "cred.club",
+  "Razorpay":             "razorpay.com",
+  "Zepto":                "zeptonow.com",
+  "Meesho":               "meesho.com",
+  "PhonePe":              "phonepe.com",
+  "Ola":                  "olacabs.com",
+  "Groww":                "groww.in",
+  "BrowserStack":         "browserstack.com",
 }
 
 const COMPANY_COLORS: Record<string, string> = {
-  "Google":             "#4285F4",
-  "Microsoft":          "#00A4EF",
-  "Amazon":             "#FF9900",
-  "Meta":               "#0866FF",
-  "Netflix":            "#E50914",
-  "Apple":              "#555",
-  "Flipkart":           "#2874F0",
-  "Zomato":             "#E23744",
-  "Swiggy":             "#FC8019",
-  "CRED":               "#1A1A1A",
-  "Razorpay":           "#072654",
-  "Zepto":              "#8B31F5",
-  "Meesho":             "#9B51E0",
-  "PhonePe":            "#5F259F",
-  "Ola":                "#1C1C1C",
-  "Paytm":              "#00BAF2",
-  "Groww":              "#5367FF",
-  "BrowserStack":       "#F1692F",
-  "Trippyway":          "#0F766E",
+  "Google":               "#4285F4",
+  "Microsoft":            "#00A4EF",
+  "Amazon":               "#FF9900",
+  "Meta":                 "#0866FF",
+  "Netflix":              "#E50914",
+  "Apple":                "#374151",
+  "Flipkart":             "#2874F0",
+  "Zomato":               "#E23744",
+  "Swiggy":               "#FC8019",
+  "CRED":                 "#1A1A1A",
+  "Razorpay":             "#072654",
+  "Zepto":                "#8B31F5",
+  "Meesho":               "#9B51E0",
+  "PhonePe":              "#5F259F",
+  "Ola":                  "#2D2D2D",
+  "Groww":                "#5367FF",
+  "BrowserStack":         "#F1692F",
+  "Trippyway":            "#0F766E",
   "Top Institute of India": "#1D3A8F",
 }
 
-const GRADIENT_FOR = (color: string) =>
-  `linear-gradient(135deg, ${color}cc, ${color})`
+const STATIC_LOGOS: Record<string, string> = {
+  Trippyway: "/trippyway-logo.jpg",
+}
 
-/* All companies shown in Featured grid */
+function getCompanyLogo(name: string): string | null {
+  if (STATIC_LOGOS[name]) return STATIC_LOGOS[name]
+  const domain = COMPANY_DOMAINS[name]
+  if (domain) return `https://logo.clearbit.com/${domain}`
+  return null
+}
+
 const FEATURED_COMPANIES_LIST = [
   { name: "Trippyway",             industry: "Travel · AI",         stage: "Seed",     size: "50+",    active: true  },
   { name: "Netflix",               industry: "Streaming · Tech",    stage: "Public",   size: "12k+",   active: true  },
   { name: "Top Institute of India",industry: "Research · Academia", stage: "Govt.",    size: "10k+",   active: true  },
-  { name: "Google",                industry: "Big Tech",            stage: "Public",   size: "180k+",  active: false },
-  { name: "Microsoft",             industry: "Cloud · SaaS",        stage: "Public",   size: "220k+",  active: false },
+  { name: "Google",                industry: "Big Tech",            stage: "Public",   size: "182k+",  active: false },
+  { name: "Microsoft",             industry: "Cloud · AI",          stage: "Public",   size: "220k+",  active: false },
   { name: "Flipkart",              industry: "E-Commerce",          stage: "Public",   size: "55k+",   active: false },
-  { name: "Zomato",                industry: "Food Tech",           stage: "Public",   size: "5k+",    active: false },
-  { name: "Razorpay",              industry: "Fintech",             stage: "Series F", size: "3k+",    active: false },
-  { name: "CRED",                  industry: "Fintech",             stage: "Series E", size: "1.5k+",  active: false },
-  { name: "Zepto",                 industry: "Quick Commerce",      stage: "Series D", size: "2k+",    active: false },
+  { name: "Zomato",                industry: "Food Tech",           stage: "Public",   size: "5.8k+",  active: false },
+  { name: "Razorpay",              industry: "Fintech",             stage: "Series F", size: "3.2k+",  active: false },
+  { name: "CRED",                  industry: "Consumer Fintech",    stage: "Series E", size: "1.5k+",  active: false },
+  { name: "Zepto",                 industry: "Quick Commerce",      stage: "Series D", size: "2.4k+",  active: false },
   { name: "Meesho",                industry: "Social Commerce",     stage: "Series F", size: "11k+",   active: false },
-  { name: "PhonePe",               industry: "Payments",            stage: "Public",   size: "4k+",    active: false },
-  { name: "Swiggy",                industry: "Food Delivery",       stage: "Public",   size: "6k+",    active: false },
-  { name: "Groww",                 industry: "Wealthtech",          stage: "Series F", size: "2k+",    active: false },
-  { name: "BrowserStack",          industry: "Dev Tools",           stage: "Series B", size: "1k+",    active: false },
+  { name: "PhonePe",               industry: "Payments",            stage: "Public",   size: "4.2k+",  active: false },
+  { name: "Swiggy",                industry: "Food Delivery",       stage: "Public",   size: "6.5k+",  active: false },
+  { name: "Groww",                 industry: "Wealthtech",          stage: "Series F", size: "2.1k+",  active: false },
+  { name: "BrowserStack",          industry: "Dev Tools · SaaS",    stage: "Series B", size: "1.1k+",  active: false },
   { name: "Ola",                   industry: "Mobility",            stage: "Public",   size: "8k+",    active: false },
 ]
 
 const INDUSTRIES = [
-  { label: "Engineering",    icon: "⚡", search: "Engineer" },
-  { label: "Design",         icon: "🎨", search: "Design" },
-  { label: "AI & ML",        icon: "🤖", search: "AI" },
-  { label: "Finance",        icon: "💰", search: "Finance" },
-  { label: "Marketing",      icon: "📣", search: "Marketing" },
-  { label: "Product",        icon: "📦", search: "Product" },
-  { label: "HR & People",    icon: "🤝", search: "HR" },
-  { label: "Research",       icon: "🔬", search: "Research" },
-  { label: "Remote",         icon: "🏠", mode: "Remote" },
-  { label: "Internship",     icon: "🎓", type: "Internship" },
+  { label: "Engineering", icon: "⚡", search: "Engineer" },
+  { label: "Design",      icon: "🎨", search: "Design"   },
+  { label: "AI & ML",     icon: "🤖", search: "AI"       },
+  { label: "Finance",     icon: "💰", search: "Finance"  },
+  { label: "Marketing",   icon: "📣", search: "Marketing"},
+  { label: "Product",     icon: "📦", search: "Product"  },
+  { label: "HR & People", icon: "🤝", search: "HR"       },
+  { label: "Research",    icon: "🔬", search: "Research" },
+  { label: "Remote",      icon: "🏠", mode: "Remote"     },
+  { label: "Internship",  icon: "🎓", type: "Internship" },
 ]
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   HELPERS
-───────────────────────────────────────────────────────────────────────────── */
-
-function initials(name: string) {
-  return name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
-}
 
 const TYPE_S: Record<string, { bg: string; color: string; border: string }> = {
   Internship:  { bg: "#fff7ed", color: "#c2410c", border: "#fed7aa" },
@@ -91,92 +105,153 @@ const MODE_S: Record<string, { bg: string; color: string; border: string }> = {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   COMPANY LOGO TILE
+   LOGO COMPONENT  (tries image → falls back to initials)
 ───────────────────────────────────────────────────────────────────────────── */
-function CompanyLogo({ name, size = 52 }: { name: string; size?: number }) {
-  const logo = COMPANY_LOGOS[name]
+function CompanyAvatar({ name, size = 48 }: { name: string; size?: number }) {
+  const [imgErr, setImgErr] = useState(false)
+  const logo = getCompanyLogo(name)
   const color = COMPANY_COLORS[name] || "#1d3a8f"
-  const grad = GRADIENT_FOR(color)
+  const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
+  const r = Math.round(size * 0.22)
+
   return (
     <div style={{
-      width: size, height: size, borderRadius: Math.round(size * 0.24),
-      background: logo ? "#fff" : grad,
+      width: size, height: size, borderRadius: r, flexShrink: 0,
+      background: logo && !imgErr ? "#fff" : color,
       border: "1.5px solid #eef0f6",
       display: "flex", alignItems: "center", justifyContent: "center",
-      overflow: "hidden", flexShrink: 0,
-      fontSize: Math.round(size * 0.28), fontWeight: 900, color: "white",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+      overflow: "hidden",
+      fontSize: Math.round(size * 0.3), fontWeight: 800, color: "white",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
     }}>
-      {logo
-        ? <img src={logo} alt={name} style={{ width: "100%", height: "100%", objectFit: "contain", padding: 5 }} />
-        : initials(name)
+      {logo && !imgErr
+        ? <img src={logo} alt={name} onError={() => setImgErr(true)} style={{ width: "80%", height: "80%", objectFit: "contain" }} />
+        : initials
       }
     </div>
   )
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   FEATURED COMPANY CARD
+   ACTIVELY HIRING CARD
 ───────────────────────────────────────────────────────────────────────────── */
-function FeaturedCompanyCard({
-  company, jobCount, onClick,
-}: { company: typeof FEATURED_COMPANIES_LIST[0]; jobCount: number; onClick: () => void }) {
+function ActiveCompanyCard({ company, jobCount, onClick, index }: {
+  company: typeof FEATURED_COMPANIES_LIST[0]; jobCount: number; onClick: () => void; index: number
+}) {
   const [hov, setHov] = useState(false)
   const color = COMPANY_COLORS[company.name] || "#1d3a8f"
-  const isActive = company.active && jobCount > 0
 
   return (
     <button
-      onClick={isActive ? onClick : undefined}
+      onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        background: "white", borderRadius: 16, textAlign: "left",
-        border: hov && isActive ? `1.5px solid ${color}55` : "1.5px solid #eef0f6",
-        padding: "16px", cursor: isActive ? "pointer" : "default",
-        transform: hov && isActive ? "translateY(-2px)" : "translateY(0)",
-        boxShadow: hov && isActive ? `0 8px 28px ${color}18` : "0 1px 4px rgba(0,0,0,0.03)",
-        transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
-        width: "100%", overflow: "hidden", position: "relative",
+        background: "white", borderRadius: 18, textAlign: "left",
+        border: hov ? `1.5px solid ${color}50` : "1.5px solid #eef0f6",
+        padding: "20px", cursor: "pointer", width: "100%",
+        transform: hov ? "translateY(-4px)" : "translateY(0)",
+        boxShadow: hov ? `0 16px 48px ${color}1a` : "0 2px 8px rgba(0,0,0,0.04)",
+        transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
+        animation: `fadeUp 0.45s ease ${index * 0.07}s both`,
+        position: "relative", overflow: "hidden",
       }}
     >
-      {/* Top accent bar */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: GRADIENT_FOR(color), borderRadius: "16px 16px 0 0" }} />
+      {/* Gradient top bar */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${color}, ${color}88)` }} />
 
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-        <CompanyLogo name={company.name} size={44} />
-        {isActive ? (
-          <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 10, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "3px 8px", borderRadius: 99, flexShrink: 0 }}>
-            <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            Hiring Now
-          </span>
-        ) : (
-          <span style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", background: "#f9fafb", border: "1px solid #f0f0f0", padding: "3px 8px", borderRadius: 99, flexShrink: 0 }}>
-            Coming Soon
-          </span>
-        )}
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
+        <CompanyAvatar name={company.name} size={48} />
+        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "4px 10px", borderRadius: 99 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
+          Hiring
+        </span>
       </div>
 
-      <div style={{ fontSize: 13, fontWeight: 700, color: "#111827", marginBottom: 2, letterSpacing: "-0.01em" }}>{company.name}</div>
-      <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500, marginBottom: 8 }}>{company.industry}</div>
+      {/* Info */}
+      <div style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.02em" }}>{company.name}</div>
+      <div style={{ fontSize: 12, color: "#9ca3af", fontWeight: 500, marginBottom: 12 }}>{company.industry}</div>
 
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 10, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "2px 8px", borderRadius: 99 }}>{company.stage}</span>
-        <span style={{ fontSize: 10, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "2px 8px", borderRadius: 99 }}>{company.size} employees</span>
+      <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 9px", borderRadius: 99 }}>{company.stage}</span>
+        <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "3px 9px", borderRadius: 99 }}>{company.size}</span>
       </div>
 
-      {isActive && (
-        <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #f4f6fb", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color, background: `${color}12`, padding: "3px 10px", borderRadius: 99 }}>
-            {jobCount} open role{jobCount !== 1 ? "s" : ""}
-          </span>
-          <span style={{ fontSize: 11, fontWeight: 600, color, display: "flex", alignItems: "center", gap: 3 }}>
-            View
-            <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </span>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid #f4f6fb" }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: color }}>
+          {jobCount} open role{jobCount !== 1 ? "s" : ""}
+        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 600, color: color, background: `${color}10`, padding: "5px 12px", borderRadius: 99, transition: "background 0.15s" }}>
+          View roles
+          <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
-      )}
+      </div>
     </button>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   COMING SOON CARD  — modern horizontal list style
+───────────────────────────────────────────────────────────────────────────── */
+function ComingSoonCard({ company, index }: { company: typeof FEATURED_COMPANIES_LIST[0]; index: number }) {
+  const [hov, setHov] = useState(false)
+  const [watching, setWatching] = useState(false)
+  const color = COMPANY_COLORS[company.name] || "#1d3a8f"
+
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        background: "white", borderRadius: 14,
+        border: hov ? "1.5px solid #e0e7ff" : "1.5px solid #f0f2f8",
+        padding: "14px 18px",
+        display: "flex", alignItems: "center", gap: 14,
+        transform: hov ? "translateY(-2px)" : "translateY(0)",
+        boxShadow: hov ? "0 8px 28px rgba(29,58,143,0.07)" : "0 1px 4px rgba(0,0,0,0.03)",
+        transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
+        animation: `fadeUp 0.4s ease ${index * 0.04}s both`,
+      }}
+    >
+      <CompanyAvatar name={company.name} size={44} />
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.01em" }}>{company.name}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 500 }}>{company.industry}</span>
+          <span style={{ fontSize: 10, color: "#c4c9d4" }}>·</span>
+          <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "1px 7px", borderRadius: 99 }}>{company.stage}</span>
+          <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", padding: "1px 7px", borderRadius: 99 }}>{company.size}</span>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setWatching(w => !w)}
+        style={{
+          flexShrink: 0,
+          padding: "7px 16px", borderRadius: 99, border: "none",
+          background: watching ? color : "#f4f6fb",
+          color: watching ? "white" : "#6b7280",
+          fontSize: 12, fontWeight: 700, cursor: "pointer",
+          display: "flex", alignItems: "center", gap: 5,
+          transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
+          transform: watching ? "scale(1.04)" : "scale(1)",
+        }}
+      >
+        {watching ? (
+          <>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Watching
+          </>
+        ) : (
+          <>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Watch
+          </>
+        )}
+      </button>
+    </div>
   )
 }
 
@@ -186,7 +261,6 @@ function FeaturedCompanyCard({
 function JobCard({ job, index }: { job: Job; index: number }) {
   const [saved, setSaved] = useState(false)
   const [hov, setHov] = useState(false)
-  const logo = COMPANY_LOGOS[job.company]
   const color = COMPANY_COLORS[job.company] || "#1d3a8f"
   const type = job.type || "Full Time"
   const mode = job.mode || "On-site"
@@ -199,8 +273,8 @@ function JobCard({ job, index }: { job: Job; index: number }) {
       onMouseLeave={() => setHov(false)}
       style={{
         background: "white", borderRadius: 16,
-        border: hov ? `1.5px solid ${color}44` : "1.5px solid #eef0f6",
-        boxShadow: hov ? `0 8px 32px ${color}14` : "0 1px 4px rgba(0,0,0,0.03)",
+        border: hov ? `1.5px solid ${color}40` : "1.5px solid #eef0f6",
+        boxShadow: hov ? `0 8px 32px ${color}12` : "0 1px 4px rgba(0,0,0,0.03)",
         overflow: "hidden",
         transform: hov ? "translateY(-2px)" : "translateY(0)",
         transition: "all 0.2s cubic-bezier(0.16,1,0.3,1)",
@@ -208,79 +282,63 @@ function JobCard({ job, index }: { job: Job; index: number }) {
         position: "relative",
       }}
     >
-      {/* Left accent */}
-      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: GRADIENT_FOR(color) }} />
-
-      <div style={{ padding: "18px 20px 16px 22px" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 3, background: `linear-gradient(180deg,${color},${color}66)` }} />
+      <div style={{ padding: "18px 20px 16px 23px" }}>
         <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-          <CompanyLogo name={job.company} size={50} />
-
+          <CompanyAvatar name={job.company} size={50} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
               <div>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: "0 0 3px", letterSpacing: "-0.015em", lineHeight: 1.3 }}>
-                  {job.title}
-                </h3>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.015em", lineHeight: 1.3 }}>{job.title}</h3>
                 <div style={{ fontSize: 13, color: "#6b7280", display: "flex", alignItems: "center", gap: 5, flexWrap: "wrap" }}>
                   <span style={{ fontWeight: 600, color: "#374151" }}>{job.company}</span>
-                  <span style={{ color: "#e5e7eb" }}>·</span>
+                  <span style={{ color: "#e2e8f0" }}>·</span>
                   <span style={{ display: "flex", alignItems: "center", gap: 3 }}>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     {job.location}
                   </span>
-                  {job.experience && <><span style={{ color: "#e5e7eb" }}>·</span><span>{job.experience}</span></>}
+                  {job.experience && <><span style={{ color: "#e2e8f0" }}>·</span><span>{job.experience}</span></>}
                 </div>
               </div>
-              <button onClick={() => setSaved(s => !s)}
-                style={{ border: "none", background: "none", cursor: "pointer", padding: 4, color: saved ? "#ef4444" : "#d1d5db", flexShrink: 0, transition: "all 0.15s" }}>
-                <svg width="17" height="17" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8">
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-                </svg>
+              <button onClick={() => setSaved(s => !s)} style={{ border: "none", background: "none", cursor: "pointer", padding: 4, color: saved ? "#ef4444" : "#d1d5db", flexShrink: 0, transition: "all 0.15s" }}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
               </button>
             </div>
-
             <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 10 }}>
               <span style={{ ...typeS, fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 99, border: `1px solid ${typeS.border}` }}>{type}</span>
               <span style={{ ...modeS, fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 99, border: `1px solid ${modeS.border}` }}>{mode}</span>
               {job.department && <span style={{ fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 99, background: "#faf5ff", color: "#7c3aed", border: "1px solid #ddd6fe" }}>{job.department}</span>}
               {job.experience && <span style={{ fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 99, background: "#fffbeb", color: "#b45309", border: "1px solid #fde68a" }}>{job.experience}</span>}
             </div>
-
             {job.description && (
-              <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.65, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>
+              <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.65, margin: "10px 0 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>
                 {job.description}
               </p>
             )}
           </div>
         </div>
       </div>
-
-      <div style={{ padding: "11px 20px 11px 22px", borderTop: "1px solid #f4f6fb", background: "#fafbff", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+      <div style={{ padding: "11px 20px 11px 23px", borderTop: "1px solid #f8fafc", background: "#fafbff", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 600, color: "#16a34a" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
             Actively Hiring
           </span>
-          {job.duration && <span style={{ fontSize: 11, color: "#9ca3af" }}>· {job.duration}</span>}
-          <span style={{ fontSize: 11, color: "#c4c9d4" }}>· via Jobingen</span>
+          {job.duration && <span style={{ fontSize: 11, color: "#94a3b8" }}>· {job.duration}</span>}
         </div>
         <div style={{ display: "flex", gap: 7 }}>
           {!job.applyUrl && (
             <Link href={`/jobs/${job.slug}`}
               style={{ fontSize: 12, fontWeight: 600, color: "#374151", padding: "6px 14px", borderRadius: 8, border: "1px solid #e0e7ff", background: "white", textDecoration: "none", transition: "all 0.15s" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.color = color }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "#e0e7ff"; e.currentTarget.style.color = "#374151" }}
-            >
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "#e0e7ff"; e.currentTarget.style.color = "#374151" }}>
               Details
             </Link>
           )}
-          <a
-            href={job.applyUrl ?? `/jobs/${job.slug}`}
-            {...(job.applyUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          <a href={job.applyUrl ?? `/jobs/${job.slug}`} {...(job.applyUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             style={{ fontSize: 12, fontWeight: 700, color: "white", padding: "6px 18px", borderRadius: 8, background: color, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, transition: "opacity 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
-            onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-          >
+            onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+            onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
             Apply Now
             <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </a>
@@ -297,8 +355,7 @@ function Checkbox({ label, checked, onChange }: { label: string; checked: boolea
   return (
     <label style={{ display: "flex", alignItems: "center", gap: 9, padding: "7px 8px", borderRadius: 8, cursor: "pointer" }}
       onMouseEnter={e => e.currentTarget.style.background = "#f5f7ff"}
-      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-    >
+      onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
       <span onClick={onChange} style={{ width: 17, height: 17, borderRadius: 5, flexShrink: 0, border: `2px solid ${checked ? "#1d3a8f" : "#d1d5db"}`, background: checked ? "#1d3a8f" : "white", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.12s", cursor: "pointer" }}>
         {checked && <svg width="9" height="9" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
       </span>
@@ -320,11 +377,8 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
 
   const toggle = (arr: string[], set: (v: string[]) => void, val: string) =>
     set(arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val])
-
   const clearAll = () => { setSearch(""); setLocation(""); setTypes([]); setModes([]) }
-
-  const scrollToJobs = () =>
-    setTimeout(() => jobsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80)
+  const scrollToJobs = () => setTimeout(() => jobsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80)
 
   const companiesMap = useMemo(() => {
     const m: Record<string, Job[]> = {}
@@ -351,85 +405,85 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
   return (
     <>
       <style>{`
-        @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.7)} }
-        @keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
-        .ji-inp { border:none; background:transparent; font-size:14px; color:#111827; width:100%; padding:18px 0; }
-        .ji-inp:focus { outline:none; }
-        .ji-inp::placeholder { color:#9ca3af; }
-        .ji-cats::-webkit-scrollbar { display:none; }
-        @media(max-width:900px){
+        @keyframes slideRight { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+        .ji-inp{border:none;background:transparent;font-size:14px;color:#0f172a;width:100%;padding:18px 0;}
+        .ji-inp:focus{outline:none;}
+        .ji-inp::placeholder{color:#94a3b8;}
+        @media(max-width:960px){
           .ji-layout{flex-direction:column!important}
           .ji-sidebar{width:100%!important;position:static!important;flex-direction:row!important;flex-wrap:wrap;gap:12px!important}
           .ji-fbox{flex:1;min-width:180px}
-          .ji-companies{grid-template-columns:repeat(3,1fr)!important}
+          .ji-active-grid{grid-template-columns:repeat(3,1fr)!important}
+          .ji-soon-grid{grid-template-columns:repeat(2,1fr)!important}
         }
         @media(max-width:640px){
-          .ji-hero-h{font-size:28px!important}
-          .ji-searchbar{flex-direction:column!important}
-          .ji-div{display:none!important}
-          .ji-companies{grid-template-columns:repeat(2,1fr)!important}
+          .ji-hero-h{font-size:28px!important;letter-spacing:-.03em!important}
+          .ji-searchbar{flex-direction:column!important;border-radius:16px!important}
+          .ji-sdiv{display:none!important}
+          .ji-active-grid{grid-template-columns:1fr 1fr!important}
+          .ji-soon-grid{grid-template-columns:1fr!important}
           .ji-industries{grid-template-columns:repeat(3,1fr)!important}
-          .ji-stats{gap:16px!important}
+          .ji-stats{gap:20px!important}
         }
       `}</style>
 
       {/* ══════════════════════════════════════════════════════
           HERO
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "linear-gradient(175deg,#eef2ff 0%,#f0f4ff 40%,#fff 100%)", borderBottom: "1px solid #e8edf8" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "56px 24px 48px", textAlign: "center" }}>
+      <section style={{ background: "linear-gradient(175deg,#eef2ff 0%,#f0f4ff 45%,#fff 100%)", borderBottom: "1px solid #e8edf8" }}>
+        <div style={{ maxWidth: 980, margin: "0 auto", padding: "56px 24px 52px", textAlign: "center" }}>
 
-          {/* Live pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginBottom: 18, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.06)" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f", letterSpacing: "0.02em" }}>Updated Daily — New roles every morning</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Updated Daily — New roles every morning</span>
           </div>
 
-          <h1 className="ji-hero-h" style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", marginBottom: 12, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
+          <h1 className="ji-hero-h" style={{ fontSize: "clamp(32px,5vw,54px)", fontWeight: 900, color: "#0f172a", marginBottom: 14, letterSpacing: "-0.04em", lineHeight: 1.1 }}>
             Find your next<br/>
-            <span style={{ background: "linear-gradient(135deg,#1d3a8f,#3b52f0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>dream opportunity</span>
+            <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b52f0 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              dream opportunity
+            </span>
           </h1>
-          <p style={{ fontSize: 17, color: "#64748b", marginBottom: 36, fontWeight: 400, maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.65 }}>
-            Curated roles from top startups &amp; companies.<br/>No noise, only the best.
+          <p style={{ fontSize: 17, color: "#64748b", marginBottom: 38, fontWeight: 400, maxWidth: 480, margin: "0 auto 38px", lineHeight: 1.7 }}>
+            Curated roles from India's top startups &amp; companies.<br/>No noise. Only the best.
           </p>
 
-          {/* Search bar */}
-          <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, border: "1.5px solid #dde3f5", boxShadow: "0 6px 40px rgba(29,58,143,0.1)", maxWidth: 820, margin: "0 auto 28px", overflow: "hidden" }}>
+          {/* Search */}
+          <div className="ji-searchbar" style={{ display: "flex", background: "white", borderRadius: 18, border: "1.5px solid #dde3f5", boxShadow: "0 8px 48px rgba(29,58,143,0.11)", maxWidth: 820, margin: "0 auto 30px", overflow: "hidden" }}>
             <div style={{ flex: 1.8, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
-              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                 <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
               </svg>
               <input className="ji-inp" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="Job title, company, or skill..." />
             </div>
-            <div className="ji-div" style={{ width: 1, background: "#e8edf8", margin: "12px 0" }} />
+            <div className="ji-sdiv" style={{ width: 1, background: "#e8edf8", margin: "12px 0" }} />
             <div style={{ flex: 1, display: "flex", alignItems: "center", padding: "0 18px", gap: 10 }}>
-              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
               </svg>
               <input className="ji-inp" value={location} onChange={e => setLocation(e.target.value)} onKeyDown={e => e.key === "Enter" && scrollToJobs()} placeholder="City or Remote" />
             </div>
-            <button
-              onClick={() => scrollToJobs()}
-              style={{ padding: "0 32px", background: "#1d3a8f", color: "white", border: "none", fontSize: 15, fontWeight: 700, cursor: "pointer", transition: "background 0.15s", flexShrink: 0, letterSpacing: "-0.01em" }}
+            <button onClick={scrollToJobs}
+              style={{ padding: "0 32px", background: "#1d3a8f", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "background 0.15s", flexShrink: 0 }}
               onMouseEnter={e => e.currentTarget.style.background = "#1e40af"}
-              onMouseLeave={e => e.currentTarget.style.background = "#1d3a8f"}
-            >
+              onMouseLeave={e => e.currentTarget.style.background = "#1d3a8f"}>
               Search
             </button>
           </div>
 
           {/* Stats */}
-          <div className="ji-stats" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 32, flexWrap: "wrap" }}>
+          <div className="ji-stats" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 36, flexWrap: "wrap" }}>
             {[
-              { val: `${jobs.length}+`,                            label: "Open roles" },
-              { val: `${Object.keys(companiesMap).length}`,        label: "Companies hiring" },
-              { val: `${FEATURED_COMPANIES_LIST.length}+`,         label: "Companies tracked" },
-              { val: "Daily",                                       label: "Updates" },
-            ].map(s => (
-              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              { val: `${jobs.length}+`, label: "Open roles" },
+              { val: `${Object.keys(companiesMap).length}`, label: "Hiring now" },
+              { val: `${FEATURED_COMPANIES_LIST.length}+`, label: "Companies tracked" },
+              { val: "Daily", label: "New listings" },
+            ].map((s, i) => (
+              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6, animation: `fadeUp 0.4s ease ${0.1 + i * 0.07}s both` }}>
                 <span style={{ fontSize: 15, fontWeight: 800, color: "#1d3a8f" }}>{s.val}</span>
-                <span style={{ fontSize: 13, color: "#94a3b8" }}>{s.label}</span>
+                <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 400 }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -441,29 +495,21 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "white", borderBottom: "1px solid #eef0f6" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 24px" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#111827", marginBottom: 4, letterSpacing: "-0.02em" }}>Browse by Category</h2>
-          <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 20, fontWeight: 400 }}>Jump straight to what interests you</p>
-
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>Browse by Category</h2>
+          <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 20 }}>Jump straight to what interests you</p>
           <div className="ji-industries" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
-            {INDUSTRIES.map(cat => (
-              <button
-                key={cat.label}
+            {INDUSTRIES.map((cat, i) => (
+              <button key={cat.label}
                 onClick={() => {
                   if (cat.type) { setTypes([cat.type]); setModes([]); setSearch("") }
                   else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
                   else if (cat.search) { setSearch(cat.search); setTypes([]); setModes([]) }
                   scrollToJobs()
                 }}
-                style={{
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-                  padding: "18px 12px", borderRadius: 14,
-                  border: "1.5px solid #eef0f6", background: "white",
-                  cursor: "pointer", transition: "all 0.18s ease",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#c7d2fe"; e.currentTarget.style.background = "#f5f7ff"; e.currentTarget.style.transform = "translateY(-2px)" }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#eef0f6"; e.currentTarget.style.background = "white"; e.currentTarget.style.transform = "translateY(0)" }}
-              >
-                <span style={{ fontSize: 26 }}>{cat.icon}</span>
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "18px 10px", borderRadius: 14, border: "1.5px solid #eef0f6", background: "white", cursor: "pointer", transition: "all 0.2s ease", animation: `fadeUp 0.4s ease ${i * 0.04}s both` }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#c7d2fe"; e.currentTarget.style.background = "#f5f7ff"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(29,58,143,0.08)" }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#eef0f6"; e.currentTarget.style.background = "white"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>
+                <span style={{ fontSize: 28 }}>{cat.icon}</span>
                 <span style={{ fontSize: 12, fontWeight: 600, color: "#374151" }}>{cat.label}</span>
               </button>
             ))}
@@ -475,50 +521,43 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           FEATURED COMPANIES
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "#f7f8fc", borderBottom: "1px solid #eef0f6" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "44px 24px" }}>
+
+          {/* Actively hiring */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111827", margin: 0, letterSpacing: "-0.02em" }}>Top Companies & Startups</h2>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#1d3a8f", background: "#eff6ff", border: "1px solid #c7d2fe", padding: "2px 8px", borderRadius: 99 }}>
-                  {FEATURED_COMPANIES_LIST.length} tracked
-                </span>
-              </div>
-              <p style={{ fontSize: 13, color: "#9ca3af", margin: 0, fontWeight: 400 }}>
-                {FEATURED_COMPANIES_LIST.filter(c => c.active).length} actively hiring · {FEATURED_COMPANIES_LIST.filter(c => !c.active).length} coming soon
-              </p>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>Companies Actively Hiring</h2>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Live openings — apply directly through Jobingen</p>
             </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 600, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "5px 12px", borderRadius: 99 }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-                Live openings
-              </span>
-            </div>
+            <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "6px 14px", borderRadius: 99 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
+              {FEATURED_COMPANIES_LIST.filter(c => c.active).length} companies live
+            </span>
           </div>
 
-          {/* Actively hiring row */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Actively Hiring Now</p>
-          <div className="ji-companies" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 28 }}>
-            {FEATURED_COMPANIES_LIST.filter(c => c.active).map(company => (
-              <FeaturedCompanyCard
-                key={company.name}
-                company={company}
+          <div className="ji-active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 44 }}>
+            {FEATURED_COMPANIES_LIST.filter(c => c.active).map((company, i) => (
+              <ActiveCompanyCard key={company.name} company={company} index={i}
                 jobCount={companiesMap[company.name]?.length || 0}
                 onClick={() => { setSearch(company.name); scrollToJobs() }}
               />
             ))}
           </div>
 
-          {/* Coming soon row */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Coming Soon — Watch These Companies</p>
-          <div className="ji-companies" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-            {FEATURED_COMPANIES_LIST.filter(c => !c.active).map(company => (
-              <FeaturedCompanyCard
-                key={company.name}
-                company={company}
-                jobCount={0}
-                onClick={() => {}}
-              />
+          {/* Coming soon */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+            <div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>Coming Soon</h2>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Watch top companies — get notified when they go live</p>
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", background: "#f4f6fb", border: "1px solid #e8eaf0", padding: "6px 14px", borderRadius: 99 }}>
+              {FEATURED_COMPANIES_LIST.filter(c => !c.active).length} companies tracked
+            </span>
+          </div>
+
+          <div className="ji-soon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+            {FEATURED_COMPANIES_LIST.filter(c => !c.active).map((company, i) => (
+              <ComingSoonCard key={company.name} company={company} index={i} />
             ))}
           </div>
         </div>
@@ -529,54 +568,34 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       ══════════════════════════════════════════════════════ */}
       <section ref={jobsRef} style={{ background: "#f4f6fb" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 24px 80px" }}>
-
-          {/* Section header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 10 }}>
-            <div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#111827", margin: "0 0 3px", letterSpacing: "-0.02em" }}>All Open Positions</h2>
-              <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>{jobs.length} roles available · updated daily</p>
-            </div>
+          <div style={{ marginBottom: 24 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>All Open Positions</h2>
+            <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>{jobs.length} roles · updated daily</p>
           </div>
 
           <div className="ji-layout" style={{ display: "flex", gap: 22, alignItems: "flex-start" }}>
 
             {/* Sidebar */}
-            <aside className="ji-sidebar" style={{ width: 230, flexShrink: 0, position: "sticky", top: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-
-              <div className="ji-fbox" style={{ background: "white", borderRadius: 14, border: "1px solid #eef0f6", padding: "16px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
+            <aside className="ji-sidebar" style={{ width: 228, flexShrink: 0, position: "sticky", top: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+              <div className="ji-fbox" style={{ background: "white", borderRadius: 14, border: "1px solid #eef0f6", padding: "16px 14px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#111827" }}>Filters</span>
-                  {activeFilters > 0 && (
-                    <button onClick={clearAll} style={{ fontSize: 11, fontWeight: 600, color: "#1d3a8f", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                      Clear all ({activeFilters})
-                    </button>
-                  )}
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Filters</span>
+                  {activeFilters > 0 && <button onClick={clearAll} style={{ fontSize: 11, fontWeight: 600, color: "#1d3a8f", background: "none", border: "none", cursor: "pointer", padding: 0 }}>Clear ({activeFilters})</button>}
                 </div>
-
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Job Type</p>
-                {["Internship", "Full Time", "Contractual"].map(t => (
-                  <Checkbox key={t} label={t} checked={types.includes(t)} onChange={() => toggle(types, setTypes, t)} />
-                ))}
-
-                <div style={{ height: 1, background: "#f0f0f0", margin: "12px 0" }} />
-
-                <p style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Work Mode</p>
-                {["Remote", "On-site", "Hybrid"].map(m => (
-                  <Checkbox key={m} label={m} checked={modes.includes(m)} onChange={() => toggle(modes, setModes, m)} />
-                ))}
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Job Type</p>
+                {["Internship", "Full Time", "Contractual"].map(t => <Checkbox key={t} label={t} checked={types.includes(t)} onChange={() => toggle(types, setTypes, t)} />)}
+                <div style={{ height: 1, background: "#f0f2f8", margin: "12px 0" }} />
+                <p style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Work Mode</p>
+                {["Remote", "On-site", "Hybrid"].map(m => <Checkbox key={m} label={m} checked={modes.includes(m)} onChange={() => toggle(modes, setModes, m)} />)}
               </div>
 
-              {/* Promo card */}
-              <div style={{ background: "linear-gradient(135deg,#0f172a,#1d3a8f)", borderRadius: 14, padding: "18px 16px" }}>
-                <div style={{ fontSize: 20, marginBottom: 8 }}>🔔</div>
+              <div style={{ background: "linear-gradient(145deg,#0f172a,#1d3a8f)", borderRadius: 14, padding: "20px 16px" }}>
+                <div style={{ fontSize: 22, marginBottom: 10 }}>🔔</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "white", marginBottom: 6 }}>Job Alerts</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: 14 }}>
-                  Get notified the moment new roles go live. Be first to apply.
-                </div>
-                <button style={{ width: "100%", padding: "9px 0", borderRadius: 9, border: "1.5px solid rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "background 0.15s" }}
-                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
-                  onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
-                >
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, marginBottom: 14 }}>Be first to know when new roles go live. No spam — ever.</div>
+                <button style={{ width: "100%", padding: "9px 0", borderRadius: 9, border: "1.5px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "white", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.15s" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.2)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)" }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)" }}>
                   Enable Alerts
                 </button>
               </div>
@@ -584,27 +603,19 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
 
             {/* Job list */}
             <div style={{ flex: 1, minWidth: 0 }}>
-
-              {/* Top bar */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 10 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "#111827" }}>
-                    {filtered.length} {filtered.length === 1 ? "role" : "roles"} found
-                  </span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{filtered.length} {filtered.length === 1 ? "role" : "roles"} found</span>
                   {[...types, ...modes, ...(search ? [`"${search}"`] : [])].map(f => (
                     <span key={f} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 600, color: "#1d3a8f", background: "#eff6ff", border: "1px solid #c7d2fe", padding: "3px 10px", borderRadius: 99 }}>
                       {f}
-                      <button onClick={() => {
-                        if (types.includes(f)) toggle(types, setTypes, f)
-                        else if (modes.includes(f)) toggle(modes, setModes, f)
-                        else setSearch("")
-                      }} style={{ background: "none", border: "none", cursor: "pointer", color: "#93c5fd", padding: 0, fontSize: 15, lineHeight: 1 }}>×</button>
+                      <button onClick={() => { if (types.includes(f)) toggle(types, setTypes, f); else if (modes.includes(f)) toggle(modes, setModes, f); else setSearch("") }}
+                        style={{ background: "none", border: "none", cursor: "pointer", color: "#93c5fd", padding: 0, fontSize: 15, lineHeight: 1 }}>×</button>
                     </span>
                   ))}
                 </div>
                 <select value={sort} onChange={e => setSort(e.target.value as "newest" | "az")}
-                  style={{ padding: "7px 30px 7px 10px", borderRadius: 8, border: "1px solid #e0e7ff", background: "white", fontSize: 12, fontWeight: 600, color: "#374151", cursor: "pointer", appearance: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 8px center" }}
-                >
+                  style={{ padding: "7px 30px 7px 10px", borderRadius: 8, border: "1px solid #e0e7ff", background: "white", fontSize: 12, fontWeight: 600, color: "#374151", cursor: "pointer", appearance: "none", backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 8px center" }}>
                   <option value="newest">Newest First</option>
                   <option value="az">A → Z</option>
                 </select>
@@ -613,8 +624,8 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
               {filtered.length === 0 ? (
                 <div style={{ background: "white", borderRadius: 16, border: "1px solid #eef0f6", padding: "72px 24px", textAlign: "center", animation: "fadeUp 0.35s ease both" }}>
                   <div style={{ fontSize: 36, marginBottom: 12 }}>🔍</div>
-                  <div style={{ fontSize: 17, fontWeight: 800, color: "#111827", marginBottom: 6 }}>No roles match</div>
-                  <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 20 }}>Try a different keyword or clear your filters</div>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: "#0f172a", marginBottom: 6 }}>No roles match</div>
+                  <div style={{ fontSize: 13, color: "#64748b", marginBottom: 20 }}>Try a different keyword or clear your filters</div>
                   <button onClick={clearAll} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #e0e7ff", background: "white", fontSize: 13, fontWeight: 700, color: "#1d3a8f", cursor: "pointer" }}>Clear filters</button>
                 </div>
               ) : (
