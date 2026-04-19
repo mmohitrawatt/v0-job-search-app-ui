@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 /* ─── Mentor Data ──────────────────────────────────── */
 
@@ -351,24 +352,9 @@ export default function MentorsPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#fafbff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
-      {/* Navbar */}
-      <header style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(250,251,255,.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid #e8ecf4" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center" }}>
-            <JobingenLogo height={70} />
-          </Link>
-          <Link href="/become-mentor" style={{
-            display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 20px",
-            background: "linear-gradient(135deg, #7c3aed, #3b5bdb)", color: "#fff",
-            borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none",
-            boxShadow: "0 2px 8px rgba(124,58,237,.2)",
-          }}>
-            Become a Mentor
-          </Link>
-        </div>
-      </header>
+      <Navbar />
 
-      <div className="mentors-container" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <div className="mentors-container" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px", paddingTop: 156 }}>
 
         {/* ── Hero Section ── */}
         <div className="hero-section" style={{ borderRadius: 24, overflow: "hidden", marginBottom: 56 }}>
@@ -644,22 +630,6 @@ export default function MentorsPage() {
             </p>
           </div>
 
-          <div className="consultancy-footer" style={{ background: "#fff", padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ display: "flex" }}>
-                {["#1d3a8f", "#16a34a", "#7c3aed", "#b45309", "#0369a1", "#dc2626"].map((c, i) => (
-                  <div key={i} style={{ width: 28, height: 28, borderRadius: "50%", background: `linear-gradient(135deg, ${c}, ${c}cc)`, border: "2px solid #fff", marginLeft: i > 0 ? -8 : 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 9, fontWeight: 900 }}>
-                    {["SK", "JV", "SP", "AD", "BC", "TV"][i]}
-                  </div>
-                ))}
-              </div>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "#64748b" }}>{activeMentors}+ mentors ready to go live</span>
-            </div>
-            <Link href="/become-mentor" style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
-              Want to be a mentor?
-              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-            </Link>
-          </div>
         </div>
 
         {/* ── Become a Mentor CTA ── */}
@@ -714,6 +684,7 @@ export default function MentorsPage() {
           .reviews-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}} />
+      <Footer />
     </div>
   )
 }

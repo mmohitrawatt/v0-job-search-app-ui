@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
@@ -5,35 +7,37 @@ const FOOTER_LINKS = [
   {
     title: "Product",
     links: [
-      { label: "Jobs", href: "/jobs" },
-      { label: "AI Tools", href: "/ai-tools" },
-      { label: "Bootcamps", href: "/#bootcamps" },
-      { label: "Resources", href: "/#how-it-works" },
+      { label: "Browse Jobs",       href: "/jobs" },
+      { label: "AI Tools",          href: "/ai-tools" },
+      { label: "Bootcamps",         href: "/#bootcamps" },
+      { label: "Mentors",           href: "/mentors" },
+      { label: "Become a Mentor",   href: "/become-mentor" },
     ],
   },
   {
     title: "Community",
     links: [
-      { label: "Student Insights", href: "/student-insights" },
-      { label: "Interview Experience", href: "/interview-feedback" },
-      { label: "Become a Mentor", href: "/become-mentor" },
-      { label: "Reviews", href: "/reviews" },
-      { label: "Campus Ambassador", href: "/campus-ambassador" },
+      { label: "Student Insights",       href: "/student-insights" },
+      { label: "Interview Experience",   href: "/interview-feedback" },
+      { label: "Reviews",                href: "/reviews" },
+      { label: "Campus Ambassador",      href: "/campus-ambassador" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "#community" },
-      { label: "Register", href: "/register" },
-      { label: "Contact", href: "mailto:hello@jobingen.com" },
+      { label: "About",     href: "/" },
+      { label: "Blog",      href: "/" },
+      { label: "Careers",   href: "/" },
+      { label: "Contact",   href: "mailto:hello@jobingen.com" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Privacy Policy", href: "#" },
+      { label: "Privacy Policy",   href: "#" },
       { label: "Terms of Service", href: "#" },
+      { label: "Cookie Policy",    href: "#" },
     ],
   },
 ]
@@ -61,29 +65,88 @@ const SOCIALS = [
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-400 pt-20 pb-10">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-        {/* Top */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-6 sm:gap-10 mb-14">
-          {/* Brand */}
-          <div className="col-span-2">
-            <div className="mb-4">
-              <JobingenLogo height={70} style={{ filter: "brightness(0) invert(1)" }} />
+    <footer
+      style={{
+        background: "#ffffff",
+        borderTop: "1px solid #f0f0f0",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif",
+      }}
+    >
+      {/* Main grid */}
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "64px 28px 0" }}>
+        <div
+          className="footer-main-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.8fr 1fr 1fr 1fr 1fr",
+            gap: "48px",
+            paddingBottom: 56,
+            borderBottom: "1px solid #f0f0f0",
+          }}
+        >
+          {/* Brand column */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            <div style={{ marginBottom: 16 }}>
+              <JobingenLogo height={64} />
             </div>
-            <p className="text-[14px] text-slate-500 leading-[1.7] max-w-[280px] mb-5">
-              AI-powered career platform for students and professionals. Find jobs, build skills, and get career-ready.
+            <p
+              style={{
+                fontSize: 13.5,
+                color: "#8c8c8c",
+                lineHeight: 1.75,
+                maxWidth: 230,
+                margin: "0 0 24px",
+                fontWeight: 400,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              India&apos;s AI-powered job search engine — built to help every professional find and land their dream job.
             </p>
-            <div className="flex items-center gap-3">
+
+            {/* Socials */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-slate-800/60 hover:bg-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-300 transition-all duration-200"
                   aria-label={s.label}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 10,
+                    background: "#f5f5f7",
+                    border: "1px solid #e8e8ed",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#6e6e73",
+                    textDecoration: "none",
+                    transition: "all 0.2s ease",
+                    flexShrink: 0,
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = "#e8e8ed"
+                    e.currentTarget.style.color = "#1d1d1f"
+                    e.currentTarget.style.transform = "translateY(-1px)"
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = "#f5f5f7"
+                    e.currentTarget.style.color = "#6e6e73"
+                    e.currentTarget.style.transform = ""
+                  }}
                 >
-                    <svg width="16" height="16" fill={s.useFill ? "currentColor" : "none"} viewBox="0 0 24 24" stroke={s.useFill ? "none" : "currentColor"} strokeWidth={s.useFill ? 0 : 1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="15"
+                    height="15"
+                    fill={s.useFill ? "currentColor" : "none"}
+                    viewBox="0 0 24 24"
+                    stroke={s.useFill ? "none" : "currentColor"}
+                    strokeWidth={1.8}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     {s.icon}
                   </svg>
                 </a>
@@ -94,11 +157,34 @@ export function Footer() {
           {/* Link columns */}
           {FOOTER_LINKS.map((col) => (
             <div key={col.title}>
-              <h4 className="text-[12px] font-bold text-slate-500 uppercase tracking-widest mb-4">{col.title}</h4>
-              <ul className="space-y-2.5">
+              <h4
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.09em",
+                  color: "#b0b0b8",
+                  marginBottom: 18,
+                }}
+              >
+                {col.title}
+              </h4>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-[14px] text-slate-500 hover:text-slate-300 transition-colors">
+                    <Link
+                      href={link.href}
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: "#5a5a5e",
+                        textDecoration: "none",
+                        letterSpacing: "-0.01em",
+                        transition: "color 0.15s ease",
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#1d1d1f")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "#5a5a5e")}
+                    >
                       {link.label}
                     </Link>
                   </li>
@@ -108,16 +194,81 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[13px] text-slate-600">
-            &copy; {new Date().getFullYear()} Jobingen. All rights reserved.
+        {/* Bottom bar */}
+        <div
+          className="footer-bottom-bar"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "20px 0 24px",
+            gap: 16,
+            flexWrap: "wrap",
+          }}
+        >
+          <p style={{ fontSize: 12.5, color: "#ababab", letterSpacing: "-0.01em", margin: 0 }}>
+            &copy; {new Date().getFullYear()} Jobingen Technologies. All rights reserved.
           </p>
-          <p className="text-[12px] text-slate-700">
-            Built with care in India
-          </p>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <span
+              style={{
+                fontSize: 12,
+                color: "#c0c0c8",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Crafted with care in India 🇮🇳
+            </span>
+
+            {/* Status pill */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 5,
+                padding: "4px 10px",
+                borderRadius: 99,
+                background: "#f0fdf4",
+                border: "1px solid rgba(16,185,129,0.15)",
+              }}
+            >
+              <div
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: "#10b981",
+                }}
+              />
+              <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", letterSpacing: "0.01em" }}>
+                All systems operational
+              </span>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Responsive styles */}
+      <style>{`
+        @media (max-width: 1024px) {
+          .footer-main-grid {
+            grid-template-columns: 1fr 1fr 1fr !important;
+            gap: 36px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .footer-main-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 28px !important;
+          }
+          .footer-bottom-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+        }
+      `}</style>
     </footer>
   )
 }

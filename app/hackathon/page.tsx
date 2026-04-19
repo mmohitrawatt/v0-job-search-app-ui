@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useRef, ChangeEvent } from "react"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 // ─── CSS ────────────────────────────────────────────────────────────────────
 const CSS = `
@@ -278,7 +279,7 @@ function SuccessScreen({ name }: { name: string }) {
           </div>
         </div>
 
-        <a href="/landing" className="btn btn-primary" style={{ fontSize: 14, fontWeight: 800, padding: "13px 28px", borderRadius: 14 }}>
+        <a href="/" className="btn btn-primary" style={{ fontSize: 14, fontWeight: 800, padding: "13px 28px", borderRadius: 14 }}>
           Back to Home
         </a>
       </div>
@@ -516,38 +517,13 @@ export default function HackathonRegisterPage() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
-        {/* Top shimmer bar */}
-        <div className="top-bar" />
-
-        {/* Navbar */}
-        <nav style={{
-          background: "rgba(247,247,251,0.92)", backdropFilter: "blur(20px)",
-          borderBottom: "1px solid var(--border)", padding: "0 28px", height: 60,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          position: "sticky", top: 0, zIndex: 50,
-        }}>
-          <a href="/landing" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <JobingenLogo height={110} />
-          </a>
-          <div style={{
-            display: "flex", alignItems: "center", gap: 8, padding: "5px 14px",
-            borderRadius: 99, background: "var(--rose-l)",
-            border: "1px solid rgba(244,63,94,0.22)",
-            fontSize: 11, fontWeight: 800, color: "var(--rose)", textTransform: "uppercase", letterSpacing: ".06em",
-          }}>
-            <div style={{
-              width: 6, height: 6, borderRadius: "50%", background: "var(--rose)",
-              animation: "pulse-dot 1.5s ease-in-out infinite",
-            }} />
-            Hackathon · 15 March 2026
-          </div>
-        </nav>
+      <div style={{ minHeight: "100vh", background: "var(--cream)", display: "flex", flexDirection: "column" }}>
+        <Navbar />
 
         {/* Page content */}
         <div
           className="page-wrap"
-          style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 28px" }}
+          style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 28px", paddingTop: 156 }}
         >
           {/* Header */}
           <div style={{ marginBottom: 40, maxWidth: 600 }}>
@@ -787,6 +763,7 @@ export default function HackathonRegisterPage() {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   )

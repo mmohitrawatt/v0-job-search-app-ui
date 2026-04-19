@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react"
 import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null)
@@ -154,7 +156,7 @@ export default function CampusAmbassadorPage() {
 
         /* ── HERO ── */
         .ca-hero {
-          position: relative; padding: 116px 32px 88px;
+          position: relative; padding: 152px 32px 88px;
           text-align: center; overflow: hidden;
           background: linear-gradient(170deg,#eef2ff 0%,#f8f9ff 30%,#fff 60%,#f0f4ff 100%);
         }
@@ -511,21 +513,7 @@ export default function CampusAmbassadorPage() {
       `}</style>
 
       <div className="ca">
-        {/* NAV */}
-        <nav className="ca-nav">
-          <div className="ca-nav-in">
-            <a href="/" className="ca-nav-back">
-              <svg width="16" height="16" fill="none" viewBox="0 0 16 16">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <span className="ca-nav-back-txt">Back to Jobingen</span>
-            </a>
-            <a href="/" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-              <JobingenLogo height={44} />
-            </a>
-            <a href="#apply" className="ca-nav-cta">Apply Now</a>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* HERO */}
         <section className="ca-hero">
@@ -713,13 +701,7 @@ export default function CampusAmbassadorPage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <footer className="ca-footer">
-          <div className="ca-footer-inner">
-            <span className="ca-footer-copy">&copy; 2026 Jobingen. All rights reserved.</span>
-            <a href="/pre-launch" className="ca-footer-link">Back to Jobingen &rarr;</a>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   )

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 type Review = {
   id?: string
@@ -96,24 +96,9 @@ export default function ReviewsPage() {
 
   return (
     <div className="min-h-screen bg-[#fafbff]" style={{ fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
-        <div className="max-w-[1100px] mx-auto px-5 sm:px-8 h-[64px] flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <JobingenLogo height={70} />
-          </Link>
-          <button
-            onClick={() => { setShowModal(true); setSubmitted(false); setFormName(""); setFormQuote(""); setFormRating(5) }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold text-white cursor-pointer border-none"
-            style={{ background: "linear-gradient(135deg, #7c3aed, #3b5bdb)", fontFamily: "inherit" }}
-          >
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
-            Write a Review
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
-      <div className="max-w-[1100px] mx-auto px-5 sm:px-8 py-10 sm:py-14">
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-8 pt-[108px] pb-10 sm:pb-14">
         {/* Hero */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10">
           <div>
@@ -360,6 +345,7 @@ export default function ReviewsPage() {
       )}
 
       <style dangerouslySetInnerHTML={{ __html: `@keyframes revSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}` }} />
+      <Footer />
     </div>
   )
 }

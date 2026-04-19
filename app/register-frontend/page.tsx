@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useRef, ChangeEvent, Suspense } from "react"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 const UPI_ID = "jobingenai@ybl"
 
@@ -476,21 +477,10 @@ function RegisterForm() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       <div style={{ minHeight:"100vh", background:"var(--cream)" }}>
-        <div className="top-bar" />
-
-        {/* Navbar */}
-        <nav className="reg-nav" style={{ background:"rgba(247,247,251,0.9)", backdropFilter:"blur(20px)", borderBottom:"1px solid var(--border)", padding:"0 28px", height:56, display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
-          <a href="/pre-launch" style={{ display:"flex", alignItems:"center", textDecoration:"none" }}>
-            <JobingenLogo height={110} />
-          </a>
-          <div className="nav-badge">
-            <div style={{ width:6, height:6, borderRadius:"50%", background:"var(--grn)", animation:"pulse-s 1.5s ease-in-out infinite", flexShrink:0 }} />
-            <span className="nav-badge-text">Registrations Open</span>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* ── Hero Banner ── */}
-        <div className="hero-banner" style={{ background:"linear-gradient(135deg,#06091a 0%,#0d1440 50%,#1a2a6e 100%)", position:"relative", overflow:"hidden" }}>
+        <div className="hero-banner" style={{ background:"linear-gradient(135deg,#06091a 0%,#0d1440 50%,#1a2a6e 100%)", position:"relative", overflow:"hidden", paddingTop:108 }}>
           {/* Decorative glows */}
           <div style={{ position:"absolute", top:-80, right:-60, width:360, height:360, borderRadius:"50%", background:"radial-gradient(circle,rgba(99,102,241,.2),transparent 65%)", pointerEvents:"none" }} />
           <div style={{ position:"absolute", bottom:-60, left:"10%", width:280, height:280, borderRadius:"50%", background:"radial-gradient(circle,rgba(79,70,229,.15),transparent 65%)", pointerEvents:"none" }} />
@@ -795,6 +785,7 @@ function RegisterForm() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }

@@ -2,8 +2,10 @@
 
 import Link from "next/link"
 import { FadeIn } from "./motion"
+import { useWaitlist } from "@/components/waitlist-modal"
 
 export function CTASection() {
+  const { open: openWaitlist } = useWaitlist()
   return (
     <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-[900px] mx-auto px-5 sm:px-8">
@@ -26,12 +28,12 @@ export function CTASection() {
 
               {/* Right — buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
-                <Link
-                  href="/"
-                  className="w-full sm:w-auto text-center text-[14px] font-bold text-slate-900 bg-white px-6 py-3 rounded-xl hover:bg-slate-100 transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.15)] whitespace-nowrap"
+                <button
+                  onClick={openWaitlist}
+                  className="w-full sm:w-auto text-center text-[14px] font-bold text-slate-900 bg-white px-6 py-3 rounded-xl hover:bg-slate-100 transition-all duration-200 shadow-[0_2px_12px_rgba(0,0,0,0.15)] whitespace-nowrap border-0 cursor-pointer"
                 >
                   Get Started Free
-                </Link>
+                </button>
                 <Link
                   href="/jobs"
                   className="w-full sm:w-auto text-center text-[14px] font-semibold text-white/70 px-6 py-3 rounded-xl border border-white/15 hover:bg-white/10 transition-all duration-200 whitespace-nowrap"

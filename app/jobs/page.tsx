@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { createServerClient } from "@/lib/supabase"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 type Job = {
   id: string
@@ -128,36 +130,6 @@ const CSS = `
     to   { opacity:1; transform:translateY(0); }
   }
 
-  .top-bar {
-    height: 2px;
-    background: #1d3a8f;
-  }
-
-  /* ── NAV ── */
-  .nav {
-    background: rgba(255,255,255,.72);
-    backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid rgba(0,0,0,.04);
-    position: sticky; top: 0; z-index: 50;
-  }
-  .nav-inner {
-    max-width: 1200px; margin: 0 auto; padding: 0 28px;
-    height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  }
-  .nav-right { display: flex; align-items: center; gap: 10px; }
-  .nav-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--grn-l); border: 1px solid rgba(16,185,129,.2);
-    padding: 5px 13px; border-radius: 99px;
-    font-size: 12px; font-weight: 700; color: var(--grn);
-  }
-  .nav-jobs-link {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 13px; font-weight: 700; color: #2a4ecf; text-decoration: none;
-    padding: 9px 18px; border-radius: 10px;
-    border: 1.5px solid rgba(42,78,207,.3); background: white; transition: all .18s ease;
-  }
-  .nav-jobs-link:hover { background: #e8edfe; border-color: #2a4ecf; transform: translateY(-1px); }
 
   /* ── PAGE HEADER ── */
   .page-head {
@@ -313,26 +285,10 @@ export default async function JobsPage() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div className="top-bar" />
-
-      {/* Navbar */}
-      <header className="nav">
-        <div className="nav-inner">
-          <Link href="/pre-launch" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 64, width: "auto" }} />
-          </Link>
-          <div className="nav-right">
-            <div className="nav-badge">
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--grn)", display: "inline-block", animation: "pulse-dot 1.6s ease-in-out infinite" }} />
-              Actively Hiring
-            </div>
-            <Link href="/" className="nav-jobs-link">Join Bootcamp</Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Page Header */}
+      <div style={{ height: 108 }} />
       <div className="page-head">
         <div className="page-head-inner">
           <div className="page-head-left">
@@ -376,16 +332,7 @@ export default async function JobsPage() {
         </main>
       </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-inner">
-          <p style={{ fontSize: 13, color: "var(--ink3)" }}>© {new Date().getFullYear()} Jobingen. All rights reserved.</p>
-          <div>
-            <Link href="/pre-launch" className="f-link">Home</Link>
-            <Link href="/"   className="f-link">Bootcamp</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   )
 }

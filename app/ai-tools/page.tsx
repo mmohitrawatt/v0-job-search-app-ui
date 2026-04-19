@@ -2,7 +2,9 @@
 
 import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { useWaitlist } from "@/components/waitlist-modal"
+import { Navbar } from "@/components/landing/navbar"
 
 /* ─── Tools Data ───────────────────────────────────────────────────────────── */
 
@@ -297,7 +299,7 @@ const MOCKUPS = [
 
 /* ─── Tool Section ─────────────────────────────────────────────────────────── */
 
-function ToolSection({ tool, index }: { tool: typeof TOOLS[0]; index: number }) {
+function ToolSection({ tool, index, onEarlyAccess }: { tool: typeof TOOLS[0]; index: number; onEarlyAccess: () => void }) {
   const isEven = index % 2 === 0
   const MockupComponent = MOCKUPS[index]
 
@@ -376,20 +378,19 @@ function ToolSection({ tool, index }: { tool: typeof TOOLS[0]; index: number }) 
             {tool.stat.label}
           </div>
         </div>
-        <Link
-          href="/"
+        <button
+          onClick={onEarlyAccess}
           className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-[13px] font-bold text-white transition-all hover:-translate-y-0.5"
           style={{
             background: tool.gradient,
             boxShadow: `0 8px 24px -6px ${tool.color}55`,
-            textDecoration: "none",
           }}
         >
           Get Early Access
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
-        </Link>
+        </button>
       </div>
     </div>
   )
@@ -453,6 +454,7 @@ function ToolSection({ tool, index }: { tool: typeof TOOLS[0]; index: number }) 
 
 export default function AIToolsPage() {
   const [activeTab, setActiveTab] = useState(TOOLS[0].id)
+  const { open: openWaitlist } = useWaitlist()
   const selectorRef = useRef<HTMLDivElement>(null)
 
   /* IntersectionObserver — active tab sync */
@@ -501,7 +503,7 @@ export default function AIToolsPage() {
         .scrollbar-none::-webkit-scrollbar { display: none; }
         .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* ── Aurora background blobs ── */
+/* ── Aurora background blobs ── */
         @keyframes aurora1 {
           0%,100% { transform: translate(0%,0%) scale(1); }
           33%      { transform: translate(6%,-8%) scale(1.12); }
@@ -592,173 +594,102 @@ export default function AIToolsPage() {
           background: "#f9fafb",
         }}
       >
-        {/* ── Navbar ── */}
-        <header
-          className="sticky top-0 z-50 border-b border-slate-100"
-          style={{ background: "rgba(255,255,255,0.80)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-        >
-          <div className="max-w-[1140px] mx-auto px-5 sm:px-8 h-[60px] flex items-center justify-between">
-            <Link href="/" className="flex items-center">
-              <JobingenLogo height={70} />
-            </Link>
-            <nav className="flex items-center gap-1.5">
-              <Link
-                href="/mentors"
-                className="text-[13px] font-semibold text-slate-500 hover:text-slate-900 px-3.5 py-2 rounded-xl hover:bg-slate-50 transition-all hidden sm:block"
-                style={{ textDecoration: "none" }}
-              >
-                Mentors
-              </Link>
-              <Link
-                href="/jobs"
-                className="text-[13px] font-bold text-white px-5 py-2 rounded-xl transition-all"
-                style={{
-                  background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)",
-                  boxShadow: "0 2px 8px rgba(29,58,143,0.28)",
-                  textDecoration: "none",
-                }}
-              >
-                Browse Jobs
-              </Link>
-            </nav>
-          </div>
-        </header>
+        <Navbar />
 
-        {/* ══════════════════════════════════════════
-            HERO — Aurora · Centered · Animated
-        ══════════════════════════════════════════ */}
-        <section className="relative flex flex-col overflow-hidden" style={{ background: "#04071a" }}>
+        {/* ══ HERO ══ */}
+        <section className="relative overflow-hidden pt-[108px]" style={{ background:"#060c1f" }}>
 
-          {/* ── Aurora blobs ── */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="aurora-1 absolute rounded-full blur-[160px]"
-              style={{ width:700, height:700, top:"-20%", left:"-12%", background:"#5b21b6", opacity:.28 }} />
-            <div className="aurora-2 absolute rounded-full blur-[140px]"
-              style={{ width:600, height:600, top:"5%", right:"-18%", background:"#1e3a8a", opacity:.32 }} />
-            <div className="aurora-3 absolute rounded-full blur-[120px]"
-              style={{ width:480, height:480, bottom:"-10%", left:"35%", background:"#0d9488", opacity:.18 }} />
+          {/* bg glow */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="aurora-1 absolute rounded-full"
+              style={{ width:700, height:360, top:"-10%", left:"50%", transform:"translateX(-50%)",
+                background:"radial-gradient(ellipse,#1e3a8a 0%,transparent 70%)", opacity:.6, filter:"blur(70px)" }} />
+            <div className="aurora-2 absolute rounded-full"
+              style={{ width:300, height:300, top:"20%", left:"-5%",
+                background:"radial-gradient(circle,#3730a3 0%,transparent 70%)", opacity:.22, filter:"blur(60px)" }} />
+            <div className="aurora-3 absolute rounded-full"
+              style={{ width:260, height:260, top:"10%", right:"-4%",
+                background:"radial-gradient(circle,#1d4ed8 0%,transparent 70%)", opacity:.18, filter:"blur(55px)" }} />
           </div>
 
-          {/* ── Dot grid ── */}
+          {/* dot grid */}
           <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1px)",
-            backgroundSize: "38px 38px", opacity:.25,
+            backgroundImage:"radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px)",
+            backgroundSize:"32px 32px",
           }} />
 
-          {/* ── Vignette edges ── */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: "radial-gradient(ellipse at 50% 50%, transparent 40%, #04071a 100%)"
-          }} />
-
-          {/* ── Main centered content ── */}
-          <div className="relative flex flex-col items-center justify-center text-center px-5 pt-16 pb-12 sm:pt-20 sm:pb-16">
+          <div className="relative max-w-[1140px] mx-auto px-5 sm:px-8 py-14 sm:py-20 flex flex-col items-center text-center">
 
             {/* Badge */}
-            <div className="h1 inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-8 border"
-              style={{ background:"rgba(255,255,255,0.06)", borderColor:"rgba(255,255,255,0.11)" }}>
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot" />
-              <span className="text-[11px] font-bold text-white/60 uppercase tracking-[0.12em]">
-                AI Career Toolkit · 6 Tools · India
+            <div className="h1 inline-flex items-center gap-2 rounded-full px-3.5 py-1 mb-6 border"
+              style={{ background:"rgba(59,130,246,0.1)", borderColor:"rgba(59,130,246,0.2)" }}>
+              <div className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background:"#60a5fa" }} />
+              <span className="text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color:"#93c5fd" }}>
+                India&apos;s Job Search Engine
               </span>
             </div>
 
             {/* H1 */}
-            <h1 className="h2 font-black text-white leading-[1.03] tracking-[-0.045em] mb-6"
-              style={{ fontSize:"clamp(38px,7.5vw,84px)", maxWidth:900 }}>
-              The career tools
-              <br />
+            <h1 className="h2 font-black text-white leading-[1.05] tracking-[-0.04em] mb-4"
+              style={{ fontSize:"clamp(30px,5.5vw,64px)", maxWidth:780 }}>
+              Stop applying blindly.{" "}
               <span style={{
-                background:"linear-gradient(90deg,#a78bfa 0%,#67e8f9 45%,#6ee7b7 100%)",
+                background:"linear-gradient(90deg,#93c5fd,#3b82f6)",
                 WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
               }}>
-                your competition isn&apos;t using.
+                Start getting hired.
               </span>
             </h1>
 
             {/* Sub */}
-            <p className="h3 text-white/40 leading-[1.78] mb-10"
-              style={{ fontSize:"clamp(15px,2vw,18px)", maxWidth:480 }}>
-              Six AI tools. One platform. Resume builder, mock interviews,
-              auto-apply, salary intel and more — built for India.
+            <p className="h3 mb-8 leading-[1.75]"
+              style={{ fontSize:"clamp(14px,1.6vw,16px)", maxWidth:480, color:"rgba(255,255,255,0.45)" }}>
+              Resume builder, mock interviews, auto-apply, salary intel — everything in one engine, built for India.
             </p>
 
             {/* CTAs */}
-            <div className="h4 flex flex-wrap items-center justify-center gap-3 mb-12">
-              <button onClick={() => scrollToTool(TOOLS[0].id)}
-                className="cta-glow inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-[14px] font-bold bg-white text-[#04071a] hover:-translate-y-0.5 transition-all duration-200"
+            <div className="h4 flex flex-wrap items-center justify-center gap-3 mb-8">
+              <button
+                onClick={() => scrollToTool(TOOLS[0].id)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-bold text-white transition-all hover:-translate-y-0.5"
+                style={{ background:"linear-gradient(135deg,#1d3a8f,#2548c5)", boxShadow:"0 6px 20px -4px rgba(29,58,143,0.55)" }}
               >
                 Explore All Tools
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
-              <Link href="/"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-[14px] font-semibold text-white/65 border hover:bg-white/[0.07] hover:text-white/90 transition-all duration-200"
-                style={{ borderColor:"rgba(255,255,255,0.13)", textDecoration:"none" }}
+              <button
+                onClick={openWaitlist}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[14px] font-semibold border transition-all hover:bg-white/[0.06] hover:-translate-y-0.5"
+                style={{ borderColor:"rgba(255,255,255,0.15)", color:"rgba(255,255,255,0.65)" }}
               >
-                Join Waitlist
-              </Link>
+                Get Early Access
+              </button>
             </div>
 
-            {/* Trust row */}
-            <div className="h5 flex flex-wrap items-center justify-center gap-3">
-              <div className="flex -space-x-2.5">
-                {[{i:"AK",c:"#3b5bdb"},{i:"SR",c:"#0d9488"},{i:"PV",c:"#7c3aed"},{i:"MR",c:"#dc2626"},{i:"NS",c:"#b45309"}].map(a=>(
-                  <div key={a.i} className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black text-white border-2 shrink-0"
-                    style={{ background:a.c, borderColor:"#04071a" }}>{a.i}</div>
+            {/* Social proof */}
+            <div className="h5 flex items-center justify-center gap-3">
+              <div className="flex -space-x-2">
+                {[{i:"AK",c:"#1d3a8f"},{i:"SR",c:"#0d9488"},{i:"PV",c:"#7c3aed"},{i:"NJ",c:"#dc2626"},{i:"RS",c:"#b45309"}].map(a=>(
+                  <div key={a.i} className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-black text-white border-2 shrink-0"
+                    style={{ background:a.c, borderColor:"#060c1f" }}>{a.i}</div>
                 ))}
               </div>
-              <p className="text-[13px] text-white/40">
-                <span className="text-white/75 font-bold">12,000+</span> professionals on waitlist
+              <p className="text-[12px]" style={{ color:"rgba(255,255,255,0.35)" }}>
+                <span className="font-bold" style={{ color:"rgba(255,255,255,0.65)" }}>12,000+</span> on waitlist
               </p>
             </div>
 
           </div>
 
-          {/* ── Stats strip ── */}
-          <div className="relative border-t pb-0" style={{ borderColor:"rgba(255,255,255,0.07)", background:"rgba(255,255,255,0.025)" }}>
-            <div className="max-w-[1140px] mx-auto px-5 sm:px-8">
-              <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/[0.06]">
-                {[
-                  { val:"6",    label:"AI Tools",         icon:"M12 2L2 7l10 5 10-5-10-5z M2 17l10 5 10-5 M2 12l10 5 10-5" },
-                  { val:"92%",  label:"Avg ATS Score",    icon:"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3" },
-                  { val:"5x",   label:"Interview Prep",   icon:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
-                  { val:"100+", label:"Jobs Applied/Day", icon:"M22 2L11 13 M22 2l-7 20-4-9-9-4 20-7z" },
-                ].map((s,i)=>(
-                  <div key={i} className="flex items-center gap-3 px-5 sm:px-8 py-5 sm:py-6">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background:"rgba(255,255,255,0.07)" }}>
-                      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d={s.icon}/>
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-[20px] font-black text-white leading-none">{s.val}</div>
-                      <div className="text-[10px] font-semibold text-white/35 uppercase tracking-wider mt-0.5">{s.label}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* ── Marquee of tools ── */}
-          <div className="overflow-hidden border-t py-3.5" style={{ borderColor:"rgba(255,255,255,0.06)", background:"rgba(0,0,0,0.2)" }}>
-            <div className="marquee-track flex w-max">
-              {[...TOOLS,...TOOLS,...TOOLS].map((t,i)=>(
-                <div key={i} className="flex items-center gap-2.5 px-7 shrink-0">
-                  <div className="w-2 h-2 rounded-full shrink-0" style={{ background:t.color }} />
-                  <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color:"rgba(255,255,255,0.32)" }}>{t.title}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* thin bottom border fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background:"rgba(255,255,255,0.06)" }} />
         </section>
 
         {/* ── Sticky Tool Selector ── */}
         <div
           ref={selectorRef}
           className="sticky z-40 border-b border-slate-100 bg-white"
-          style={{ top: 60 }}
+          style={{ top: 108 }}
         >
           <div className="max-w-[1140px] mx-auto px-4 sm:px-8">
             <div className="flex items-center gap-0 overflow-x-auto scrollbar-none">
@@ -805,7 +736,7 @@ export default function AIToolsPage() {
         <div style={{ background: "#f9fafb" }}>
           {TOOLS.map((tool, i) => (
             <div key={tool.id}>
-              <ToolSection tool={tool} index={i} />
+              <ToolSection tool={tool} index={i} onEarlyAccess={() => openWaitlist()} />
               {i < TOOLS.length - 1 && (
                 <div className="max-w-[1140px] mx-auto px-5 sm:px-8">
                   <div className="border-t border-slate-100" />
@@ -855,55 +786,27 @@ export default function AIToolsPage() {
           </div>
         </div>
 
-        {/* ── CTA Section ── */}
-        <div className="max-w-[1140px] mx-auto px-5 sm:px-8 pb-24">
-          <div
-            className="reveal relative overflow-hidden rounded-3xl px-8 sm:px-16 py-16 sm:py-20"
-            style={{ background: "linear-gradient(135deg, #0d1b45, #1d3a8f, #2548c5)" }}
-          >
-            {/* Orbs */}
-            <div
-              className="absolute top-0 left-1/3 w-72 h-72 rounded-full opacity-10 blur-[70px] pointer-events-none"
-              style={{ background: "radial-gradient(circle, #a78bfa, transparent)" }}
-            />
-            <div
-              className="absolute bottom-0 right-1/4 w-56 h-56 rounded-full opacity-10 blur-[60px] pointer-events-none"
-              style={{ background: "radial-gradient(circle, #60a5fa, transparent)" }}
-            />
-
-            <div className="relative text-center">
-              <h3
-                className="font-black text-white tracking-[-0.035em] leading-[1.08] mb-4"
-                style={{ fontSize: "clamp(26px, 4vw, 44px)" }}
-              >
-                Be the first when we launch.
-              </h3>
-              <p className="text-white/50 text-[15px] mb-10 max-w-[400px] mx-auto leading-[1.75]">
-                Join the waitlist. Get early access to every tool.
-              </p>
-
-              {/* Email + button */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6 max-w-[440px] mx-auto">
-                <input
-                  type="email"
-                  placeholder="you@email.com"
-                  className="flex-1 w-full sm:w-auto rounded-xl px-4 py-3 text-[14px] font-medium text-slate-800 outline-none border-0"
-                  style={{ background: "rgba(255,255,255,0.95)" }}
-                />
-                <button
-                  className="w-full sm:w-auto shrink-0 px-6 py-3 rounded-xl text-[14px] font-bold text-[#0d1b45] bg-white transition-all hover:-translate-y-0.5"
-                  style={{ boxShadow: "0 4px 20px rgba(255,255,255,0.2)" }}
-                >
-                  Join Waitlist
-                </button>
-              </div>
-
-              <p className="text-[12px] text-white/30">
-                Free forever · No credit card · Cancel anytime
+        {/* ── CTA Strip ── */}
+        <div className="border-t border-b border-slate-100" style={{ background:"#f8faff" }}>
+          <div className="max-w-[1140px] mx-auto px-5 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full pulse-dot" style={{ background:"#3b82f6" }} />
+              <p className="text-[14px] font-semibold text-slate-700">
+                More tools launching soon — <span className="text-blue-600 font-bold">be the first to get access.</span>
               </p>
             </div>
+            <button
+              onClick={() => openWaitlist()}
+              className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold text-white transition-all hover:-translate-y-0.5"
+              style={{ background:"linear-gradient(135deg,#2548c5,#3b82f6)", boxShadow:"0 4px 14px -4px rgba(37,72,197,0.45)" }}
+            >
+              Join Waitlist →
+            </button>
           </div>
         </div>
+
+        <Footer />
+
       </div>
     </>
   )

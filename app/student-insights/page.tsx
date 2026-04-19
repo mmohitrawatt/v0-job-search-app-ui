@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 /* ─── Step Data ────────────────────────────────────── */
 
@@ -245,20 +246,10 @@ export default function StudentInsightsPage() {
   /* ─── Survey wizard ────────────────────────── */
   return (
     <div className="min-h-screen bg-[#fafbff] font-sans">
-      {/* Navbar */}
-      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-50">
-        <div className="max-w-[680px] mx-auto px-5 h-[60px] flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <JobingenLogo height={70} />
-          </Link>
-          <span className="text-[11px] font-bold text-[#1d3a8f] bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200/40 uppercase tracking-wider">
-            Student Insights
-          </span>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Card */}
-      <div className="max-w-[680px] mx-auto px-5 py-8 sm:py-12">
+      <div className="max-w-[680px] mx-auto px-5 pt-[108px] pb-8 sm:pb-12">
         <div className="bg-white rounded-2xl border border-slate-200/60 shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden">
           {/* Progress bar */}
           <div className="h-1 bg-slate-100">
@@ -431,6 +422,7 @@ export default function StudentInsightsPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

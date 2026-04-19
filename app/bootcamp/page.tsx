@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useRef, ChangeEvent } from "react"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 const CSS = `
   :root {
@@ -674,22 +675,10 @@ export default function FeedbackPage() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
-
-        {/* Nav */}
-        <nav style={{ background: "rgba(255,255,255,0.88)", backdropFilter: "blur(24px)", borderBottom: "1px solid var(--border)", padding: "0 24px", height: 58, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 }}>
-          <a href="/pre-launch" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <JobingenLogo height={110} />
-          </a>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: activeTab === "feedback" ? "#10b981" : "#059669", boxShadow: `0 0 0 3px ${activeTab === "feedback" ? "#10b98120" : "#05966920"}` }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
-              {activeTab === "feedback" ? "Bootcamp · Feedback" : "Bootcamp · Resources"}
-            </span>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* Hero */}
-        <div className="fb-hero" style={{ background: heroContent.gradient, padding: "52px 28px 48px", position: "relative", overflow: "hidden", transition: "background .4s ease" }}>
+        <div className="fb-hero" style={{ background: heroContent.gradient, padding: "52px 28px 48px", paddingTop: 160, position: "relative", overflow: "hidden", transition: "background .4s ease" }}>
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "28px 28px", pointerEvents: "none" }} />
           <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 99, padding: "5px 14px", marginBottom: 18 }}>
@@ -1181,6 +1170,7 @@ export default function FeedbackPage() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   )
 }

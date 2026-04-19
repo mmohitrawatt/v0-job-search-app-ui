@@ -3,6 +3,8 @@
 import { useState, useRef, ChangeEvent } from "react"
 import Link from "next/link"
 import { JobingenLogo } from "@/components/jobingen-logo"
+import { Footer } from "@/components/landing/footer"
+import { Navbar } from "@/components/landing/navbar"
 
 /* ─── Step config ───────────────────────────────────── */
 
@@ -371,35 +373,10 @@ export default function BecomeMentorPage() {
 
   return (
     <div className="min-h-screen font-sans" style={{ background: "linear-gradient(135deg, #faf5ff 0%, #f0f4ff 60%, #f8faff 100%)" }}>
-
-      {/* ── Mobile sticky progress bar ── */}
-      <div className="md:hidden sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-100">
-        <div className="h-[3px] w-full bg-slate-100">
-          <div
-            className="h-full rounded-r-full transition-all duration-500 ease-out"
-            style={{ width: `${pct}%`, background: "linear-gradient(90deg, #7c3aed, #3b5bdb)" }}
-          />
-        </div>
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <Link href="/" className="flex items-center">
-            <JobingenLogo height={52} />
-          </Link>
-          <div className="flex items-center gap-2">
-            <span
-              className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: step.chipBg, color: step.chipColor }}
-            >
-              {step.chip}
-            </span>
-            <span className="text-[11px] font-semibold text-slate-400">
-              {cur + 1} / {TOTAL}
-            </span>
-          </div>
-        </div>
-      </div>
+      <Navbar />
 
       {/* ── Two-column layout on desktop ── */}
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen pt-[108px]">
 
         {/* ── LEFT SIDEBAR (desktop only) ── */}
         <aside className="hidden md:flex flex-col w-72 shrink-0 sticky top-0 h-screen overflow-y-auto border-r border-slate-200/60 bg-white/70 backdrop-blur-xl px-5 py-6">
@@ -918,6 +895,7 @@ export default function BecomeMentorPage() {
         @keyframes mfspin { to { transform: rotate(360deg) } }
         .focus\\:ring-2:focus { box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
       ` }} />
+      <Footer />
     </div>
   )
 }

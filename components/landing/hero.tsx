@@ -3,14 +3,16 @@
 import { useState } from "react"
 import Link from "next/link"
 import { FadeIn, motion, AnimatePresence } from "./motion"
+import { useWaitlist } from "@/components/waitlist-modal"
 
 export function Hero() {
+  const { open: openWaitlist } = useWaitlist()
   return (
-    <section className="relative overflow-hidden pt-[68px]">
+    <section className="relative overflow-hidden pt-[108px]">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] via-white to-white" />
 
-      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-16 sm:pt-20 lg:pt-28 pb-12 sm:pb-16">
+      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-8 sm:pt-10 lg:pt-14 pb-12 sm:pb-16">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
           {/* ── Left — Content ─────────────────── */}
@@ -34,13 +36,13 @@ export function Hero() {
 
             <FadeIn delay={0.18}>
               <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-8">
-                <Link
-                  href="/"
-                  className="w-full sm:w-auto text-[15px] font-bold text-white px-8 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_8px_24px_rgba(29,58,143,0.35)] transition-all duration-300 hover:-translate-y-0.5"
+                <button
+                  onClick={openWaitlist}
+                  className="w-full sm:w-auto text-[15px] font-bold text-white px-8 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_8px_24px_rgba(29,58,143,0.35)] transition-all duration-300 hover:-translate-y-0.5 border-0 cursor-pointer"
                   style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
                 >
                   Get Started — It&apos;s Free
-                </Link>
+                </button>
                 <a
                   href="#ai-tools"
                   className="w-full sm:w-auto text-[15px] font-semibold text-slate-600 px-8 py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200"
