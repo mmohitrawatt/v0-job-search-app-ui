@@ -60,7 +60,7 @@ export function Navbar() {
               Campus Ambassador
             </Link>
             <Link
-              href="/register"
+              href="/"
               className="text-[13px] font-semibold text-white px-5 py-2.5 rounded-[10px] transition-all duration-200 hover:opacity-90 shadow-[0_2px_8px_rgba(29,58,143,0.3)]"
               style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
             >
@@ -107,7 +107,7 @@ export function Navbar() {
                   Campus Ambassador
                 </Link>
                 <Link
-                  href="/register"
+                  href="/"
                   className="text-[14px] font-semibold text-white text-center py-3 rounded-xl"
                   style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
                 >

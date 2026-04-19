@@ -327,7 +327,7 @@ export default async function JobsPage() {
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--grn)", display: "inline-block", animation: "pulse-dot 1.6s ease-in-out infinite" }} />
               Actively Hiring
             </div>
-            <Link href="/register" className="nav-jobs-link">Join Bootcamp</Link>
+            <Link href="/" className="nav-jobs-link">Join Bootcamp</Link>
           </div>
         </div>
       </header>
@@ -382,7 +382,7 @@ export default async function JobsPage() {
           <p style={{ fontSize: 13, color: "var(--ink3)" }}>© {new Date().getFullYear()} Jobingen. All rights reserved.</p>
           <div>
             <Link href="/pre-launch" className="f-link">Home</Link>
-            <Link href="/register"   className="f-link">Bootcamp</Link>
+            <Link href="/"   className="f-link">Bootcamp</Link>
           </div>
         </div>
       </footer>

@@ -35,7 +35,7 @@ export function Hero() {
             <FadeIn delay={0.18}>
               <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-8">
                 <Link
-                  href="/register"
+                  href="/"
                   className="w-full sm:w-auto text-[15px] font-bold text-white px-8 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_8px_24px_rgba(29,58,143,0.35)] transition-all duration-300 hover:-translate-y-0.5"
                   style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
                 >

@@ -172,7 +172,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
             onMouseLeave={e => { e.currentTarget.style.background = "" }}>
             Open App
           </a>
-          <a href="/register" style={{ fontSize: 14, fontWeight: 700, color: "white", textDecoration: "none", padding: "9px 22px", borderRadius: 12, background: "var(--ink)", transition: "all .2s" }}
+          <a href="/" style={{ fontSize: 14, fontWeight: 700, color: "white", textDecoration: "none", padding: "9px 22px", borderRadius: 12, background: "var(--ink)", transition: "all .2s" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.15)" }}
             onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "" }}>
             Get Started
@@ -181,7 +181,7 @@ function Navbar({ scrolled }: { scrolled: boolean }) {
 
         {/* Mobile */}
         <div className="nav-mob-right" style={{ display: "none", alignItems: "center", gap: 8 }}>
-          <a href="/register" style={{ fontSize: 13, fontWeight: 700, color: "white", textDecoration: "none", padding: "8px 18px", borderRadius: 10, background: "var(--ink)" }}>Join</a>
+          <a href="/" style={{ fontSize: 13, fontWeight: 700, color: "white", textDecoration: "none", padding: "8px 18px", borderRadius: 10, background: "var(--ink)" }}>Join</a>
           <button onClick={() => setOpen(o => !o)} aria-label="Menu" style={{ width: 38, height: 38, borderRadius: 10, background: "transparent", border: "1.5px solid var(--border2)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
             {open
               ? <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" /></svg>
@@ -246,7 +246,7 @@ function Hero() {
 
           {/* CTAs */}
           <div className="hero-ctas" style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 40 }}>
-            <a href="/register" style={{ fontSize: 16, fontWeight: 700, padding: "16px 32px", borderRadius: 16, color: "white", background: "var(--ink)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.12)" }}
+            <a href="/" style={{ fontSize: 16, fontWeight: 700, padding: "16px 32px", borderRadius: 16, color: "white", background: "var(--ink)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.12)" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,.18)" }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,.12)" }}>
               Get Started Free
@@ -653,7 +653,7 @@ function Bootcamp() {
               <span style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Next batch coming soon</span>
               <span style={{ fontSize: 12, color: "var(--ink3)" }}>&mdash; join the waitlist to get early access</span>
             </div>
-            <a href="/register" style={{ fontSize: 12, fontWeight: 700, color: "var(--accent)", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+            <a href="/" style={{ fontSize: 12, fontWeight: 700, color: "var(--accent)", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
               Join Waitlist
               <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </a>
@@ -819,7 +819,7 @@ function CTA() {
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap", marginBottom: 48 }}>
-            <a href="/register" style={{ fontSize: 16, fontWeight: 800, padding: "16px 36px", borderRadius: 16, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.15)" }}
+            <a href="/" style={{ fontSize: 16, fontWeight: 800, padding: "16px 36px", borderRadius: 16, color: "var(--ink)", background: "white", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, transition: "all .2s var(--spring)", boxShadow: "0 4px 20px rgba(0,0,0,.15)" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)" }}
               onMouseLeave={e => { e.currentTarget.style.transform = "" }}>
               Get Started Free
