@@ -639,13 +639,13 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
               { val: `${FEATURED_COMPANIES.length}+`, label: "Companies tracked" },
               { val: "Daily", label: "New listings" },
             ].map((s, i) => (
-              <>
-                <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "0 24px" }}>
+              <React.Fragment key={s.label}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "0 24px" }}>
                   <span style={{ fontSize: 20, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em" }}>{s.val}</span>
                   <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{s.label}</span>
                 </div>
-                {i < 3 && <div key={`d${i}`} style={{ width: 1, height: 28, background: "#e0e7ff" }} />}
-              </>
+                {i < 3 && <div style={{ width: 1, height: 28, background: "#e0e7ff" }} />}
+              </React.Fragment>
             ))}
           </div>
         </div>
