@@ -9,8 +9,8 @@ import { useWaitlist } from "@/components/waitlist-modal"
 const NAV_LINKS = [
   { label: "Jobs", href: "/jobs" },
   { label: "AI Tools", href: "/ai-tools" },
-  { label: "Bootcamps", href: "/#bootcamps" },
-  { label: "Resources", href: "/#how-it-works" },
+  { label: "Bootcamps", href: "/bootcamps" },
+
   { label: "Mentors", href: "/mentors" },
 ]
 
