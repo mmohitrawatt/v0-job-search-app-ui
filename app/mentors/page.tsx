@@ -334,10 +334,10 @@ export default function MentorsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#fafbff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
       <Navbar />
-      <div style={{ height: 108 }} />
+      <div className="nav-spacer" style={{ height: 108 }} />
 
       {/* ── Hero ── */}
-      <section style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%)", padding: "72px 24px 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section className="hero-section" style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%)", padding: "72px 24px 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* background blobs */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           <div style={{ position: "absolute", top: "-10%", right: "5%", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%)" }} />
@@ -661,7 +661,7 @@ export default function MentorsPage() {
         </div>
 
         {/* ── Consultancy Live Soon ── */}
-        <div style={{ background: "white", borderRadius: 24, border: "1.5px solid #e0e7ff", boxShadow: "0 4px 24px rgba(29,58,143,0.07)", padding: "40px 40px 36px", marginBottom: 32 }}>
+        <div className="consultancy-card" style={{ background: "white", borderRadius: 24, border: "1.5px solid #e0e7ff", boxShadow: "0 4px 24px rgba(29,58,143,0.07)", padding: "40px 40px 36px", marginBottom: 32 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginBottom: 28 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
               <div style={{ width: 52, height: 52, borderRadius: 16, background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(29,58,143,0.25)" }}>
@@ -700,7 +700,7 @@ export default function MentorsPage() {
         </div>
 
         {/* ── Become a Mentor CTA ── */}
-        <div style={{
+        <div className="cta-bar" style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
           gap: 20, padding: "28px 36px",
           background: "linear-gradient(135deg, #1d3a8f 0%, #2d4fd4 60%, #3b5bdb 100%)",
@@ -734,18 +734,29 @@ export default function MentorsPage() {
         .mentor-card-active:hover { box-shadow:0 8px 32px rgba(0,0,0,0.09) !important; transform:translateY(-2px); }
         .mentor-card-sm:hover { box-shadow:0 6px 20px rgba(0,0,0,0.07) !important; transform:translateY(-2px); }
         @media (max-width: 640px) {
-          .m-wrap { padding: 40px 16px 56px !important; }
-          .hero-stats { flex-direction: column !important; width: 100% !important; }
+          .nav-spacer { height: 72px !important; }
+          .hero-section { padding: 48px 16px 44px !important; }
+          .m-wrap { padding: 36px 16px 56px !important; }
+          .hero-stats { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; width: calc(100% - 32px) !important; border-radius: 14px !important; margin: 0 auto !important; }
+          .hero-stats > div { border-right: none !important; border-bottom: 1px solid #f1f5f9 !important; padding: 16px 12px !important; }
+          .hero-stats > div:nth-child(1) { border-right: 1px solid #f1f5f9 !important; }
+          .hero-stats > div:nth-child(2) { }
+          .hero-stats > div:nth-child(3) { border-right: 1px solid #f1f5f9 !important; border-bottom: none !important; }
+          .hero-stats > div:nth-child(4) { border-bottom: none !important; }
           .active-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-          .all-grid { gap: 14px !important; }
+          .all-grid { gap: 12px !important; }
           .quotes-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
           .reviews-grid { gap: 12px !important; }
-          .consultancy-features { grid-template-columns: 1fr !important; }
+          .consultancy-features { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .consultancy-card { padding: 24px 18px 22px !important; border-radius: 16px !important; }
+          .cta-bar { padding: 22px 20px !important; border-radius: 14px !important; }
+          .cta-bar a { width: 100% !important; justify-content: center !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
           .active-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .all-grid { gap: 14px !important; }
           .reviews-grid { gap: 14px !important; }
+          .consultancy-features { grid-template-columns: repeat(2, 1fr) !important; }
         }
       `}} />
 

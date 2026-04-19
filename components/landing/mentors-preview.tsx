@@ -26,7 +26,7 @@ export function MentorsPreview() {
         </div>
 
         {/* Mentor cards — compact horizontal layout */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {MENTORS.map((m, i) => (
             <div
               key={i}
@@ -35,26 +35,26 @@ export function MentorsPreview() {
               {/* Top color accent */}
               <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${m.color}, ${m.color}88)` }} />
 
-              <div className="p-3.5 sm:p-4">
+              <div className="p-4 sm:p-4">
                 {/* Avatar + info row */}
                 <div className="flex items-center gap-3 mb-2.5">
                   <div
-                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex-shrink-0 overflow-hidden"
+                    className="w-12 h-12 rounded-xl flex-shrink-0 overflow-hidden"
                     style={{ border: `2px solid ${m.bg}` }}
                   >
                     <Image
                       src={m.photo}
                       alt={m.name}
-                      width={44}
-                      height={44}
+                      width={48}
+                      height={48}
                       className="object-cover object-top w-full h-full"
                     />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[13px] sm:text-[14px] font-extrabold text-slate-900 leading-tight truncate">{m.name}</h3>
-                    <p className="text-[10px] sm:text-[11px] font-semibold truncate" style={{ color: m.color }}>{m.role}</p>
+                    <h3 className="text-[14px] font-extrabold text-slate-900 leading-tight">{m.name}</h3>
+                    <p className="text-[11px] font-semibold" style={{ color: m.color }}>{m.role}</p>
                     <span
-                      className="inline-block text-[9px] font-bold px-1.5 py-[1px] rounded mt-1"
+                      className="inline-block text-[10px] font-bold px-2 py-[2px] rounded mt-1"
                       style={{ background: m.bg, color: m.color }}
                     >
                       {m.company}
@@ -63,7 +63,7 @@ export function MentorsPreview() {
                 </div>
 
                 {/* Description */}
-                <p className="text-[11px] text-slate-500 leading-[1.55] line-clamp-2">{m.desc}</p>
+                <p className="text-[12px] text-slate-500 leading-[1.6] line-clamp-2">{m.desc}</p>
               </div>
             </div>
           ))}

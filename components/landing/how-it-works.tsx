@@ -1,126 +1,160 @@
 "use client"
 
-import { FadeIn, StaggerContainer, StaggerItem, motion } from "./motion"
-
 const STEPS = [
   {
     n: "01",
-    title: "Explore Opportunities",
-    desc: "Browse curated jobs from top companies and startups — matched to your skills and goals.",
+    title: "Create Your Profile",
+    desc: "Sign up, add your skills and career goals. Jobingen builds your personalized job-readiness score instantly.",
     color: "#1d3a8f",
-    gradient: "from-[#1d3a8f] to-[#3b5bdb]",
+    bg: "#eef2ff",
+    tags: ["Resume Builder", "Skills Assessment", "Career Goals"],
     icon: (
-      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
       </svg>
     ),
-    features: ["Smart job matching", "Top companies", "Filtered by skills"],
   },
   {
     n: "02",
-    title: "Upskill with Bootcamps",
-    desc: "Join hands-on masterclasses with industry mentors. Build real projects, not just theory.",
+    title: "Get Matched to Jobs",
+    desc: "AI scans thousands of roles from KPMG, Dell, PhonePe, Zepto & more — surfaces only what fits you.",
     color: "#7c3aed",
-    gradient: "from-[#7c3aed] to-[#a78bfa]",
+    bg: "#f5f3ff",
+    tags: ["AI Job Match", "Top Companies", "Real-time Listings"],
     icon: (
-      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
       </svg>
     ),
-    features: ["Live sessions", "Expert mentors", "Real projects"],
   },
   {
     n: "03",
-    title: "Get Job-Ready with AI",
-    desc: "AI-powered resume builder, mock interviews, and career copilot to land your dream role.",
+    title: "Upskill with Mentors",
+    desc: "1:1 mentoring from industry professionals, live bootcamps, and mock interviews — close the gap between college and industry.",
     color: "#047857",
-    gradient: "from-[#047857] to-[#10b981]",
+    bg: "#ecfdf5",
+    tags: ["1:1 Mentoring", "Live Bootcamps", "Mock Interviews"],
     icon: (
-      <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="M22 4L12 14.01l-3-3" />
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-    features: ["ATS-ready resume", "Mock interviews", "Career guidance"],
+  },
+  {
+    n: "04",
+    title: "Apply & Get Hired",
+    desc: "AI-tailored resume, one-click smart apply, and real-time application tracking — from first click to offer letter.",
+    color: "#b45309",
+    bg: "#fffbeb",
+    tags: ["Smart Apply", "Resume Tailor", "Application Tracker"],
+    icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><path d="M22 4 12 14.01l-3-3" />
+      </svg>
+    ),
   },
 ]
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 sm:py-28 bg-white relative overflow-hidden">
-      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8">
-        {/* Header */}
-        <FadeIn className="text-center mb-14">
-          <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">How It Works</p>
-          <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] mb-3">
-            From zero to job-ready
-          </h2>
-          <p className="text-[16px] text-slate-500 max-w-[440px] mx-auto leading-relaxed">
-            Three simple steps. One powerful platform.
-          </p>
-        </FadeIn>
+    <section id="how-it-works" className="py-20 sm:py-28 bg-[#fafbff]">
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-8">
 
-        {/* Steps */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1000px] mx-auto relative">
-          {/* Connector line — desktop */}
-          <div className="hidden md:block absolute top-[52px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-[2px] z-0">
-            <div className="w-full h-full bg-gradient-to-r from-[#1d3a8f]/20 via-[#7c3aed]/20 to-[#047857]/20 rounded-full" />
-            {/* Animated dot */}
-            <div className="absolute top-[-3px] w-2 h-2 rounded-full bg-[#1d3a8f] shadow-[0_0_8px_rgba(29,58,143,0.4)]" style={{ animation: "hiw-dot 4s ease-in-out infinite", left: 0 }} />
-            <style>{`@keyframes hiw-dot{0%,100%{left:0;opacity:.6}50%{left:calc(100% - 8px);opacity:1}}`}</style>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-14">
+          <p className="text-[12px] font-bold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">How It Works</p>
+          <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] leading-[1.15] mb-3">
+            From student to hired —<br className="hidden sm:block" /> 4 simple steps
+          </h2>
+          <p className="text-[15px] text-slate-500 max-w-[400px] mx-auto leading-relaxed">
+            Everything you need to go from "no idea where to start" to offer letter.
+          </p>
+        </div>
+
+        {/* Steps — desktop: 4 col, mobile: vertical list */}
+        <div className="hidden md:grid md:grid-cols-4 gap-0 relative mb-2">
+          {/* Connector line */}
+          <div className="absolute top-[28px] left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-[#1d3a8f22] via-[#7c3aed22] via-[#04785722] to-[#b4530922] z-0 pointer-events-none" />
 
           {STEPS.map((step, i) => (
-            <StaggerItem key={step.n}>
-              <motion.div
-                className="relative group"
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.25 }}
+            <div key={step.n} className="flex flex-col items-center text-center px-4 relative z-10">
+              {/* Circle icon */}
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-sm"
+                style={{ background: step.bg, color: step.color, border: `1.5px solid ${step.color}20` }}
               >
-                <div className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all duration-300 h-full flex flex-col">
-                  {/* Step number + icon */}
-                  <div className="flex items-center gap-4 mb-5">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
-                      {step.icon}
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: step.color }}>Step {step.n}</div>
-                      <h3 className="text-[16px] font-extrabold text-slate-900 tracking-[-0.01em] leading-tight">{step.title}</h3>
-                    </div>
-                  </div>
+                {step.icon}
+              </div>
 
-                  {/* Description */}
-                  <p className="text-[13px] text-slate-500 leading-[1.7] mb-5">{step.desc}</p>
+              {/* Step label */}
+              <span className="text-[10px] font-black uppercase tracking-[0.1em] mb-1.5" style={{ color: `${step.color}88` }}>
+                Step {step.n}
+              </span>
 
-                  {/* Feature chips */}
-                  <div className="flex flex-wrap gap-1.5 mt-auto">
-                    {step.features.map((f) => (
-                      <span
-                        key={f}
-                        className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-md border"
-                        style={{
-                          color: step.color,
-                          background: `${step.color}08`,
-                          borderColor: `${step.color}15`,
-                        }}
-                      >
-                        <svg width="8" height="8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M20 6L9 17l-5-5" />
-                        </svg>
-                        {f}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              <h3 className="text-[14px] font-extrabold text-slate-900 tracking-[-0.02em] mb-2 leading-snug">
+                {step.title}
+              </h3>
 
-                {/* Bottom accent line on hover */}
-                <div
-                  className="absolute bottom-0 left-4 right-4 h-[3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(90deg, ${step.color}, transparent)` }}
-                />
-              </motion.div>
-            </StaggerItem>
+              <p className="text-[12px] text-slate-500 leading-[1.7] mb-3">
+                {step.desc}
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-1">
+                {step.tags.map(t => (
+                  <span
+                    key={t}
+                    className="text-[9px] font-semibold px-2 py-0.5 rounded-full border"
+                    style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
-        </StaggerContainer>
+        </div>
+
+        {/* Mobile: vertical numbered list */}
+        <div className="md:hidden flex flex-col gap-0">
+          {STEPS.map((step, i) => (
+            <div key={step.n} className="flex gap-4 relative">
+              {/* Left: number + vertical line */}
+              <div className="flex flex-col items-center">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-[13px] font-black shadow-sm"
+                  style={{ background: step.bg, color: step.color, border: `1.5px solid ${step.color}25` }}
+                >
+                  {step.n}
+                </div>
+                {i < STEPS.length - 1 && (
+                  <div className="w-[2px] flex-1 my-2 rounded-full" style={{ background: `${step.color}18`, minHeight: 32 }} />
+                )}
+              </div>
+
+              {/* Right: content */}
+              <div className="pb-7 flex-1 min-w-0">
+                <h3 className="text-[15px] font-extrabold text-slate-900 tracking-[-0.02em] mb-1 leading-snug">
+                  {step.title}
+                </h3>
+                <p className="text-[13px] text-slate-500 leading-[1.7] mb-2.5">
+                  {step.desc}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {step.tags.map(t => (
+                    <span
+                      key={t}
+                      className="text-[10px] font-semibold px-2.5 py-1 rounded-full border"
+                      style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   )
