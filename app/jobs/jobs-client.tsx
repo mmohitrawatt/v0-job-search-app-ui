@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo, useRef } from "react"
+import { useState, useMemo, useRef, type ReactNode } from "react"
+import React from "react"
 import Link from "next/link"
 import type { Job } from "./page"
 
@@ -58,17 +59,60 @@ const FEATURED_COMPANIES: Array<{
   { name: "InMobi",                industry: "AdTech",                 stage: "Series B", size: "1.8k+",  tagline: "Driving real connections between brands",      active: false },
 ]
 
-const INDUSTRIES = [
-  { label: "Engineering", icon: "⚡", search: "Engineer" },
-  { label: "Design",      icon: "🎨", search: "Design"   },
-  { label: "AI & ML",     icon: "🤖", search: "AI"       },
-  { label: "Finance",     icon: "💰", search: "Finance"  },
-  { label: "Marketing",   icon: "📣", search: "Marketing"},
-  { label: "Product",     icon: "📦", search: "Product"  },
-  { label: "HR & People", icon: "🤝", search: "HR"       },
-  { label: "Research",    icon: "🔬", search: "Research" },
-  { label: "Remote",      icon: "🏠", mode: "Remote"     },
-  { label: "Internship",  icon: "🎓", type: "Internship" },
+const INDUSTRIES: Array<{
+  label: string; sub: string; color: string; bg: string;
+  icon: React.ReactNode; search?: string; mode?: string; type?: string
+}> = [
+  {
+    label: "Engineering", sub: "Software & Dev", color: "#1d3a8f", bg: "#eff6ff",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+    search: "Engineer",
+  },
+  {
+    label: "Design", sub: "UI/UX & Visual", color: "#7c3aed", bg: "#f5f3ff",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>,
+    search: "Design",
+  },
+  {
+    label: "AI & ML", sub: "Machine Learning", color: "#0891b2", bg: "#ecfeff",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V6a4 4 0 0 1 4-4z"/></svg>,
+    search: "AI",
+  },
+  {
+    label: "Product", sub: "PM & Strategy", color: "#0f766e", bg: "#f0fdfa",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>,
+    search: "Product",
+  },
+  {
+    label: "Marketing", sub: "Growth & Brand", color: "#b45309", bg: "#fffbeb",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
+    search: "Marketing",
+  },
+  {
+    label: "Finance", sub: "Fintech & Banking", color: "#15803d", bg: "#f0fdf4",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+    search: "Finance",
+  },
+  {
+    label: "HR & People", sub: "Talent & Culture", color: "#be185d", bg: "#fdf2f8",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+    search: "HR",
+  },
+  {
+    label: "Research", sub: "Science & Labs", color: "#6d28d9", bg: "#f5f3ff",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0-3 7h12l-3-7M9 14h6"/></svg>,
+    search: "Research",
+  },
+  {
+    label: "Remote", sub: "Work from anywhere", color: "#059669", bg: "#f0fdf4",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+    mode: "Remote",
+  },
+  {
+    label: "Internship", sub: "For students & freshers", color: "#c2410c", bg: "#fff7ed",
+    icon: <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>,
+    type: "Internship",
+  },
 ]
 
 const TYPE_S: Record<string, { bg: string; color: string; border: string }> = {
@@ -432,8 +476,11 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           .ji-searchbar{flex-direction:column!important;border-radius:16px!important}
           .ji-sdiv{display:none!important}
           .ji-active-grid{grid-template-columns:1fr 1fr!important}
-          .ji-industries{grid-template-columns:repeat(3,1fr)!important}
+          .ji-cat-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
           .ji-stats{gap:20px!important}
+        }
+        @media(min-width:641px) and (max-width:960px){
+          .ji-cat-grid{grid-template-columns:repeat(3,1fr)!important}
         }
       `}</style>
 
@@ -563,23 +610,65 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
           BROWSE BY CATEGORY
       ══════════════════════════════════════════════════════ */}
       <section style={{ background: "white", borderBottom: "1px solid #eef0f6" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "36px 24px" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>Browse by Category</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 20 }}>Jump straight to what interests you</p>
-          <div className="ji-industries" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 8 }}>
+            <div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 4px", letterSpacing: "-0.025em" }}>Browse by Category</h2>
+              <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Tap a category to jump straight to matching roles</p>
+            </div>
+            <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>{INDUSTRIES.length} categories</span>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }} className="ji-cat-grid">
             {INDUSTRIES.map((cat, i) => (
-              <button key={cat.label}
+              <button
+                key={cat.label}
                 onClick={() => {
-                  if (cat.type) { setTypes([cat.type]); setModes([]); setSearch("") }
+                  if (cat.type)   { setTypes([cat.type]); setModes([]); setSearch("") }
                   else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
-                  else { setSearch(cat.search!); setTypes([]); setModes([]) }
+                  else            { setSearch(cat.search!); setTypes([]); setModes([]) }
                   scrollToJobs()
                 }}
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "18px 10px", borderRadius: 14, border: "1.5px solid #eef0f6", background: "white", cursor: "pointer", transition: "all 0.2s ease", animation: `fadeUp 0.4s ease ${i * 0.04}s both` }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#c7d2fe"; e.currentTarget.style.background = "#f5f7ff"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(29,58,143,0.08)" }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#eef0f6"; e.currentTarget.style.background = "white"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none" }}>
-                <span style={{ fontSize: 28 }}>{cat.icon}</span>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "#374151" }}>{cat.label}</span>
+                style={{
+                  display: "flex", flexDirection: "column", alignItems: "flex-start",
+                  padding: "18px 18px 16px", borderRadius: 16, textAlign: "left",
+                  border: "1.5px solid #f0f2f8", background: "white", cursor: "pointer",
+                  transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
+                  animation: `fadeUp 0.4s ease ${i * 0.04}s both`,
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = `${cat.color}40`
+                  e.currentTarget.style.background = cat.bg
+                  e.currentTarget.style.transform = "translateY(-3px)"
+                  e.currentTarget.style.boxShadow = `0 12px 32px ${cat.color}14`
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = "#f0f2f8"
+                  e.currentTarget.style.background = "white"
+                  e.currentTarget.style.transform = "translateY(0)"
+                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)"
+                }}
+              >
+                {/* Icon box */}
+                <div style={{
+                  width: 44, height: 44, borderRadius: 12, marginBottom: 14,
+                  background: cat.bg, color: cat.color,
+                  border: `1.5px solid ${cat.color}20`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0,
+                }}>
+                  {cat.icon}
+                </div>
+
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 3, letterSpacing: "-0.01em" }}>{cat.label}</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500, marginBottom: 12 }}>{cat.sub}</div>
+
+                {/* Arrow */}
+                <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: cat.color, marginTop: "auto" }}>
+                  Explore
+                  <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
               </button>
             ))}
           </div>
