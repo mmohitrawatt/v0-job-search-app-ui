@@ -117,6 +117,60 @@ const MODE_S: Record<string, { bg: string; color: string; border: string }> = {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   CATEGORY CARD
+───────────────────────────────────────────────────────────────────────────── */
+function CategoryCard({ cat, index, onClick }: {
+  cat: typeof INDUSTRIES[0]; index: number; onClick: () => void
+}) {
+  const [hov, setHov] = useState(false)
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        flexShrink: 0, width: 148, borderRadius: 18, overflow: "hidden",
+        border: hov ? `1.5px solid ${cat.color}35` : "1.5px solid #f0f2f8",
+        background: "white", cursor: "pointer", textAlign: "left",
+        transform: hov ? "translateY(-4px)" : "translateY(0)",
+        boxShadow: hov ? `0 16px 40px ${cat.color}18` : "0 1px 4px rgba(0,0,0,0.04)",
+        transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
+        animation: `fadeUp 0.4s ease ${Math.min(index, 8) * 0.04}s both`,
+      }}
+    >
+      {/* Colored top band with icon */}
+      <div style={{
+        height: 76, background: `linear-gradient(135deg, ${cat.color}18 0%, ${cat.color}08 100%)`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        borderBottom: `1px solid ${cat.color}12`,
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* Decorative circle */}
+        <div style={{ position: "absolute", bottom: -18, right: -14, width: 56, height: 56, borderRadius: "50%", background: `${cat.color}08` }} />
+        <div style={{
+          width: 46, height: 46, borderRadius: 14,
+          background: `linear-gradient(135deg, ${cat.color}22, ${cat.color}10)`,
+          border: `1.5px solid ${cat.color}25`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          color: cat.color,
+          boxShadow: `0 4px 12px ${cat.color}20`,
+          transform: hov ? "scale(1.08)" : "scale(1)",
+          transition: "transform 0.25s cubic-bezier(0.16,1,0.3,1)",
+        }}>
+          {cat.icon}
+        </div>
+      </div>
+
+      {/* Text */}
+      <div style={{ padding: "12px 14px 14px" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.01em", lineHeight: 1.25 }}>{cat.label}</div>
+        <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500, lineHeight: 1.4 }}>{cat.sub}</div>
+      </div>
+    </button>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    COMPANY LETTER ICON  (first word, first letter — styled)
 ───────────────────────────────────────────────────────────────────────────── */
 function CompanyIcon({ name, size = 52 }: { name: string; size?: number }) {
@@ -616,55 +670,18 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
             <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 60, background: "linear-gradient(270deg,white,transparent)", zIndex: 2, pointerEvents: "none" }} />
 
             <div
-              style={{ display: "flex", gap: 12, overflowX: "auto", paddingRight: 60, paddingBottom: 4, scrollbarWidth: "none" }}
+              style={{ display: "flex", gap: 10, overflowX: "auto", paddingRight: 60, paddingBottom: 4, scrollbarWidth: "none" }}
               className="ji-cat-scroll"
             >
               {INDUSTRIES.map((cat, i) => (
-                <button
-                  key={cat.label}
+                <CategoryCard key={cat.label} cat={cat} index={i}
                   onClick={() => {
                     if (cat.type)      { setTypes([cat.type]); setModes([]); setSearch("") }
                     else if (cat.mode) { setModes([cat.mode]); setTypes([]); setSearch("") }
                     else               { setSearch(cat.search!); setTypes([]); setModes([]) }
                     scrollToJobs()
                   }}
-                  style={{
-                    display: "flex", flexDirection: "column", alignItems: "flex-start",
-                    padding: "16px 16px 14px", borderRadius: 16, textAlign: "left",
-                    border: "1.5px solid #f0f2f8", background: "white", cursor: "pointer",
-                    transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
-                    animation: `fadeUp 0.4s ease ${Math.min(i, 8) * 0.04}s both`,
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
-                    flexShrink: 0, width: 160,
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.borderColor = `${cat.color}40`
-                    e.currentTarget.style.background = cat.bg
-                    e.currentTarget.style.transform = "translateY(-3px)"
-                    e.currentTarget.style.boxShadow = `0 10px 28px ${cat.color}14`
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = "#f0f2f8"
-                    e.currentTarget.style.background = "white"
-                    e.currentTarget.style.transform = "translateY(0)"
-                    e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)"
-                  }}
-                >
-                  <div style={{
-                    width: 40, height: 40, borderRadius: 11, marginBottom: 12,
-                    background: cat.bg, color: cat.color,
-                    border: `1.5px solid ${cat.color}22`,
-                    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                  }}>
-                    {cat.icon}
-                  </div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 2, letterSpacing: "-0.01em", lineHeight: 1.3 }}>{cat.label}</div>
-                  <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500, marginBottom: 10, lineHeight: 1.4 }}>{cat.sub}</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 3, fontSize: 11, fontWeight: 700, color: cat.color, marginTop: "auto" }}>
-                    Explore
-                    <svg width="10" height="10" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                </button>
+                />
               ))}
             </div>
           </div>
