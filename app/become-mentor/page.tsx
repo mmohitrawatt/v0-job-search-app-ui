@@ -227,7 +227,7 @@ export default function BecomeMentorPage() {
                   </div>
                   <div className="flex-1">
                     <div className="text-[13px] font-bold text-[#0077b5]">Import from LinkedIn</div>
-                    <div className="text-[11px] text-slate-500">Auto-fill name, role, company &amp; bio from your URL</div>
+                    <div className="text-[11px] text-slate-500">Auto-fill your name &amp; photo from LinkedIn URL</div>
                   </div>
                   <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0077b5" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
@@ -252,12 +252,7 @@ export default function BecomeMentorPage() {
                           {liLoading ? <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full" style={{ animation: "spin .6s linear infinite" }} /> : "Import"}
                         </button>
                       </div>
-                      {liError && (
-                        <div className="text-[11px] text-red-500 bg-red-50 rounded-lg px-3 py-2 border border-red-100">
-                          {liError}
-                          <span className="block text-slate-400 mt-0.5">Tip: Go to LinkedIn → Settings → Public Profile visibility → turn on &quot;Public&quot;</span>
-                        </div>
-                      )}
+                      {liError && <p className="text-[11px] text-red-500">{liError}</p>}
                     </>
                   ) : (
                     <>
