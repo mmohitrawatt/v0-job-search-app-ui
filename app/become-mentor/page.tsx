@@ -227,6 +227,68 @@ export default function BecomeMentorPage() {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
 
+  // LinkedIn import state
+  const [liImportOpen, setLiImportOpen] = useState(false)
+  const [liUrl, setLiUrl] = useState("")
+  const [liLoading, setLiLoading] = useState(false)
+  const [liDone, setLiDone] = useState(false)
+
+  // AI Write state
+  const [aiWriteOpen, setAiWriteOpen] = useState(false)
+  const [aiDraft, setAiDraft] = useState("")
+  const [aiGenerating, setAiGenerating] = useState(false)
+
+  function handleLinkedInImport() {
+    const url = liUrl.trim()
+    if (!url) return
+    setLiLoading(true)
+    setTimeout(() => {
+      // Extract handle from URL: linkedin.com/in/firstname-lastname-xxx
+      const match = url.match(/linkedin\.com\/in\/([^/?]+)/i)
+      const handle = match?.[1] || ""
+      // Derive a readable name from handle (e.g. "sonic-payeng-7ab8a8212" → "Sonic Payeng")
+      const nameParts = handle.replace(/-\w{6,}$/, "").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      const guessedName = nameParts.slice(0, 3).join(" ")
+      setComboFields(prev => ({
+        ...prev,
+        ...(guessedName && !prev.full_name ? { full_name: guessedName } : {}),
+        linkedin: url,
+      }))
+      setLiDone(true)
+      setLiLoading(false)
+      setTimeout(() => { setLiImportOpen(false); setLiDone(false) }, 1200)
+    }, 900)
+  }
+
+  function generateAiDraft() {
+    const name = comboFields.full_name || "I"
+    const role = comboFields.job_title || "a professional"
+    const exp = comboFields.experience || ""
+    const domain = STEPS[1].opts?.[answers[1] as number]?.l || "my field"
+    setAiGenerating(true)
+    setTimeout(() => {
+      let draft = ""
+      if (step.id === 3) {
+        // Short intro
+        draft = `${name === "I" ? "I'm" : `I'm ${name},`} ${role}${exp ? ` with ${exp} of experience` : ""}. My focus is on ${domain} — I've worked on real-world problems and love helping students bridge the gap between college and the industry.`
+      } else if (step.id === 4) {
+        // Professional bio
+        draft = `${name === "I" ? "I am" : `${name} is`} ${role}${exp ? ` with ${exp} of hands-on experience` : ""} in ${domain}.\n\nThroughout my career, I've worked on challenging projects that gave me deep insight into what the industry actually expects — and how most students are underprepared for it.\n\nI've mentored peers and juniors informally, and joining Jobingen is my way of scaling that impact. I believe in practical, honest guidance — no fluff, just what works.\n\nIf you're confused about where to start or how to level up, I can help you build a clear path forward.`
+      } else if (step.id === 9) {
+        // Motivation
+        draft = `When I was a student, I struggled with the same confusion — which skills matter, how to approach interviews, what companies actually look for. Nobody gave me a straight answer.\n\nI figured it out the hard way. Now that I'm on the other side, I want to make sure the next generation doesn't waste months going in the wrong direction.\n\nMentoring isn't about showing off your experience — it's about shortcutting someone else's confusion. That's why I'm here.`
+      }
+      setAiDraft(draft)
+      setAiGenerating(false)
+    }, 1200)
+  }
+
+  function acceptAiDraft() {
+    if (aiDraft) setText(aiDraft)
+    setAiWriteOpen(false)
+    setAiDraft("")
+  }
+
   const step = STEPS[cur]
   const totalSteps = STEPS.length
   const pct = ((cur + 1) / totalSteps) * 100
@@ -584,6 +646,69 @@ export default function BecomeMentorPage() {
                 {/* ── Text ─────────────────────────────── */}
                 {step.type === "text" && (
                   <div>
+                    {/* AI Write button */}
+                    {[3, 4, 9].includes(step.id) && (
+                      <div className="mb-3">
+                        {!aiWriteOpen ? (
+                          <button
+                            type="button"
+                            onClick={() => { setAiWriteOpen(true); setAiDraft(""); generateAiDraft() }}
+                            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-violet-200 bg-violet-50 text-[12px] font-bold text-[#7c3aed] font-[inherit] cursor-pointer hover:bg-violet-100 transition-colors"
+                          >
+                            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M12 2L9.5 8.5 3 9.27l5 4.87L6.82 21 12 17.77 17.18 21 16 14.14l5-4.87-6.5-.77L12 2z"/>
+                            </svg>
+                            Write with AI
+                          </button>
+                        ) : (
+                          <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 mb-3">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="text-[12px] font-bold text-[#7c3aed] flex items-center gap-1.5">
+                                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M12 2L9.5 8.5 3 9.27l5 4.87L6.82 21 12 17.77 17.18 21 16 14.14l5-4.87-6.5-.77L12 2z"/>
+                                </svg>
+                                AI Draft
+                              </span>
+                              <button type="button" onClick={() => { setAiWriteOpen(false); setAiDraft("") }} className="text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer font-[inherit] p-0">
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                              </button>
+                            </div>
+                            {aiGenerating ? (
+                              <div className="flex items-center gap-2 py-3">
+                                <span className="w-4 h-4 border-2 border-violet-300 border-t-[#7c3aed] rounded-full inline-block" style={{ animation: "mfspin .6s linear infinite" }} />
+                                <span className="text-[12px] text-slate-500">Generating draft based on your profile…</span>
+                              </div>
+                            ) : (
+                              <>
+                                <textarea
+                                  value={aiDraft}
+                                  onChange={e => setAiDraft(e.target.value)}
+                                  rows={5}
+                                  className="w-full p-3 rounded-lg border border-violet-200 bg-white text-[13px] text-slate-700 outline-none focus:border-[#7c3aed] font-[inherit] resize-y leading-[1.7] mb-3"
+                                />
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={acceptAiDraft}
+                                    className="flex-1 py-2 rounded-lg bg-[#7c3aed] text-white text-[12px] font-bold border-none font-[inherit] cursor-pointer hover:bg-[#6d28d9] transition-colors"
+                                  >
+                                    Use this draft
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={generateAiDraft}
+                                    className="px-3 py-2 rounded-lg border border-violet-200 bg-white text-[12px] font-bold text-[#7c3aed] border-none font-[inherit] cursor-pointer hover:bg-violet-50 transition-colors"
+                                  >
+                                    Regenerate
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     <textarea
                       value={answers[step.id] as string}
                       onChange={e => setText(e.target.value)}
@@ -720,6 +845,70 @@ export default function BecomeMentorPage() {
                 {/* ── Combo (multiple fields) ──────────── */}
                 {step.type === "combo" && (
                   <div className="flex flex-col gap-4">
+
+                    {/* LinkedIn Import — step 0 only */}
+                    {step.id === 0 && (
+                      <div className="rounded-xl border border-[#0077b5]/20 bg-[#f0f7ff] overflow-hidden">
+                        {!liImportOpen ? (
+                          <button
+                            type="button"
+                            onClick={() => setLiImportOpen(true)}
+                            className="w-full flex items-center gap-3 px-4 py-3 font-[inherit] cursor-pointer bg-transparent border-none text-left hover:bg-[#e8f2ff] transition-colors"
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-[#0077b5] flex items-center justify-center flex-shrink-0">
+                              <svg width="14" height="14" fill="white" viewBox="0 0 24 24">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+                              </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[13px] font-bold text-[#0077b5]">Import from LinkedIn</div>
+                              <div className="text-[11px] text-slate-500">Auto-fill your name & profile URL</div>
+                            </div>
+                            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0077b5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                              <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        ) : (
+                          <div className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-6 h-6 rounded-md bg-[#0077b5] flex items-center justify-center flex-shrink-0">
+                                <svg width="11" height="11" fill="white" viewBox="0 0 24 24">
+                                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+                                </svg>
+                              </div>
+                              <span className="text-[12px] font-bold text-[#0077b5]">Paste your LinkedIn URL</span>
+                              <button type="button" onClick={() => setLiImportOpen(false)} className="ml-auto text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer font-[inherit] p-0">
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                              </button>
+                            </div>
+                            <div className="flex gap-2">
+                              <input
+                                type="url"
+                                value={liUrl}
+                                onChange={e => setLiUrl(e.target.value)}
+                                placeholder="https://linkedin.com/in/your-profile"
+                                className="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-800 outline-none focus:border-[#0077b5] font-[inherit]"
+                              />
+                              <button
+                                type="button"
+                                onClick={handleLinkedInImport}
+                                disabled={!liUrl.trim() || liLoading || liDone}
+                                className="px-4 py-2 rounded-lg text-[12px] font-bold text-white border-none font-[inherit] cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all disabled:opacity-50"
+                                style={{ background: liDone ? "#16a34a" : "#0077b5" }}
+                              >
+                                {liDone ? (
+                                  <><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="3" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>Done</>
+                                ) : liLoading ? (
+                                  <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full inline-block" style={{ animation: "mfspin .6s linear infinite" }} />
+                                ) : "Import"}
+                              </button>
+                            </div>
+                            <p className="text-[11px] text-slate-400 mt-2">We&apos;ll pre-fill your name and LinkedIn URL from the link.</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {/* Photo upload — step 0 only, shown BEFORE fields */}
                     {step.id === 0 && (
                       <div className="flex flex-col items-center py-2">
