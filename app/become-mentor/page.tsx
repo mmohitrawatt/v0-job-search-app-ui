@@ -229,35 +229,102 @@ export default function BecomeMentorPage() {
 
   // LinkedIn import state
   const [liImportOpen, setLiImportOpen] = useState(false)
-  const [liUrl, setLiUrl] = useState("")
+  const [liText, setLiText] = useState("")
   const [liLoading, setLiLoading] = useState(false)
-  const [liDone, setLiDone] = useState(false)
+  const [liResult, setLiResult] = useState<Record<string, string> | null>(null)
 
   // AI Write state
   const [aiWriteOpen, setAiWriteOpen] = useState(false)
   const [aiDraft, setAiDraft] = useState("")
   const [aiGenerating, setAiGenerating] = useState(false)
 
+  function parseLinkedInText(text: string): Record<string, string> {
+    const lines = text.split("\n").map(l => l.trim()).filter(Boolean)
+    const result: Record<string, string> = {}
+
+    // Name: usually one of the first 3 lines that's 2-4 words, no numbers
+    for (const line of lines.slice(0, 5)) {
+      if (/^[A-Za-z][a-zA-Z .'-]{4,40}$/.test(line) && line.split(" ").length >= 2 && line.split(" ").length <= 5) {
+        result.full_name = line; break
+      }
+    }
+
+    // Current role / headline: line with "at", "Engineer", "Manager", "Developer", "Analyst", "Consultant" etc.
+    const roleKeywords = /engineer|manager|developer|analyst|consultant|designer|researcher|lead|director|intern|officer|architect|scientist|specialist|founder|ceo|cto|head of/i
+    for (const line of lines.slice(0, 10)) {
+      if (roleKeywords.test(line) && line.length < 120) {
+        // Try to split "Senior SWE at Google" → role="Senior SWE", company="Google"
+        const atMatch = line.match(/^(.+?)\s+(?:at|@)\s+(.+)$/i)
+        if (atMatch) {
+          result.job_title = atMatch[1].trim()
+          if (!result.company) result.company = atMatch[2].trim()
+        } else {
+          result.job_title = line
+        }
+        break
+      }
+    }
+
+    // Company: "at CompanyName" or lines with known company-like patterns
+    if (!result.company) {
+      for (const line of lines.slice(0, 15)) {
+        const compMatch = line.match(/(?:at|@|·)\s+([A-Z][A-Za-z0-9 &.,'-]{2,40})\s*$/i)
+        if (compMatch) { result.company = compMatch[1].trim(); break }
+      }
+    }
+
+    // Experience years: "X years", "X+ years", "X yrs"
+    const expMatch = text.match(/(\d+)\+?\s*(?:years?|yrs?)\s*(?:of\s+)?(?:experience|exp)/i)
+    if (expMatch) {
+      const yrs = parseInt(expMatch[1])
+      if (yrs <= 2) result.experience = "0–2 years"
+      else if (yrs <= 5) result.experience = "3–5 years"
+      else if (yrs <= 10) result.experience = "5–10 years"
+      else result.experience = "10+ years"
+    }
+
+    // LinkedIn URL: any linkedin.com/in/ link in pasted text
+    const liMatch = text.match(/https?:\/\/(?:www\.)?linkedin\.com\/in\/[^\s)]+/i)
+    if (liMatch) result.linkedin = liMatch[0]
+
+    // Bio: the longest paragraph (About section)
+    const paras = text.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 80)
+    if (paras.length > 0) {
+      const longest = paras.reduce((a, b) => b.length > a.length ? b : a, "")
+      result.bio = longest.slice(0, 1200)
+    }
+
+    return result
+  }
+
   function handleLinkedInImport() {
-    const url = liUrl.trim()
-    if (!url) return
+    if (!liText.trim()) return
     setLiLoading(true)
     setTimeout(() => {
-      // Extract handle from URL: linkedin.com/in/firstname-lastname-xxx
-      const match = url.match(/linkedin\.com\/in\/([^/?]+)/i)
-      const handle = match?.[1] || ""
-      // Derive a readable name from handle (e.g. "sonic-payeng-7ab8a8212" → "Sonic Payeng")
-      const nameParts = handle.replace(/-\w{6,}$/, "").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1))
-      const guessedName = nameParts.slice(0, 3).join(" ")
-      setComboFields(prev => ({
-        ...prev,
-        ...(guessedName && !prev.full_name ? { full_name: guessedName } : {}),
-        linkedin: url,
-      }))
-      setLiDone(true)
+      const parsed = parseLinkedInText(liText)
+      setLiResult(parsed)
+      setLoading(false)
       setLiLoading(false)
-      setTimeout(() => { setLiImportOpen(false); setLiDone(false) }, 1200)
-    }, 900)
+    }, 800)
+  }
+
+  function applyLinkedInImport() {
+    if (!liResult) return
+    setComboFields(prev => ({
+      ...prev,
+      ...(liResult.full_name ? { full_name: liResult.full_name } : {}),
+      ...(liResult.job_title ? { job_title: liResult.job_title } : {}),
+      ...(liResult.linkedin ? { linkedin: liResult.linkedin } : {}),
+    }))
+    if (liResult.experience) {
+      setComboFields(prev => ({ ...prev, experience: liResult!.experience }))
+    }
+    if (liResult.bio) {
+      setAnswers(prev => ({ ...prev, 4: liResult!.bio }))
+    }
+    setLiImportOpen(false)
+    setLiText("")
+    setLiResult(null)
   }
 
   function generateAiDraft() {
@@ -852,7 +919,7 @@ export default function BecomeMentorPage() {
                         {!liImportOpen ? (
                           <button
                             type="button"
-                            onClick={() => setLiImportOpen(true)}
+                            onClick={() => { setLiImportOpen(true); setLiResult(null); setLiText("") }}
                             className="w-full flex items-center gap-3 px-4 py-3 font-[inherit] cursor-pointer bg-transparent border-none text-left hover:bg-[#e8f2ff] transition-colors"
                           >
                             <div className="w-8 h-8 rounded-lg bg-[#0077b5] flex items-center justify-center flex-shrink-0">
@@ -862,7 +929,7 @@ export default function BecomeMentorPage() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="text-[13px] font-bold text-[#0077b5]">Import from LinkedIn</div>
-                              <div className="text-[11px] text-slate-500">Auto-fill your name & profile URL</div>
+                              <div className="text-[11px] text-slate-500">Auto-fill name, role, company, experience &amp; bio</div>
                             </div>
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#0077b5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                               <path d="M5 12h14M12 5l7 7-7 7" />
@@ -870,40 +937,72 @@ export default function BecomeMentorPage() {
                           </button>
                         ) : (
                           <div className="p-4">
-                            <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-center gap-2 mb-2">
                               <div className="w-6 h-6 rounded-md bg-[#0077b5] flex items-center justify-center flex-shrink-0">
                                 <svg width="11" height="11" fill="white" viewBox="0 0 24 24">
                                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
                                 </svg>
                               </div>
-                              <span className="text-[12px] font-bold text-[#0077b5]">Paste your LinkedIn URL</span>
-                              <button type="button" onClick={() => setLiImportOpen(false)} className="ml-auto text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer font-[inherit] p-0">
+                              <span className="text-[12px] font-bold text-[#0077b5]">Import from LinkedIn</span>
+                              <button type="button" onClick={() => { setLiImportOpen(false); setLiResult(null) }} className="ml-auto text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer font-[inherit] p-0">
                                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
                               </button>
                             </div>
-                            <div className="flex gap-2">
-                              <input
-                                type="url"
-                                value={liUrl}
-                                onChange={e => setLiUrl(e.target.value)}
-                                placeholder="https://linkedin.com/in/your-profile"
-                                className="flex-1 px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-800 outline-none focus:border-[#0077b5] font-[inherit]"
-                              />
-                              <button
-                                type="button"
-                                onClick={handleLinkedInImport}
-                                disabled={!liUrl.trim() || liLoading || liDone}
-                                className="px-4 py-2 rounded-lg text-[12px] font-bold text-white border-none font-[inherit] cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all disabled:opacity-50"
-                                style={{ background: liDone ? "#16a34a" : "#0077b5" }}
-                              >
-                                {liDone ? (
-                                  <><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="3" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>Done</>
-                                ) : liLoading ? (
-                                  <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full inline-block" style={{ animation: "mfspin .6s linear infinite" }} />
-                                ) : "Import"}
-                              </button>
-                            </div>
-                            <p className="text-[11px] text-slate-400 mt-2">We&apos;ll pre-fill your name and LinkedIn URL from the link.</p>
+
+                            {!liResult ? (
+                              <>
+                                <div className="bg-white rounded-lg border border-[#0077b5]/15 p-3 mb-3 text-[11px] text-slate-500 leading-[1.6]">
+                                  <span className="font-bold text-[#0077b5]">How to copy:</span> LinkedIn profile open karo → apna naam, Headline, About, aur Experience select karo → Copy karo → yahan paste karo.
+                                </div>
+                                <textarea
+                                  value={liText}
+                                  onChange={e => setLiText(e.target.value)}
+                                  placeholder={"Paste your LinkedIn profile text here...\n\nExample:\nSonic Payeng\nSoftware Engineer II at Dell Technologies\n3+ years experience\n\nAbout\nAI engineer specializing in automation..."}
+                                  rows={5}
+                                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-[12px] text-slate-700 outline-none focus:border-[#0077b5] font-[inherit] resize-none leading-[1.6] mb-2"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={handleLinkedInImport}
+                                  disabled={!liText.trim() || liLoading}
+                                  className="w-full py-2.5 rounded-lg text-[12px] font-bold text-white border-none font-[inherit] cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+                                  style={{ background: "#0077b5" }}
+                                >
+                                  {liLoading
+                                    ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full inline-block" style={{ animation: "mfspin .6s linear infinite" }} /> Extracting...</>
+                                    : "Extract & Fill Fields"}
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <div className="bg-white rounded-lg border border-green-200 p-3 mb-3 space-y-1.5">
+                                  <p className="text-[11px] font-bold text-green-700 mb-2">✓ Extracted — review before applying:</p>
+                                  {(["full_name","job_title","company","experience","linkedin"] as const).filter(k => liResult[k]).map(key => (
+                                    <div key={key} className="flex items-start gap-2">
+                                      <span className="text-[10px] font-bold text-slate-400 uppercase w-20 shrink-0 pt-0.5">{key.replace("_"," ")}</span>
+                                      <span className="text-[12px] text-slate-700 flex-1">{liResult[key]}</span>
+                                    </div>
+                                  ))}
+                                  {liResult.bio && (
+                                    <div className="flex items-start gap-2">
+                                      <span className="text-[10px] font-bold text-slate-400 uppercase w-20 shrink-0 pt-0.5">bio</span>
+                                      <span className="text-[12px] text-slate-500 flex-1 line-clamp-2">{liResult.bio}</span>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex gap-2">
+                                  <button type="button" onClick={applyLinkedInImport}
+                                    className="flex-1 py-2.5 rounded-lg text-[12px] font-bold text-white border-none font-[inherit] cursor-pointer"
+                                    style={{ background: "#16a34a" }}>
+                                    Apply to Form
+                                  </button>
+                                  <button type="button" onClick={() => setLiResult(null)}
+                                    className="px-4 py-2.5 rounded-lg text-[12px] font-bold text-slate-500 border border-slate-200 bg-white font-[inherit] cursor-pointer">
+                                    Re-paste
+                                  </button>
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                       </div>
