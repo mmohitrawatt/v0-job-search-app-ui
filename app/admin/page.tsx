@@ -48,6 +48,13 @@ type InterviewFeedback = {
   company_name?: string; interview_location?: string; created_at: string
 }
 
+type PatentAnalystFeedback = {
+  id: string; full_name: string; college: string; current_status: string
+  reached_interview: string; interview_experience: string
+  interview_insights?: string; jobingen_support?: string
+  candidate_quote?: string; created_at: string
+}
+
 type MentorApplication = {
   id: string; role_type?: string; full_name: string; email: string; phone: string; location?: string
   domain: string; job_title: string; experience: string; linkedin?: string
@@ -58,7 +65,7 @@ type MentorApplication = {
   portfolio_url?: string; additional_note?: string; created_at: string
 }
 
-type TabKey = "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors"
+type TabKey = "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "bootcamp3",    label: "Frontend MC",       icon: "M16 18l6-6-6-6M8 6l-6 6 6 6", color: "#4f46e5" },
@@ -72,6 +79,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "mentors",      label: "Mentors",            icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#8b5cf6" },
   { key: "interview-fb", label: "Interview Exp",     icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z", color: "#6366f1" },
   { key: "feedback",     label: "Feedback",          icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", color: "#f59e0b" },
+  { key: "patent-fb",   label: "Patent Analyst",    icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#1d3a8f" },
 ]
 
 function fmt(iso: string) {
@@ -106,6 +114,7 @@ export default function AdminPage() {
   const [studentInsights, setStudentInsights] = useState<StudentInsight[]>([])
   const [interviewFeedback, setInterviewFeedback] = useState<InterviewFeedback[]>([])
   const [mentorApps, setMentorApps] = useState<MentorApplication[]>([])
+  const [patentFeedback, setPatentFeedback] = useState<PatentAnalystFeedback[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -120,7 +129,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -150,6 +159,7 @@ export default function AdminPage() {
       else if (tbl === "student_insights") setStudentInsights(p => p.filter(r => r.id !== id))
       else if (tbl === "interview_feedback") setInterviewFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "mentor_applications") setMentorApps(p => p.filter(r => r.id !== id))
+      else if (tbl === "patent_analyst_feedback") setPatentFeedback(p => p.filter(r => r.id !== id))
     } catch {
       alert("Failed to delete. Try again.")
     } finally {
@@ -183,6 +193,7 @@ export default function AdminPage() {
     mentors: mentorApps.length,
     "interview-fb": interviewFeedback.length,
     feedback: feedback.length,
+    "patent-fb": patentFeedback.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -906,6 +917,52 @@ export default function AdminPage() {
                               </tr>
                             )
                           })}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Patent Analyst Feedback ── */}
+              {activeTab === "patent-fb" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Patent Analyst Feedback</div>
+                      <div className="adm-sec-badge">{patentFeedback.length} responses</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(patentFeedback as unknown as Record<string, unknown>[], "patent-analyst-feedback.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {patentFeedback.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>No submissions yet</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr><th>#</th><th>Name</th><th>College</th><th>Status</th><th>Interview Stage</th><th>Rating</th><th>Jobingen Support</th><th>Insights</th><th>Quote</th><th>Date</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                          {patentFeedback.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.full_name}</td>
+                              <td style={{ fontSize: 13 }}>{r.college}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.current_status}</td>
+                              <td style={{ fontSize: 12, fontWeight: 600, color: "#1d3a8f" }}>{r.reached_interview}</td>
+                              <td style={{ fontSize: 12, fontWeight: 700, color: r.interview_experience === "Excellent" ? "#16a34a" : r.interview_experience === "Good" ? "#2563eb" : r.interview_experience === "Average" ? "#d97706" : "#dc2626" }}>{r.interview_experience}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.jobingen_support || "—"}</td>
+                              <td><span className="c-why" title={r.interview_insights}>{r.interview_insights || "—"}</span></td>
+                              <td><span className="c-why" title={r.candidate_quote}>{r.candidate_quote || "—"}</span></td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="patent_analyst_feedback" id={r.id} name={r.full_name} /></td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     )}
