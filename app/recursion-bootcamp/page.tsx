@@ -413,8 +413,9 @@ export default function RecursionBootcampPage() {
 
       <div style={{ minHeight: "100vh", background: "var(--cream)", display: "flex", flexDirection: "column" }}>
         <Navbar />
+        <div style={{ height: 108 }} />
 
-        <div className="page-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 28px", paddingTop: 156 }}>
+        <div className="page-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 28px" }}>
 
           {/* ── Page Header ── */}
           <div style={{ marginBottom: 40, maxWidth: 600 }}>
