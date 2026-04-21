@@ -5,59 +5,65 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
 
-    const full_name = (formData.get("full_name") as string)?.trim()
-    const email = (formData.get("email") as string)?.trim().toLowerCase()
-    const phone = (formData.get("phone") as string)?.trim()
-    const college = (formData.get("college") as string)?.trim()
-    const current_year = formData.get("current_year") as string
-    const experience_level = formData.get("experience_level") as string
-    const preferred_language = (formData.get("preferred_language") as string) || "C++"
-    const upi_transaction_id = (formData.get("upi_transaction_id") as string)?.trim()
-    const screenshotFile = formData.get("screenshot") as File | null
+    const name = (formData.get("name") as string | null)?.trim() ?? ""
+    const email = (formData.get("email") as string | null)?.trim().toLowerCase() ?? ""
+    const phone = (formData.get("phone") as string | null)?.trim() ?? ""
+    const college = (formData.get("college") as string | null)?.trim() ?? ""
+    const upi_transaction_id = (formData.get("upi_transaction_id") as string | null)?.trim() ?? ""
+    const screenshot = formData.get("screenshot") as File | null
 
-    if (!full_name || !email || !phone || !college || !current_year || !experience_level || !upi_transaction_id) {
-      return NextResponse.json({ error: "Please fill all required fields." }, { status: 400 })
+    const errors: string[] = []
+    if (!name) errors.push("Name is required.")
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("Valid email is required.")
+    if (!phone || phone.replace(/\D/g, "").length < 10) errors.push("Valid 10-digit phone number is required.")
+    if (!college) errors.push("College / Institution name is required.")
+    if (!upi_transaction_id) errors.push("UPI Transaction ID is required.")
+
+    if (errors.length > 0) {
+      return NextResponse.json({ error: errors[0] }, { status: 400 })
     }
 
     const supabase = createServerClient()
 
-    let screenshot_url: string | null = null
+    let payment_screenshot_url: string | null = null
 
-    if (screenshotFile && screenshotFile.size > 0) {
-      const buffer = Buffer.from(await screenshotFile.arrayBuffer())
-      const ext = screenshotFile.name.split(".").pop() || "jpg"
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    if (screenshot && screenshot.size > 0) {
+      const ext = screenshot.name.split(".").pop() ?? "jpg"
+      const fileName = `screenshots/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const arrayBuffer = await screenshot.arrayBuffer()
+      const buffer = new Uint8Array(arrayBuffer)
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("payment-screenshots")
+      const { error: uploadError } = await supabase.storage
+        .from("hackathon-screenshots")
         .upload(`recursion-bootcamp/${fileName}`, buffer, {
-          contentType: screenshotFile.type || "image/jpeg",
+          contentType: screenshot.type || "image/jpeg",
           upsert: false,
         })
 
-      if (!uploadError && uploadData) {
+      if (!uploadError) {
         const { data: urlData } = supabase.storage
-          .from("payment-screenshots")
+          .from("hackathon-screenshots")
           .getPublicUrl(`recursion-bootcamp/${fileName}`)
-        screenshot_url = urlData.publicUrl
+        payment_screenshot_url = urlData.publicUrl
+      } else {
+        console.error("Screenshot upload error:", uploadError)
       }
     }
 
-    const { error } = await supabase.from("recursion_bootcamp_registrations").insert({
-      full_name,
+    const { error } = await supabase.from("hackathon_registrations").insert({
+      name,
       email,
       phone,
       college,
-      current_year,
-      experience_level,
-      preferred_language,
+      team_name: "Individual",
       upi_transaction_id,
-      screenshot_url,
+      payment_screenshot_url,
+      bootcamp: "recursion_bootcamp",
     })
 
     if (error) {
-      console.error("Recursion bootcamp insert error:", error)
-      return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 })
+      console.error("Recursion bootcamp insert error:", JSON.stringify(error))
+      return NextResponse.json({ error: `Registration failed: ${error.message}` }, { status: 500 })
     }
 
     return NextResponse.json({ success: true }, { status: 201 })
