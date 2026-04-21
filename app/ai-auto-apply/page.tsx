@@ -2,7 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from "react"
 import Link from "next/link"
-import { JobingenLogo } from "@/components/jobingen-logo"
+import { Navbar } from "@/components/landing/navbar"
+import { Footer } from "@/components/landing/footer"
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
@@ -353,16 +354,10 @@ export default function Page(){
 
   return(
     <>
+      <Navbar />
       <style dangerouslySetInnerHTML={{__html:CSS}}/>
       <div className="page">
-        {/* NAV */}
-        <nav className="nav"><div className="nav-in">
-          <Link href="/" style={{display:"flex",alignItems:"center",textDecoration:"none"}}><JobingenLogo height={40}/></Link>
-          <div className="nav-sep"/>
-          <span className="nav-tag">AI Auto Apply</span>
-          <div className="nav-r"><Link href="/" className="nav-back">{I.arr} Back</Link></div>
-        </div></nav>
-
+        <div style={{ height: 108 }} />
         {/* HERO */}
         <div className="hero">
           <div className="hero-pill"><span style={{width:7,height:7,borderRadius:"50%",background:"#384FFB",display:"inline-block"}}/> Beta</div>
@@ -465,6 +460,7 @@ export default function Page(){
             </div>
           )})()}
         </div>
+        <Footer />
       </div>
     </>
   )

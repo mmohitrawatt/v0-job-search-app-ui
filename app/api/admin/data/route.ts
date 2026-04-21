@@ -13,11 +13,12 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr1, hr2, hr3, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf] = await Promise.all([
+  const [ea, hr1, hr2, hr3, hrRec, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_3").order("created_at", { ascending: false }),
+    supabase.from("hackathon_registrations").select("*").eq("bootcamp", "recursion_bootcamp").order("created_at", { ascending: false }),
     supabase.from("bootcamp_feedback").select("*").order("created_at", { ascending: false }),
     supabase.from("campus_ambassador_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("job_applications").select("*").order("created_at", { ascending: false }),
@@ -43,6 +44,7 @@ export async function GET(req: NextRequest) {
     bootcamp1: hr1.data || [],
     bootcamp2: hr2.data || [],
     bootcamp3: hr3.data || [],
+    recursionBootcamp: hrRec.data || [],
     feedback: fb.data || [],
     campusAmbassadors: ca.data || [],
     jobApplications,

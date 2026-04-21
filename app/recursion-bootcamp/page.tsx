@@ -2,7 +2,6 @@
 
 import { useState, useRef, ChangeEvent } from "react"
 import { Footer } from "@/components/landing/footer"
-import { Navbar } from "@/components/landing/navbar"
 
 // ─── CSS — exact same as hackathon page ─────────────────────────────────────
 const CSS = `
@@ -143,7 +142,7 @@ const CSS = `
   }
 `
 
-const QR_IMAGE_SRC = "/qr-jobingen.png"
+const QR_IMAGE_SRC = "/qr-jobingen.jpeg"
 const UPI_ID = "jobingen@upi"
 
 type FormData = {
@@ -345,6 +344,7 @@ export default function RecursionBootcampPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [screenshotName, setScreenshotName] = useState("")
+  const [screenshotError, setScreenshotError] = useState("")
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState("")
   const [submitted, setSubmitted] = useState(false)
@@ -361,6 +361,7 @@ export default function RecursionBootcampPage() {
     if (!file) return
     setScreenshot(file)
     setScreenshotName(file.name)
+    setScreenshotError("")
   }
 
   function validate() {
@@ -376,7 +377,9 @@ export default function RecursionBootcampPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const errs = validate()
-    if (Object.keys(errs).length) { setErrors(errs); return }
+    if (!screenshot) setScreenshotError("Payment screenshot is required.")
+    else setScreenshotError("")
+    if (Object.keys(errs).length || !screenshot) { setErrors(errs); return }
     setLoading(true)
     setServerError("")
     try {
@@ -412,9 +415,6 @@ export default function RecursionBootcampPage() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       <div style={{ minHeight: "100vh", background: "var(--cream)", display: "flex", flexDirection: "column" }}>
-        <Navbar />
-        <div style={{ height: 108 }} />
-
         <div className="page-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 28px" }}>
 
           {/* ── Page Header ── */}
@@ -483,10 +483,10 @@ export default function RecursionBootcampPage() {
 
                   <div style={{ marginTop: 16 }}>
                     <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)", letterSpacing: ".01em", display: "block", marginBottom: 6 }}>
-                      Payment Screenshot <span style={{ color: "var(--ink3)", fontWeight: 500 }}>(optional)</span>
+                      Payment Screenshot <span style={{ color: "var(--rose)" }}>*</span>
                     </label>
                     <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFile} />
-                    <div className={`upload-area${screenshotName ? " has-file" : ""}`} onClick={() => fileRef.current?.click()}>
+                    <div className={`upload-area${screenshotName ? " has-file" : ""}${screenshotError ? " error" : ""}`} onClick={() => fileRef.current?.click()}>
                       {screenshotName ? (
                         <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
                           <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
@@ -507,6 +507,7 @@ export default function RecursionBootcampPage() {
                         </div>
                       )}
                     </div>
+                    {screenshotError && <div style={{ fontSize: 11, color: "var(--rose)", marginTop: 4 }}>{screenshotError}</div>}
                   </div>
                 </div>
 
