@@ -46,14 +46,14 @@ export function Navbar() {
               className="shrink-0 text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded"
               style={{ background: "rgba(255,255,255,0.18)", color: "white" }}
             >
-              New
+              Live
             </span>
 
             {/* Text — truncated on mobile, full on desktop */}
-            <p className="text-white/85 leading-tight font-medium truncate" style={{ fontSize: 12 }}>
-              <span className="sm:hidden">Frontend Masterclass · Session Complete 🎉</span>
-              <span className="hidden sm:inline">Frontend Engineering Masterclass · Session Complete — Thank you for joining! 🎉</span>
-            </p>
+            <Link href="/recursion-bootcamp" className="text-white/85 leading-tight font-medium truncate hover:text-white transition-colors" style={{ fontSize: 12 }}>
+              <span className="sm:hidden">Recursion Bootcamp · Register Now @ ₹29 🚀</span>
+              <span className="hidden sm:inline">🚀 New Bootcamp: Recursion Deep Dive — From Call Stack to Backtracking Mastery · Only ₹29 · Register Now</span>
+            </Link>
 
             {/* Dismiss */}
             <button

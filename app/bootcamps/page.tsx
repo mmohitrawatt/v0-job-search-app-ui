@@ -23,7 +23,7 @@ const BOOTCAMPS = [
     title: "Recursion Deep Dive: From Call Stack to Backtracking Mastery",
     description: "A focused bootcamp to build strong recursion intuition — covering stack behavior, recursion trees, backtracking strategies, and real LeetCode problems in C++.",
     duration: "Live Session",
-    format: "Free · Online",
+    format: "₹29 · Online",
     students: null,
     topics: ["Base Recursion & Stack", "Recursion Trees & Depth", "Parameter Passing & State", "Backtracking Fundamentals", "Subsets, Permutations, N-Queens"],
     delivered: ["Live Coding", "Problem Sets", "Recordings", "Community Access"],

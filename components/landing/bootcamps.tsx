@@ -27,81 +27,6 @@ export function Bootcamps() {
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
 
-          {/* ── Completed — Bootcamp 1 ─────────── */}
-          <StaggerItem>
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white h-full flex flex-col">
-              <div className="h-1.5 w-full bg-slate-200" />
-              <div className="p-5 flex flex-col flex-1">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-500 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" className="text-slate-400">
-                      <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    Completed
-                  </span>
-                  <span className="text-[10px] font-semibold text-slate-400">Bootcamp 1 &middot; Mar 2026</span>
-                </div>
-
-                <h3 className="text-[17px] font-extrabold text-slate-900 tracking-[-0.02em] mb-1">
-                  AI Bootcamp &amp; Hackathon
-                </h3>
-                <p className="text-[12px] text-slate-500 leading-[1.55] mb-3">
-                  2-day intensive — ML foundations, RAG architecture, and a 12-hour hackathon with real AI projects.
-                </p>
-
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {["Mar 2026", "2 Days", "200+ Students"].map((label) => (
-                    <span key={label} className="text-[10px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded">
-                      {label}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 mb-3">
-                  {["ML Foundations", "RAG Architecture", "Agentic AI", "Hackathon"].map((t) => (
-                    <div key={t} className="flex items-center gap-1.5">
-                      <svg width="9" height="9" fill="none" viewBox="0 0 24 24" className="text-slate-300 shrink-0">
-                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[10px] font-medium text-slate-500">{t}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
-                  <div className="flex items-center gap-2">
-                    <div className="flex -space-x-2">
-                      {MENTORS.map((m) => (
-                        <div key={m.initials} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white opacity-60" style={{ background: m.color }}>
-                          {m.initials}
-                        </div>
-                      ))}
-                    </div>
-                    <span className="text-[10px] text-slate-400">4 Mentors</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <svg key={s} width="10" height="10" viewBox="0 0 14 14">
-                          <path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= 4 ? "#fbbf24" : "#fde68a"} />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="text-[10px] font-bold text-slate-400">4.7</span>
-                  </div>
-                </div>
-
-                <div className="mt-3 w-full flex items-center justify-center gap-2 text-[12px] font-bold text-slate-400 py-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-default">
-                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <path d="M22 4L12 14.01l-3-3" />
-                  </svg>
-                  Completed Successfully
-                </div>
-              </div>
-            </div>
-          </StaggerItem>
-
           {/* ── Completed — Bootcamp 2 (12 Apr Masterclass) ── */}
           <StaggerItem>
             <div className="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white h-full flex flex-col">
@@ -296,6 +221,59 @@ export function Bootcamps() {
                   </svg>
                   Completed Successfully
                 </div>
+              </div>
+            </div>
+          </StaggerItem>
+
+          {/* ── Upcoming — Bootcamp 4 (Recursion Deep Dive) ── */}
+          <StaggerItem>
+            <div className="relative overflow-hidden rounded-2xl border-2 border-[#7c3aed]/25 bg-white h-full flex flex-col shadow-[0_4px_24px_rgba(124,58,237,0.1)]">
+              <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#7c3aed,#4f46e5)" }} />
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center gap-1.5 bg-[#f5f3ff] text-[#7c3aed] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#ddd6fe]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#7c3aed] animate-pulse" />
+                    Open for Registration
+                  </span>
+                  <span className="text-[10px] font-semibold text-slate-400">Bootcamp 4</span>
+                </div>
+
+                <h3 className="text-[17px] font-extrabold text-slate-900 tracking-[-0.02em] mb-1">
+                  Recursion Deep Dive
+                </h3>
+                <p className="text-[12px] text-slate-500 leading-[1.55] mb-3">
+                  From call stack to backtracking mastery — recursion fundamentals, recursion trees, and real LeetCode problems in C++.
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {["Live Session", "C++", "₹29 Only"].map((label) => (
+                    <span key={label} className="text-[10px] font-bold text-[#7c3aed] bg-[#f5f3ff] px-2 py-0.5 rounded border border-[#ddd6fe]">
+                      {label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1.5 mb-3">
+                  {["Base Recursion & Stack", "Recursion Trees", "Backtracking Basics", "Subsets & Permutations", "N-Queens Problem"].map((t) => (
+                    <div key={t} className="flex items-center gap-1.5">
+                      <svg width="9" height="9" fill="none" viewBox="0 0 24 24" className="shrink-0" style={{ color: "#7c3aed" }}>
+                        <path d="M20 6L9 17l-5-5" stroke="#7c3aed" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="text-[10px] font-medium text-slate-600">{t}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2 pt-3 border-t border-slate-100 mt-auto mb-3">
+                  <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white" style={{ background: "#1d3a8f" }}>AD</div>
+                  <span className="text-[10px] text-slate-400">Aditya Dubey</span>
+                </div>
+
+                <a href="/recursion-bootcamp"
+                  className="w-full flex items-center justify-center gap-2 text-[13px] font-bold text-white py-3 rounded-xl transition-all hover:-translate-y-0.5"
+                  style={{ background: "linear-gradient(135deg,#7c3aed,#4f46e5)", boxShadow: "0 4px 14px rgba(124,58,237,0.3)" }}>
+                  Register Now — ₹29 →
+                </a>
               </div>
             </div>
           </StaggerItem>
