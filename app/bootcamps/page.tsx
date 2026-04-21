@@ -16,6 +16,24 @@ const MENTORS_MAP: Record<string, { initials: string; color: string; name: strin
 
 const BOOTCAMPS = [
   {
+    id: 4,
+    status: "upcoming" as const,
+    num: "Bootcamp 4",
+    date: "Coming Soon",
+    title: "Recursion Deep Dive: From Call Stack to Backtracking Mastery",
+    description: "A focused bootcamp to build strong recursion intuition — covering stack behavior, recursion trees, backtracking strategies, and real LeetCode problems in C++.",
+    duration: "Live Session",
+    format: "Free · Online",
+    students: null,
+    topics: ["Base Recursion & Stack", "Recursion Trees & Depth", "Parameter Passing & State", "Backtracking Fundamentals", "Subsets, Permutations, N-Queens"],
+    delivered: ["Live Coding", "Problem Sets", "Recordings", "Community Access"],
+    mentorKeys: ["AD"],
+    rating: 0,
+    accent: "#7c3aed",
+    tagColor: "#7c3aed",
+    tagBg: "#f5f3ff",
+  },
+  {
     id: 1,
     status: "completed" as const,
     num: "Bootcamp 1",
@@ -104,17 +122,29 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{
-              display: "inline-flex", alignItems: "center", gap: 5,
-              background: "#f0fdf4", color: "#16a34a",
-              fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 99,
-              border: "1px solid #bbf7d0",
-            }}>
-              <svg width="9" height="9" fill="none" viewBox="0 0 24 24">
-                <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Completed
-            </span>
+            {bc.status === "upcoming" ? (
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                background: "#f5f3ff", color: "#7c3aed",
+                fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 99,
+                border: "1px solid #ddd6fe",
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#7c3aed", display: "inline-block", animation: "pulseDot 1.5s infinite" }} />
+                Open for Registration
+              </span>
+            ) : (
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                background: "#f0fdf4", color: "#16a34a",
+                fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 99,
+                border: "1px solid #bbf7d0",
+              }}>
+                <svg width="9" height="9" fill="none" viewBox="0 0 24 24">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Completed
+              </span>
+            )}
             <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600 }}>{bc.num}</span>
           </div>
           <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>{bc.date}</span>
@@ -168,7 +198,6 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
 
         {/* Footer */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid #f1f5f9", marginTop: "auto" }}>
-          {/* Mentors */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ display: "flex" }}>
               {bc.mentorKeys.map((k, i) => {
@@ -191,25 +220,40 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
               {bc.mentorKeys.length} Mentor{bc.mentorKeys.length > 1 ? "s" : ""}
             </span>
           </div>
-          <Stars rating={bc.rating} />
+          {bc.status === "completed" && <Stars rating={bc.rating} />}
         </div>
 
         {/* CTA */}
-        <a href="/bootcamp" style={{
-          marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          padding: "11px 0", borderRadius: 12,
-          background: "#f8fafc", border: "1.5px solid #e2e8f0",
-          fontSize: 12, fontWeight: 700, color: "#374151", textDecoration: "none",
-          transition: "all 0.2s ease",
-        }}
-          onMouseEnter={e => { e.currentTarget.style.background = bc.tagBg; e.currentTarget.style.color = bc.tagColor; e.currentTarget.style.borderColor = bc.tagColor + "30" }}
-          onMouseLeave={e => { e.currentTarget.style.background = "#f8fafc"; e.currentTarget.style.color = "#374151"; e.currentTarget.style.borderColor = "#e2e8f0" }}
-        >
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-          Share Feedback
-        </a>
+        {bc.status === "upcoming" ? (
+          <a href="/recursion-bootcamp" style={{
+            marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            padding: "12px 0", borderRadius: 12,
+            background: "linear-gradient(135deg,#7c3aed,#4f46e5)",
+            border: "none", fontSize: 13, fontWeight: 800, color: "white", textDecoration: "none",
+            boxShadow: "0 4px 16px rgba(124,58,237,0.3)", transition: "all 0.2s ease",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.4)" }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(124,58,237,0.3)" }}
+          >
+            Register Now →
+          </a>
+        ) : (
+          <a href="/bootcamp" style={{
+            marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            padding: "11px 0", borderRadius: 12,
+            background: "#f8fafc", border: "1.5px solid #e2e8f0",
+            fontSize: 12, fontWeight: 700, color: "#374151", textDecoration: "none",
+            transition: "all 0.2s ease",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = bc.tagBg; e.currentTarget.style.color = bc.tagColor; e.currentTarget.style.borderColor = bc.tagColor + "30" }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#f8fafc"; e.currentTarget.style.color = "#374151"; e.currentTarget.style.borderColor = "#e2e8f0" }}
+          >
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Share Feedback
+          </a>
+        )}
       </div>
     </div>
   )
