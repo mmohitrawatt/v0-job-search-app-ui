@@ -437,30 +437,6 @@ export default function PatentAnalystFeedbackPage() {
             </div>
           </Section>
 
-          {/* 7 · Permission */}
-          <Section n={7} icon={Ic.shield} title="Permission to Publish">
-            <label className="flex items-start gap-4 cursor-pointer group" onClick={() => setAllowPublish(p => !p)}>
-              <div className="w-5 h-5 rounded-md border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all"
-                style={{ borderColor: allowPublish ? "#1d3a8f" : "#cbd5e1", background: allowPublish ? "#1d3a8f" : "white" }}>
-                {allowPublish && Ic.check}
-              </div>
-              <div>
-                <p className="text-[14px] font-semibold text-slate-800 leading-snug mb-1 group-hover:text-[#1d3a8f] transition-colors">
-                  I allow Jobingen to use my feedback or testimonial in social posts or promotional content
-                </p>
-                <p className="text-[12px] text-slate-400 leading-relaxed">
-                  Your name and college may be mentioned. You can withdraw permission anytime by contacting us.
-                </p>
-                {allowPublish && (
-                  <div className="flex items-center gap-1.5 mt-2 text-[11.5px] font-bold text-[#16a34a]">
-                    <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    Permission granted — thank you!
-                  </div>
-                )}
-              </div>
-            </label>
-          </Section>
-
           {/* Error */}
           {error && (
             <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5">
