@@ -51,8 +51,8 @@ export function Navbar() {
 
             {/* Text — truncated on mobile, full on desktop */}
             <Link href="/recursion-bootcamp" className="text-white/85 leading-tight font-medium truncate hover:text-white transition-colors" style={{ fontSize: 12 }}>
-              <span className="sm:hidden">Recursion Bootcamp · Register Now @ ₹29 🚀</span>
-              <span className="hidden sm:inline">🚀 New Bootcamp: Recursion Deep Dive — From Call Stack to Backtracking Mastery · Only ₹29 · Register Now</span>
+              <span className="sm:hidden">Recursion Bootcamp · 29 Apr · 7:30–10:30 PM · ₹29 🚀</span>
+              <span className="hidden sm:inline">🚀 Recursion Deep Dive — 29 April · 7:30 PM – 10:30 PM · Only ₹29 · Register Now</span>
             </Link>
 
             {/* Dismiss */}

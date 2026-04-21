@@ -221,7 +221,7 @@ function SuccessScreen({ name }: { name: string }) {
               { icon: "🔍", text: "We verify your UPI transaction ID within 24 hours" },
               { icon: "📧", text: "Confirmation email sent once payment is verified" },
               { icon: "💬", text: "WhatsApp group link shared before the session" },
-              { icon: "🚀", text: "Session link and materials sent on the day" },
+              { icon: "🗓️", text: "Session on 29 April · 7:30 PM – 10:30 PM (IST)" },
             ].map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 16, lineHeight: 1, marginTop: 1, flexShrink: 0 }}>{s.icon}</span>
@@ -426,7 +426,7 @@ export default function RecursionBootcampPage() {
               fontSize: 11, fontWeight: 800, color: "var(--ind)", textTransform: "uppercase", letterSpacing: ".07em",
             }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--ind)", animation: "pulse-dot 2s infinite" }} />
-              Live Bootcamp · Recursion &amp; Backtracking
+              Live Bootcamp · 29 April · 7:30 PM – 10:30 PM
             </div>
             <h1 style={{ fontSize: "clamp(28px,3.8vw,46px)", fontWeight: 900, letterSpacing: "-.03em", color: "var(--ink)", margin: "0 0 12px", lineHeight: 1.08 }}>
               Register for the<br />
@@ -435,6 +435,17 @@ export default function RecursionBootcampPage() {
             <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.7, maxWidth: 480 }}>
               From call stack to backtracking mastery — live session in C++ · Only ₹29 · Seats limited.
             </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
+              {[
+                { icon: "📅", text: "29 April 2026" },
+                { icon: "🕖", text: "7:30 PM – 10:30 PM" },
+                { icon: "⏱", text: "3 Hours Live" },
+              ].map((b) => (
+                <div key={b.text} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 99, background: "white", border: "1.5px solid var(--border)", fontSize: 12, fontWeight: 700, color: "var(--ink2)" }}>
+                  <span>{b.icon}</span>{b.text}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ── 2-col grid ── */}
@@ -545,6 +556,7 @@ export default function RecursionBootcampPage() {
                 <div style={{ background: "linear-gradient(135deg, #1d3a8f, #2548c5)", padding: "16px 20px" }}>
                   <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: ".07em" }}>What You Get</div>
                   <div style={{ fontSize: 18, fontWeight: 900, color: "white", marginTop: 4 }}>Recursion Deep Dive</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 4, fontWeight: 600 }}>📅 29 April · 7:30 PM – 10:30 PM</div>
                 </div>
                 <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
                   {[

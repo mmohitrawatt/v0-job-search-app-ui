@@ -245,6 +245,10 @@ export function Bootcamps() {
                   From call stack to backtracking mastery — recursion fundamentals, recursion trees, and real LeetCode problems in C++.
                 </p>
 
+                <div className="flex items-center gap-1.5 mb-3 text-[11px] font-semibold text-slate-500">
+                  <span>📅</span> 29 April · 7:30 PM – 10:30 PM IST
+                </div>
+
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {["Live Session", "C++", "₹29 Only"].map((label) => (
                     <span key={label} className="text-[10px] font-bold text-[#7c3aed] bg-[#f5f3ff] px-2 py-0.5 rounded border border-[#ddd6fe]">
