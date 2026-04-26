@@ -159,7 +159,7 @@ export default function PatentInternPage() {
         >
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 68, width: "auto", display: "block" }} />
+            <img src="/jobingen-logo.png" alt="Jobingen" style={{ height: 76, width: "auto", display: "block" }} />
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <Link
