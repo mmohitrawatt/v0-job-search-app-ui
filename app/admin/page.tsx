@@ -65,9 +65,10 @@ type MentorApplication = {
   portfolio_url?: string; additional_note?: string; created_at: string
 }
 
-type TabKey = "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb"
+type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
+  { key: "ml",           label: "ML Masterclass",    icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z M12 8v4l3 3", color: "#7C3AED" },
   { key: "recursion",    label: "Recursion BC",      icon: "M12 2L2 7l10 5 10-5-10-5Z M2 12l10 5 10-5", color: "#1d3a8f" },
   { key: "bootcamp3",    label: "Frontend MC",       icon: "M16 18l6-6-6-6M8 6l-6 6 6 6", color: "#4f46e5" },
   { key: "bootcamp2",    label: "Vibe Coding MC",    icon: "M4.26 10.15a60.44 60.44 0 0 0-.49 6.33l7.85 4.53L19.47 17a60.2 60.2 0 0 0-.49-6.27L12 14.53Z M2 8.5l10 5.78L22 8.5 12 2.72Z M12 22v-5.72l-7.74-4.47a29 29 0 0 0-.26 4L12 22Z M12 22l7.74-6.19a29 29 0 0 0-.26-4L12 16.28Z", color: "#2563eb" },
@@ -109,6 +110,7 @@ export default function AdminPage() {
   const [bootcamp2, setBootcamp2] = useState<HackathonReg[]>([])
   const [bootcamp3, setBootcamp3] = useState<HackathonReg[]>([])
   const [recursionBootcamp, setRecursionBootcamp] = useState<HackathonReg[]>([])
+  const [mlMasterclass, setMlMasterclass] = useState<HackathonReg[]>([])
   const [feedback, setFeedback] = useState<BootcampFeedback[]>([])
   const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
@@ -121,7 +123,7 @@ export default function AdminPage() {
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
   const [authChecked, setAuthChecked] = useState(false)
-  const [activeTab, setActiveTab] = useState<TabKey>("recursion")
+  const [activeTab, setActiveTab] = useState<TabKey>("ml")
   const [deleteModal, setDeleteModal] = useState<{ table: string; id: string; name: string } | null>(null)
   const [deleting, setDeleting] = useState(false)
 
@@ -131,7 +133,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -155,6 +157,7 @@ export default function AdminPage() {
       else if (tbl === "hackathon_registrations" && activeTab === "bootcamp2") setBootcamp2(p => p.filter(r => r.id !== id))
       else if (tbl === "hackathon_registrations" && activeTab === "bootcamp3") setBootcamp3(p => p.filter(r => r.id !== id))
       else if (tbl === "hackathon_registrations" && activeTab === "recursion") setRecursionBootcamp(p => p.filter(r => r.id !== id))
+      else if (tbl === "ml_masterclass_registrations") setMlMasterclass(p => p.filter(r => r.id !== id))
       else if (tbl === "bootcamp_feedback") setFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "campus_ambassador_applications") setAmbassadors(p => p.filter(r => r.id !== id))
       else if (tbl === "job_applications") setJobApplications(p => p.filter(r => r.id !== id))
@@ -176,6 +179,7 @@ export default function AdminPage() {
   const b2Filtered  = useMemo(() => filterRows(bootcamp2, search), [bootcamp2, search])
   const b3Filtered  = useMemo(() => filterRows(bootcamp3, search), [bootcamp3, search])
   const recFiltered = useMemo(() => filterRows(recursionBootcamp, search), [recursionBootcamp, search])
+  const mlFiltered  = useMemo(() => filterRows(mlMasterclass, search), [mlMasterclass, search])
   const fbFiltered  = useMemo(() => filterRows(feedback, search), [feedback, search])
   const caFiltered  = useMemo(() => filterRows(ambassadors, search), [ambassadors, search])
   const jaFiltered  = useMemo(() => filterRows(jobApplications, search), [jobApplications, search])
@@ -186,6 +190,7 @@ export default function AdminPage() {
   }, [hackathonSubs, search])
 
   const tabCounts: Record<TabKey, number> = {
+    ml: mlMasterclass.length,
     recursion: recursionBootcamp.length,
     bootcamp3: bootcamp3.length,
     bootcamp2: bootcamp2.length,
@@ -372,6 +377,48 @@ export default function AdminPage() {
               </div>
 
               {/* ── Frontend Engineering Masterclass (Bootcamp 3) ── */}
+              {activeTab === "ml" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">ML Masterclass Registrations</div>
+                      <div className="adm-sec-badge">{mlFiltered.length} registrations</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(mlFiltered as unknown as Record<string, unknown>[], "ml-masterclass-registrations.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {mlFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🤖</div>{search ? `No results for "${search}"` : "No registrations yet"}</div>
+                    ) : (
+                      <table>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Experience</th><th>Transaction ID</th><th>Screenshot</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                          {mlFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td className="c-phone">{r.phone || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                              <td><span className="c-tag" style={{ background: "#f5f3ff", color: "#7c3aed", borderColor: "#ddd6fe" }}>{(r as unknown as { experience?: string }).experience || "—"}</span></td>
+                              <td><span className="c-txn" title={r.upi_transaction_id}>{r.upi_transaction_id || "—"}</span></td>
+                              <td>{r.payment_screenshot_url ? <a className="c-link" href={r.payment_screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="ml_masterclass_registrations" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {activeTab === "recursion" && (
                 <div className="adm-sec">
                   <div className="adm-sec-head">

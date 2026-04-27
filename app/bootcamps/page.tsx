@@ -12,6 +12,10 @@ const MENTORS_MAP: Record<string, { initials: string; color: string; name: strin
   JV: { initials: "JV", color: "#7c3aed", name: "Jay V.",         role: "Full Stack Dev" },
   SK: { initials: "SK", color: "#b45309", name: "Shivam K.",      role: "Data Scientist" },
   BC: { initials: "BC", color: "#0891b2", name: "Bipin Chaudhary", role: "Full Stack Dev, SAP Ex-Intern" },
+  RK: { initials: "RK", color: "#0891b2", name: "Rahul K.",       role: "ML Engineer, Google" },
+  PS: { initials: "PS", color: "#7c3aed", name: "Priya S.",       role: "Data Scientist, Microsoft" },
+  MG: { initials: "MG", color: "#047857", name: "Mohit G.",       role: "SDE-2, Amazon" },
+  VN: { initials: "VN", color: "#b45309", name: "Vivek N.",       role: "ML Research, Adobe" },
 }
 
 const BOOTCAMPS = [
@@ -19,7 +23,8 @@ const BOOTCAMPS = [
     id: 4,
     status: "upcoming" as const,
     num: "Bootcamp 4",
-    date: "Coming Soon",
+    date: "29 Apr 2026",
+    link: "/recursion-bootcamp",
     title: "Recursion Deep Dive: From Call Stack to Backtracking Mastery",
     description: "A focused bootcamp to build strong recursion intuition — covering stack behavior, recursion trees, backtracking strategies, and real LeetCode problems in C++.",
     duration: "Live Session",
@@ -28,10 +33,33 @@ const BOOTCAMPS = [
     topics: ["Base Recursion & Stack", "Recursion Trees & Depth", "Parameter Passing & State", "Backtracking Fundamentals", "Subsets, Permutations, N-Queens"],
     delivered: ["Live Coding", "Problem Sets", "Recordings", "Community Access"],
     mentorKeys: ["AD"],
+    mentorLabel: null as string | null,
+    mentorSub: null as string | null,
     rating: 0,
     accent: "#7c3aed",
     tagColor: "#7c3aed",
     tagBg: "#f5f3ff",
+  },
+  {
+    id: 5,
+    status: "upcoming" as const,
+    num: "Bootcamp 5",
+    date: "10 May 2026",
+    link: "/ml-masterclass",
+    title: "ML Masterclass: Core Algorithms to Real Pipelines",
+    description: "4-hour live deep dive into Machine Learning — from data preprocessing and feature engineering to training, evaluating, and deploying real ML models with hands-on notebooks.",
+    duration: "4 Hours",
+    format: "₹29 · Online",
+    students: null,
+    topics: ["7 Core ML Algorithms", "Full ML Pipeline", "Data Preprocessing", "Confusion Matrix & Metrics", "Hands-on Notebooks", "Model Evaluation"],
+    delivered: ["Live Coding", "Notebooks", "Recordings", "Certificate", "Community Access"],
+    mentorKeys: ["AD"],
+    mentorLabel: null as string | null,
+    mentorSub: null as string | null,
+    rating: 0,
+    accent: "#1d3a8f",
+    tagColor: "#1d3a8f",
+    tagBg: "#eff6ff",
   },
   {
     id: 1,
@@ -46,6 +74,9 @@ const BOOTCAMPS = [
     topics: ["ML Foundations", "RAG Architecture", "Agentic AI", "12-hr Hackathon"],
     delivered: ["Project Builds", "Recordings", "Certificate", "Community Access"],
     mentorKeys: ["AD", "SP", "JV", "SK"],
+    mentorLabel: null as string | null,
+    mentorSub: null as string | null,
+    link: null as string | null,
     rating: 4.7,
     accent: "#64748b",
     tagColor: "#475569",
@@ -64,6 +95,9 @@ const BOOTCAMPS = [
     topics: ["AI Workflows & Agentic AI", "Intro to Vibe Coding", "Live Project Discussion", "Prototype Development"],
     delivered: ["AI Prototype", "Recordings", "Career Roadmap", "Certificate", "Toolkit", "Community Access"],
     mentorKeys: ["AD", "SP", "JV"],
+    mentorLabel: null as string | null,
+    mentorSub: null as string | null,
+    link: null as string | null,
     rating: 4.8,
     accent: "#059669",
     tagColor: "#059669",
@@ -82,6 +116,9 @@ const BOOTCAMPS = [
     topics: ["JS Internals & Hoisting", "Event Loop & Async", "Frontend System Design", "Component Architecture", "Closures & Scope", "YouTube-style React App"],
     delivered: ["Recordings", "Certificate", "Code Resources", "Community Access"],
     mentorKeys: ["BC"],
+    mentorLabel: null as string | null,
+    mentorSub: null as string | null,
+    link: null as string | null,
     rating: 4.9,
     accent: "#1d3a8f",
     tagColor: "#1d3a8f",
@@ -216,16 +253,19 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
                 )
               })}
             </div>
-            <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>
-              {bc.mentorKeys.length} Mentor{bc.mentorKeys.length > 1 ? "s" : ""}
-            </span>
+            <div>
+              <div style={{ fontSize: 11, color: "#334155", fontWeight: 700 }}>
+                {bc.mentorLabel ?? `${bc.mentorKeys.length} Mentor${bc.mentorKeys.length > 1 ? "s" : ""}`}
+              </div>
+              {bc.mentorSub && <div style={{ fontSize: 10, color: "#94a3b8", fontWeight: 500, marginTop: 1 }}>{bc.mentorSub}</div>}
+            </div>
           </div>
           {bc.status === "completed" && <Stars rating={bc.rating} />}
         </div>
 
         {/* CTA */}
         {bc.status === "upcoming" ? (
-          <a href="/recursion-bootcamp" style={{
+          <a href={bc.link ?? "#"} style={{
             marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
             padding: "12px 0", borderRadius: 12,
             background: "linear-gradient(135deg,#7c3aed,#4f46e5)",
@@ -278,7 +318,9 @@ export default function BootcampsPage() {
   }
 
   const totalStudents = 500
-  const avgRating = (BOOTCAMPS.reduce((s, b) => s + b.rating, 0) / BOOTCAMPS.length).toFixed(1)
+  const completedWithRating = BOOTCAMPS.filter(b => b.status === "completed" && b.rating > 0)
+  const avgRating = (completedWithRating.reduce((s, b) => s + b.rating, 0) / completedWithRating.length).toFixed(1)
+  const completedCount = completedWithRating.length
 
   return (
     <>
@@ -307,7 +349,7 @@ export default function BootcampsPage() {
         <div className="bc-hero-pad" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)", animation: "fadeUp 0.5s ease both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>3 Sessions Completed · Next coming soon</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>4 Sessions Completed · ML Masterclass open now</span>
           </div>
 
           <h1 style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", lineHeight: 1.08, letterSpacing: "-0.04em", marginBottom: 14, animation: "fadeUp 0.5s ease 0.08s both" }}>
@@ -324,17 +366,18 @@ export default function BootcampsPage() {
           {/* Stats */}
           <div className="bc-stats" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, animation: "fadeUp 0.5s ease 0.2s both" }}>
             {[
-              { val: `${BOOTCAMPS.length}`, label: "Sessions held" },
+              { val: `${BOOTCAMPS.length}`, label: "Sessions total" },
               { val: `${totalStudents}+`, label: "Students taught" },
               { val: avgRating, label: "Avg rating" },
               { val: "Live", label: "Format" },
+              { val: "8+", label: "Mentors" },
             ].map((s, i) => (
               <div key={s.label} style={{ display: "flex", alignItems: "stretch" }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "12px 24px" }}>
                   <span style={{ fontSize: 22, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em" }}>{s.val}</span>
                   <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>{s.label}</span>
                 </div>
-                {i < 3 && <div style={{ width: 1, background: "#e0e7ff", alignSelf: "center", height: 28 }} />}
+                {i < 4 && <div style={{ width: 1, background: "#e0e7ff", alignSelf: "center", height: 28 }} />}
               </div>
             ))}
           </div>
