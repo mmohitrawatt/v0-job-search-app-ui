@@ -7,22 +7,13 @@ interface JobingenLogoProps {
 }
 
 export function JobingenLogo({ height = 36, className = "", style }: JobingenLogoProps) {
-  const fontSize = height * 0.85
   return (
-    <span
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/jobingen-logo.png"
+      alt="Jobingen Logo"
       className={className}
-      style={{
-        fontSize,
-        fontWeight: 800,
-        letterSpacing: "-0.5px",
-        lineHeight: 1,
-        display: "block",
-        userSelect: "none",
-        ...style,
-      }}
-    >
-      <span style={{ color: "#1d3a8f" }}>Job</span>
-      <span style={{ color: "#3b52f0" }}>ingen</span>
-    </span>
+      style={{ height, width: "auto", display: "block", ...style }}
+    />
   )
 }
