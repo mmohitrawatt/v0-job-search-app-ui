@@ -4,6 +4,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { useApp, ProfileData } from "@/lib/app-context"
 import { MOCK_JOBS } from "@/lib/mock-data"
+import { generateRanked, DOMAINS, calcScore, HeatmapCard } from "@/components/screens/leaderboard-screen"
 
 // ─── Icons ────────────────────────────────────────────────────
 
@@ -28,6 +29,77 @@ function PlusIcon({ size = 13 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 13 13" fill="none">
       <path d="M6.5 2V11M2 6.5H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
+  )
+}
+
+// ─── Career Rank Card ─────────────────────────────────────────
+function CareerRankCard({ profileName, onView }: { profileName: string; onView: () => void }) {
+  const ranked = generateRanked("se", "all", profileName)
+  const me = ranked.find(s => s.isMe)
+  if (!me) return null
+  const dom = DOMAINS[0]
+  const total = ranked.length
+  const pct = Math.round(((total - me.rank) / total) * 100)
+
+  const STAT_DOTS = [
+    { key: "interviews"   as const, max: 50,  bar: "bg-indigo-500"  },
+    { key: "resume"       as const, max: 100, bar: "bg-emerald-500" },
+    { key: "applications" as const, max: 30,  bar: "bg-amber-500"   },
+    { key: "bootcamps"    as const, max: 10,  bar: "bg-pink-500"    },
+    { key: "assessments"  as const, max: 20,  bar: "bg-blue-500"    },
+  ]
+
+  return (
+    <div className="bg-card border border-border rounded-[16px] shadow-card overflow-hidden">
+      <div className="h-[3px] w-full" style={{ background: `linear-gradient(90deg, ${dom.color}, ${dom.color}55)` }} />
+      <div className="px-4 pt-3.5 pb-4">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-[14px] font-bold text-foreground">Career Ranking</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{dom.emoji} {dom.label}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[28px] font-extrabold leading-none" style={{ color: dom.color }}>{me.score}</p>
+            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wide mt-0.5">Total Score</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 mb-3">
+          <div className="flex-1 bg-muted/50 rounded-[10px] px-3 py-2 text-center">
+            <p className="text-[11px] text-muted-foreground">Rank</p>
+            <p className="text-[17px] font-extrabold leading-tight" style={{ color: dom.color }}>#{me.rank}</p>
+            <p className="text-[9px] text-muted-foreground">of {total}</p>
+          </div>
+          <div className="flex-1 bg-muted/50 rounded-[10px] px-3 py-2 text-center">
+            <p className="text-[11px] text-muted-foreground">Percentile</p>
+            <p className="text-[17px] font-extrabold leading-tight" style={{ color: dom.color }}>Top {pct}%</p>
+            <p className="text-[9px] text-muted-foreground">in domain</p>
+          </div>
+          <div className="flex-1 bg-muted/50 rounded-[10px] px-3 py-2 text-center">
+            <p className="text-[11px] text-muted-foreground">Interviews</p>
+            <p className="text-[17px] font-extrabold leading-tight text-foreground">{me.interviews}</p>
+            <p className="text-[9px] text-muted-foreground">sessions</p>
+          </div>
+        </div>
+
+        {/* Mini stat bars */}
+        <div className="grid grid-cols-5 gap-1.5 mb-3">
+          {STAT_DOTS.map(s => (
+            <div key={s.key} className="bg-muted rounded-[6px] h-1.5 overflow-hidden">
+              <div className={cn("h-full rounded-full", s.bar)} style={{ width: `${Math.min(100, (me[s.key] / s.max) * 100)}%` }} />
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={onView}
+          className="w-full py-2.5 rounded-[10px] text-[12px] font-bold border border-border bg-muted/50 text-foreground hover:bg-accent transition-colors btn-press tap-highlight-none"
+          style={{ borderColor: `${dom.color}30`, color: dom.color, background: `${dom.color}08` }}
+        >
+          View Full Leaderboard →
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -533,6 +605,12 @@ export function ProfileScreen() {
               </div>
             </div>
 
+            {/* Career Ranking */}
+            <CareerRankCard profileName={profile.name} onView={() => navigate("leaderboard")} />
+
+            {/* Activity Heatmap */}
+            <HeatmapCard profileName={profile.name} />
+
             {/* About */}
             <SectionCard title="About" onEdit={() => setModal("about")}>
               <p className="text-[13px] text-muted-foreground leading-relaxed">{profile.about}</p>
@@ -700,6 +778,12 @@ export function ProfileScreen() {
               </div>
               {missing.length > 0 && <p className="text-[11px] text-muted-foreground mt-2">Add: {missing.slice(0, 2).join(" · ")}</p>}
             </div>
+
+            {/* Career Ranking — mobile */}
+            <CareerRankCard profileName={profile.name} onView={() => navigate("leaderboard")} />
+
+            {/* Activity Heatmap — mobile */}
+            <HeatmapCard profileName={profile.name} />
 
             {/* Sections */}
             <SectionCard title="About" onEdit={() => setModal("about")}>

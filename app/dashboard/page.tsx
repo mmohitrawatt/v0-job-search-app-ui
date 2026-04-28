@@ -10,6 +10,7 @@ import { ProfileScreen } from "@/components/screens/profile-screen"
 import { AiInterviewScreen } from "@/components/screens/ai-interview-screen"
 import { SalaryIntelScreen } from "@/components/screens/salary-intel-screen"
 import { JobAlertsScreen } from "@/components/screens/job-alerts-screen"
+import { LeaderboardScreen } from "@/components/screens/leaderboard-screen"
 import { cn } from "@/lib/utils"
 import { JobingenLogo } from "@/components/jobingen-logo"
 
@@ -179,7 +180,7 @@ function AppShell() {
   const hideTabBar = [
     "job-detail", "smart-apply", "resume-form", "resume-preview",
     "resume-optimize", "prep-detail", "ai-interview", "salary-intel",
-    "job-alerts", "resume-tailor",
+    "job-alerts", "resume-tailor", "leaderboard",
   ].includes(screen)
 
   return (
@@ -288,6 +289,7 @@ function ScreenRouter() {
     "ai-interview": <AiInterviewScreen />,
     "salary-intel": <SalaryIntelScreen />,
     "job-alerts": <JobAlertsScreen />,
+    "leaderboard": <LeaderboardScreen />,
   }
 
   return <>{screens[screen] ?? <DashboardScreen />}</>

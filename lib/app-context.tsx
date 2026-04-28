@@ -19,6 +19,7 @@ export type Screen =
   | "salary-intel"
   | "job-alerts"
   | "resume-tailor"
+  | "leaderboard"
 
 export type Tab = "dashboard" | "resume" | "jobs" | "preparation" | "profile"
 

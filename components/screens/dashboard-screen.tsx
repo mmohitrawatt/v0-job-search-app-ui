@@ -328,6 +328,37 @@ export function DashboardScreen() {
           </div>
         )}
 
+        {/* Career Leaderboard CTA */}
+        {!loading && (
+          <button
+            onClick={() => navigate("leaderboard")}
+            className="w-full rounded-[16px] mb-5 text-left tap-highlight-none btn-press overflow-hidden border border-[#1e293b]"
+            style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #0d1529 100%)" }}
+          >
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-[10px] flex items-center justify-center text-lg flex-shrink-0" style={{ background: "linear-gradient(135deg, #6366f120, #8b5cf620)", border: "1px solid #6366f130" }}>
+                    🏆
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-extrabold text-white leading-none">Career Leaderboard</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: "#64748b" }}>See where you rank among peers</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex -space-x-1.5">
+                    {["#6366f1","#8b5cf6","#f59e0b"].map((c, i) => (
+                      <div key={i} className="w-5 h-5 rounded-full border-2 flex-shrink-0" style={{ backgroundColor: c, borderColor: "#0a0f1e" }} />
+                    ))}
+                  </div>
+                  <span className="text-[10px] font-bold" style={{ color: "#6366f1" }}>View →</span>
+                </div>
+              </div>
+            </div>
+          </button>
+        )}
+
         {/* Recommended Jobs */}
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-[15px] font-bold text-foreground">Recommended for You</h2>
