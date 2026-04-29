@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
     const college            = (formData.get("college")            as string | null)?.trim() ?? ""
     const experience         = (formData.get("experience")         as string | null)?.trim() ?? ""
     const upi_transaction_id = (formData.get("upi_transaction_id") as string | null)?.trim() ?? ""
+    const stripe_session_id  = (formData.get("stripe_session_id")  as string | null)?.trim() ?? ""
+    const payment_method     = (formData.get("payment_method")     as string | null)?.trim() ?? "upi"
     const screenshot         = formData.get("screenshot") as File | null
 
     const errors: string[] = []
@@ -19,8 +21,12 @@ export async function POST(req: NextRequest) {
     if (!phone || phone.replace(/\D/g, "").length < 10)               errors.push("Valid 10-digit phone number is required.")
     if (!college)                                                      errors.push("College / Company name is required.")
     if (!experience)                                                   errors.push("Experience level is required.")
-    if (!upi_transaction_id)                                           errors.push("UPI Transaction ID is required.")
-    if (!screenshot || screenshot.size === 0)                         errors.push("Payment screenshot is required.")
+    if (payment_method === "upi") {
+      if (!upi_transaction_id)                                         errors.push("UPI Transaction ID is required.")
+      if (!screenshot || screenshot.size === 0)                        errors.push("Payment screenshot is required.")
+    } else if (payment_method === "stripe") {
+      if (!stripe_session_id)                                          errors.push("Stripe session ID is required.")
+    }
 
     if (errors.length > 0) {
       return NextResponse.json({ error: errors[0] }, { status: 400 })
@@ -58,7 +64,7 @@ export async function POST(req: NextRequest) {
       phone,
       college,
       experience,
-      upi_transaction_id,
+      upi_transaction_id: payment_method === "stripe" ? `stripe_${stripe_session_id}` : upi_transaction_id,
       payment_screenshot_url,
     })
 
