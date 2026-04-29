@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, ChangeEvent } from "react"
+import { useState, useRef, ChangeEvent } from "react"
 import { Footer } from "@/components/landing/footer"
 
 const CSS = `
@@ -302,45 +302,6 @@ function UpiPaymentCard() {
   )
 }
 
-function StripePaymentCard() {
-  return (
-    <div style={{ borderRadius: 20, border: "1.5px solid var(--border)", boxShadow: "var(--shadow-md)", overflow: "hidden", background: "white" }}>
-      <div style={{ background: "linear-gradient(135deg, #635bff 0%, #7c3aed 100%)", padding: "18px 24px", display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>💳</div>
-        <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: ".07em" }}>Stripe Secure Checkout</div>
-          <div style={{ fontSize: 24, fontWeight: 900, color: "white", lineHeight: 1.1 }}>₹29 <span style={{ fontSize: 13, fontWeight: 500, opacity: .7 }}>only</span></div>
-        </div>
-      </div>
-      <div style={{ padding: "24px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
-          {[
-            { n: "1", text: "Fill in your name, email, and details above" },
-            { n: "2", text: "Click \"Pay ₹29 with Stripe\" button" },
-            { n: "3", text: "Complete payment on Stripe's secure page" },
-            { n: "4", text: "Auto-redirected back — registration confirmed" },
-          ].map((s) => (
-            <div key={s.n} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#635bff", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, flexShrink: 0 }}>{s.n}</div>
-              <span style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.5, paddingTop: 4 }}>{s.text}</span>
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "center", flexWrap: "wrap", padding: "12px 14px", borderRadius: 10, background: "var(--cream)", border: "1.5px solid var(--border)", marginBottom: 14 }}>
-          <span style={{ fontSize: 11, color: "var(--ink3)", fontWeight: 700 }}>Accepted:</span>
-          {["Visa", "Mastercard", "RuPay", "Net Banking", "UPI"].map((m) => (
-            <span key={m} style={{ fontSize: 11, fontWeight: 700, color: "#635bff", padding: "3px 8px", borderRadius: 6, background: "#f0effe" }}>{m}</span>
-          ))}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#10b981" strokeWidth="2.2" strokeLinejoin="round"/></svg>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#10b981" }}>Secured by Stripe · PCI DSS Compliant</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function MLMasterclassPage() {
   const [form, setForm] = useState<FormData>(INIT)
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
@@ -350,61 +311,7 @@ export default function MLMasterclassPage() {
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState("")
   const [submitted, setSubmitted] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<"upi" | "stripe">("upi")
-  const [stripeLoading, setStripeLoading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get("stripe_success") !== "true") return
-    const sessionId = params.get("session_id") || ""
-    const saved = localStorage.getItem("ml_mc_form")
-    if (!saved) return
-    const savedForm: FormData = JSON.parse(saved)
-    setForm(savedForm)
-    setLoading(true)
-    const fd = new window.FormData()
-    fd.append("name", savedForm.name)
-    fd.append("email", savedForm.email)
-    fd.append("phone", savedForm.phone)
-    fd.append("college", savedForm.college)
-    fd.append("experience", savedForm.experience)
-    fd.append("payment_method", "stripe")
-    fd.append("stripe_session_id", sessionId)
-    fd.append("upi_transaction_id", "")
-    fetch("/api/ml-masterclass", { method: "POST", body: fd })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.success) { localStorage.removeItem("ml_mc_form"); setSubmitted(true) }
-        else { setServerError(data.error || "Registration failed."); setLoading(false) }
-      })
-      .catch(() => { setServerError("Network error. Please try again."); setLoading(false) })
-  }, [])
-
-  async function handleStripePay() {
-    const e: Partial<Record<keyof FormData, string>> = {}
-    if (!form.name.trim()) e.name = "Name is required."
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Valid email required."
-    if (!form.phone.trim() || form.phone.replace(/\D/g, "").length < 10) e.phone = "10-digit phone number required."
-    if (!form.college.trim()) e.college = "College / Company is required."
-    if (!form.experience) e.experience = "Please select your experience level."
-    if (Object.keys(e).length) { setErrors(e); return }
-    setStripeLoading(true)
-    localStorage.setItem("ml_mc_form", JSON.stringify(form))
-    try {
-      const res = await fetch("/api/create-stripe-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim(), college: form.college.trim(), experience: form.experience }),
-      })
-      const data = await res.json()
-      if (data.url) window.location.href = data.url
-      else { setServerError("Could not start Stripe payment. Try UPI or retry."); setStripeLoading(false) }
-    } catch {
-      setServerError("Network error. Please try again.")
-      setStripeLoading(false)
-    }
-  }
 
   function set(key: keyof FormData, val: string) {
     setForm((f) => ({ ...f, [key]: val }))
@@ -539,70 +446,41 @@ export default function MLMasterclassPage() {
                 <div style={{ height: 1, background: "var(--border)" }} />
 
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ink)", marginBottom: 12 }}>Payment — ₹29</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ink)", marginBottom: 16 }}>Payment Verification</div>
 
-                  {/* Payment method toggle */}
-                  <div style={{ display: "flex", gap: 5, padding: "4px", background: "var(--cream)", borderRadius: 12, border: "1.5px solid var(--border)", marginBottom: 16 }}>
-                    {([
-                      { id: "upi" as const, label: "📱 UPI / QR Code" },
-                      { id: "stripe" as const, label: "💳 Card / Net Banking" },
-                    ]).map((pm) => (
-                      <button key={pm.id} type="button" onClick={() => setPaymentMethod(pm.id)}
-                        style={{ flex: 1, padding: "9px 12px", borderRadius: 9, border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, transition: "all .2s", fontFamily: "inherit",
-                          background: paymentMethod === pm.id ? "white" : "transparent",
-                          color: paymentMethod === pm.id ? "var(--ind)" : "var(--ink3)",
-                          boxShadow: paymentMethod === pm.id ? "var(--shadow-sm)" : "none",
-                        }}>
-                        {pm.label}
-                      </button>
-                    ))}
-                  </div>
+                  <Field label="UPI Transaction ID *" error={errors.upi_transaction_id}>
+                    <input className={`h-field${errors.upi_transaction_id ? " error" : ""}`} placeholder="e.g. 123456789012" value={form.upi_transaction_id} onChange={(e) => set("upi_transaction_id", e.target.value)} />
+                    <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 4 }}>Find this in your UPI app under transaction history after payment.</div>
+                  </Field>
 
-                  {paymentMethod === "upi" ? (
-                    <>
-                      <Field label="UPI Transaction ID *" error={errors.upi_transaction_id}>
-                        <input className={`h-field${errors.upi_transaction_id ? " error" : ""}`} placeholder="e.g. 123456789012" value={form.upi_transaction_id} onChange={(e) => set("upi_transaction_id", e.target.value)} />
-                        <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 4 }}>Find this in your UPI app under transaction history after payment.</div>
-                      </Field>
-
-                      <div style={{ marginTop: 16 }}>
-                        <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)", letterSpacing: ".01em", display: "block", marginBottom: 6 }}>
-                          Payment Screenshot <span style={{ color: "var(--rose)" }}>*</span>
-                        </label>
-                        <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFile} />
-                        <div className={`upload-area${screenshotName ? " has-file" : ""}${screenshotError ? " error" : ""}`} onClick={() => fileRef.current?.click()}>
-                          {screenshotName ? (
-                            <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
-                              <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-                                <path d="M9 12l2 2 4-4" stroke="var(--grn)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                                <circle cx="12" cy="12" r="10" stroke="var(--grn)" strokeWidth="2" />
-                              </svg>
-                              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--grn)" }}>{screenshotName}</span>
-                            </div>
-                          ) : (
-                            <div>
-                              <svg width="28" height="28" fill="none" viewBox="0 0 24 24" style={{ margin: "0 auto 8px" }}>
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" />
-                                <polyline points="17 8 12 3 7 8" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                                <line x1="12" y1="3" x2="12" y2="15" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" />
-                              </svg>
-                              <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink3)" }}>Click to upload payment screenshot</div>
-                              <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 4 }}>PNG, JPG up to 5MB</div>
-                            </div>
-                          )}
+                  <div style={{ marginTop: 16 }}>
+                    <label style={{ fontSize: 12, fontWeight: 700, color: "var(--ink2)", letterSpacing: ".01em", display: "block", marginBottom: 6 }}>
+                      Payment Screenshot <span style={{ color: "var(--rose)" }}>*</span>
+                    </label>
+                    <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFile} />
+                    <div className={`upload-area${screenshotName ? " has-file" : ""}${screenshotError ? " error" : ""}`} onClick={() => fileRef.current?.click()}>
+                      {screenshotName ? (
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
+                          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4" stroke="var(--grn)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                            <circle cx="12" cy="12" r="10" stroke="var(--grn)" strokeWidth="2" />
+                          </svg>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "var(--grn)" }}>{screenshotName}</span>
                         </div>
-                        {screenshotError && <div style={{ fontSize: 11, color: "var(--rose)", marginTop: 4 }}>{screenshotError}</div>}
-                      </div>
-                    </>
-                  ) : (
-                    <div style={{ padding: "20px", borderRadius: 14, background: "var(--ind-l)", border: "1.5px solid rgba(99,91,255,.18)", textAlign: "center" }}>
-                      <div style={{ fontSize: 28, marginBottom: 8 }}>🔒</div>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: "#635bff", marginBottom: 6 }}>Stripe Secure Checkout</div>
-                      <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.6 }}>
-                        Clicking the button below will redirect you to Stripe&apos;s secure payment page. Pay ₹29 via card, net banking, or UPI — your registration is confirmed automatically on return.
-                      </div>
+                      ) : (
+                        <div>
+                          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" style={{ margin: "0 auto 8px" }}>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" />
+                            <polyline points="17 8 12 3 7 8" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                            <line x1="12" y1="3" x2="12" y2="15" stroke="var(--ink3)" strokeWidth="1.8" strokeLinecap="round" />
+                          </svg>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink3)" }}>Click to upload payment screenshot</div>
+                          <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 4 }}>PNG, JPG up to 5MB</div>
+                        </div>
+                      )}
                     </div>
-                  )}
+                    {screenshotError && <div style={{ fontSize: 11, color: "var(--rose)", marginTop: 4 }}>{screenshotError}</div>}
+                  </div>
                 </div>
 
                 {serverError && (
@@ -611,47 +489,28 @@ export default function MLMasterclassPage() {
                   </div>
                 )}
 
-                {paymentMethod === "upi" ? (
-                  <button type="submit" disabled={loading} className="btn btn-primary" style={{ fontSize: 15, fontWeight: 900, padding: "15px 28px", borderRadius: 16, width: "100%", gap: 10 }}>
-                    {loading
-                      ? <><Spinner /> Submitting registration...</>
-                      : <>Submit Registration — ₹29 paid
-                          <svg width="16" height="16" fill="none" viewBox="0 0 18 18">
-                            <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </>
-                    }
-                  </button>
-                ) : (
-                  <button type="button" onClick={handleStripePay} disabled={stripeLoading} className="btn" style={{ fontSize: 15, fontWeight: 900, padding: "15px 28px", borderRadius: 16, width: "100%", gap: 10, background: "linear-gradient(135deg, #635bff 0%, #7c3aed 100%)", color: "white", boxShadow: "0 6px 28px rgba(99,91,255,.35)", opacity: stripeLoading ? .7 : 1, cursor: stripeLoading ? "not-allowed" : "pointer" }}>
-                    {stripeLoading
-                      ? <><Spinner /> Redirecting to Stripe...</>
-                      : <>
-                          Pay ₹29 with Stripe
-                          <svg width="16" height="16" fill="none" viewBox="0 0 18 18">
-                            <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </>
-                    }
-                  </button>
-                )}
+                <button type="submit" disabled={loading} className="btn btn-primary" style={{ fontSize: 15, fontWeight: 900, padding: "15px 28px", borderRadius: 16, width: "100%", gap: 10 }}>
+                  {loading
+                    ? <><Spinner /> Submitting registration...</>
+                    : <>Submit Registration — ₹29 paid
+                        <svg width="16" height="16" fill="none" viewBox="0 0 18 18">
+                          <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </>
+                  }
+                </button>
 
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 20, flexWrap: "wrap", paddingTop: 4 }}>
-                  {paymentMethod === "upi"
-                    ? ["🔒 Secure", "📧 Confirmation email", "✅ Manual verification"].map((t, i) => (
-                        <span key={i} style={{ fontSize: 11, color: "var(--ink3)", fontWeight: 600 }}>{t}</span>
-                      ))
-                    : ["🔒 Stripe Encrypted", "📧 Instant confirmation", "✅ Auto-verified"].map((t, i) => (
-                        <span key={i} style={{ fontSize: 11, color: "var(--ink3)", fontWeight: 600 }}>{t}</span>
-                      ))
-                  }
+                  {["🔒 Secure", "📧 Confirmation email", "✅ Manual verification"].map((t, i) => (
+                    <span key={i} style={{ fontSize: 11, color: "var(--ink3)", fontWeight: 600 }}>{t}</span>
+                  ))}
                 </div>
               </div>
             </form>
 
-            {/* RIGHT: Payment card + what you get */}
+            {/* RIGHT: UPI card + what you get */}
             <div className="sticky-col" style={{ position: "sticky", top: 76, display: "flex", flexDirection: "column", gap: 16 }}>
-              {paymentMethod === "stripe" ? <StripePaymentCard /> : <UpiPaymentCard />}
+              <UpiPaymentCard />
 
               {/* What you get */}
               <div style={{ borderRadius: 20, border: "1.5px solid var(--border)", boxShadow: "var(--shadow-sm)", overflow: "hidden", background: "white" }}>
