@@ -221,7 +221,7 @@ function SuccessScreen({ name }: { name: string }) {
               { icon: "🔍", text: "We verify your UPI transaction ID within 24 hours" },
               { icon: "📧", text: "Confirmation email sent once payment is verified" },
               { icon: "💬", text: "WhatsApp group link shared before the session" },
-              { icon: "🗓️", text: "Session on 29 April · 7:30 PM – 10:30 PM (IST)" },
+              { icon: "🗓️", text: "Session on 3 May · 7:30 PM – 10:30 PM (IST)" },
             ].map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 16, lineHeight: 1, marginTop: 1, flexShrink: 0 }}>{s.icon}</span>
@@ -426,7 +426,7 @@ export default function RecursionBootcampPage() {
               fontSize: 11, fontWeight: 800, color: "var(--ind)", textTransform: "uppercase", letterSpacing: ".07em",
             }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--ind)", animation: "pulse-dot 2s infinite" }} />
-              Live Bootcamp · 29 April · 7:30 PM – 10:30 PM
+              Live Bootcamp · 3 May · 7:30 PM – 10:30 PM
             </div>
             <h1 style={{ fontSize: "clamp(28px,3.8vw,46px)", fontWeight: 900, letterSpacing: "-.03em", color: "var(--ink)", margin: "0 0 12px", lineHeight: 1.08 }}>
               Register for the<br />
@@ -437,7 +437,7 @@ export default function RecursionBootcampPage() {
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
               {[
-                { icon: "📅", text: "29 April 2026" },
+                { icon: "📅", text: "3 May 2026" },
                 { icon: "🕖", text: "7:30 PM – 10:30 PM" },
                 { icon: "⏱", text: "3 Hours Live" },
               ].map((b) => (
@@ -556,7 +556,7 @@ export default function RecursionBootcampPage() {
                 <div style={{ background: "linear-gradient(135deg, #1d3a8f, #2548c5)", padding: "16px 20px" }}>
                   <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: ".07em" }}>What You Get</div>
                   <div style={{ fontSize: 18, fontWeight: 900, color: "white", marginTop: 4 }}>Recursion Deep Dive</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 4, fontWeight: 600 }}>📅 29 April · 7:30 PM – 10:30 PM</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 4, fontWeight: 600 }}>📅 3 May · 7:30 PM – 10:30 PM</div>
                 </div>
                 <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
                   {[

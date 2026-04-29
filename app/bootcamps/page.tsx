@@ -23,7 +23,7 @@ const BOOTCAMPS = [
     id: 4,
     status: "upcoming" as const,
     num: "Bootcamp 4",
-    date: "29 Apr 2026",
+    date: "3 May 2026",
     link: "/recursion-bootcamp",
     title: "Recursion Deep Dive: From Call Stack to Backtracking Mastery",
     description: "A focused bootcamp to build strong recursion intuition — covering stack behavior, recursion trees, backtracking strategies, and real LeetCode problems in C++.",
