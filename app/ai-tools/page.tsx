@@ -87,6 +87,19 @@ const TOOLS = [
     features: ["Headline Optimization", "Summary Rewrite", "Experience Bullets", "Keyword Density"],
     badge: null,
   },
+  {
+    id: "job-aggregator",
+    title: "Universal Job Feed",
+    tagline: "Every job portal. One place.",
+    desc: "Stop switching between Naukri, LinkedIn, Internshala, Indeed, and AngelList. Jobingen pulls live job listings from every major portal and surfaces the best matches for your profile — deduplicated, ranked by fit, and ready to apply.",
+    color: "#059669",
+    colorLight: "#10b981",
+    bg: "#ecfdf5",
+    gradient: "linear-gradient(135deg, #047857 0%, #059669 60%, #10b981 100%)",
+    stat: { value: "10+", label: "Portals" },
+    features: ["Naukri · LinkedIn · Internshala", "Smart Deduplication", "Relevance Ranking", "One-Click Apply"],
+    badge: "New",
+  },
 ]
 
 /* ─── Fake UI Mockups ──────────────────────────────────────────────────────── */
@@ -288,6 +301,38 @@ function MockupLinkedInOptimizer() {
   )
 }
 
+function MockupJobAggregator() {
+  const portals = [
+    { name: "Naukri", jobs: 142 },
+    { name: "LinkedIn", jobs: 89 },
+    { name: "Internshala", jobs: 63 },
+    { name: "Indeed", jobs: 47 },
+  ]
+  return (
+    <div className="flex flex-col gap-2.5 w-full">
+      <div className="flex items-center justify-between mb-0.5">
+        <span className="text-[11px] font-bold text-white/70">Live Sources</span>
+        <span className="text-[11px] font-black text-white">341 jobs synced</span>
+      </div>
+      {portals.map((p, i) => (
+        <div key={i} className="flex items-center justify-between rounded-xl px-3 py-2" style={{ background: "rgba(255,255,255,0.12)" }}>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
+            <span className="text-[11px] font-black text-white">{p.name}</span>
+          </div>
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}>
+            {p.jobs} jobs
+          </span>
+        </div>
+      ))}
+      <div className="flex items-center gap-1.5 mt-1 rounded-xl px-3 py-2" style={{ background: "rgba(74,222,128,0.18)" }}>
+        <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="#86efac" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+        <span className="text-[10px] font-black" style={{ color: "#86efac" }}>Deduplicated & ranked for you</span>
+      </div>
+    </div>
+  )
+}
+
 const MOCKUPS = [
   MockupResumeBuilder,
   MockupMockInterview,
@@ -295,6 +340,7 @@ const MOCKUPS = [
   MockupAutoApply,
   MockupSalaryIntel,
   MockupLinkedInOptimizer,
+  MockupJobAggregator,
 ]
 
 /* ─── Tool Section ─────────────────────────────────────────────────────────── */
