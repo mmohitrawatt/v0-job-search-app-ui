@@ -77,12 +77,12 @@ export function Bootcamps() {
 
           {/* ── Upcoming — ML Masterclass ── */}
           <StaggerItem>
-            <div className="relative overflow-hidden rounded-2xl border-2 border-[#1d3a8f]/25 bg-white h-full flex flex-col shadow-[0_4px_24px_rgba(29,58,143,0.1)]">
-              <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#1d3a8f,#2563eb)" }} />
+            <div className="relative overflow-hidden rounded-2xl border-2 border-[#059669]/25 bg-white h-full flex flex-col shadow-[0_4px_24px_rgba(5,150,105,0.1)]">
+              <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#059669,#10b981)" }} />
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center gap-1.5 bg-[#eff6ff] text-[#1d3a8f] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#bfdbfe]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#1d3a8f] animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 bg-[#ecfdf5] text-[#059669] text-[10px] font-bold px-2.5 py-1 rounded-full border border-[#a7f3d0]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
                     Open for Registration
                   </span>
                   <span className="text-[10px] font-semibold text-slate-400">Bootcamp 5</span>
@@ -101,7 +101,7 @@ export function Bootcamps() {
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {["Live Session", "Python", "₹29 Only"].map((label) => (
-                    <span key={label} className="text-[10px] font-bold text-[#1d3a8f] bg-[#eff6ff] px-2 py-0.5 rounded border border-[#bfdbfe]">
+                    <span key={label} className="text-[10px] font-bold text-[#059669] bg-[#ecfdf5] px-2 py-0.5 rounded border border-[#a7f3d0]">
                       {label}
                     </span>
                   ))}
@@ -111,7 +111,7 @@ export function Bootcamps() {
                   {["7 Core ML Algorithms", "Full ML Pipeline", "Data Preprocessing", "Confusion Matrix & Metrics", "Hands-on Notebooks"].map((t) => (
                     <div key={t} className="flex items-center gap-1.5">
                       <svg width="9" height="9" fill="none" viewBox="0 0 24 24" className="shrink-0">
-                        <path d="M20 6L9 17l-5-5" stroke="#1d3a8f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M20 6L9 17l-5-5" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <span className="text-[10px] font-medium text-slate-600">{t}</span>
                     </div>
@@ -119,13 +119,13 @@ export function Bootcamps() {
                 </div>
 
                 <div className="flex items-center gap-2 pt-3 border-t border-slate-100 mt-auto mb-3">
-                  <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white" style={{ background: "#1d3a8f" }}>AD</div>
+                  <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white" style={{ background: "#059669" }}>AD</div>
                   <span className="text-[10px] text-slate-400">Aditya Dubey</span>
                 </div>
 
                 <a href="/ml-masterclass"
                   className="w-full flex items-center justify-center gap-2 text-[13px] font-bold text-white py-3 rounded-xl transition-all hover:-translate-y-0.5"
-                  style={{ background: "linear-gradient(135deg,#1d3a8f,#2563eb)", boxShadow: "0 4px 14px rgba(29,58,143,0.3)" }}>
+                  style={{ background: "linear-gradient(135deg,#059669,#10b981)", boxShadow: "0 4px 14px rgba(5,150,105,0.3)" }}>
                   Register Now — ₹29 →
                 </a>
               </div>

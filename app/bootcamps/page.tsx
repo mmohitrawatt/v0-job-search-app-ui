@@ -8,6 +8,7 @@ import { Footer } from "@/components/landing/footer"
 
 const MENTORS_MAP: Record<string, { initials: string; color: string; name: string; role: string }> = {
   AD: { initials: "AD", color: "#1d3a8f", name: "Aditya D.",      role: "AI Engineer" },
+  TR: { initials: "TR", color: "#7c3aed", name: "Tarsh",          role: "DSA Instructor" },
   SP: { initials: "SP", color: "#0f766e", name: "Shubham P.",     role: "ML Engineer" },
   JV: { initials: "JV", color: "#7c3aed", name: "Jay V.",         role: "Full Stack Dev" },
   SK: { initials: "SK", color: "#b45309", name: "Shivam K.",      role: "Data Scientist" },
@@ -32,7 +33,7 @@ const BOOTCAMPS = [
     students: null,
     topics: ["Base Recursion & Stack", "Recursion Trees & Depth", "Parameter Passing & State", "Backtracking Fundamentals", "Subsets, Permutations, N-Queens"],
     delivered: ["Live Coding", "Problem Sets", "Recordings", "Community Access"],
-    mentorKeys: ["AD"],
+    mentorKeys: ["TR"],
     mentorLabel: null as string | null,
     mentorSub: null as string | null,
     rating: 0,
@@ -57,9 +58,9 @@ const BOOTCAMPS = [
     mentorLabel: null as string | null,
     mentorSub: null as string | null,
     rating: 0,
-    accent: "#1d3a8f",
-    tagColor: "#1d3a8f",
-    tagBg: "#eff6ff",
+    accent: "#059669",
+    tagColor: "#059669",
+    tagBg: "#ecfdf5",
   },
   {
     id: 1,
