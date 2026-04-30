@@ -1,11 +1,4 @@
-﻿import type { FormData } from "./types"
-
-const FOLLOWER_OPTIONS = [
-  { value: "0-1k", label: "0 – 1K" },
-  { value: "1k-5k", label: "1K – 5K" },
-  { value: "5k-10k", label: "5K – 10K" },
-  { value: "10k+", label: "10K+" },
-]
+import type { FormData } from "./types"
 
 interface Props {
   data: FormData
@@ -26,17 +19,17 @@ export function CreatorProfileStep({ data, onChange, errors }: Props) {
           </svg>
         </div>
         <h2 className="cc-step-title">Creator Profile</h2>
-        <p className="cc-step-desc">Share your social media presence so we can understand your reach.</p>
+        <p className="cc-step-desc">Your Instagram handle — where we&apos;ll check out your content.</p>
       </div>
 
       <div className="cc-fields">
         <div className="cc-field">
           <label className="cc-label">
             <span className="cc-social-icon cc-ig" />
-            Instagram Profile URL <span className="cc-req">*</span>
+            Instagram Username <span className="cc-req">*</span>
           </label>
           <div className="cc-input-prefix-wrap">
-            <span className="cc-input-prefix">instagram.com/</span>
+            <span className="cc-input-prefix">@</span>
             <input
               className={`cc-input cc-input-prefixed${errors.instagram ? " cc-input-error" : ""}`}
               type="text"
@@ -46,62 +39,6 @@ export function CreatorProfileStep({ data, onChange, errors }: Props) {
             />
           </div>
           {errors.instagram && <span className="cc-error">{errors.instagram}</span>}
-        </div>
-
-        <div className="cc-field">
-          <label className="cc-label">
-            <span className="cc-social-icon cc-li" />
-            LinkedIn Profile URL <span className="cc-req">*</span>
-          </label>
-          <div className="cc-input-prefix-wrap">
-            <span className="cc-input-prefix">linkedin.com/in/</span>
-            <input
-              className={`cc-input cc-input-prefixed${errors.linkedin ? " cc-input-error" : ""}`}
-              type="text"
-              placeholder="yourprofile"
-              value={data.linkedin}
-              onChange={e => onChange("linkedin", e.target.value)}
-            />
-          </div>
-          {errors.linkedin && <span className="cc-error">{errors.linkedin}</span>}
-        </div>
-
-        <div className="cc-field">
-          <label className="cc-label">
-            <span className="cc-social-icon cc-yt" />
-            YouTube Channel
-            <span className="cc-optional"> — optional</span>
-          </label>
-          <input
-            className="cc-input"
-            type="url"
-            placeholder="https://youtube.com/@yourchannel"
-            value={data.youtube}
-            onChange={e => onChange("youtube", e.target.value)}
-          />
-        </div>
-
-        <div className="cc-field">
-          <label className="cc-label">Total Follower Count (all platforms) <span className="cc-req">*</span></label>
-          <div className="cc-radio-row">
-            {FOLLOWER_OPTIONS.map(opt => (
-              <label
-                key={opt.value}
-                className={`cc-radio-chip${data.followerCount === opt.value ? " selected" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="followerCount"
-                  value={opt.value}
-                  checked={data.followerCount === opt.value}
-                  onChange={() => onChange("followerCount", opt.value)}
-                  style={{ display: "none" }}
-                />
-                {opt.label}
-              </label>
-            ))}
-          </div>
-          {errors.followerCount && <span className="cc-error">{errors.followerCount}</span>}
         </div>
       </div>
     </div>

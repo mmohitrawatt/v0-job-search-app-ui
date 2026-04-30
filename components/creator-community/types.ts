@@ -4,13 +4,8 @@ export interface FormData {
   phone: string
   city: string
   instagram: string
-  linkedin: string
-  youtube: string
   followerCount: string
   contentTypes: string[]
-  bestPosts: string
-  audienceDescription: string
-  contentIdea: string
   collaborationModel: string
   postsPerWeek: string
 }
@@ -27,22 +22,14 @@ export const INITIAL_FORM_DATA: FormData = {
   phone: "",
   city: "",
   instagram: "",
-  linkedin: "",
-  youtube: "",
   followerCount: "",
   contentTypes: [],
-  bestPosts: "",
-  audienceDescription: "",
-  contentIdea: "",
   collaborationModel: "",
   postsPerWeek: "",
 }
 
 export const STEPS: StepConfig[] = [
   { id: 1, label: "Basic Information", shortLabel: "You" },
-  { id: 2, label: "Creator Profile", shortLabel: "Profile" },
-  { id: 3, label: "Content & Audience", shortLabel: "Content" },
-  { id: 4, label: "Your Best Idea", shortLabel: "Idea" },
-  { id: 5, label: "Collaboration", shortLabel: "Collab" },
-  { id: 6, label: "Review & Submit", shortLabel: "Review" },
+  { id: 2, label: "Collaboration",     shortLabel: "Collab" },
+  { id: 3, label: "Review & Submit",   shortLabel: "Review" },
 ]

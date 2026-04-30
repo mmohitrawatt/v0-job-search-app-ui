@@ -5,9 +5,6 @@ import { Navbar } from "@/components/landing/navbar"
 import { Footer } from "@/components/landing/footer"
 import { StepIndicator } from "@/components/creator-community/StepIndicator"
 import { BasicInfoStep } from "@/components/creator-community/BasicInfoStep"
-import { CreatorProfileStep } from "@/components/creator-community/CreatorProfileStep"
-import { ContentStep } from "@/components/creator-community/ContentStep"
-import { IdeaStep } from "@/components/creator-community/IdeaStep"
 import { CollaborationStep } from "@/components/creator-community/CollaborationStep"
 import { ReviewSubmit } from "@/components/creator-community/ReviewSubmit"
 import { INITIAL_FORM_DATA, STEPS } from "@/components/creator-community/types"
@@ -49,18 +46,10 @@ function validateStep(step: number, data: FormData): Partial<Record<keyof FormDa
     else if (!/^\S+@\S+\.\S+$/.test(data.email)) e.email = "Enter a valid email"
     if (!data.phone.trim()) e.phone = "Phone number is required"
     if (!data.city.trim()) e.city = "City is required"
-  } else if (step === 2) {
-    if (!data.instagram.trim()) e.instagram = "Instagram handle is required"
-    if (!data.linkedin.trim()) e.linkedin = "LinkedIn profile is required"
+    if (!data.instagram.trim()) e.instagram = "Instagram username is required"
     if (!data.followerCount) e.followerCount = "Please select your follower count"
-  } else if (step === 3) {
+  } else if (step === 2) {
     if (!data.contentTypes.length) e.contentTypes = "Select at least one content type"
-    if (!data.bestPosts.trim()) e.bestPosts = "Paste links to at least one post"
-    if (!data.audienceDescription.trim()) e.audienceDescription = "Describe your audience"
-  } else if (step === 4) {
-    if (!data.contentIdea.trim()) e.contentIdea = "Share your content idea"
-    else if (data.contentIdea.trim().length < 60) e.contentIdea = "Give us more detail — at least 60 characters"
-  } else if (step === 5) {
     if (!data.collaborationModel) e.collaborationModel = "Select a collaboration model"
     if (!data.postsPerWeek) e.postsPerWeek = "Select your weekly availability"
   }
@@ -324,6 +313,8 @@ export default function CreatorCommunityPage() {
 
         /* FIELDS */
         .cc-fields  { display:flex; flex-direction:column; gap:20px; }
+        .cc-fields-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        @media(max-width:480px){ .cc-fields-row{ grid-template-columns:1fr; } }
         .cc-field   { display:flex; flex-direction:column; gap:6px; }
         .cc-label   { font-size:13px; font-weight:700; color:#374151; display:flex; align-items:center; gap:6px; }
         .cc-req     { color:#1d3a8f; }
@@ -751,7 +742,7 @@ export default function CreatorCommunityPage() {
 
                 <div className="cc-how-grid">
                   {[
-                    { n:"01", title:"Submit Your Application", desc:"Fill out our 6-step application — takes about 10 minutes. Tell us who you are, what you create, and your best content idea for Jobingen." },
+                    { n:"01", title:"Submit Your Application", desc:"Fill out our quick 4-step application — takes under 5 minutes. Tell us who you are, what you create, and how you'd like to collaborate." },
                     { n:"02", title:"We Review & Reach Out",   desc:"Our team personally reviews every application within 5–7 business days. Shortlisted creators get a direct message from us." },
                     { n:"03", title:"Get Your First Brief",    desc:"Once onboarded, you receive a content brief, a collaboration agreement, and access to the private Creator Community group." },
                   ].map((s, i) => (
@@ -779,7 +770,7 @@ export default function CreatorCommunityPage() {
                       Creator Application
                       <span className="cc-eyebrow-line" />
                     </div>
-                    <h2 className="cc-form-header-title">Apply in 6 steps</h2>
+                    <h2 className="cc-form-header-title">Apply in 3 steps</h2>
                     <p className="cc-form-header-sub">
                       We review every application personally. Take your time.
                     </p>
@@ -793,11 +784,8 @@ export default function CreatorCommunityPage() {
 
                     <form onSubmit={handleSubmit}>
                       {step === 1 && <BasicInfoStep data={formData} onChange={(k,v) => updateField(k, v as string)} errors={errors} />}
-                      {step === 2 && <CreatorProfileStep data={formData} onChange={(k,v) => updateField(k, v as string)} errors={errors} />}
-                      {step === 3 && <ContentStep data={formData} onChange={(k,v) => updateField(k, v)} errors={errors} />}
-                      {step === 4 && <IdeaStep data={formData} onChange={(k,v) => updateField(k, v as string)} errors={errors} />}
-                      {step === 5 && <CollaborationStep data={formData} onChange={(k,v) => updateField(k, v as string)} errors={errors} />}
-                      {step === 6 && <ReviewSubmit data={formData} loading={loading} error={submitError} />}
+                      {step === 2 && <CollaborationStep data={formData} onChange={(k,v) => updateField(k, v)} errors={errors} />}
+                      {step === 3 && <ReviewSubmit data={formData} loading={loading} error={submitError} />}
 
                       <div className="cc-step-nav">
                         {step > 1 && (

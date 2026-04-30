@@ -1,4 +1,12 @@
-﻿import type { FormData } from "./types"
+import type { FormData } from "./types"
+
+const CONTENT_TYPES = [
+  { value: "reels",      label: "🎬 Reels / Short Videos" },
+  { value: "career",     label: "🎯 Career Guidance" },
+  { value: "coding",     label: "💻 Coding / Tech Content" },
+  { value: "placement",  label: "📋 Placement Preparation" },
+  { value: "motivation", label: "🔥 Motivational Content" },
+]
 
 const COLLAB_OPTIONS = [
   {
@@ -30,16 +38,23 @@ const COLLAB_OPTIONS = [
 const POSTS_PER_WEEK = [
   { value: "1-2", label: "1 – 2 posts" },
   { value: "3-5", label: "3 – 5 posts" },
-  { value: "5+", label: "5+ posts" },
+  { value: "5+",  label: "5+ posts" },
 ]
 
 interface Props {
   data: FormData
-  onChange: (key: keyof FormData, value: string) => void
+  onChange: (key: keyof FormData, value: string | string[]) => void
   errors: Partial<Record<keyof FormData, string>>
 }
 
 export function CollaborationStep({ data, onChange, errors }: Props) {
+  const toggleType = (value: string) => {
+    const next = data.contentTypes.includes(value)
+      ? data.contentTypes.filter(v => v !== value)
+      : [...data.contentTypes, value]
+    onChange("contentTypes", next)
+  }
+
   return (
     <div className="cc-step-body">
       <div className="cc-step-top">
@@ -48,11 +63,34 @@ export function CollaborationStep({ data, onChange, errors }: Props) {
             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <h2 className="cc-step-title">Collaboration & Availability</h2>
-        <p className="cc-step-desc">Tell us how you&apos;d like to work with us and your capacity.</p>
+        <h2 className="cc-step-title">Content & Collaboration</h2>
+        <p className="cc-step-desc">What you create and how you&apos;d like to work with us.</p>
       </div>
 
       <div className="cc-fields">
+        <div className="cc-field">
+          <label className="cc-label">What type of content do you create? <span className="cc-req">*</span></label>
+          <p className="cc-field-hint">Select all that apply</p>
+          <div className="cc-chip-grid">
+            {CONTENT_TYPES.map(ct => (
+              <button
+                key={ct.value}
+                type="button"
+                className={`cc-chip${data.contentTypes.includes(ct.value) ? " selected" : ""}`}
+                onClick={() => toggleType(ct.value)}
+              >
+                {data.contentTypes.includes(ct.value) && (
+                  <svg width="13" height="13" viewBox="0 0 12 12" fill="none" style={{ marginRight: 6, flexShrink: 0 }}>
+                    <path d="M2 6L5 9L10 3" stroke="#1d3a8f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+                {ct.label}
+              </button>
+            ))}
+          </div>
+          {errors.contentTypes && <span className="cc-error">{errors.contentTypes as string}</span>}
+        </div>
+
         <div className="cc-field">
           <label className="cc-label">Preferred Collaboration Model <span className="cc-req">*</span></label>
           <div className="cc-collab-grid">

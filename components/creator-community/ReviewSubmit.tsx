@@ -1,24 +1,24 @@
-﻿import type { FormData } from "./types"
+import type { FormData } from "./types"
 
 const CONTENT_TYPE_LABELS: Record<string, string> = {
-  reels: "Reels / Short Videos",
-  career: "Career Guidance",
-  coding: "Coding / Tech Content",
-  placement: "Placement Preparation",
+  reels:      "Reels / Short Videos",
+  career:     "Career Guidance",
+  coding:     "Coding / Tech Content",
+  placement:  "Placement Preparation",
   motivation: "Motivational Content",
 }
 
 const COLLAB_LABELS: Record<string, string> = {
-  barter: "Barter Collaboration",
+  barter:     "Barter Collaboration",
   ambassador: "Creator Ambassador",
   internship: "Content Internship",
-  open: "Open to Discussion",
+  open:       "Open to Discussion",
 }
 
 const POSTS_LABELS: Record<string, string> = {
   "1-2": "1–2 posts/week",
   "3-5": "3–5 posts/week",
-  "5+": "5+ posts/week",
+  "5+":  "5+ posts/week",
 }
 
 interface ReviewRow {
@@ -65,45 +65,24 @@ export function ReviewSubmit({ data, loading, error }: Props) {
         <ReviewSection
           title="Basic Information"
           rows={[
-            { label: "Full Name", value: data.fullName },
-            { label: "Email", value: data.email },
-            { label: "Phone", value: data.phone },
-            { label: "City", value: data.city },
+            { label: "Full Name",  value: data.fullName },
+            { label: "Email",      value: data.email },
+            { label: "Phone",      value: data.phone },
+            { label: "City",       value: data.city },
+            { label: "Instagram",  value: data.instagram ? `@${data.instagram}` : "" },
+            { label: "Followers",  value: data.followerCount },
           ]}
         />
 
         <ReviewSection
-          title="Creator Profile"
-          rows={[
-            { label: "Instagram", value: data.instagram ? `@${data.instagram}` : "" },
-            { label: "LinkedIn", value: data.linkedin },
-            { label: "YouTube", value: data.youtube || "Not provided" },
-            { label: "Followers", value: data.followerCount },
-          ]}
-        />
-
-        <ReviewSection
-          title="Content & Audience"
+          title="Content & Collaboration"
           rows={[
             {
               label: "Content Types",
               value: data.contentTypes.map(v => CONTENT_TYPE_LABELS[v] || v).join(", "),
             },
-            { label: "Best Posts", value: data.bestPosts.split("\n").filter(Boolean).join(" | ") },
-            { label: "Audience", value: data.audienceDescription },
-          ]}
-        />
-
-        <ReviewSection
-          title="Your Idea"
-          rows={[{ label: "Content Idea", value: data.contentIdea }]}
-        />
-
-        <ReviewSection
-          title="Collaboration"
-          rows={[
-            { label: "Model", value: COLLAB_LABELS[data.collaborationModel] || data.collaborationModel },
-            { label: "Availability", value: POSTS_LABELS[data.postsPerWeek] || data.postsPerWeek },
+            { label: "Collab Model",  value: COLLAB_LABELS[data.collaborationModel] || data.collaborationModel },
+            { label: "Availability",  value: POSTS_LABELS[data.postsPerWeek] || data.postsPerWeek },
           ]}
         />
       </div>
@@ -125,11 +104,7 @@ export function ReviewSubmit({ data, loading, error }: Props) {
         Your data is secure. We review every application personally and reach out within 5–7 business days.
       </div>
 
-      <button
-        type="submit"
-        className="cc-submit-btn"
-        disabled={loading}
-      >
+      <button type="submit" className="cc-submit-btn" disabled={loading}>
         {loading ? (
           <>
             <span className="cc-spinner" />
