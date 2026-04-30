@@ -10,73 +10,29 @@ const NAV_LINKS = [
   { label: "Jobs", href: "/jobs" },
   { label: "AI Tools", href: "/ai-tools" },
   { label: "Bootcamps", href: "/bootcamps" },
-
   { label: "Mentors", href: "/mentors" },
+  { label: "Creator", href: "/creator-community" },
 ]
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [stripVisible, setStripVisible] = useState(true)
   const { open: openWaitlist } = useWaitlist()
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 10)
-      if (window.scrollY > 80) setStripVisible(false)
-    }
+    const onScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   return (
     <>
-      {/* ── Announcement Strip ── */}
-      <AnimatePresence>
-        {stripVisible && (
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -40 }}
-            transition={{ duration: 0.25, ease: "easeIn" }}
-            className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-center gap-2 sm:gap-3 px-8 py-2"
-            style={{ background: "linear-gradient(135deg, #0a1533 0%, #1d3a8f 100%)", minHeight: 40 }}
-          >
-            {/* NEW pill */}
-            <span
-              className="shrink-0 text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded"
-              style={{ background: "rgba(255,255,255,0.18)", color: "white" }}
-            >
-              Live
-            </span>
-
-            {/* Text — truncated on mobile, full on desktop */}
-            <Link href="/recursion-bootcamp" className="text-white/85 leading-tight font-medium truncate hover:text-white transition-colors" style={{ fontSize: 12 }}>
-              <span className="sm:hidden">Recursion Bootcamp · 3 May · 7:30–10:30 PM · ₹29 🚀</span>
-              <span className="hidden sm:inline">🚀 Recursion Deep Dive — 3 May · 7:30 PM – 10:30 PM · Only ₹29 · Register Now</span>
-            </Link>
-
-            {/* Dismiss */}
-            <button
-              onClick={() => setStripVisible(false)}
-              className="absolute right-2.5 sm:right-5 flex items-center justify-center w-5 h-5 rounded-full transition-all hover:bg-white/20"
-              style={{ color: "rgba(255,255,255,0.5)" }}
-              aria-label="Dismiss"
-            >
-              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <header
-        className={`fixed left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-xl border-b ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-xl border-b ${
           scrolled
             ? "border-slate-200/80 shadow-[0_1px_8px_rgba(0,0,0,0.06)]"
             : "border-slate-100"
         }`}
-        style={{ top: stripVisible ? 40 : 0 }}
       >
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-10 h-[68px] flex items-center justify-between">
           {/* Logo */}
@@ -135,7 +91,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg lg:hidden" style={{ top: stripVisible ? 108 : 68 }}
+            className="fixed inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg lg:hidden" style={{ top: 68 }}
           >
             <nav className="flex flex-col p-4 gap-1">
               {NAV_LINKS.map((link) => (
