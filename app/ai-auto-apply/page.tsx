@@ -55,7 +55,7 @@ const CSS = `
 
   /* ═══ HERO ═══ */
   .hero{
-    max-width:1100px;margin:0 auto;padding:40px 24px 0;
+    max-width:1100px;margin:0 auto;padding:148px 24px 0;
     text-align:center;
   }
   .hero-pill{
@@ -357,7 +357,6 @@ export default function Page(){
       <Navbar />
       <style dangerouslySetInnerHTML={{__html:CSS}}/>
       <div className="page">
-        <div style={{ height: 108 }} />
         {/* HERO */}
         <div className="hero">
           <div className="hero-pill"><span style={{width:7,height:7,borderRadius:"50%",background:"#384FFB",display:"inline-block"}}/> Beta</div>

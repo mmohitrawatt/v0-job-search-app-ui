@@ -340,10 +340,9 @@ export default function BootcampsPage() {
       `}</style>
 
       <Navbar />
-      <div style={{ height: 108 }} />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", position: "relative", overflow: "hidden" }}>
+      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", position: "relative", overflow: "hidden", paddingTop: 108 }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(29,58,143,0.035) 1px,transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top: -80, right: "8%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle,rgba(29,58,143,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
 

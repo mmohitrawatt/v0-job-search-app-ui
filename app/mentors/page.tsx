@@ -360,10 +360,9 @@ export default function MentorsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#fafbff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
       <Navbar />
-      <div className="nav-spacer" style={{ height: 108 }} />
 
       {/* ── Hero ── */}
-      <section className="hero-section" style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%)", padding: "72px 24px 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section className="hero-section" style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%)", padding: "180px 24px 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* background blobs */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           <div style={{ position: "absolute", top: "-10%", right: "5%", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%)" }} />

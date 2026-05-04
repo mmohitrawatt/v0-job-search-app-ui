@@ -86,7 +86,7 @@ export default function CampusAmbassadorPage() {
         .ca-hero {
           position: relative; overflow: hidden;
           background: linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
-          padding: 80px 24px 88px;
+          padding: 188px 24px 88px;
         }
         .ca-hero-blob1 { position:absolute; top:-10%; right:5%; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%); pointer-events:none; }
         .ca-hero-blob2 { position:absolute; bottom:-5%; left:3%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(59,91,219,0.05) 0%, transparent 70%); pointer-events:none; }
@@ -348,13 +348,13 @@ export default function CampusAmbassadorPage() {
         }
 
         @media(max-width:860px) {
-          .ca-hero { padding:56px 20px 64px; }
+          .ca-hero { padding:164px 20px 64px; }
           .ca-sec, .ca-sec-alt, .ca-sec-blue, .ca-form-section { padding:56px 20px; }
           .ca-inner { padding:0 20px; }
           .ca-who-layout { padding:0 20px; }
         }
         @media(max-width:640px) {
-          .ca-hero { padding:44px 16px 56px; }
+          .ca-hero { padding:152px 16px 56px; }
           .ca-sec, .ca-sec-alt, .ca-sec-blue, .ca-form-section { padding:44px 16px; }
           .ca-inner { padding:0 16px; }
           .ca-who-layout { padding:0 16px; }
@@ -383,13 +383,12 @@ export default function CampusAmbassadorPage() {
           .ca-form-box { padding:20px 16px 18px; border-radius:16px; }
           .ca-form-row { grid-template-columns:1fr; }
           .ca-form-inner { gap:24px; }
-          .ca-hero { padding:36px 16px 48px; }
+          .ca-hero { padding:144px 16px 48px; }
           .ca-sec, .ca-sec-alt, .ca-sec-blue, .ca-form-section { padding:36px 16px; }
         }
       `}</style>
 
       <Navbar />
-      <div style={{ height: 108 }} />
 
       <div className="ca">
 

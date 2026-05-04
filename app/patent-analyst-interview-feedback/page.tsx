@@ -251,10 +251,9 @@ export default function PatentAnalystFeedbackPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#f8faff" }}>
       <Navbar />
-      <div className="fb-nav-spacer" style={{ height: 108 }} />
 
       {/* ── Hero ── */}
-      <section className="fb-hero" style={{ background: "linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%)", padding: "64px 24px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section className="fb-hero" style={{ background: "linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%)", padding: "172px 24px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* background blobs */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           <div style={{ position: "absolute", top: "-10%", right: "5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle,rgba(29,58,143,0.07) 0%,transparent 70%)" }} />

@@ -109,7 +109,6 @@ export default async function JobsPage() {
   return (
     <>
       <Navbar />
-      <div style={{ height: 108 }} />
       <JobsClient jobs={jobs} />
       <Footer />
     </>

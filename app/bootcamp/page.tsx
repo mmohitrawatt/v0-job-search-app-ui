@@ -650,11 +650,10 @@ export default function FeedbackPage() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <Navbar />
-      <div style={{ height: 108 }} />
-      <div className="fb-page" style={{ minHeight: "calc(100vh - 108px)", background: "var(--cream)" }}>
+      <div className="fb-page" style={{ minHeight: "100vh", background: "var(--cream)" }}>
 
         {/* Hero */}
-        <div style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", padding: "44px 24px 40px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", padding: "152px 24px 40px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(29,58,143,0.035) 1px,transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
           <div style={{ position: "relative", maxWidth: 560, margin: "0 auto" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 18, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>

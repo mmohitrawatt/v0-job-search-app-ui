@@ -41,9 +41,8 @@ export default function RegisterFrontendPage() {
       `}</style>
 
       <Navbar />
-      <div style={{ height: 108 }} />
 
-      <main style={{ minHeight: "calc(100vh - 108px)", background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 40%,#fff 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px 80px" }}>
+      <main style={{ minHeight: "100vh", background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 40%,#fff 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "108px 20px 80px" }}>
 
         {/* Background accents */}
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
