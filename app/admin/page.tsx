@@ -65,6 +65,11 @@ type MentorApplication = {
   portfolio_url?: string; additional_note?: string; created_at: string
 }
 
+type EarlyApply = {
+  id: string; name: string; email: string; phone?: string; college: string
+  status: string; domain: string; why: string; portfolio?: string; created_at: string
+}
+
 type CreatorApplication = {
   id: string; full_name: string; email: string; phone: string; city: string
   instagram: string; linkedin: string; youtube?: string; follower_count: string
@@ -73,7 +78,7 @@ type CreatorApplication = {
   created_at: string
 }
 
-type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators"
+type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "ml",           label: "ML Masterclass",    icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z M12 8v4l3 3", color: "#7C3AED" },
@@ -91,6 +96,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "feedback",     label: "Feedback",          icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z", color: "#f59e0b" },
   { key: "patent-fb",   label: "Patent Analyst",    icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#1d3a8f" },
   { key: "creators",    label: "Creators",           icon: "M15 10l4.553-2.069A1 1 0 0 1 21 8.882v6.236a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z", color: "#0891b2" },
+  { key: "early-apply", label: "Early Apply",        icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#16a34a" },
 ]
 
 function fmt(iso: string) {
@@ -129,6 +135,7 @@ export default function AdminPage() {
   const [mentorApps, setMentorApps] = useState<MentorApplication[]>([])
   const [patentFeedback, setPatentFeedback] = useState<PatentAnalystFeedback[]>([])
   const [creatorApps, setCreatorApps] = useState<CreatorApplication[]>([])
+  const [earlyApply, setEarlyApply] = useState<EarlyApply[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -143,7 +150,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -177,6 +184,7 @@ export default function AdminPage() {
       else if (tbl === "mentor_applications") setMentorApps(p => p.filter(r => r.id !== id))
       else if (tbl === "patent_analyst_feedback") setPatentFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "creator_community_applications") setCreatorApps(p => p.filter(r => r.id !== id))
+      else if (tbl === "early_apply") setEarlyApply(p => p.filter(r => r.id !== id))
     } catch {
       alert("Failed to delete. Try again.")
     } finally {
@@ -199,6 +207,8 @@ export default function AdminPage() {
     const s = search.toLowerCase()
     return hackathonSubs.filter(r => r.leader_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.team_name.toLowerCase().includes(s) || r.project_title.toLowerCase().includes(s))
   }, [hackathonSubs, search])
+  const eaplyFiltered = useMemo(() => filterRows(earlyApply, search), [earlyApply, search])
+
   const ccFiltered = useMemo(() => {
     if (!search.trim()) return creatorApps
     const s = search.toLowerCase()
@@ -221,6 +231,7 @@ export default function AdminPage() {
     feedback: feedback.length,
     "patent-fb": patentFeedback.length,
     creators: creatorApps.length,
+    "early-apply": earlyApply.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -1145,6 +1156,68 @@ export default function AdminPage() {
                               <td><span className="c-why" title={r.content_idea}>{r.content_idea}</span></td>
                               <td className="c-date">{fmt(r.created_at)}</td>
                               <td><DelBtn table="creator_community_applications" id={r.id} name={r.full_name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Early Apply ── */}
+              {activeTab === "early-apply" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Early Apply — Summer Internship 2026</div>
+                      <div className="adm-sec-badge">{eaplyFiltered.length} applications</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(eaplyFiltered as unknown as Record<string, unknown>[], "early-apply-applications.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {eaplyFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No applications yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                            <th>College</th><th>Status</th><th>Domain</th>
+                            <th>Why</th><th>Portfolio</th><th>Date</th><th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {eaplyFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td className="c-phone">{r.phone || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#f0fdf4", color: "#16a34a", borderColor: "#bbf7d0" }}>
+                                  {r.status}
+                                </span>
+                              </td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#eef2ff", color: "#1d3a8f", borderColor: "#dde5ff" }}>
+                                  {r.domain}
+                                </span>
+                              </td>
+                              <td><span className="c-why" title={r.why}>{r.why}</span></td>
+                              <td>
+                                {r.portfolio
+                                  ? <a className="c-link" href={r.portfolio.startsWith("http") ? r.portfolio : `https://${r.portfolio}`} target="_blank" rel="noopener noreferrer">View</a>
+                                  : "—"}
+                              </td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="early_apply" id={r.id} name={r.name} /></td>
                             </tr>
                           ))}
                         </tbody>

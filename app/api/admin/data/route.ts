@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf, cc] = await Promise.all([
+  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf, cc, eaply] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
     supabase.from("mentor_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("patent_analyst_feedback").select("*").order("created_at", { ascending: false }),
     supabase.from("creator_community_applications").select("*").order("created_at", { ascending: false }),
+    supabase.from("early_apply").select("*").order("created_at", { ascending: false }),
   ])
 
   // Build slug → title lookup for enriching job applications
@@ -57,5 +58,6 @@ export async function GET(req: NextRequest) {
     mentorApplications: ma.data || [],
     patentAnalystFeedback: paf.data || [],
     creatorApplications: cc.data || [],
+    earlyApply: eaply.data || [],
   })
 }
