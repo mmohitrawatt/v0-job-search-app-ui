@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: 'Jobingen — Job Search & Preparation',
   description: 'AI-powered job search, resume builder, and interview preparation platform.',
   generator: 'v0.app',
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({
