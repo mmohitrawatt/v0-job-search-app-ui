@@ -1,5 +1,7 @@
 "use client"
 
+import { FadeIn, StaggerContainer, StaggerItem } from "./motion"
+
 const STEPS = [
   {
     n: "01",
@@ -61,7 +63,7 @@ export function HowItWorks() {
       <div className="max-w-[1100px] mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="text-center mb-14">
+        <FadeIn className="text-center mb-14">
           <p className="text-[12px] font-bold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">How It Works</p>
           <h2 className="text-[clamp(26px,3.5vw,40px)] font-black text-slate-900 tracking-[-0.03em] leading-[1.15] mb-3">
             From student to hired —<br className="hidden sm:block" /> 4 simple steps
@@ -69,24 +71,23 @@ export function HowItWorks() {
           <p className="text-[15px] text-slate-500 max-w-[400px] mx-auto leading-relaxed">
             Everything you need to go from "no idea where to start" to offer letter.
           </p>
-        </div>
+        </FadeIn>
 
         {/* Steps — desktop: 4 col, mobile: vertical list */}
-        <div className="hidden md:grid md:grid-cols-4 gap-0 relative mb-2">
+        <StaggerContainer className="hidden md:grid md:grid-cols-4 gap-0 relative mb-2">
           {/* Connector line */}
           <div className="absolute top-[28px] left-[12.5%] right-[12.5%] h-[2px] bg-gradient-to-r from-[#1d3a8f22] via-[#7c3aed22] via-[#04785722] to-[#b4530922] z-0 pointer-events-none" />
 
-          {STEPS.map((step, i) => (
-            <div key={step.n} className="flex flex-col items-center text-center px-4 relative z-10">
+          {STEPS.map((step) => (
+            <StaggerItem key={step.n} className="flex flex-col items-center text-center px-4 relative z-10">
               {/* Circle icon */}
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-sm"
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-sm transition-transform duration-300 hover:scale-110 hover:shadow-md"
                 style={{ background: step.bg, color: step.color, border: `1.5px solid ${step.color}20` }}
               >
                 {step.icon}
               </div>
 
-              {/* Step label */}
               <span className="text-[10px] font-black uppercase tracking-[0.1em] mb-1.5" style={{ color: `${step.color}88` }}>
                 Step {step.n}
               </span>
@@ -101,59 +102,44 @@ export function HowItWorks() {
 
               <div className="flex flex-wrap justify-center gap-1">
                 {step.tags.map(t => (
-                  <span
-                    key={t}
-                    className="text-[9px] font-semibold px-2 py-0.5 rounded-full border"
-                    style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}
-                  >
+                  <span key={t} className="text-[9px] font-semibold px-2 py-0.5 rounded-full border"
+                    style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}>
                     {t}
                   </span>
                 ))}
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* Mobile: vertical numbered list */}
-        <div className="md:hidden flex flex-col gap-0">
+        <StaggerContainer className="md:hidden flex flex-col gap-0">
           {STEPS.map((step, i) => (
-            <div key={step.n} className="flex gap-4 relative">
-              {/* Left: number + vertical line */}
+            <StaggerItem key={step.n} className="flex gap-4 relative">
               <div className="flex flex-col items-center">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-[13px] font-black shadow-sm"
-                  style={{ background: step.bg, color: step.color, border: `1.5px solid ${step.color}25` }}
-                >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-[13px] font-black shadow-sm"
+                  style={{ background: step.bg, color: step.color, border: `1.5px solid ${step.color}25` }}>
                   {step.n}
                 </div>
                 {i < STEPS.length - 1 && (
                   <div className="w-[2px] flex-1 my-2 rounded-full" style={{ background: `${step.color}18`, minHeight: 32 }} />
                 )}
               </div>
-
-              {/* Right: content */}
               <div className="pb-7 flex-1 min-w-0">
-                <h3 className="text-[15px] font-extrabold text-slate-900 tracking-[-0.02em] mb-1 leading-snug">
-                  {step.title}
-                </h3>
-                <p className="text-[13px] text-slate-500 leading-[1.7] mb-2.5">
-                  {step.desc}
-                </p>
+                <h3 className="text-[15px] font-extrabold text-slate-900 tracking-[-0.02em] mb-1 leading-snug">{step.title}</h3>
+                <p className="text-[13px] text-slate-500 leading-[1.7] mb-2.5">{step.desc}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {step.tags.map(t => (
-                    <span
-                      key={t}
-                      className="text-[10px] font-semibold px-2.5 py-1 rounded-full border"
-                      style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}
-                    >
+                    <span key={t} className="text-[10px] font-semibold px-2.5 py-1 rounded-full border"
+                      style={{ color: step.color, background: step.bg, borderColor: `${step.color}20` }}>
                       {t}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>

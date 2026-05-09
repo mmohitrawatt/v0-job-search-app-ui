@@ -48,6 +48,9 @@ const CSS = `
   @media(max-width:900px){ .ap-shell{ grid-template-columns:1fr; } }
   @media(max-width:600px){ .ap-shell{ padding:24px 16px 60px; gap:24px; } }
 
+  /* ── MOBILE ORDER: form first, sidebar below ── */
+  @media(max-width:900px){ .ap-sidebar{ order:2; position:static; } .ap-form-wrap{ order:1; } }
+
   /* ── SIDEBAR ── */
   .ap-sidebar { position:sticky; top:88px; }
   .ap-sidebar-card { background:white; border-radius:20px; border:1.5px solid var(--jb); overflow:hidden; box-shadow:var(--shadow-md); }
@@ -151,9 +154,9 @@ const CSS = `
   .ap-pay-method.selected .ap-pay-method-name { color:var(--ind); }
 
   .ap-upi-box { background:white; border:1.5px solid var(--jb); border-radius:14px; padding:20px; margin-bottom:18px; }
-  .ap-upi-id-row { display:flex; align-items:center; justify-content:space-between; background:var(--cream); border:1.5px solid var(--jb); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
-  .ap-upi-id-val  { font-size:14px; font-weight:700; color:var(--ink); font-family:'SF Mono','Fira Code',monospace; }
-  .ap-copy-btn    { font-size:11px; font-weight:800; color:var(--ind); background:var(--ind-l); border:none; border-radius:7px; padding:5px 10px; cursor:pointer; transition:all .18s; }
+  .ap-upi-id-row { display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--cream); border:1.5px solid var(--jb); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+  .ap-upi-id-val  { font-size:14px; font-weight:700; color:var(--ink); font-family:'SF Mono','Fira Code',monospace; min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ap-copy-btn    { font-size:11px; font-weight:800; color:var(--ind); background:var(--ind-l); border:none; border-radius:7px; padding:5px 10px; cursor:pointer; transition:all .18s; flex-shrink:0; }
   .ap-copy-btn:hover { background:var(--ind); color:white; }
   .ap-upi-apps { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
   .ap-upi-app  { display:inline-flex; align-items:center; gap:5px; padding:5px 10px; border-radius:8px; border:1px solid var(--jb); background:white; font-size:11px; font-weight:700; color:var(--ink2); }
@@ -175,6 +178,21 @@ const CSS = `
   .ap-success-num { width:20px; height:20px; border-radius:6px; background:var(--ind); color:white; font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
   .ap-back-home { display:inline-flex; align-items:center; gap:7px; padding:13px 28px; border-radius:12px; background:linear-gradient(135deg,var(--ind),var(--vio)); color:white; font-size:14px; font-weight:800; text-decoration:none; box-shadow:0 4px 16px rgba(29,58,143,.28); transition:all .22s; }
   .ap-back-home:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(29,58,143,.38); }
+
+  /* ── SMALL SCREEN OVERRIDES ── */
+  @media(max-width:480px){
+    .ap-success-card{ padding:28px 18px; border-radius:16px; }
+    .ap-success-h{ font-size:21px; }
+    .ap-prog-label{ font-size:9px; }
+    .ap-step-title{ font-size:16px; }
+    .ap-pay-method{ padding:10px 5px; }
+    .ap-pay-method-icon{ font-size:15px; margin-bottom:2px; }
+    .ap-pay-method-name{ font-size:10px; }
+    .ap-order-amt{ font-size:18px; }
+    .ap-btn-next{ font-size:14px; }
+    .ap-btn-back{ padding:14px 12px; font-size:14px; }
+    .ap-price-amt{ font-size:24px; }
+  }
 
   .ap-shimmer {
     background:linear-gradient(90deg,var(--ind) 0%,var(--vio) 30%,#5a8af4 50%,var(--vio) 70%,var(--ind) 100%);
@@ -391,7 +409,7 @@ export default function ApplyPage() {
 
         {/* ── Breadcrumb ── */}
         <div style={{ background:"white", borderBottom:"1px solid var(--jb)", padding:"12px 0" }}>
-          <div style={{ maxWidth:1100, margin:"0 auto", padding:"0 24px", display:"flex", alignItems:"center", gap:8, fontSize:13, color:"var(--ink3)" }}>
+          <div style={{ maxWidth:1100, margin:"0 auto", padding:"0 16px", display:"flex", alignItems:"center", gap:6, fontSize:12, color:"var(--ink3)", flexWrap:"wrap" }}>
             <Link href="/" style={{ color:"var(--ink3)", textDecoration:"none", fontWeight:600 }}>Jobingen</Link>
             <span>/</span>
             <Link href="/summer-internship" style={{ color:"var(--ink3)", textDecoration:"none", fontWeight:600 }}>Summer Internship</Link>
@@ -446,7 +464,7 @@ export default function ApplyPage() {
           </aside>
 
           {/* ── FORM ── */}
-          <div>
+          <div className="ap-form-wrap">
             <div className="ap-card">
 
               {/* Progress */}

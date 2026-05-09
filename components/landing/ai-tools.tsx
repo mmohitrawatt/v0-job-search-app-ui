@@ -1,5 +1,7 @@
 "use client"
 
+import { FadeIn, StaggerContainer, StaggerItem } from "./motion"
+
 const TOOLS = [
   {
     title: "AI Resume Builder",
@@ -58,7 +60,7 @@ export function AITools() {
       <div className="max-w-[1100px] mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="text-center mb-14">
+        <FadeIn className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#eef2ff] border border-[#c7d2fe] mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-[#1d3a8f] animate-pulse" />
             <span className="text-[11px] font-bold text-[#1d3a8f] uppercase tracking-[0.08em]">AI Tools — Coming Soon</span>
@@ -69,14 +71,14 @@ export function AITools() {
           <p className="text-[15px] text-slate-500 max-w-[440px] mx-auto leading-relaxed">
             Resume, interviews, career guidance — all in one place, powered by AI built for Indian job market.
           </p>
-        </div>
+        </FadeIn>
 
         {/* Tool Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {TOOLS.map((tool) => (
+            <StaggerItem key={tool.title}>
             <div
-              key={tool.title}
-              className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden hover:shadow-[0_8px_32px_rgba(0,0,0,0.07)] hover:-translate-y-1 transition-all duration-200 flex flex-col"
+              className="bg-white rounded-2xl border border-slate-200/70 overflow-hidden hover:shadow-[0_12px_40px_rgba(0,0,0,0.09)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full"
             >
               {/* Colored top bar */}
               <div className="h-1" style={{ background: tool.iconBg }} />
@@ -123,8 +125,9 @@ export function AITools() {
                 </ul>
               </div>
             </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>

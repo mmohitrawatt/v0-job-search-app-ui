@@ -23,19 +23,6 @@ export const revalidate = 60
 
 const STATIC_JOBS: Job[] = [
   {
-    id: "10",
-    title: "IP & Technology Transfer Associate",
-    company: "Top Institute of India",
-    location: "Leading Science & Technology Campus",
-    slug: "patent-research-analyst-intern",
-    type: "Contractual",
-    department: "Intellectual Property",
-    experience: "Fresher / 0–2 yr",
-    mode: "On-site",
-    stipend: "₹80,000–1,00,000/mo",
-    description: "Work at the intersection of innovation, research, and intellectual property. Support patent analysis, technology commercialization, and IP management alongside senior faculty and innovation leaders at one of India's top institutes.",
-  },
-  {
     id: "2",
     title: "AI Engineer Intern",
     company: "Trippyway",
