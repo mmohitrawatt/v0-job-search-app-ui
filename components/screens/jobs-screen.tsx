@@ -77,6 +77,26 @@ type SubScreen = "list" | "detail" | "apply-detail" | "apply-confirm"
 
 const FILTERS = ["Remote", "Full-time", "Internship", "High Match", "Saved"]
 
+const TOPICS = [
+  "Machine Learning",
+  "Deep Learning",
+  "Frontend Dev",
+  "UI/UX Design",
+  "Backend Dev",
+  "AI / ML",
+  "Full Stack",
+]
+
+const TOPIC_KEYWORDS: Record<string, string[]> = {
+  "Machine Learning":  ["machine learning", "ml", "data science", "scikit", "sklearn", "xgboost", "regression", "classification"],
+  "Deep Learning":     ["deep learning", "neural", "cnn", "rnn", "lstm", "transformer", "pytorch", "tensorflow", "keras"],
+  "Frontend Dev":      ["frontend", "react", "vue", "angular", "next.js", "typescript", "html", "css", "tailwind", "svelte", "ui developer"],
+  "UI/UX Design":      ["design", "ui/ux", "ux", "figma", "product design", "wireframe", "prototyping", "user research"],
+  "Backend Dev":       ["backend", "node", "django", "fastapi", "express", "spring", "golang", "java", "rust", "api", "server", "microservices"],
+  "AI / ML":           ["ai", "llm", "rag", "nlp", "gpt", "openai", "artificial intelligence", "generative", "prompt"],
+  "Full Stack":        ["full stack", "full-stack", "mern", "mean", "lamp", "fullstack"],
+}
+
 // Prep roadmap steps generated per job
 function getPrepRoadmap(job: Job) {
   return [
@@ -128,6 +148,7 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
   const { bookmarks, toggleBookmark, savedJobIds } = useApp()
   const [query, setQuery] = useState("")
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [activeTopic, setActiveTopic] = useState<string | null>(null)
   const [showFilterSheet, setShowFilterSheet] = useState(false)
 
   const filtered = MOCK_JOBS.filter((j) => {
@@ -161,19 +182,25 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
       const parts = j.salary.replace(/[₹\s]/g, "").split("–")
       return parts.some((p) => parseInt(p) >= num)
     })()
-    return matchOk && typeOk && salaryOk
+    const topicOk = !activeTopic || (() => {
+      const kws = TOPIC_KEYWORDS[activeTopic] ?? []
+      const haystack = [j.title, ...j.skills].join(" ").toLowerCase()
+      return kws.some((k) => haystack.includes(k))
+    })()
+    return matchOk && typeOk && salaryOk && topicOk
   })
 
   function resetAll() {
     setActiveFilters([])
+    setActiveTopic(null)
     setMatchFilter("Any")
     setTypeFilter("Any")
     setSalaryFilter("Any")
     setQuery("")
   }
 
-  const hasActiveFilter = activeFilters.length > 0 || matchFilter !== "Any" || typeFilter !== "Any" || salaryFilter !== "Any" || query !== ""
-  const activeFilterCount = activeFilters.length + (matchFilter !== "Any" ? 1 : 0) + (typeFilter !== "Any" ? 1 : 0) + (salaryFilter !== "Any" ? 1 : 0)
+  const hasActiveFilter = activeFilters.length > 0 || !!activeTopic || matchFilter !== "Any" || typeFilter !== "Any" || salaryFilter !== "Any" || query !== ""
+  const activeFilterCount = activeFilters.length + (activeTopic ? 1 : 0) + (matchFilter !== "Any" ? 1 : 0) + (typeFilter !== "Any" ? 1 : 0) + (salaryFilter !== "Any" ? 1 : 0)
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   return (
@@ -266,6 +293,23 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
               </div>
             </div>
 
+            {/* Topics */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Topics</p>
+              <div className="flex flex-wrap gap-1.5">
+                {TOPICS.map((t) => {
+                  const active = activeTopic === t
+                  return (
+                    <button key={t} onClick={() => setActiveTopic(active ? null : t)}
+                      className={cn("px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors",
+                        active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-accent"
+                      )}
+                    >{t}</button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Salary */}
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">Min Salary</p>
@@ -292,36 +336,68 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
 
         {/* Mobile header */}
         <div className="lg:hidden px-4 pt-12 pb-3">
-          <div className="mb-3">
-            <h1 className="text-[19px] font-bold text-foreground tracking-tight">Job Companion</h1>
-            <p className="text-[12px] text-muted-foreground mt-0.5 font-medium">Curated for your profile</p>
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h1 className="text-[22px] font-black tracking-[-0.04em] leading-none" style={{ color: "#0f172a" }}>
+                Job Companion
+              </h1>
+              <p className="text-[12px] font-medium mt-1.5" style={{ color: "#94a3b8" }}>
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                  {fullyFiltered.length} matched roles · AI curated
+                </span>
+              </p>
+            </div>
           </div>
           <div className="relative mb-3">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="text-muted-foreground">
+              <svg width="14" height="14" viewBox="0 0 15 15" fill="none" style={{ color: "#94a3b8" }}>
                 <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" strokeWidth="1.5" />
                 <path d="M10 10L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </div>
             <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search jobs, companies, skills…"
-              className="w-full bg-card border border-border rounded-full pl-10 pr-12 py-2.5 text-[13.5px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all shadow-card"
+              placeholder="Search roles, companies, skills…"
+              className="w-full rounded-[14px] pl-10 pr-12 py-3 text-[13.5px] focus:outline-none transition-all"
+              style={{
+                background: "#f8fafc",
+                border: "1.5px solid #e8edf2",
+                color: "#0f172a",
+              }}
+              onFocus={e => (e.currentTarget.style.border = "1.5px solid rgba(29,58,143,0.4)")}
+              onBlur={e => (e.currentTarget.style.border = "1.5px solid #e8edf2")}
             />
             <button onClick={() => setShowFilterSheet(true)}
-              className="absolute inset-y-0 right-2 flex items-center justify-center w-8 h-8 my-auto rounded-full bg-primary/10 text-primary btn-press tap-highlight-none">
+              className="absolute inset-y-0 right-2 flex items-center justify-center w-9 h-9 my-auto rounded-[11px] btn-press tap-highlight-none"
+              style={{ background: "rgba(29,58,143,0.08)", color: "#1d3a8f" }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M1.5 3.5H12.5M3.5 7H10.5M6 10.5H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2.5 -mx-4 px-4" style={{ scrollbarWidth: "none" }}>
+          <div className="flex gap-2 overflow-x-auto pb-1.5 -mx-4 px-4" style={{ scrollbarWidth: "none" }}>
             {FILTERS.map((f) => {
               const active = activeFilters.includes(f)
               return (
                 <button key={f} onClick={() => toggleFilter(f)}
-                  className={cn("flex-shrink-0 px-3.5 py-1.5 rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none",
-                    active ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground border border-border"
-                  )}>{f}</button>
+                  className="flex-shrink-0 px-3.5 py-[7px] rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none"
+                  style={active
+                    ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", border: "1.5px solid transparent" }
+                    : { background: "#fff", color: "#64748b", border: "1.5px solid #e8edf2" }
+                  }>{f}</button>
+              )
+            })}
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2.5 -mx-4 px-4 mt-1" style={{ scrollbarWidth: "none" }}>
+            {TOPICS.map((t) => {
+              const active = activeTopic === t
+              return (
+                <button key={t} onClick={() => setActiveTopic(active ? null : t)}
+                  className="flex-shrink-0 px-3.5 py-[7px] rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none"
+                  style={active
+                    ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", border: "1.5px solid transparent" }
+                    : { background: "#f0f4ff", color: "#1d3a8f", border: "1.5px solid rgba(29,58,143,0.15)" }
+                  }>{t}</button>
               )
             })}
           </div>
@@ -332,40 +408,44 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
           {/* Toggle sidebar button */}
           <button
             onClick={() => setSidebarOpen((v) => !v)}
-            className={cn(
-              "relative flex items-center gap-2 px-3 py-2 rounded-[10px] border text-[12px] font-semibold transition-all flex-shrink-0",
-              sidebarOpen
-                ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                : "bg-card border-border text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
+            className="relative flex items-center gap-2 px-3 py-2 rounded-[10px] text-[12px] font-semibold transition-all flex-shrink-0"
+            style={sidebarOpen
+              ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", boxShadow: "0 2px 8px rgba(29,58,143,0.3)", border: "1.5px solid transparent" }
+              : { background: "#f8fafc", color: "#64748b", border: "1.5px solid #e8edf2" }
+            }
           >
-            {/* Panel split icon */}
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
               <rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" strokeWidth="1.4"/>
               <path d="M5.5 1V14" stroke="currentColor" strokeWidth="1.4"/>
             </svg>
             <span>{sidebarOpen ? "Hide Filters" : "Filters"}</span>
             {!sidebarOpen && activeFilterCount > 0 && (
-              <span className="w-4 h-4 bg-primary rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+              <span className="w-4 h-4 rounded-full text-[9px] font-bold text-white flex items-center justify-center"
+                style={{ background: "#1d3a8f" }}>
                 {activeFilterCount}
               </span>
             )}
           </button>
 
           <div className="flex-1">
-            <h1 className="text-[17px] font-bold text-foreground tracking-tight leading-none">Job Companion</h1>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{fullyFiltered.length} positions found</p>
+            <h1 className="text-[18px] font-black tracking-[-0.03em] leading-none" style={{ color: "#0f172a" }}>Job Companion</h1>
+            <p className="text-[11px] mt-0.5 flex items-center gap-1" style={{ color: "#94a3b8" }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+              {fullyFiltered.length} matched roles · AI curated
+            </p>
           </div>
 
           {hasActiveFilter && (
-            <button onClick={resetAll} className="text-[11px] font-semibold text-muted-foreground hover:text-foreground border border-border rounded-[8px] px-2.5 py-1.5 hover:bg-muted transition-colors">
+            <button onClick={resetAll} className="text-[11px] font-semibold rounded-[9px] px-3 py-1.5 transition-colors"
+              style={{ color: "#64748b", border: "1.5px solid #e8edf2", background: "#f8fafc" }}>
               Clear filters
             </button>
           )}
 
           <div className="flex items-center gap-2">
-            <span className="text-[12px] text-muted-foreground">Sort:</span>
-            <select className="bg-card border border-border rounded-[8px] px-2 py-1.5 text-[12px] text-foreground focus:outline-none focus:ring-1 focus:ring-primary/30">
+            <span className="text-[12px] font-medium" style={{ color: "#94a3b8" }}>Sort:</span>
+            <select className="rounded-[9px] px-2.5 py-1.5 text-[12px] font-semibold focus:outline-none transition-all"
+              style={{ background: "#f8fafc", border: "1.5px solid #e8edf2", color: "#475569" }}>
               <option>Best Match</option>
               <option>Latest</option>
               <option>Highest Salary</option>
@@ -375,20 +455,20 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
 
         {/* Cards */}
         <div className="px-4 lg:px-6 py-4">
-          <p className="lg:hidden text-[11px] text-muted-foreground font-medium mb-3">{fullyFiltered.length} positions found</p>
           {fullyFiltered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-muted-foreground">
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+                style={{ background: "linear-gradient(135deg,#f8fafc,#f1f5f9)", border: "1.5px solid #e8edf2" }}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style={{ color: "#94a3b8" }}>
                   <circle cx="11" cy="11" r="7.5" stroke="currentColor" strokeWidth="1.5"/>
                   <path d="M17 17L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-semibold text-foreground">No jobs found</p>
-              <p className="text-[12px] text-muted-foreground mt-1">Try adjusting your filters</p>
+              <p className="text-[15px] font-bold" style={{ color: "#0f172a" }}>No jobs found</p>
+              <p className="text-[12.5px] mt-1.5" style={{ color: "#94a3b8" }}>Try adjusting your filters</p>
             </div>
           ) : (
-            <div className={cn("grid grid-cols-1 gap-3 transition-all duration-300", sidebarOpen ? "lg:grid-cols-2" : "lg:grid-cols-3")}>
+            <div className={cn("grid grid-cols-1 gap-4 transition-all duration-300", sidebarOpen ? "lg:grid-cols-2" : "lg:grid-cols-3")}>
               {fullyFiltered.map((job) => (
                 <JobCard key={job.id} job={job}
                   bookmarked={bookmarks.has(job.id)}
@@ -403,13 +483,13 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
       </div>
 
       {showFilterSheet && (
-        <FilterSheet activeFilters={activeFilters} onToggle={toggleFilter} onClose={() => setShowFilterSheet(false)} />
+        <FilterSheet activeFilters={activeFilters} onToggle={toggleFilter} onClose={() => setShowFilterSheet(false)} activeTopic={activeTopic} onTopicToggle={(t) => setActiveTopic(activeTopic === t ? null : t)} />
       )}
     </div>
   )
 }
 
-// ─── Job Card (horizontal, full-width) ───────────────────────────────────────
+// ─── Job Card ─────────────────────────────────────────────────────────────────
 
 function JobCard({
   job, bookmarked, onToggleBookmark, onClick, onApplyNow,
@@ -417,7 +497,13 @@ function JobCard({
   job: Job; bookmarked: boolean; onToggleBookmark: () => void; onClick: () => void; onApplyNow: () => void
 }) {
   const [heartAnim, setHeartAnim] = useState(false)
-  const matchColor = job.matchScore >= 85 ? "text-emerald-600 bg-emerald-50 border-emerald-200" : job.matchScore >= 70 ? "text-amber-600 bg-amber-50 border-amber-200" : "text-orange-600 bg-orange-50 border-orange-200"
+
+  const matchGrade = job.matchScore >= 90 ? "high" : job.matchScore >= 75 ? "mid" : "low"
+  const mc = {
+    high: { bg: "rgba(22,163,74,0.07)",  text: "#16a34a", border: "rgba(22,163,74,0.18)",  bar: "#22c55e", glow: "rgba(22,163,74,0.10)" },
+    mid:  { bg: "rgba(245,158,11,0.07)", text: "#b45309", border: "rgba(245,158,11,0.18)", bar: "#f59e0b", glow: "rgba(245,158,11,0.10)" },
+    low:  { bg: "rgba(249,115,22,0.07)", text: "#c2410c", border: "rgba(249,115,22,0.18)", bar: "#f97316", glow: "rgba(249,115,22,0.10)" },
+  }[matchGrade]
 
   function handleBookmark(e: React.MouseEvent) {
     e.stopPropagation()
@@ -427,108 +513,136 @@ function JobCard({
   }
 
   return (
-    <div className="bg-card rounded-[16px] border border-border shadow-card overflow-hidden">
-      {/* Top section — clickable for detail */}
-      <div onClick={onClick} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && onClick()} className="w-full p-4 text-left tap-highlight-none active:bg-muted/40 transition-colors duration-150 cursor-pointer">
-        <div className="flex items-start gap-3">
-          {/* Logo */}
-          <CompanyLogo job={job} size="md" />
+    <div
+      className="group relative bg-white rounded-[20px] overflow-hidden select-none transition-all duration-300"
+      style={{ border: "1.5px solid #f0f4f8", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}
+      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.boxShadow = `0 16px 48px rgba(0,0,0,0.09), 0 4px 16px ${mc.glow}`)}
+      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(0,0,0,0.04)")}
+    >
+      {/* Match accent bar at top */}
+      {job.matchScore >= 80 && (
+        <div style={{ height: 3, background: `linear-gradient(90deg, ${mc.bar} 0%, ${mc.bar}55 100%)` }} />
+      )}
 
-          {/* Main info */}
+      {/* Main content — clickable for detail */}
+      <div
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && onClick()}
+        className="p-4 cursor-pointer tap-highlight-none"
+      >
+        {/* Row 1: Logo + title + bookmark */}
+        <div className="flex items-start gap-3 mb-3">
+          <CompanyLogo job={job} size="md" />
           <div className="flex-1 min-w-0">
-            {/* Title row — title left, bookmark right */}
-            <div className="flex items-start justify-between gap-2 mb-0.5">
-              <p className="text-[14px] font-bold text-foreground leading-tight flex-1">{job.title}</p>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-bold leading-snug" style={{ color: "#0f172a" }}>{job.title}</p>
+                <p className="text-[11.5px] font-medium mt-0.5 leading-none" style={{ color: "#64748b" }}>{job.company}</p>
+              </div>
               <button
                 onClick={handleBookmark}
                 className={cn(
-                  "flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none -mt-0.5",
-                  heartAnim ? "scale-125" : "scale-100",
-                  bookmarked ? "bg-primary/10" : "bg-transparent"
+                  "flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 tap-highlight-none",
+                  heartAnim ? "scale-[1.3]" : "scale-100",
                 )}
+                style={{
+                  background: bookmarked ? "rgba(29,58,143,0.08)" : "#f8fafc",
+                  border: "1.5px solid " + (bookmarked ? "rgba(29,58,143,0.2)" : "#e8edf2"),
+                }}
               >
-                <svg
-                  width="16" height="16" viewBox="0 0 16 16"
-                  fill={bookmarked ? "currentColor" : "none"}
-                  className={bookmarked ? "text-primary" : "text-muted-foreground"}
-                >
-                  <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                <svg width="14" height="14" viewBox="0 0 16 16"
+                  fill={bookmarked ? "#1d3a8f" : "none"}
+                  stroke={bookmarked ? "#1d3a8f" : "#94a3b8"}
+                  strokeWidth="1.3" strokeLinejoin="round">
+                  <path d="M8 13.5S2.5 10 2.5 5.8C2.5 3.7 4.18 2 6.3 2C7.22 2 8 2.6 8 2.6C8 2.6 8.78 2 9.7 2C11.82 2 13.5 3.7 13.5 5.8C13.5 10 8 13.5 8 13.5Z" />
                 </svg>
               </button>
             </div>
 
-            {/* Company + portal badge on same line */}
-            <div className="flex items-center gap-1.5 mb-2">
-              <p className="text-[12px] text-muted-foreground font-semibold leading-none">
-                {job.company} · {job.isRemote ? "Remote" : job.location}
-              </p>
+            {/* Location + type + portal */}
+            <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+              <span className="text-[10px] font-semibold flex items-center gap-0.5" style={{ color: "#94a3b8" }}>
+                <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+                {job.isRemote ? "Remote" : job.location}
+              </span>
+              <span style={{ width: 2, height: 2, borderRadius: "50%", background: "#cbd5e1", display: "inline-block", flexShrink: 0 }} />
+              <span className="text-[10px] font-semibold px-1.5 py-[2px] rounded-full"
+                style={{ background: "#f8fafc", color: "#64748b", border: "1px solid #e2e8f0" }}>{job.type}</span>
               <PortalBadge portal={job.portal} />
-            </div>
-
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className={cn("text-[10.5px] font-bold px-2 py-0.5 rounded-full border", matchColor)}>
-                {job.matchScore}% Match
-              </span>
-              <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
-                {job.type}
-              </span>
-              <span className="text-[10.5px] font-semibold text-muted-foreground">{job.salary}</span>
             </div>
           </div>
         </div>
 
-        {/* Skills row */}
-        <div className="flex gap-1.5 mt-3 flex-wrap">
+        {/* Row 2: Match badge + salary */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-1 px-2.5 py-1 rounded-[9px]"
+            style={{ background: mc.bg, border: `1px solid ${mc.border}` }}>
+            <svg width="9" height="9" viewBox="0 0 12 12" fill={mc.bar}>
+              <path d="M6 1L7.3 4.2H11L8.2 6L9.3 9.5L6 7.6L2.7 9.5L3.8 6L1 4.2H4.7L6 1Z"/>
+            </svg>
+            <span className="text-[11px] font-black" style={{ color: mc.text }}>{job.matchScore}% match</span>
+          </div>
+          <span className="text-[12px] font-bold" style={{ color: "#1e293b" }}>{job.salary}</span>
+        </div>
+
+        {/* Row 3: Skills */}
+        <div className="flex gap-1.5 flex-wrap">
           {job.skills.slice(0, 3).map((s) => (
-            <span key={s} className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-              {s}
-            </span>
+            <span key={s} className="text-[10px] font-semibold px-2 py-[3px] rounded-full"
+              style={{ background: "#f8fafc", color: "#475569", border: "1px solid #e8edf2" }}>{s}</span>
           ))}
           {job.skills.length > 3 && (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-              +{job.skills.length - 3}
-            </span>
+            <span className="text-[10px] font-semibold px-2 py-[3px] rounded-full"
+              style={{ background: "#f8fafc", color: "#94a3b8", border: "1px solid #e8edf2" }}>+{job.skills.length - 3}</span>
           )}
         </div>
       </div>
 
-      {/* Prep strip */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onApplyNow() }}
-        className="w-full px-3 py-2 flex items-center gap-2 tap-highlight-none border-t border-indigo-100 dark:border-indigo-900/40"
-        style={{ background: "rgba(79,70,229,0.06)" }}
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0 text-indigo-500">
-          <path d="M6.5 1L7.5 4.5H11L8.5 6.5L9.5 10L6.5 8L3.5 10L4.5 6.5L2 4.5H5.5L6.5 1Z" fill="currentColor"/>
-        </svg>
-        <p className="flex-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 leading-none">
-          5-Day AI Prep Plan — tailored to this role
-        </p>
-        <span className="text-[11px] font-bold text-indigo-500 flex-shrink-0">View →</span>
-      </button>
-
-      {/* Action buttons */}
-      <div className="flex border-t border-border">
-        <button
-          onClick={onClick}
-          className="flex-1 py-3 text-[12px] font-semibold text-foreground transition-colors duration-150 active:bg-muted border-r border-border"
-        >
-          View Details
-        </button>
+      {/* Action row */}
+      <div className="px-4 pb-4 flex gap-2">
         <button
           onClick={(e) => { e.stopPropagation(); onApplyNow() }}
-          className="flex-1 py-3 text-[12px] font-bold text-primary-foreground bg-primary transition-all duration-150 active:opacity-85"
+          className="flex-1 py-[10px] rounded-[13px] text-[12.5px] font-bold text-white border-0 cursor-pointer transition-all duration-200 hover:opacity-90 active:opacity-80"
+          style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)", boxShadow: "0 2px 10px rgba(29,58,143,0.28)" }}
         >
-          Apply Now
+          Smart Apply
+        </button>
+        <button
+          onClick={onClick}
+          className="px-4 py-[10px] rounded-[13px] text-[12.5px] font-semibold border-0 cursor-pointer transition-colors hover:bg-slate-100"
+          style={{ background: "#f8fafc", color: "#475569", border: "1.5px solid #e2e8f0" }}
+        >
+          Details
         </button>
       </div>
+
+      {/* AI Prep strip */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onApplyNow() }}
+        className="w-full px-4 py-2.5 flex items-center gap-2 tap-highlight-none border-t"
+        style={{ background: "linear-gradient(90deg,rgba(99,102,241,0.04),rgba(29,58,143,0.05))", borderColor: "rgba(99,102,241,0.1)" }}
+      >
+        <span className="text-[9px] font-black px-1.5 py-[2px] rounded-[4px] flex-shrink-0"
+          style={{ background: "rgba(99,102,241,0.1)", color: "#6366f1" }}>AI</span>
+        <p className="flex-1 text-[11px] font-semibold leading-none" style={{ color: "#6366f1" }}>
+          5-Day Prep Plan · personalized for this role
+        </p>
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#6366f1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
     </div>
   )
 }
 
 // ─── Filter Sheet ─────────────────────────────────────────────────────────────
 
-function FilterSheet({ activeFilters, onToggle, onClose }: { activeFilters: string[]; onToggle: (f: string) => void; onClose: () => void }) {
+function FilterSheet({ activeFilters, onToggle, onClose, activeTopic, onTopicToggle }: { activeFilters: string[]; onToggle: (f: string) => void; onClose: () => void; activeTopic: string | null; onTopicToggle: (t: string) => void }) {
   return (
     <>
       <div className="absolute inset-0 bg-black/30 z-40" onClick={onClose} />
@@ -542,26 +656,38 @@ function FilterSheet({ activeFilters, onToggle, onClose }: { activeFilters: stri
             </svg>
           </button>
         </div>
-        <div className="px-5 pt-4">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Filter by</p>
-          <div className="flex flex-wrap gap-2">
-            {FILTERS.map((f) => {
-              const active = activeFilters.includes(f)
-              return (
-                <button
-                  key={f}
-                  onClick={() => onToggle(f)}
-                  className={cn(
-                    "px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 btn-press",
-                    active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
-                  )}
-                >
-                  {f}
-                </button>
-              )
-            })}
+        <div className="px-5 pt-4 space-y-4">
+          <div>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Filter by</p>
+            <div className="flex flex-wrap gap-2">
+              {FILTERS.map((f) => {
+                const active = activeFilters.includes(f)
+                return (
+                  <button key={f} onClick={() => onToggle(f)}
+                    className={cn("px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 btn-press",
+                      active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                    )}
+                  >{f}</button>
+                )
+              })}
+            </div>
           </div>
-          <button onClick={onClose} className="w-full mt-5 py-3.5 rounded-[12px] bg-primary text-primary-foreground text-[14px] font-bold shadow-card btn-press">
+          <div>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Topics</p>
+            <div className="flex flex-wrap gap-2">
+              {TOPICS.map((t) => {
+                const active = activeTopic === t
+                return (
+                  <button key={t} onClick={() => onTopicToggle(t)}
+                    className={cn("px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 btn-press",
+                      active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                    )}
+                  >{t}</button>
+                )
+              })}
+            </div>
+          </div>
+          <button onClick={onClose} className="w-full py-3.5 rounded-[12px] bg-primary text-primary-foreground text-[14px] font-bold shadow-card btn-press">
             Apply Filters
           </button>
         </div>
