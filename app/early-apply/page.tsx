@@ -69,6 +69,7 @@ const CSS = `
     padding: 64px 24px 72px;
     border-bottom: 1px solid var(--jb);
   }
+  @media(max-width:600px) { .ea-hero { padding: 44px 18px 52px; } }
   .ea-hero-grid {
     position: absolute; inset: 0; pointer-events: none; opacity: .45;
     background-image: linear-gradient(var(--ind-l) 1px, transparent 1px), linear-gradient(90deg, var(--ind-l) 1px, transparent 1px);
@@ -101,19 +102,23 @@ const CSS = `
   /* CTAs */
   .ea-ctas { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; animation: ea-fade .9s var(--ease) .22s both; }
   .ea-btn-p {
-    display: inline-flex; align-items: center; gap: 9px; padding: 14px 32px; border-radius: 13px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 32px; border-radius: 13px;
     background: linear-gradient(135deg,var(--ind),var(--vio)); color: white;
     font-size: 15px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
     box-shadow: 0 4px 20px rgba(29,58,143,.32); transition: all .22s var(--ease);
   }
   .ea-btn-p:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(29,58,143,.42); }
   .ea-btn-s {
-    display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 13px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 26px; border-radius: 13px;
     background: white; color: var(--ind); font-size: 15px; font-weight: 700;
     text-decoration: none; border: 1.5px solid rgba(29,58,143,.2);
     box-shadow: var(--shadow-sm); transition: all .22s; cursor: pointer;
   }
   .ea-btn-s:hover { border-color: var(--ind); background: var(--ind-xl); transform: translateY(-1px); }
+  @media(max-width:480px) {
+    .ea-ctas { flex-direction: column; align-items: stretch; padding: 0 4px; }
+    .ea-btn-p, .ea-btn-s { width: 100%; font-size: 14px; padding: 13px 20px; }
+  }
 
   /* stats row — identical to si-stats-row */
   .ea-stats-row {
@@ -125,13 +130,24 @@ const CSS = `
   .ea-stat:last-child { border-right: none; }
   .ea-stat-v      { font-size: 22px; font-weight: 900; color: var(--ind); letter-spacing: -.04em; line-height: 1; }
   .ea-stat-l      { font-size: 10.5px; font-weight: 600; color: var(--ink3); margin-top: 5px; letter-spacing: .04em; text-transform: uppercase; }
-  @media(max-width:600px) { .ea-stats-row { border-radius: 14px; } .ea-stat { padding: 14px 18px; } }
+  @media(max-width:600px) {
+    .ea-stats-row { display: grid; grid-template-columns: 1fr 1fr; border-radius: 14px; width: 100%; }
+    .ea-stat { border-right: none; border-bottom: 1px solid var(--jb); padding: 13px 16px; }
+    .ea-stat:nth-child(odd)  { border-right: 1px solid var(--jb); }
+    .ea-stat:nth-last-child(-n+2) { border-bottom: none; }
+    .ea-stat-v { font-size: 18px; }
+  }
 
   /* ── SECTIONS ── */
   .ea-wrap    { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   .ea-sec     { padding: 72px 0; background: var(--white); }
   .ea-sec-alt { padding: 72px 0; background: var(--cream); }
   .ea-sec-dk  { padding: 56px 0; background: linear-gradient(160deg,#0c1445 0%,#0f172a 50%,#0c1445 100%); position: relative; overflow: hidden; }
+  @media(max-width:600px) {
+    .ea-wrap { padding: 0 16px; }
+    .ea-sec, .ea-sec-alt { padding: 48px 0; }
+    .ea-sec-dk { padding: 40px 0; }
+  }
 
   .ea-eyebrow     { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 11px; font-weight: 800; color: var(--ind); letter-spacing: .1em; text-transform: uppercase; }
   .ea-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ind); flex-shrink: 0; }
@@ -145,7 +161,7 @@ const CSS = `
 
   /* ── WHY CARDS — identical to si-why-card ── */
   .ea-why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 52px; }
-  @media(max-width:860px) { .ea-why-grid { grid-template-columns: 1fr; max-width: 480px; } }
+  @media(max-width:860px) { .ea-why-grid { grid-template-columns: 1fr; max-width: 100%; } }
   .ea-why-card {
     background: white; border-radius: 20px; border: 1.5px solid var(--jb);
     padding: 28px 24px; box-shadow: var(--shadow-sm);
@@ -172,7 +188,7 @@ const CSS = `
     padding: 40px 28px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
   }
-  .ea-seats-num  { font-size: 96px; font-weight: 900; color: var(--ind); letter-spacing: -.06em; line-height: 1; margin-bottom: 6px; }
+  .ea-seats-num  { font-size: clamp(64px,10vw,96px); font-weight: 900; color: var(--ind); letter-spacing: -.06em; line-height: 1; margin-bottom: 6px; }
   .ea-seats-unit { font-size: 11px; font-weight: 800; color: var(--ink3); text-transform: uppercase; letter-spacing: .09em; margin-bottom: 18px; }
   .ea-seats-lim  {
     display: inline-flex; align-items: center; gap: 5px;
@@ -279,8 +295,15 @@ const CSS = `
   .ea-cta-glow2 { position: absolute; bottom: -150px; left: -80px; width: 500px; height: 500px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle,rgba(29,58,143,.3) 0%,transparent 70%); }
   .ea-cta-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; text-align: center; padding: 0 24px; }
 
+  @media(max-width:480px) {
+    .ea-seats-right { padding: 22px 18px; }
+    .ea-seats-rh { font-size: 18px; }
+    .ea-urgency-tag { font-size: 11px; padding: 6px 11px; }
+    .ea-why-card { padding: 22px 18px; }
+  }
+
   /* ── SUCCESS ── */
-  .ea-success-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--cream); padding: 40px 24px; }
+  .ea-success-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--cream); padding: 40px 16px; }
   .ea-success-card { max-width: 480px; width: 100%; background: white; border: 1.5px solid var(--jb); border-radius: 24px; box-shadow: var(--shadow-lg); padding: 48px 40px; text-align: center; animation: ea-scale .55s var(--ease) both; }
   @media(max-width:520px) { .ea-success-card { padding: 32px 20px; } }
   .ea-success-icon { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,var(--ind),var(--vio)); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; box-shadow: 0 12px 40px rgba(29,58,143,.28); }
