@@ -1170,7 +1170,7 @@ export default function AdminPage() {
                 <div className="adm-sec">
                   <div className="adm-sec-head">
                     <div className="adm-sec-hl">
-                      <div className="adm-sec-title">Early Apply — Summer Internship 2026</div>
+                      <div className="adm-sec-title">Early Apply — Summer Training 2026</div>
                       <div className="adm-sec-badge">{eaplyFiltered.length} applications</div>
                     </div>
                     <div className="adm-sec-actions">

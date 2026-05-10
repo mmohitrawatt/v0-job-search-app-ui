@@ -412,7 +412,7 @@ export default function SummerInternshipPage() {
             <div style={{ display:"flex", justifyContent:"center" }}>
               <div className="si-cohort-badge">
                 <div className="si-cohort-pill"><span className="si-cohort-dot" />Now Open</div>
-                <span className="si-cohort-text">Summer Internship Cohort 2026</span>
+                <span className="si-cohort-text">Summer Training Cohort 2026</span>
               </div>
             </div>
 
@@ -423,7 +423,7 @@ export default function SummerInternshipPage() {
             </h1>
 
             <p className="si-sub">
-              Join Jobingen's Summer Internship and work on live AI tools, career systems, and startup projects that real users interact with every day.
+              Join Jobingen's Summer Training and work on live AI tools, career systems, and startup projects that real users interact with every day.
             </p>
 
             <div className="si-ctas">

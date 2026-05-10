@@ -295,7 +295,7 @@ function SuccessScreen({ name, domain }: { name: string; domain: string }) {
           You're in, <span className="ap-shimmer">{name.split(" ")[0]}!</span>
         </h2>
         <p className="ap-success-p">
-          Your application for the <strong>Summer Internship 2026</strong> in <strong>{domain}</strong> has been submitted and payment confirmed. Welcome to the process.
+          Your application for the <strong>Summer Training 2026</strong> in <strong>{domain}</strong> has been submitted and payment confirmed. Welcome to the process.
         </p>
         <div className="ap-success-steps">
           <div style={{fontSize:11,fontWeight:800,color:"#8a8aa8",textTransform:"uppercase",letterSpacing:".07em",marginBottom:12}}>What happens next</div>
@@ -412,7 +412,7 @@ export default function ApplyPage() {
           <div style={{ maxWidth:1100, margin:"0 auto", padding:"0 16px", display:"flex", alignItems:"center", gap:6, fontSize:12, color:"var(--ink3)", flexWrap:"wrap" }}>
             <Link href="/" style={{ color:"var(--ink3)", textDecoration:"none", fontWeight:600 }}>Jobingen</Link>
             <span>/</span>
-            <Link href="/summer-internship" style={{ color:"var(--ink3)", textDecoration:"none", fontWeight:600 }}>Summer Internship</Link>
+            <Link href="/summer-internship" style={{ color:"var(--ink3)", textDecoration:"none", fontWeight:600 }}>Summer Training</Link>
             <span>/</span>
             <span style={{ color:"var(--ind)", fontWeight:700 }}>Apply</span>
           </div>
@@ -428,7 +428,7 @@ export default function ApplyPage() {
                   <div className="ap-sidebar-bdot" />
                   Now Accepting
                 </div>
-                <div className="ap-sidebar-title">Summer Internship 2026</div>
+                <div className="ap-sidebar-title">Summer Training 2026</div>
                 <div className="ap-sidebar-sub">Jobingen · AI-First Startup</div>
               </div>
               <div className="ap-sidebar-body">
@@ -581,7 +581,7 @@ export default function ApplyPage() {
                         <div className="ap-order-title">Order Summary</div>
                         <div className="ap-order-amt">₹1,499</div>
                       </div>
-                      <div className="ap-order-line"><span className="ap-order-lbl">Summer Internship 2026</span><span className="ap-order-val">₹1,499</span></div>
+                      <div className="ap-order-line"><span className="ap-order-lbl">Summer Training 2026</span><span className="ap-order-val">₹1,499</span></div>
                       <div className="ap-order-line"><span className="ap-order-lbl">Processing Fee</span><span className="ap-order-val">₹0</span></div>
                       <div className="ap-order-line"><span className="ap-order-lbl" style={{fontWeight:700}}>Total</span><span className="ap-order-val" style={{color:"var(--ind)"}}>₹1,499</span></div>
                     </div>

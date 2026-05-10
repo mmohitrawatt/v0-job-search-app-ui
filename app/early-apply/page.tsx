@@ -455,7 +455,7 @@ export default function EarlyApplyPage() {
 
             <h1 className="ea-h1">
               Early Apply for<br />
-              <span className="ea-grad">Jobingen Summer Internship</span>
+              <span className="ea-grad">Jobingen Summer Training</span>
             </h1>
 
             <p className="ea-sub">
@@ -466,9 +466,9 @@ export default function EarlyApplyPage() {
               <button className="ea-btn-p" onClick={scrollToForm}>
                 Apply Early &nbsp;<ArrowRight />
               </button>
-              <Link href="/summer-internship" className="ea-btn-s">
+              <a href="#program" className="ea-btn-s">
                 Explore Program
-              </Link>
+              </a>
             </div>
 
             <div className="ea-stats-row">
@@ -490,7 +490,7 @@ export default function EarlyApplyPage() {
         {/* ════════════════════════════════════════
             SECTION — WHY (cream)
         ════════════════════════════════════════ */}
-        <section className="ea-sec-alt">
+        <section id="program" className="ea-sec-alt">
           <div className="ea-wrap">
             <R>
               <div className="ea-eyebrow"><div className="ea-eyebrow-dot" />Why Only 60 Seats</div>
@@ -579,7 +579,7 @@ export default function EarlyApplyPage() {
                       <div className="ea-ft-dot" />
                       Now Accepting Early Applications
                     </div>
-                    <h3>Summer Internship 2026</h3>
+                    <h3>Summer Training 2026</h3>
                     <p>Fill in your details — shortlisting happens on a rolling basis.</p>
                   </div>
 
@@ -631,7 +631,7 @@ export default function EarlyApplyPage() {
 
                     <div className="ea-fdiv">Your Story</div>
                     <div className="ea-field">
-                      <label className="ea-label">Why do you want to join Jobingen Summer Internship? *</label>
+                      <label className="ea-label">Why do you want to join Jobingen Summer Training? *</label>
                       <textarea
                         className={`ea-textarea${errors.why?" err":""}`}
                         placeholder="Tell us what excites you about AI, startups, and building real products. What do you want to learn and create this summer?"
