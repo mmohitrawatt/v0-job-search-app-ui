@@ -428,7 +428,7 @@ function SuccessScreen({ name }: { name: string }) {
               { icon: "🔍", text: "We verify your UPI transaction ID within 24 hours" },
               { icon: "📧", text: "Confirmation email sent once payment is verified" },
               { icon: "💬", text: "Join the WhatsApp group for updates & session link" },
-              { icon: "🗓️", text: "Session on 10 May 2026 · 7:00 PM – 11:00 PM (IST)" },
+              { icon: "🗓️", text: "Session on 17 May 2026 · 7:00 PM – 11:00 PM (IST)" },
             ].map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 16, lineHeight: 1, marginTop: 1, flexShrink: 0 }}>{s.icon}</span>
@@ -597,7 +597,7 @@ export default function MLMasterclassPage() {
 
             <div className="ml-hero-pills" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "wrap", marginBottom: 36 }}>
               {[
-                { icon: "📅", text: "10 May 2026" },
+                { icon: "📅", text: "17 May 2026" },
                 { icon: "🕖", text: "7:00 PM – 11:00 PM IST" },
                 { icon: "⏱️", text: "4 Hours Live" },
                 { icon: "🐍", text: "Python" },
@@ -783,7 +783,7 @@ export default function MLMasterclassPage() {
                 <span className="ml-sec-eyebrow-line" />
               </div>
               <h2 className="ml-sec-title" style={{ textAlign: "center" }}>Reserve your seat — ₹29 only</h2>
-              <p style={{ fontSize: 15, color: "var(--ink2)", textAlign: "center" }}>10 May 2026 · 7:00 PM – 11:00 PM IST · Limited seats</p>
+              <p style={{ fontSize: 15, color: "var(--ink2)", textAlign: "center" }}>17 May 2026 · 7:00 PM – 11:00 PM IST · Limited seats</p>
             </div>
 
             <div className="page-grid" style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 32, alignItems: "start" }}>
@@ -889,7 +889,7 @@ export default function MLMasterclassPage() {
                   <div style={{ background: "linear-gradient(135deg, #059669, #10b981)", padding: "16px 20px" }}>
                     <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: ".07em" }}>What You Get</div>
                     <div style={{ fontSize: 18, fontWeight: 900, color: "white", marginTop: 4 }}>ML Masterclass</div>
-                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 4, fontWeight: 600 }}>📅 10 May 2026 · 7:00 PM – 11:00 PM</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 4, fontWeight: 600 }}>📅 17 May 2026 · 7:00 PM – 11:00 PM</div>
                   </div>
                   <div style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
                     {[

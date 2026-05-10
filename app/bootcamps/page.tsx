@@ -24,7 +24,7 @@ const BOOTCAMPS = [
     id: 5,
     status: "upcoming" as const,
     num: "Bootcamp 5",
-    date: "10 May 2026",
+    date: "17 May 2026",
     link: "/ml-masterclass",
     title: "ML Masterclass: Core Algorithms to Real Pipelines",
     description: "4-hour live deep dive into Machine Learning — from data preprocessing and feature engineering to training, evaluating, and deploying real ML models with hands-on notebooks.",

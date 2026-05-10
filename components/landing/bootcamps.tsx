@@ -101,7 +101,7 @@ export function Bootcamps() {
                 </p>
 
                 <div className="flex items-center gap-1.5 mb-3 text-[11px] font-semibold text-slate-500">
-                  <span>📅</span> 10 May · 7:00 PM – 11:00 PM IST
+                  <span>📅</span> 17 May · 7:00 PM – 11:00 PM IST
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
