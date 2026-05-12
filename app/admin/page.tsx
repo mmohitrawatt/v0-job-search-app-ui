@@ -62,7 +62,7 @@ type MentorApplication = {
   mentorship_topics: string[]; session_price?: number; session_duration?: string
   pricing_expectation?: string
   mentorship_format: string[]; available_days?: string[]; motivation?: string
-  portfolio_url?: string; additional_note?: string; created_at: string
+  portfolio_url?: string; additional_note?: string; photo_url?: string; created_at: string
 }
 
 type EarlyApply = {
@@ -165,7 +165,10 @@ export default function AdminPage() {
         headers: { Authorization: `Bearer ${pwd}`, "Content-Type": "application/json" },
         body: JSON.stringify({ table: deleteModal.table, id: deleteModal.id }),
       })
-      if (!res.ok) throw new Error("Delete failed")
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}))
+        throw new Error(errData.error || `HTTP ${res.status}`)
+      }
       // Remove from local state
       const id = deleteModal.id
       const tbl = deleteModal.table
@@ -185,8 +188,8 @@ export default function AdminPage() {
       else if (tbl === "patent_analyst_feedback") setPatentFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "creator_community_applications") setCreatorApps(p => p.filter(r => r.id !== id))
       else if (tbl === "early_apply") setEarlyApply(p => p.filter(r => r.id !== id))
-    } catch {
-      alert("Failed to delete. Try again.")
+    } catch (err) {
+      alert(`Delete failed: ${err instanceof Error ? err.message : "Unknown error"}`)
     } finally {
       setDeleting(false)
       setDeleteModal(null)
@@ -927,7 +930,7 @@ export default function AdminPage() {
                             <th>#</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th>
                             <th>Domain</th><th>Role</th><th>Experience</th><th>LinkedIn</th>
                             <th>Topics</th><th>Price</th><th>Duration</th><th>Format</th>
-                            <th>Days</th><th>Intro</th><th>Date</th><th></th>
+                            <th>Days</th><th>Photo</th><th>Bio</th><th>Date</th><th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -961,7 +964,8 @@ export default function AdminPage() {
                                 ))}
                                 {(!m.available_days || m.available_days.length === 0) && "—"}
                               </td>
-                              <td><span className="c-why" title={m.short_intro}>{m.short_intro || "—"}</span></td>
+                              <td>{m.photo_url ? <a className="c-link" href={m.photo_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td><span className="c-why" title={m.professional_bio}>{m.professional_bio || "—"}</span></td>
                               <td className="c-date">{fmt(m.created_at)}</td>
                               <td><DelBtn table="mentor_applications" id={m.id} name={m.full_name} /></td>
                             </tr>
