@@ -78,7 +78,14 @@ type CreatorApplication = {
   created_at: string
 }
 
-type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply"
+type HiringRequest = {
+  id: string; company_name: string; website_url?: string; contact_name: string
+  work_email: string; phone: string; talent_type?: string; role_title?: string
+  domain?: string; required_skills?: string; num_hires?: number
+  work_model?: string; additional_details?: string; created_at: string
+}
+
+type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "ml",           label: "ML Masterclass",    icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z M12 8v4l3 3", color: "#7C3AED" },
@@ -97,6 +104,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "patent-fb",   label: "Patent Analyst",    icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#1d3a8f" },
   { key: "creators",    label: "Creators",           icon: "M15 10l4.553-2.069A1 1 0 0 1 21 8.882v6.236a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z", color: "#0891b2" },
   { key: "early-apply", label: "Early Apply",        icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#16a34a" },
+  { key: "hire-talent", label: "Hiring Requests",    icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#0891b2" },
 ]
 
 function fmt(iso: string) {
@@ -136,6 +144,7 @@ export default function AdminPage() {
   const [patentFeedback, setPatentFeedback] = useState<PatentAnalystFeedback[]>([])
   const [creatorApps, setCreatorApps] = useState<CreatorApplication[]>([])
   const [earlyApply, setEarlyApply] = useState<EarlyApply[]>([])
+  const [hiringRequests, setHiringRequests] = useState<HiringRequest[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -150,7 +159,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -188,6 +197,7 @@ export default function AdminPage() {
       else if (tbl === "patent_analyst_feedback") setPatentFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "creator_community_applications") setCreatorApps(p => p.filter(r => r.id !== id))
       else if (tbl === "early_apply") setEarlyApply(p => p.filter(r => r.id !== id))
+      else if (tbl === "hiring_requests") setHiringRequests(p => p.filter(r => r.id !== id))
     } catch (err) {
       alert(`Delete failed: ${err instanceof Error ? err.message : "Unknown error"}`)
     } finally {
@@ -218,6 +228,12 @@ export default function AdminPage() {
     return creatorApps.filter(r => r.full_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s))
   }, [creatorApps, search])
 
+  const hrFiltered = useMemo(() => {
+    if (!search.trim()) return hiringRequests
+    const s = search.toLowerCase()
+    return hiringRequests.filter(r => r.company_name.toLowerCase().includes(s) || r.work_email.toLowerCase().includes(s) || r.contact_name.toLowerCase().includes(s))
+  }, [hiringRequests, search])
+
   const tabCounts: Record<TabKey, number> = {
     ml: mlMasterclass.length,
     recursion: recursionBootcamp.length,
@@ -235,6 +251,7 @@ export default function AdminPage() {
     "patent-fb": patentFeedback.length,
     creators: creatorApps.length,
     "early-apply": earlyApply.length,
+    "hire-talent": hiringRequests.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -1222,6 +1239,77 @@ export default function AdminPage() {
                               </td>
                               <td className="c-date">{fmt(r.created_at)}</td>
                               <td><DelBtn table="early_apply" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Hiring Requests ── */}
+              {activeTab === "hire-talent" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Hiring Requests</div>
+                      <div className="adm-sec-badge">{hrFiltered.length} requests</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(hrFiltered as unknown as Record<string, unknown>[], "hiring-requests.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {hrFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🏢</div>{search ? `No results for "${search}"` : "No hiring requests yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>#</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th>
+                            <th>Talent Type</th><th>Role</th><th>Domain</th>
+                            <th>Skills</th><th>Hires</th><th>Work Model</th>
+                            <th>Details</th><th>Website</th><th>Date</th><th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {hrFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.company_name}</td>
+                              <td style={{ fontSize: 13 }}>{r.contact_name}</td>
+                              <td className="c-email">{r.work_email}</td>
+                              <td className="c-phone">{r.phone}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#eef2ff", color: "#1d3a8f", borderColor: "#dde5ff" }}>
+                                  {r.talent_type || "—"}
+                                </span>
+                              </td>
+                              <td style={{ fontSize: 13, fontWeight: 600 }}>{r.role_title || "—"}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#ecfeff", color: "#0891b2", borderColor: "#a5f3fc" }}>
+                                  {r.domain || "—"}
+                                </span>
+                              </td>
+                              <td><span className="c-why" title={r.required_skills}>{r.required_skills || "—"}</span></td>
+                              <td style={{ textAlign: "center", fontSize: 13, fontWeight: 700, color: "#0891b2" }}>{r.num_hires ?? "—"}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#f0fdf4", color: "#16a34a", borderColor: "#bbf7d0" }}>
+                                  {r.work_model || "—"}
+                                </span>
+                              </td>
+                              <td><span className="c-why" title={r.additional_details}>{r.additional_details || "—"}</span></td>
+                              <td>
+                                {r.website_url
+                                  ? <a className="c-link" href={r.website_url.startsWith("http") ? r.website_url : `https://${r.website_url}`} target="_blank" rel="noopener noreferrer">Visit</a>
+                                  : "—"}
+                              </td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="hiring_requests" id={r.id} name={r.company_name} /></td>
                             </tr>
                           ))}
                         </tbody>

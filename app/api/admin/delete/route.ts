@@ -12,6 +12,7 @@ const ALLOWED_TABLES = [
   "interview_feedback",
   "mentor_applications",
   "creator_community_applications",
+  "hiring_requests",
 ]
 
 export async function DELETE(req: NextRequest) {
