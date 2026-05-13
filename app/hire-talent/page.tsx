@@ -133,7 +133,7 @@ export default function HireTalentPage() {
                 </button>
                 <a href="#categories" className="hire-btn-s">Explore Talent Categories</a>
               </div>
-              <div style={{ display:"flex", justifyContent:"center" }}>
+              <div className="hire-stats-wrap">
                 <div className="hire-stats">
                   {[{ v:"48hr", l:"Talent Delivery" }, { v:"6+", l:"Domains" }, { v:"100%", l:"Trained Talent" }, { v:"Zero", l:"Agency Fee" }].map(s => (
                     <div key={s.l} className="hire-stat">
@@ -516,6 +516,9 @@ const CSS = `
   }
   .hire-btn-s:hover { border-color:var(--ind); background:var(--ind-xl); transform:translateY(-1px); }
 
+  .hire-stats-wrap { display:flex; justify-content:center; width:100%; }
+  @media(max-width:480px){ .hire-stats-wrap{ padding:0 0; } }
+
   .hire-stats {
     display:inline-flex; background:white; border:1.5px solid var(--jb); border-radius:16px;
     overflow:hidden; box-shadow:var(--shadow-md); animation:hire-fade 1s var(--ease) .3s both;
@@ -725,4 +728,46 @@ const CSS = `
   }
   .hire-success-h { font-size:24px; font-weight:900; color:var(--ink); letter-spacing:-.04em; margin-bottom:10px; }
   .hire-success-p { font-size:15px; color:var(--ink2); line-height:1.72; max-width:400px; margin:0 auto 28px; }
+
+  /* ── MOBILE (≤480px) ── */
+  @media(max-width:480px){
+    .hire-h1 { font-size:30px; line-height:1.1; }
+    .hire-sub { font-size:15px; margin-bottom:28px; }
+    .hire-badge { transform:scale(.92); transform-origin:center; margin-bottom:20px; }
+    .hire-ttl { font-size:26px; }
+    .hire-desc { font-size:14.5px; margin-bottom:36px; max-width:100%; }
+    .hire-eyebrow { font-size:10px; }
+
+    .hire-why-grid { max-width:100%; }
+    .hire-why-card { padding:22px 18px; }
+
+    .hire-step { padding:0 4px; }
+    .hire-step-desc { max-width:100%; }
+
+    .hire-form-outer { max-width:100%; }
+    .hire-form-head { padding:20px 18px; }
+    .hire-form-head-title { font-size:17px; }
+    .hire-form-body { padding:18px 16px; }
+
+    .hire-nav { flex-direction:column-reverse; gap:10px; }
+    .hire-btn-back,
+    .hire-btn-next,
+    .hire-btn-submit { width:100%; justify-content:center; text-align:center; padding:13px 20px; }
+
+    .hire-choice { padding:12px 14px; gap:10px; }
+    .hire-choice-icon { font-size:20px; }
+    .hire-model { padding:16px 12px; }
+    .hire-model-icon { font-size:22px; }
+
+    .hire-summary { padding:14px 16px; }
+    .hire-summary-lbl { font-size:11px; flex-shrink:0; min-width:70px; }
+    .hire-summary-val { font-size:12px; word-break:break-word; text-align:right; }
+
+    .hire-success { padding:36px 16px; }
+    .hire-success-h { font-size:20px; }
+
+    .hire-stats { width:100%; }
+    .hire-stat { padding:12px 12px; }
+    .hire-stat-v { font-size:18px; }
+  }
 `

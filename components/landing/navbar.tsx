@@ -13,7 +13,9 @@ const NAV_LINKS = [
   { label: "Bootcamps", href: "/bootcamps" },
   { label: "Mentors", href: "/mentors" },
   { label: "Creator", href: "/creator-community" },
+  { label: "Ambassador", href: "/campus-ambassador" },
   { label: "Summer Training", href: "/early-apply", badge: "New" },
+  { label: "Hire Talent", href: "/hire-talent" },
 ]
 
 export function Navbar() {
@@ -82,12 +84,6 @@ export function Navbar() {
 
           {/* Right — desktop */}
           <div className="hidden lg:flex items-center gap-2 shrink-0">
-            <Link
-              href="/campus-ambassador"
-              className="text-[14px] font-semibold text-slate-500 px-4 py-2 rounded-[10px] hover:text-slate-900 hover:bg-slate-50 transition-all duration-200"
-            >
-              Campus Ambassador
-            </Link>
             <button
               onClick={openWaitlist}
               className="text-[14px] font-semibold text-white px-5 py-[10px] rounded-[10px] transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] border-0 cursor-pointer"
@@ -155,14 +151,6 @@ export function Navbar() {
                 })}
 
                 <div className="mx-2 my-2 h-px bg-slate-100" />
-
-                <Link
-                  href="/campus-ambassador"
-                  onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 text-[15px] font-medium text-[#1d3a8f] hover:bg-indigo-50 rounded-xl transition-colors"
-                >
-                  Campus Ambassador
-                </Link>
 
                 <div className="p-2 pt-1">
                   <button
