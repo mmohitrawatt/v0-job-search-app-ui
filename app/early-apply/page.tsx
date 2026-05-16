@@ -302,6 +302,99 @@ const CSS = `
     .ea-why-card { padding: 22px 18px; }
   }
 
+  /* ── LIVE SEATS ── */
+  @keyframes ea-bump { 0%{transform:scale(1)} 40%{transform:scale(1.22)} 70%{transform:scale(.96)} 100%{transform:scale(1)} }
+  @keyframes ea-pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.75)} }
+  @keyframes ea-bar-shine { 0%{left:-60%} 100%{left:120%} }
+
+  .ea-live-dot {
+    width:6px; height:6px; border-radius:50%; background:#22c55e; display:inline-block; flex-shrink:0;
+    animation: ea-pulse-dot 1.8s ease-in-out infinite;
+  }
+  .ea-live-dot.urgent { background:#dc2626; }
+  .ea-live-dot.warn   { background:#f59e0b; }
+
+  .ea-seats-live { transition:color .4s var(--ease); }
+  .ea-seats-live.ea-bump { animation:ea-bump .6s var(--ease) both; }
+
+  /* new seats card */
+  .ea-sc {
+    background:white; border:1.5px solid var(--jb); border-radius:24px;
+    overflow:hidden; box-shadow:var(--shadow-md); margin-top:52px;
+  }
+  .ea-sc-top {
+    display:grid; grid-template-columns:260px 1fr;
+  }
+  @media(max-width:800px) { .ea-sc-top { grid-template-columns:1fr; } }
+
+  .ea-sc-left {
+    background:linear-gradient(160deg,var(--ind-xl) 0%,#dde5fd 100%);
+    border-right:1.5px solid var(--ind-l);
+    padding:40px 28px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  }
+  @media(max-width:800px) { .ea-sc-left { border-right:none; border-bottom:1.5px solid var(--ind-l); padding:28px 24px; flex-direction:row; gap:20px; text-align:left; justify-content:flex-start; } }
+  @media(max-width:480px) { .ea-sc-left { flex-direction:column; text-align:center; justify-content:center; } }
+
+  .ea-sc-num {
+    font-size:clamp(56px,10vw,88px); font-weight:900; letter-spacing:-.06em; line-height:1;
+    margin-bottom:4px; transition:color .5s var(--ease);
+  }
+  .ea-sc-num.green  { color:#059669; }
+  .ea-sc-num.yellow { color:#d97706; }
+  .ea-sc-num.red    { color:#dc2626; }
+  .ea-sc-num.ea-bump { animation:ea-bump .6s var(--ease) both; }
+
+  .ea-sc-unit { font-size:11px; font-weight:800; color:var(--ink3); text-transform:uppercase; letter-spacing:.09em; margin-bottom:16px; }
+  .ea-sc-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 12px; border-radius:99px; font-size:11px; font-weight:800;
+  }
+  .ea-sc-badge.green  { background:#dcfce7; color:#059669; border:1px solid rgba(5,150,105,.2); }
+  .ea-sc-badge.yellow { background:#fef3c7; color:#b45309; border:1px solid rgba(180,83,9,.2); }
+  .ea-sc-badge.red    { background:#fee2e2; color:#dc2626; border:1px solid rgba(220,38,38,.2); }
+
+  .ea-sc-right { padding:36px 40px; }
+  @media(max-width:800px) { .ea-sc-right { padding:24px 20px; } }
+
+  .ea-sc-rh { font-size:clamp(17px,2.2vw,22px); font-weight:900; color:var(--ink); letter-spacing:-.04em; line-height:1.2; margin-bottom:8px; }
+  .ea-sc-rdesc { font-size:14px; color:var(--ink2); line-height:1.7; margin-bottom:20px; }
+
+  /* progress bar */
+  .ea-pb-wrap { margin-bottom:20px; }
+  .ea-pb-labels { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
+  .ea-pb-lbl { font-size:11px; font-weight:700; color:var(--ink3); text-transform:uppercase; letter-spacing:.06em; }
+  .ea-pb-pct { font-size:12px; font-weight:800; }
+  .ea-pb-pct.green  { color:#059669; }
+  .ea-pb-pct.yellow { color:#d97706; }
+  .ea-pb-pct.red    { color:#dc2626; }
+  .ea-pb-track { height:10px; background:var(--ind-l); border-radius:99px; overflow:hidden; position:relative; }
+  .ea-pb-fill {
+    height:100%; border-radius:99px; position:relative; overflow:hidden;
+    transition:width .8s cubic-bezier(.34,1.2,.64,1);
+  }
+  .ea-pb-fill.green  { background:linear-gradient(90deg,#059669,#34d399); }
+  .ea-pb-fill.yellow { background:linear-gradient(90deg,#d97706,#fbbf24); }
+  .ea-pb-fill.red    { background:linear-gradient(90deg,#dc2626,#f87171); }
+  .ea-pb-fill::after {
+    content:''; position:absolute; top:0; bottom:0; width:50%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    animation:ea-bar-shine 2s ease-in-out infinite;
+  }
+
+  .ea-sc-checks { display:grid; grid-template-columns:1fr 1fr; gap:9px 20px; margin-bottom:20px; }
+  @media(max-width:480px) { .ea-sc-checks { grid-template-columns:1fr; } }
+
+  .ea-sc-urgency {
+    display:flex; align-items:flex-start; gap:9px;
+    border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:700; line-height:1.5;
+  }
+  .ea-sc-urgency.green  { background:#f0fdf4; color:#15803d; border:1px solid rgba(22,163,74,.15); }
+  .ea-sc-urgency.yellow { background:#fffbeb; color:#92400e; border:1px solid rgba(180,83,9,.2); }
+  .ea-sc-urgency.red    { background:#fef2f2; color:#9b1c1c; border:1px solid rgba(220,38,38,.2); }
+
+  .ea-sc-urgency-icon { flex-shrink:0; margin-top:1px; }
+
   /* ── SUCCESS ── */
   .ea-success-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--cream); padding: 40px 16px; }
   .ea-success-card { max-width: 480px; width: 100%; background: white; border: 1.5px solid var(--jb); border-radius: 24px; box-shadow: var(--shadow-lg); padding: 48px 40px; text-align: center; animation: ea-scale .55s var(--ease) both; }
@@ -311,7 +404,16 @@ const CSS = `
   .ea-success-h { font-size: 26px; font-weight: 900; color: var(--ink); letter-spacing: -.03em; margin-bottom: 12px; }
   .ea-success-p { font-size: 14px; color: var(--ink2); line-height: 1.75; margin-bottom: 24px; }
   .ea-success-tag { display: inline-flex; align-items: center; gap: 7px; background: var(--grn-l); border: 1px solid rgba(16,185,129,.2); border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #059669; margin-bottom: 28px; }
-  .ea-back-home { display: inline-flex; align-items: center; gap: 7px; padding: 13px 28px; border-radius: 12px; background: linear-gradient(135deg,var(--ind),var(--vio)); color: white; font-size: 14px; font-weight: 800; text-decoration: none; box-shadow: 0 4px 16px rgba(29,58,143,.28); transition: all .22s; }
+  .ea-wa-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; padding: 13px 20px; border-radius: 12px; margin-bottom: 12px;
+    background: #25d366; color: white; font-size: 14px; font-weight: 800;
+    text-decoration: none; box-shadow: 0 4px 16px rgba(37,211,102,.3);
+    transition: all .22s var(--ease);
+  }
+  .ea-wa-btn:hover { background: #20bd5a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,.4); }
+
+  .ea-back-home { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: 13px 28px; border-radius: 12px; background: linear-gradient(135deg,var(--ind),var(--vio)); color: white; font-size: 14px; font-weight: 800; text-decoration: none; box-shadow: 0 4px 16px rgba(29,58,143,.28); transition: all .22s; }
   .ea-back-home:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,58,143,.4); }
 `
 
@@ -348,6 +450,79 @@ function Spinner() {
 }
 
 
+/* ─── SeatsCard ──────────────────────────────────────────────────── */
+function SeatsCard({ seats, seatsAnim, onApply }: { seats: { total: number; filled: number; remaining: number }; seatsAnim: boolean; onApply: () => void }) {
+  const pct     = Math.round((seats.filled / seats.total) * 100)
+  const urgency = seats.remaining <= 10 ? "red" : seats.remaining <= 25 ? "yellow" : "green"
+  const label   = urgency === "red" ? "Almost Full!" : urgency === "yellow" ? "Filling Fast" : "Spots Available"
+  const dotClass = urgency === "red" ? "urgent" : urgency === "yellow" ? "warn" : ""
+  const urgencyMsg = urgency === "red"
+    ? "Hurry — less than 10 seats remain. Applications may close very soon."
+    : urgency === "yellow"
+    ? "Over half the cohort is filled. Apply now before it closes."
+    : "Applications are open. Secure your spot before seats run out."
+  const urgencyIcon = urgency === "red"
+    ? <svg className="ea-sc-urgency-icon" width="15" height="15" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" strokeLinecap="round"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+    : urgency === "yellow"
+    ? <svg className="ea-sc-urgency-icon" width="15" height="15" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    : <svg className="ea-sc-urgency-icon" width="15" height="15" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+
+  return (
+    <div className="ea-sc">
+      <div className="ea-sc-top">
+
+        {/* Left — live counter */}
+        <div className="ea-sc-left">
+          <div>
+            <div className={`ea-sc-num ${urgency}${seatsAnim ? " ea-bump" : ""}`}>{seats.remaining}</div>
+            <div className="ea-sc-unit">Seats Remaining</div>
+            <div className={`ea-sc-badge ${urgency}`}>
+              <span className={`ea-live-dot ${dotClass}`} />
+              {label}
+            </div>
+          </div>
+        </div>
+
+        {/* Right — progress + details */}
+        <div className="ea-sc-right">
+          <div className="ea-sc-rh">Only 60 seats —<br />intentionally kept small.</div>
+          <div className="ea-sc-rdesc">
+            Most programs take hundreds of applicants. We don&apos;t. Every intern gets real mentor attention,
+            real project ownership, and direct team visibility.
+          </div>
+
+          {/* Progress bar */}
+          <div className="ea-pb-wrap">
+            <div className="ea-pb-labels">
+              <span className="ea-pb-lbl">{seats.filled} / {seats.total} seats filled</span>
+              <span className={`ea-pb-pct ${urgency}`}>{pct}% filled</span>
+            </div>
+            <div className="ea-pb-track">
+              <div className={`ea-pb-fill ${urgency}`} style={{ width: `${pct}%` }} />
+            </div>
+          </div>
+
+          {/* Checklist */}
+          <div className="ea-sc-checks">
+            {["Personal mentor assigned","Real project ownership","Direct founder access","Letter of recommendation","Certificate of completion","Priority hiring pipeline"].map(item => (
+              <div key={item} className="ea-seat-row">
+                <div className="ea-seat-check"><CheckSm /></div>
+                {item}
+              </div>
+            ))}
+          </div>
+
+          {/* Urgency message */}
+          <div className={`ea-sc-urgency ${urgency}`}>
+            {urgencyIcon}
+            <span>{urgencyMsg}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ─── Page ───────────────────────────────────────────────────────── */
 export default function EarlyApplyPage() {
   const [form, setForm]       = useState<Form>(INIT)
@@ -355,6 +530,29 @@ export default function EarlyApplyPage() {
   const [loading, setLoading] = useState(false)
   const [done, setDone]       = useState(false)
   const formRef = useRef<HTMLDivElement>(null)
+
+  /* ── Seats ── */
+  const [seats, setSeats] = useState({ total: 60, filled: 0, remaining: 60 })
+  const [seatsAnim, setSeatsAnim] = useState(false)
+  const seatsRef = useRef(60)
+
+  useEffect(() => {
+    const fetchSeats = () =>
+      fetch("/api/early-apply/seats")
+        .then(r => r.json())
+        .then(d => {
+          setSeats(d)
+          if (seatsRef.current !== d.remaining) {
+            setSeatsAnim(true)
+            setTimeout(() => setSeatsAnim(false), 800)
+          }
+          seatsRef.current = d.remaining
+        })
+        .catch(() => {})
+    fetchSeats()
+    const id = setInterval(fetchSeats, 30000)
+    return () => clearInterval(id)
+  }, [])
 
   const set = (k: keyof Form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -421,6 +619,20 @@ export default function EarlyApplyPage() {
               <CheckSm />
               Successfully submitted
             </div>
+
+            {/* WhatsApp group */}
+            <a
+              href="https://chat.whatsapp.com/FMRyhii0sJoEFqQ1giF5Me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ea-wa-btn"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Join the WhatsApp Group
+            </a>
+
             <Link href="/" className="ea-back-home">
               <ArrowLeft />
               Back to Jobingen
@@ -472,17 +684,26 @@ export default function EarlyApplyPage() {
             </div>
 
             <div className="ea-stats-row">
-              {[
-                { v:"4 Weeks",  l:"Duration"  },
-                { v:"June 1",   l:"Start Date" },
-                { v:"6 Domains",l:"Tracks"    },
-                { v:"60 Seats", l:"Total"     },
-              ].map(s => (
-                <div key={s.l} className="ea-stat">
-                  <div className="ea-stat-v">{s.v}</div>
-                  <div className="ea-stat-l">{s.l}</div>
+              <div className="ea-stat">
+                <div className="ea-stat-v">4 Weeks</div>
+                <div className="ea-stat-l">Duration</div>
+              </div>
+              <div className="ea-stat">
+                <div className="ea-stat-v">June 1</div>
+                <div className="ea-stat-l">Start Date</div>
+              </div>
+              <div className="ea-stat">
+                <div className="ea-stat-v">6 Domains</div>
+                <div className="ea-stat-l">Tracks</div>
+              </div>
+              <div className="ea-stat">
+                <div className={`ea-stat-v ea-seats-live${seatsAnim ? " ea-bump" : ""}`} style={{ color: seats.remaining <= 15 ? "#dc2626" : seats.remaining <= 30 ? "#d97706" : "var(--ind)" }}>
+                  {seats.remaining}
                 </div>
-              ))}
+                <div className="ea-stat-l" style={{ display:"flex", alignItems:"center", gap:4, justifyContent:"center" }}>
+                  <span className="ea-live-dot" />Seats Left
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -510,47 +731,9 @@ export default function EarlyApplyPage() {
               ))}
             </div>
 
-            {/* ── Seats split card ── */}
+            {/* ── Live Seats card ── */}
             <R d={240}>
-              <div className="ea-seats-card">
-                <div className="ea-seats-left">
-                  <div className="ea-seats-num">60</div>
-                  <div className="ea-seats-unit">Internship Seats</div>
-                  <div className="ea-seats-lim">
-                    <span className="ea-seats-lim-dot" />
-                    Limited Spots
-                  </div>
-                </div>
-                <div className="ea-seats-right">
-                  <div className="ea-seats-rh">Only 60 seats —<br />intentionally kept small.</div>
-                  <div className="ea-seats-rdesc">
-                    Most programs take hundreds of applicants. We don&apos;t. Every intern gets a real mentor,
-                    real responsibilities, and direct team visibility — only possible when the cohort is small
-                    enough to manage well.
-                  </div>
-                  <div className="ea-seats-grid">
-                    {[
-                      "Personal mentor assigned",
-                      "Real project ownership",
-                      "Direct founder access",
-                      "Letter of recommendation",
-                      "Certificate of completion",
-                      "Priority hiring pipeline",
-                    ].map(item => (
-                      <div key={item} className="ea-seat-row">
-                        <div className="ea-seat-check"><CheckSm /></div>
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="ea-urgency-tag">
-                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#9a3412" strokeWidth="2" strokeLinecap="round">
-                      <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-                    </svg>
-                    Applications close once seats fill — apply early to secure your spot.
-                  </div>
-                </div>
-              </div>
+              <SeatsCard seats={seats} seatsAnim={seatsAnim} onApply={scrollToForm} />
             </R>
 
           </div>
