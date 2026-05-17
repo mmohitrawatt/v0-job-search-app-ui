@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/landing/navbar"
 import { Hero } from "@/components/landing/hero"
 import { AITools } from "@/components/landing/ai-tools"
-import { Bootcamps } from "@/components/landing/bootcamps"
+import { SummerTraining } from "@/components/landing/summer-training"
 import { Testimonials } from "@/components/landing/testimonials"
 import { HowItWorks } from "@/components/landing/how-it-works"
 import { FeaturedJobs } from "@/components/landing/featured-jobs"
@@ -29,7 +29,7 @@ export default function PreLaunchPage() {
       `}</style>
       <Navbar />
       <Hero />
-      <Bootcamps />
+      <SummerTraining />
       <MentorsPreview />
       <AITools />
       <HowItWorks />
