@@ -82,7 +82,7 @@ export function MentorsPreview() {
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const cardRefs  = useRef<(HTMLDivElement | null)[]>([])
-  const btnRefs   = useRef<(HTMLAnchorElement | null)[]>([])
+  const btnRefs   = useRef<(HTMLElement | null)[]>([])
   const rafRef    = useRef<number>(0)
   const activeRef = useRef(-1)
 
@@ -138,13 +138,24 @@ export function MentorsPreview() {
         .mc-btn { transition: opacity .25s ease, transform .25s ease; }
         .sc-arr { transition: background .18s, border-color .18s; cursor: pointer; }
         .sc-arr:hover { background: #eff4ff !important; border-color: #bfcfff !important; }
+        .m-hdr { padding: 0 40px; }
+        .m-scroll { padding: 20px 40px 32px; }
+        .m-stats { padding: 0 40px; }
+        .m-hdr-row { flex-wrap: nowrap; }
+        @media (max-width: 768px) {
+          .m-hdr { padding: 0 18px; }
+          .m-scroll { padding: 16px 14px 24px; }
+          .m-stats { padding: 0 18px; }
+          .m-hdr-row { flex-wrap: wrap; gap: 14px !important; }
+          .m-controls { width: 100%; justify-content: flex-start; }
+        }
       `}</style>
 
       <section style={{ background: "#ffffff", padding: "72px 0", overflow: "hidden" }} id="mentors">
 
         {/* ── Header ── */}
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px", marginBottom: 36 }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+        <div className="m-hdr" style={{ maxWidth: 1100, margin: "0 auto", marginBottom: 36 }}>
+          <div className="m-hdr-row" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16 }}>
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#eff4ff", border: "1px solid #bfcfff", borderRadius: 99, padding: "5px 14px", marginBottom: 16 }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#1d3a8f" }} />
@@ -158,7 +169,7 @@ export function MentorsPreview() {
               </p>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div className="m-controls" style={{ display: "flex", alignItems: "center", gap: 10 }}>
               {(["left", "right"] as const).map(dir => (
                 <button key={dir} className="sc-arr" onClick={() => scroll(dir)} style={{ width: 42, height: 42, borderRadius: "50%", background: "#f8fafc", border: "1.5px solid #e2e8f0", color: "#1d3a8f", fontSize: 17, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {dir === "left" ? "←" : "→"}
@@ -173,40 +184,42 @@ export function MentorsPreview() {
         </div>
 
         {/* ── Scroll track ── */}
-        <div ref={scrollRef} className="mentor-scroll" style={{ display: "flex", alignItems: "center", gap: 14, overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", padding: "20px 40px 32px", scrollbarWidth: "none" }}>
+        <div ref={scrollRef} className="mentor-scroll m-scroll" style={{ display: "flex", alignItems: "center", gap: 14, overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" }}>
           {mentors.map((m, i) => (
-            <div key={m.name} className="mc" ref={el => { cardRefs.current[i] = el }} style={{ flexShrink: 0, width: 258, borderRadius: 22, overflow: "hidden", scrollSnapAlign: "center", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", transform: "scale(0.93)" }}>
+            <Link key={m.name} href="/mentors" style={{ textDecoration: "none", flexShrink: 0, display: "block" }}>
+              <div className="mc" ref={el => { cardRefs.current[i] = el }} style={{ width: 258, borderRadius: 22, overflow: "hidden", scrollSnapAlign: "center", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", transform: "scale(0.93)", cursor: "pointer" }}>
 
-              {/* Photo / Initials */}
-              <div style={{ position: "relative", height: 220, overflow: "hidden", background: m.photo ? "transparent" : m.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {m.photo ? (
-                  <Image src={m.photo} alt={m.name} fill style={{ objectFit: "cover", objectPosition: "top" }} />
-                ) : (
-                  <div style={{ width: 80, height: 80, borderRadius: "50%", background: m.color, color: "white", fontSize: 28, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>{m.initials}</div>
-                )}
-                {m.photo && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,23,42,0.42) 0%, transparent 55%)" }} />}
-                <div style={{ position: "absolute", bottom: 10, right: 10, display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 99, padding: "3px 9px" }}>
-                  <span style={{ fontSize: 11, color: "#f59e0b" }}>★</span>
-                  <span style={{ fontSize: 11, fontWeight: 800, color: "#0f172a" }}>5.0</span>
+                {/* Photo / Initials */}
+                <div style={{ position: "relative", height: 220, overflow: "hidden", background: m.photo ? "transparent" : m.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {m.photo ? (
+                    <Image src={m.photo} alt={m.name} fill style={{ objectFit: "cover", objectPosition: "top" }} />
+                  ) : (
+                    <div style={{ width: 80, height: 80, borderRadius: "50%", background: m.color, color: "white", fontSize: 28, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>{m.initials}</div>
+                  )}
+                  {m.photo && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,23,42,0.42) 0%, transparent 55%)" }} />}
+                  <div style={{ position: "absolute", bottom: 10, right: 10, display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 99, padding: "3px 9px" }}>
+                    <span style={{ fontSize: 11, color: "#f59e0b" }}>★</span>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: "#0f172a" }}>5.0</span>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div style={{ padding: "14px 16px 16px" }}>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em", marginBottom: 3 }}>{m.name}</div>
+                  <div style={{ fontSize: 12, color: "#64748b", fontWeight: 500, marginBottom: 10 }}>
+                    {m.role} · <span style={{ color: "#94a3b8" }}>{m.company}</span>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
+                    {m.skills.map(s => (
+                      <span key={s} style={{ fontSize: 10.5, fontWeight: 600, color: "#475569", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 6, padding: "3px 8px" }}>{s}</span>
+                    ))}
+                  </div>
+                  <div className="mc-btn" ref={el => { btnRefs.current[i] = el }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 12.5, fontWeight: 700, padding: "9px 16px", borderRadius: 10, boxShadow: "0 4px 14px rgba(29,58,143,0.28)", opacity: 0, transform: "translateY(6px)" }}>
+                    View Profile →
+                  </div>
                 </div>
               </div>
-
-              {/* Info */}
-              <div style={{ padding: "14px 16px 16px" }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em", marginBottom: 3 }}>{m.name}</div>
-                <div style={{ fontSize: 12, color: "#64748b", fontWeight: 500, marginBottom: 10 }}>
-                  {m.role} · <span style={{ color: "#94a3b8" }}>{m.company}</span>
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
-                  {m.skills.map(s => (
-                    <span key={s} style={{ fontSize: 10.5, fontWeight: 600, color: "#475569", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 6, padding: "3px 8px" }}>{s}</span>
-                  ))}
-                </div>
-                <Link href="/mentors" className="mc-btn" ref={el => { btnRefs.current[i] = el }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 12.5, fontWeight: 700, padding: "9px 16px", borderRadius: 10, textDecoration: "none", boxShadow: "0 4px 14px rgba(29,58,143,0.28)", opacity: 0, transform: "translateY(6px)" }}>
-                  View Profile →
-                </Link>
-              </div>
-            </div>
+            </Link>
           ))}
 
           {/* End card */}
@@ -221,7 +234,7 @@ export function MentorsPreview() {
         </div>
 
         {/* ── Stats ── */}
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px" }}>
+        <div className="m-stats" style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ display: "flex", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 16, overflow: "hidden" }}>
             {[
               { val: `${mentors.length}+`, label: "Active Mentors"  },

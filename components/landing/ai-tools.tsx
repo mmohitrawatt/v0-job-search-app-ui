@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 
 const TOOLS = [
@@ -127,173 +127,140 @@ const TOOLS = [
 ]
 
 export function AITools() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const cardRefs  = useRef<(HTMLDivElement | null)[]>([])
-  const rafRef    = useRef<number>(0)
-  const activeRef = useRef(-1)
-
-  const applyActive = useCallback((idx: number) => {
-    if (idx === activeRef.current) return
-    activeRef.current = idx
-    cardRefs.current.forEach((card, i) => {
-      if (!card) return
-      const a = i === idx
-      card.style.transform   = a ? "scale(1.04)" : "scale(0.93)"
-      card.style.boxShadow   = a ? "0 24px 60px rgba(0,0,0,0.11)" : "0 2px 10px rgba(0,0,0,0.05)"
-      card.style.borderColor = a ? "rgba(29,58,143,0.20)" : "rgba(0,0,0,0.07)"
-    })
-  }, [])
-
-  const onScroll = useCallback(() => {
-    cancelAnimationFrame(rafRef.current)
-    rafRef.current = requestAnimationFrame(() => {
-      const el = scrollRef.current
-      if (!el) return
-      const center = el.scrollLeft + el.clientWidth / 2
-      let best = 0, bestDist = Infinity
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return
-        const dist = Math.abs((card.offsetLeft + card.offsetWidth / 2) - center)
-        if (dist < bestDist) { bestDist = dist; best = i }
-      })
-      applyActive(best)
-    })
-  }, [applyActive])
+  const outerRef = useRef<HTMLDivElement>(null)
+  const [idx, setIdx] = useState(0)
+  const tool = TOOLS[idx] ?? TOOLS[0]
 
   useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    el.addEventListener("scroll", onScroll, { passive: true })
+    const onScroll = () => {
+      const el = outerRef.current
+      if (!el) return
+      const top    = el.getBoundingClientRect().top + window.scrollY
+      const scrolled = window.scrollY - top
+      const i = Math.floor(scrolled / window.innerHeight)
+      setIdx(Math.max(0, Math.min(TOOLS.length - 1, i)))
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
-    return () => { el.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafRef.current) }
-  }, [onScroll])
-
-  const scroll = (dir: "left" | "right") =>
-    scrollRef.current?.scrollBy({ left: dir === "left" ? -420 : 420, behavior: "smooth" })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   return (
     <>
       <style>{`
-        .ait-scroll::-webkit-scrollbar { display: none; }
-        .ait-card { transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s, border-color .35s; will-change: transform; }
-        .sc-arr2 { transition: background .18s, border-color .18s; cursor: pointer; }
-        .sc-arr2:hover { background: #eff4ff !important; border-color: #bfcfff !important; }
+        @keyframes ait-up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+        .ait-card-in { animation: ait-up .42s cubic-bezier(.16,1,.3,1) both; }
+        .ait-cta { transition: opacity .15s, transform .15s; display: inline-flex; align-items: center; gap: 8px; }
+        .ait-cta:hover { opacity: .86; transform: translateY(-2px); }
+        .ait-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 52px; align-items: center; padding: 44px 52px; }
+        .ait-rpanel { border-radius: 20px; padding: 36px 28px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+        @media (max-width: 900px) {
+          .ait-inner { grid-template-columns: 1fr !important; padding: 28px 22px 30px !important; gap: 0 !important; }
+          .ait-rpanel { display: none !important; }
+        }
       `}</style>
 
-      <section id="ai-tools" style={{ background: "#ffffff", padding: "72px 0", overflow: "hidden" }}>
+      {/* ── Outer: tall div = 1 viewport per tool ── */}
+      <div ref={outerRef} id="ai-tools" style={{ height: `${TOOLS.length * 100}vh`, position: "relative" }}>
 
-        {/* ── Header ── */}
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 40px", marginBottom: 36 }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#eff4ff", border: "1px solid #bfcfff", borderRadius: 99, padding: "5px 14px", marginBottom: 16 }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#1d3a8f", animation: "pulse 2s infinite" }} />
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#1d3a8f", letterSpacing: ".08em", textTransform: "uppercase" }}>AI Tools — Coming Soon</span>
+        {/* ── Sticky panel: stays fixed while outer scrolls ── */}
+        <div style={{ position: "sticky", top: 0, height: "100vh", background: "#ffffff", display: "flex", flexDirection: "column", justifyContent: "center", overflow: "hidden" }}>
+
+          {/* Header row */}
+          <div style={{ padding: "0 clamp(18px,3.5vw,52px)", maxWidth: 1200, margin: "0 auto", width: "100%", marginBottom: 24 }}>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#eff4ff", border: "1px solid #bfcfff", borderRadius: 99, padding: "5px 14px", marginBottom: 12 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#1d3a8f" }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#1d3a8f", letterSpacing: ".08em", textTransform: "uppercase" }}>AI Tools — Coming Soon</span>
+                </div>
+                <h2 style={{ fontSize: "clamp(22px,3vw,38px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-0.04em", lineHeight: 1.1, margin: 0 }}>
+                  Your AI-powered career toolkit
+                </h2>
               </div>
-              <h2 style={{ fontSize: "clamp(28px,3.5vw,42px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-0.04em", lineHeight: 1.1, marginBottom: 10 }}>
-                Your AI-powered career toolkit
-              </h2>
-              <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.65, maxWidth: 440 }}>
-                Resume, interviews, career guidance — all in one place, built for the Indian job market.
-              </p>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              {(["left", "right"] as const).map(dir => (
-                <button key={dir} className="sc-arr2" onClick={() => scroll(dir)} style={{ width: 42, height: 42, borderRadius: "50%", background: "#f8fafc", border: "1.5px solid #e2e8f0", color: "#1d3a8f", fontSize: 17, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {dir === "left" ? "←" : "→"}
-                </button>
-              ))}
-              <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 13, fontWeight: 700, padding: "11px 22px", borderRadius: 12, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.28)" }}>
-                Explore All
-                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Scroll track ── */}
-        <div
-          ref={scrollRef}
-          className="ait-scroll"
-          style={{ display: "flex", alignItems: "center", gap: 16, overflowX: "auto", scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", padding: "20px 40px 32px", scrollbarWidth: "none" }}
-        >
-          {TOOLS.map((tool, i) => (
-            <div
-              key={tool.title}
-              className="ait-card"
-              ref={el => { cardRefs.current[i] = el }}
-              style={{ flexShrink: 0, width: 380, borderRadius: 24, overflow: "hidden", scrollSnapAlign: "center", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 10px rgba(0,0,0,0.05)", transform: "scale(0.93)" }}
-            >
-              {/* Gradient top bar */}
-              <div style={{ height: 4, background: tool.gradient }} />
-
-              <div style={{ padding: "28px 28px 26px" }}>
-
-                {/* Icon row */}
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ width: 52, height: 52, borderRadius: 16, background: tool.gradient, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: `0 6px 20px ${tool.color}30` }}>
-                      {tool.icon}
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: 17, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 3 }}>{tool.title}</h3>
-                      <div style={{ fontSize: 12, fontWeight: 600, color: tool.color }}>{tool.tagline}</div>
-                    </div>
-                  </div>
-
-                  {/* Stat */}
-                  <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: tool.color, letterSpacing: "-0.03em", lineHeight: 1 }}>{tool.stat.value}</div>
-                    <div style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8", marginTop: 2 }}>{tool.stat.label}</div>
-                  </div>
-                </div>
-
-                {/* Badge */}
-                {tool.badge && (
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: tool.bg, border: `1px solid ${tool.border}`, borderRadius: 99, padding: "3px 10px", marginBottom: 12 }}>
-                    <span style={{ fontSize: 10, fontWeight: 800, color: tool.color, letterSpacing: ".05em", textTransform: "uppercase" }}>{tool.badge}</span>
-                  </div>
-                )}
-
-                {/* Desc */}
-                <p style={{ fontSize: 13.5, color: "#64748b", lineHeight: 1.7, marginBottom: 20, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                  {tool.desc}
-                </p>
-
-                {/* Features 2-col grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px", marginBottom: 24 }}>
-                  {tool.features.map(f => (
-                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <div style={{ width: 16, height: 16, borderRadius: "50%", background: tool.bg, border: `1px solid ${tool.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <svg width="8" height="8" fill="none" viewBox="0 0 24 24" stroke={tool.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                      </div>
-                      <span style={{ fontSize: 11.5, fontWeight: 600, color: "#475569" }}>{f}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <Link href="/ai-tools" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: tool.gradient, color: "white", fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, textDecoration: "none", boxShadow: `0 4px 16px ${tool.color}30` }}>
-                  Explore Tool
-                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#94a3b8" }}>{idx + 1} / {TOOLS.length}</span>
+                <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 13, fontWeight: 700, padding: "10px 20px", borderRadius: 12, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.28)" }}>
+                  Explore All
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </Link>
               </div>
             </div>
-          ))}
-
-          {/* End card */}
-          <div style={{ flexShrink: 0, width: 220, height: 420, borderRadius: 24, scrollSnapAlign: "center", background: "#f8fafc", border: "1.5px dashed #e2e8f0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
-            <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#eff4ff", border: "1.5px solid #bfcfff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: "#1d3a8f", fontWeight: 900 }}>+</div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 5 }}>7 AI Tools</div>
-              <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>more coming<br />every month</div>
-            </div>
-            <Link href="/ai-tools" style={{ fontSize: 13, fontWeight: 700, color: "#1d3a8f", textDecoration: "none" }}>View All →</Link>
           </div>
-        </div>
 
-      </section>
+          {/* Tool card — key=idx remounts → triggers animation */}
+          <div key={idx} className="ait-card-in" style={{ padding: "0 clamp(18px,3.5vw,52px)", maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+            <div style={{ borderRadius: 28, overflow: "hidden", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.08)", boxShadow: "0 4px 40px rgba(0,0,0,0.09)" }}>
+
+              <div style={{ height: 5, background: tool.gradient }} />
+
+              <div className="ait-inner">
+                {/* LEFT */}
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 18 }}>
+                    <div style={{ width: 62, height: 62, borderRadius: 18, background: tool.gradient, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: `0 8px 24px ${tool.color}35` }}>
+                      {tool.icon}
+                    </div>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" as const }}>
+                        <h3 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>{tool.title}</h3>
+                        {tool.badge && <span style={{ fontSize: 10, fontWeight: 800, color: tool.color, background: tool.bg, border: `1px solid ${tool.border}`, borderRadius: 99, padding: "3px 10px", textTransform: "uppercase" as const }}>{tool.badge}</span>}
+                      </div>
+                      <div style={{ fontSize: 13.5, fontWeight: 600, color: tool.color, marginTop: 4 }}>{tool.tagline}</div>
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: 15, color: "#475569", lineHeight: 1.75, marginBottom: 22 }}>{tool.desc}</p>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 18px", marginBottom: 30 }}>
+                    {tool.features.map(f => (
+                      <div key={f} style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                        <div style={{ width: 17, height: 17, borderRadius: "50%", background: tool.bg, border: `1px solid ${tool.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke={tool.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link href="/ai-tools" className="ait-cta" style={{ background: tool.gradient, color: "white", fontSize: 14, fontWeight: 700, padding: "13px 28px", borderRadius: 14, textDecoration: "none", boxShadow: `0 6px 20px ${tool.color}35` }}>
+                    Explore Tool
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </Link>
+                </div>
+
+                {/* RIGHT */}
+                <div className="ait-rpanel" style={{ background: tool.bg, border: `1.5px solid ${tool.border}` }}>
+                  <div>
+                    <div style={{ fontSize: 80, fontWeight: 900, color: tool.color, letterSpacing: "-0.05em", lineHeight: 1 }}>{tool.stat.value}</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase" as const, letterSpacing: ".08em", marginTop: 8 }}>{tool.stat.label}</div>
+                  </div>
+                  <div style={{ width: "100%", height: 1, background: tool.border }} />
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: 7, width: "100%" }}>
+                    {tool.features.map(f => (
+                      <div key={f} style={{ fontSize: 12, fontWeight: 600, color: tool.color, background: "rgba(255,255,255,0.72)", borderRadius: 8, padding: "5px 12px" }}>{f}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right-side vertical dot progress */}
+          <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", display: "flex", flexDirection: "column", gap: 7 }}>
+            {TOOLS.map((_, i) => (
+              <div key={i} style={{ width: 5, borderRadius: 99, background: i === idx ? tool.color : "#e2e8f0", height: i === idx ? 22 : 5, transition: "height .28s ease, background .28s ease" }} />
+            ))}
+          </div>
+
+          {/* Scroll hint — hide on last tool */}
+          <div style={{ position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, opacity: idx < TOOLS.length - 1 ? 1 : 0, transition: "opacity .3s" }}>
+            <span style={{ fontSize: 10.5, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: ".08em" }}>Scroll</span>
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+
+        </div>
+      </div>
     </>
   )
 }

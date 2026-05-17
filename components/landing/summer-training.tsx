@@ -43,21 +43,56 @@ export function SummerTraining() {
         .st-bump { animation: st-bump .65s cubic-bezier(.34,1.2,.64,1) both; }
         .st-bar-fill::after { content:''; position:absolute; top:0; bottom:0; width:50%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent); animation:st-bar-shine 2.2s ease-in-out infinite; }
         .st-dot { animation: st-dot 1.8s ease-in-out infinite; }
+        .st-section { padding: 40px 20px; }
+        .st-card {
+          display: grid;
+          align-items: center;
+          padding: 52px 60px;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 60px;
+        }
+        .st-stats { display: flex; align-items: flex-start; margin-bottom: 32px; }
+        .st-stat-item { padding-right: 22px; margin-right: 22px; border-right: 1px solid #e2e8f0; }
+        .st-stat-item:last-child { padding-right: 0; margin-right: 0; border-right: none; }
+        .st-btns { flex-wrap: nowrap; }
+        @media (max-width: 768px) {
+          .st-section { padding: 24px 14px; }
+          .st-card {
+            padding: 24px 18px !important;
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+            align-items: start !important;
+          }
+          .st-stats {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 14px 0 !important;
+            margin-bottom: 24px !important;
+          }
+          .st-stat-item {
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+            border-right: none !important;
+            padding-bottom: 0 !important;
+          }
+          .st-stat-item:nth-child(odd) {
+            padding-right: 16px !important;
+            border-right: 1px solid #e2e8f0 !important;
+          }
+          .st-btns { flex-wrap: wrap !important; gap: 10px !important; }
+          .st-btns a { flex: 1 1 140px; justify-content: center; text-align: center; }
+          .st-seats-num { font-size: 52px !important; }
+        }
       `}</style>
 
-      <section style={{ background: "#ffffff", padding: "40px 20px" }}>
+      <section className="st-section" style={{ background: "#ffffff" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
-          <div style={{
+          <div className="st-card" style={{
             background: "#ffffff",
             borderRadius: 28,
-            padding: "52px 60px",
             boxShadow: "0 0 0 1.5px rgba(29,58,143,0.12), 0 4px 6px rgba(0,0,0,0.02), 0 20px 60px rgba(29,58,143,0.08)",
             backgroundImage: "radial-gradient(circle at 100% 0%, rgba(70,104,245,0.04) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(29,58,143,0.04) 0%, transparent 50%)",
-            display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: 60,
-            alignItems: "center",
           }}>
 
             {/* ── LEFT ── */}
@@ -91,18 +126,14 @@ export function SummerTraining() {
               </p>
 
               {/* Stats with vertical dividers */}
-              <div style={{ display: "flex", alignItems: "flex-start", marginBottom: 32 }}>
+              <div className="st-stats">
                 {[
                   { val: "4 Weeks", label: "Duration"   },
                   { val: "60",      label: "Total Seats" },
                   { val: "June 1",  label: "Start Date"  },
                   { val: "6",       label: "Domains"     },
-                ].map((s, i) => (
-                  <div key={s.label} style={{
-                    paddingRight: i < 3 ? 22 : 0,
-                    marginRight:  i < 3 ? 22 : 0,
-                    borderRight:  i < 3 ? "1px solid #e2e8f0" : "none",
-                  }}>
+                ].map((s) => (
+                  <div key={s.label} className="st-stat-item">
                     <div style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1 }}>{s.val}</div>
                     <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, marginTop: 4 }}>{s.label}</div>
                   </div>
@@ -110,7 +141,7 @@ export function SummerTraining() {
               </div>
 
               {/* CTA */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div className="st-btns" style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <a href="/early-apply" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: "linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5)",
@@ -147,7 +178,7 @@ export function SummerTraining() {
               }}>
                 <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 4 }}>
                   <div
-                    className={bump ? "st-bump" : ""}
+                    className={`st-seats-num${bump ? " st-bump" : ""}`}
                     style={{ fontSize: "clamp(52px,7vw,72px)", fontWeight: 900, color: numColor, letterSpacing: "-0.05em", lineHeight: 1 }}
                   >
                     {seats.remaining}
