@@ -1,117 +1,165 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { JobingenLogo } from "@/components/jobingen-logo"
 import { useWaitlist } from "@/components/waitlist-modal"
 
 const NAV_LINKS = [
-  { label: "Jobs", href: "/jobs" },
-  { label: "AI Tools", href: "/ai-tools" },
-  { label: "Bootcamps", href: "/bootcamps" },
-  { label: "Mentors", href: "/mentors" },
-  { label: "Creator", href: "/creator-community" },
-  { label: "Ambassador", href: "/campus-ambassador" },
-  { label: "Summer Training", href: "/early-apply", badge: "New" },
-  { label: "Hire Talent", href: "/hire-talent" },
+  { label: "Jobs",            href: "/jobs" },
+  { label: "AI Tools",       href: "/ai-tools" },
+  { label: "Bootcamps",      href: "/bootcamps" },
+  { label: "Mentors",        href: "/mentors" },
+  { label: "Creator",        href: "/creator-community" },
+  { label: "Ambassador",     href: "/campus-ambassador" },
+  { label: "Summer Training",href: "/early-apply", badge: "New" },
+  { label: "Hire Talent",    href: "/hire-talent" },
 ]
 
+const BAR_H = 40   // announcement bar height
+const NAV_H = 96   // navbar height
+
+/* exported so hero can calculate its top offset */
+export const HEADER_H = BAR_H + 10 + NAV_H   // 146px
+
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [activePath, setActivePath] = useState("")
-  const { open: openWaitlist } = useWaitlist()
-  const pathname = usePathname()
+  const [barVisible, setBarVisible]   = useState(true)
+  const [mobileOpen, setMobileOpen]   = useState(false)
+  const [activePath, setActivePath]   = useState("")
+  const { open: openWaitlist }        = useWaitlist()
+  const pathname                      = usePathname()
 
-  useEffect(() => {
-    setActivePath(pathname)
-  }, [pathname])
+  useEffect(() => { setActivePath(pathname) }, [pathname])
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+  const navTop = barVisible ? BAR_H + 10 : 10
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-white/[0.97] backdrop-blur-2xl border-b border-slate-200/60 shadow-[0_2px_24px_rgba(0,0,0,0.07)]"
-            : "bg-white/80 backdrop-blur-xl border-b border-slate-100/60"
-        }`}
+      {/* ── Announcement Bar ── */}
+      <AnimatePresence>
+        {barVisible && (
+          <motion.div
+            initial={{ height: BAR_H, opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28 }}
+            className="px-8 sm:px-12"
+            style={{
+              position: "fixed", top: 0, left: 0, right: 0, zIndex: 60,
+              background: "#0c1a35", overflow: "hidden",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              gap: 6, fontSize: 13, fontWeight: 500, color: "white",
+            }}
+          >
+            <span className="hidden sm:inline">🎓</span>
+            <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 12 }}>
+              <span className="hidden sm:inline">Summer Training 2026 · AI, ML &amp; Full Stack · Limited seats available</span>
+              <span className="sm:hidden">Summer Training 2026 · Limited seats</span>
+            </span>
+            <a href="/early-apply" style={{ fontWeight: 700, color: "#60a5fa", textDecoration: "none", marginLeft: 4, whiteSpace: "nowrap" }}>
+              Apply now →
+            </a>
+            <button
+              onClick={() => setBarVisible(false)}
+              style={{ position: "absolute", right: 12, background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: 18, cursor: "pointer", lineHeight: 1, padding: "4px 6px" }}
+            >×</button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Floating Navbar ── */}
+      <motion.header
+        animate={{ top: navTop }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="px-3 sm:px-5 lg:px-8"
+        style={{ position: "fixed", left: 0, right: 0, zIndex: 50 }}
       >
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 h-[72px] flex items-center justify-between">
+        <div className="h-[64px] lg:h-[96px]" style={{
+          maxWidth: 1320, margin: "0 auto",
+          background: "rgba(255,255,255,0.97)",
+          backdropFilter: "blur(20px)",
+          borderRadius: 22,
+          border: "1px solid rgba(0,0,0,0.07)",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.02), 0 12px 32px rgba(0,0,0,0.08)",
+          display: "flex", alignItems: "center",
+          padding: "0 20px", gap: 12,
+        }}>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0">
-            <JobingenLogo height={52} className="sm:!h-[68px] lg:!h-[76px]" />
-          </Link>
+          <a href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0, textDecoration: "none" }}>
+            <JobingenLogo height={88} />
+          </a>
 
           {/* Center nav — desktop */}
-          <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
-            {NAV_LINKS.map((link) => {
+          <nav className="hidden lg:flex" style={{ flex: 1, justifyContent: "center", gap: 2, alignItems: "center" }}>
+            {NAV_LINKS.map(link => {
               const isActive = activePath === link.href || activePath.startsWith(link.href + "/")
               return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={`group relative px-4 py-2 text-[15px] transition-colors duration-200 flex items-center gap-1.5 ${
-                    isActive
-                      ? "font-bold text-slate-900"
-                      : "font-semibold text-slate-500 hover:text-slate-900"
-                  }`}
-                >
+                <a key={link.label} href={link.href} style={{
+                  position: "relative", padding: "7px 11px",
+                  fontSize: 13.5, fontWeight: isActive ? 700 : 600,
+                  color: isActive ? "#0f172a" : "#1e293b",
+                  textDecoration: "none", borderRadius: 10,
+                  display: "flex", alignItems: "center", gap: 5,
+                  background: isActive ? "#f1f5f9" : "transparent",
+                  transition: "all .15s",
+                }}>
                   {link.label}
                   {link.badge && (
-                    <span
-                      className="text-[9.5px] font-bold px-1.5 py-[2px] rounded-full text-white leading-none tracking-wide"
-                      style={{ background: "linear-gradient(135deg, #1d3a8f, #4668f5)" }}
-                    >
-                      {link.badge}
-                    </span>
+                    <span style={{
+                      fontSize: 9, fontWeight: 800, color: "white", letterSpacing: ".05em",
+                      background: "linear-gradient(135deg,#1d3a8f,#4668f5)",
+                      padding: "2px 6px", borderRadius: 99,
+                    }}>{link.badge}</span>
                   )}
-                  <span className={`absolute bottom-0 left-4 right-4 h-[1.5px] bg-slate-800 transition-transform duration-200 origin-left rounded-full ${
-                    isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`} />
                 </a>
               )
             })}
           </nav>
 
-          {/* Right — desktop */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
-            <button
-              onClick={openWaitlist}
-              className="text-[14px] font-semibold text-white px-5 py-[10px] rounded-[10px] transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] border-0 cursor-pointer"
-              style={{
-                background: "linear-gradient(135deg, #1a3585 0%, #2d4fd4 55%, #4668f5 100%)",
-                boxShadow: "0 2px 12px rgba(29,58,143,0.28), inset 0 1px 0 rgba(255,255,255,0.12)",
-              }}
-            >
-              Get Started
-            </button>
+          {/* Right CTAs — desktop */}
+          <div className="hidden lg:flex" style={{ alignItems: "center", gap: 8, flexShrink: 0 }}>
+            <button onClick={openWaitlist} style={{
+              fontSize: 13.5, fontWeight: 600, color: "#475569",
+              padding: "9px 22px", borderRadius: 10, cursor: "pointer",
+              border: "1.5px solid #e2e8f0", background: "#f8fafc",
+              transition: "all .15s",
+            }}>Login</button>
+            <button onClick={openWaitlist} style={{
+              fontSize: 13.5, fontWeight: 700, color: "white",
+              padding: "9px 20px", borderRadius: 10, border: "none", cursor: "pointer",
+              background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)",
+              boxShadow: "0 2px 12px rgba(29,58,143,0.28)",
+              transition: "all .15s",
+            }}>Get Started</button>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            className="lg:hidden ml-auto"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            style={{ background: "none", border: "none", cursor: "pointer", padding: 6 }}
           >
-            <div className="w-5 flex flex-col gap-[5px]">
-              <span className={`block h-[1.5px] bg-slate-700 transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[6.5px]" : ""}`} />
-              <span className={`block h-[1.5px] bg-slate-700 transition-all duration-200 ${mobileOpen ? "opacity-0 scale-x-0" : ""}`} />
-              <span className={`block h-[1.5px] bg-slate-700 transition-all duration-300 origin-center ${mobileOpen ? "-rotate-45 -translate-y-[6.5px]" : ""}`} />
+            <div style={{ width: 20, display: "flex", flexDirection: "column", gap: 5 }}>
+              {[
+                mobileOpen ? "rotate(45deg) translateY(6.5px)" : "none",
+                undefined,
+                mobileOpen ? "rotate(-45deg) translateY(-6.5px)" : "none",
+              ].map((transform, i) => (
+                <span key={i} style={{
+                  display: "block", height: 1.5, background: "#475569",
+                  borderRadius: 2, transition: "all .28s",
+                  transform: transform || "none",
+                  opacity: i === 1 && mobileOpen ? 0 : 1,
+                }} />
+              ))}
             </div>
           </button>
-        </div>
-      </header>
 
-      {/* Mobile menu — floating card */}
+        </div>
+      </motion.header>
+
+      {/* ── Mobile Menu ── */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -119,48 +167,40 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 z-40 lg:hidden px-3"
-            style={{ top: 76 }}
+            style={{ position: "fixed", left: 10, right: 10, zIndex: 40, top: navTop + NAV_H + 6 }}
           >
-            <div className="rounded-2xl bg-white border border-slate-200/80 shadow-[0_8px_40px_rgba(0,0,0,0.13)] overflow-hidden">
-              <nav className="flex flex-col p-2">
-                {NAV_LINKS.map((link) => {
-                  const isActive = activePath === link.href || activePath.startsWith(link.href + "/")
+            <div style={{
+              background: "white", borderRadius: 18,
+              border: "1px solid rgba(0,0,0,0.08)",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.13)", overflow: "hidden",
+            }}>
+              <nav style={{ display: "flex", flexDirection: "column", padding: 8 }}>
+                {NAV_LINKS.map(link => {
+                  const isActive = activePath === link.href
                   return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3 text-[15px] rounded-xl transition-colors ${
-                        isActive
-                          ? "font-bold text-slate-900 bg-slate-50"
-                          : "font-medium text-slate-700 hover:bg-slate-50"
-                      }`}
-                    >
+                    <a key={link.label} href={link.href} onClick={() => setMobileOpen(false)} style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "12px 16px", fontSize: 15, borderRadius: 12,
+                      fontWeight: isActive ? 700 : 500,
+                      color: isActive ? "#0f172a" : "#475569",
+                      background: isActive ? "#f8fafc" : "transparent",
+                      textDecoration: "none",
+                    }}>
                       {link.label}
                       {link.badge && (
-                        <span
-                          className="text-[9.5px] font-bold px-2 py-[3px] rounded-full text-white tracking-wide"
-                          style={{ background: "linear-gradient(135deg, #1d3a8f, #4668f5)" }}
-                        >
+                        <span style={{ fontSize: 9, fontWeight: 800, color: "white", background: "linear-gradient(135deg,#1d3a8f,#4668f5)", padding: "2px 7px", borderRadius: 99 }}>
                           {link.badge}
                         </span>
                       )}
                     </a>
                   )
                 })}
-
-                <div className="mx-2 my-2 h-px bg-slate-100" />
-
-                <div className="p-2 pt-1">
-                  <button
-                    onClick={() => { openWaitlist(); setMobileOpen(false) }}
-                    className="text-[14px] font-semibold text-white text-center py-3 rounded-xl border-0 cursor-pointer w-full"
-                    style={{
-                      background: "linear-gradient(135deg, #1a3585 0%, #2d4fd4 55%, #4668f5 100%)",
-                      boxShadow: "0 2px 12px rgba(29,58,143,0.28)",
-                    }}
-                  >
+                <div style={{ height: 1, background: "#f1f5f9", margin: "4px 8px" }} />
+                <div style={{ padding: 8, display: "flex", gap: 8 }}>
+                  <button onClick={() => { openWaitlist(); setMobileOpen(false) }} style={{ flex: 1, fontSize: 14, fontWeight: 600, color: "#475569", textAlign: "center", padding: "11px", borderRadius: 12, border: "1.5px solid #e2e8f0", background: "#f8fafc", cursor: "pointer" }}>
+                    Login
+                  </button>
+                  <button onClick={() => { openWaitlist(); setMobileOpen(false) }} style={{ flex: 1, fontSize: 14, fontWeight: 700, color: "white", padding: "11px", borderRadius: 12, border: "none", cursor: "pointer", background: "linear-gradient(135deg,#1a3585,#2d4fd4,#4668f5)", boxShadow: "0 2px 12px rgba(29,58,143,0.28)" }}>
                     Get Started
                   </button>
                 </div>

@@ -1,10 +1,63 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Footer } from "@/components/landing/footer"
 import { Navbar } from "@/components/landing/navbar"
+
+/* ─── DB Mentor type (from mentor_applications) ── */
+type DBMentor = {
+  id: string; full_name: string; job_title: string; domain: string; experience: string
+  linkedin?: string; short_intro?: string; professional_bio?: string
+  mentorship_topics: string[]; photo_url?: string; location?: string
+  session_price?: number; session_duration?: string
+  mentorship_format: string[]; available_days?: string[]
+}
+
+const DOMAIN_COLORS: Record<string, { color: string; bg: string }> = {
+  "AI/ML":        { color: "#7c3aed", bg: "#f5f3ff" },
+  "Full Stack":   { color: "#1d3a8f", bg: "#eef1fd" },
+  "Backend":      { color: "#0f766e", bg: "#f0fdfa" },
+  "Data Science": { color: "#0891b2", bg: "#ecfeff" },
+  "Web Dev":      { color: "#1d3a8f", bg: "#eef1fd" },
+  "DevOps":       { color: "#0369a1", bg: "#e0f2fe" },
+  "UI/UX":        { color: "#e11d48", bg: "#fff1f2" },
+  "DSA":          { color: "#16a34a", bg: "#f0fdf4" },
+  "Consulting":   { color: "#b45309", bg: "#fffbeb" },
+  "Embedded":     { color: "#dc2626", bg: "#fef2f2" },
+}
+
+function domainStyle(domain: string) {
+  for (const [key, val] of Object.entries(DOMAIN_COLORS)) {
+    if (domain?.toLowerCase().includes(key.toLowerCase())) return val
+  }
+  return { color: "#1d3a8f", bg: "#eef1fd" }
+}
+
+function initials(name: string) {
+  const parts = name.trim().split(" ")
+  return parts.length >= 2
+    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    : name.slice(0, 2).toUpperCase()
+}
+
+function dbToMentor(m: DBMentor) {
+  const { color, bg } = domainStyle(m.domain)
+  return {
+    name: m.full_name,
+    role: m.job_title,
+    company: m.domain,
+    initials: initials(m.full_name),
+    photo: m.photo_url || "",
+    color,
+    bg,
+    desc: m.professional_bio || m.short_intro || "",
+    linkedin: m.linkedin || "",
+    topics: m.mentorship_topics || [],
+    active: true,
+  }
+}
 
 /* ─── Mentor Data ──────────────────────────────────── */
 
@@ -343,9 +396,25 @@ function Stars({ rating }: { rating: number }) {
 
 export default function MentorsPage() {
   const avgRating = 4.6
-  const activeMentors = MENTORS.filter(m => m.active)
-  const extendedMentors = MENTORS.filter(m => !m.active)
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set())
+  const [dbMentors, setDbMentors] = useState<DBMentor[]>([])
+
+  useEffect(() => {
+    fetch("/api/mentors")
+      .then(r => r.json())
+      .then((data: DBMentor[]) => { if (Array.isArray(data)) setDbMentors(data) })
+      .catch(() => {})
+  }, [])
+
+  /* Hardcoded mentors always shown + new DB published mentors (skip duplicates by name) */
+  const hardcodedActive = MENTORS.filter(m => m.active)
+  const hardcodedNames = new Set(hardcodedActive.map(m => m.name.toLowerCase()))
+  const activeMentors = [
+    ...hardcodedActive,
+    ...dbMentors.map(dbToMentor).filter(m => !hardcodedNames.has(m.name.toLowerCase())),
+  ]
+
+  const extendedMentors = MENTORS.filter(m => !m.active)
 
   const toggleExpand = (i: number) => {
     setExpandedCards(prev => {

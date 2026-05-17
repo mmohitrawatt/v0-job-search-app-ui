@@ -590,7 +590,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       {/* ══════════════════════════════════════════════════════
           HERO — matches Jobingen design system
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", position: "relative", overflow: "hidden", borderBottom: "1px solid #e8edf8", paddingTop: 108 }}>
+      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", position: "relative", overflow: "hidden", borderBottom: "1px solid #e8edf8", paddingTop: 164 }}>
 
         {/* Subtle background accents */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>

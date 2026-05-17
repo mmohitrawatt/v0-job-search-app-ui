@@ -643,7 +643,7 @@ export default function AIToolsPage() {
         <Navbar />
 
         {/* ══ HERO ══ */}
-        <section className="relative overflow-hidden pt-[108px]" style={{ background:"#060c1f" }}>
+        <section className="relative overflow-hidden pt-[164px]" style={{ background:"#060c1f" }}>
 
           {/* bg glow */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -735,7 +735,7 @@ export default function AIToolsPage() {
         <div
           ref={selectorRef}
           className="sticky z-40 border-b border-slate-100 bg-white"
-          style={{ top: 108 }}
+          style={{ top: 164 }}
         >
           <div className="max-w-[1140px] mx-auto px-4 sm:px-8">
             <div className="flex items-center gap-0 overflow-x-auto scrollbar-none">

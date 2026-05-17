@@ -354,7 +354,7 @@ export default function CampusAmbassadorPage() {
           .ca-who-layout { padding:0 20px; }
         }
         @media(max-width:640px) {
-          .ca-hero { padding:152px 16px 56px; }
+          .ca-hero { padding:164px 16px 56px; }
           .ca-sec, .ca-sec-alt, .ca-sec-blue, .ca-form-section { padding:44px 16px; }
           .ca-inner { padding:0 16px; }
           .ca-who-layout { padding:0 16px; }
@@ -383,7 +383,7 @@ export default function CampusAmbassadorPage() {
           .ca-form-box { padding:20px 16px 18px; border-radius:16px; }
           .ca-form-row { grid-template-columns:1fr; }
           .ca-form-inner { gap:24px; }
-          .ca-hero { padding:144px 16px 48px; }
+          .ca-hero { padding:160px 16px 48px; }
           .ca-sec, .ca-sec-alt, .ca-sec-blue, .ca-form-section { padding:36px 16px; }
         }
       `}</style>

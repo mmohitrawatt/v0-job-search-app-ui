@@ -29,7 +29,7 @@ const CSS = `
     --ind-l:#e8edfe;
     --ind-xl:#f4f6ff;
     --cream:#f7f7fb;
-    --white:#ffffff;
+    --white:#f7f8fc;
     --ink:  #09090f;
     --ink2: #3d3d52;
     --ink3: #8a8aa8;
@@ -647,7 +647,7 @@ export default function EarlyApplyPage() {
     <>
       <style>{CSS}</style>
       <Navbar />
-      <div className="ea" style={{ paddingTop: 68 }}>
+      <div className="ea" style={{ paddingTop: 164 }}>
 
         {/* ════════════════════════════════════════
             HERO

@@ -11,7 +11,7 @@ const CSS = `
   :root {
     --blue:#384FFB; --blue-h:#2d40d9; --blue-l:#eef0ff; --blue-ll:#f6f7ff;
     --navy:#001751; --ink:#0a0a1a; --ink2:#444466; --ink3:#8888aa;
-    --white:#ffffff; --bg:#fafaff;
+    --white:#f7f8fc; --bg:#fafaff;
     --border:rgba(0,0,0,.06); --border2:rgba(56,79,251,.12);
     --grn:#22c55e; --grn-l:#f0fdf4; --amb:#f59e0b; --amb-l:#fffbeb;
     --sh:0 1px 3px rgba(0,0,0,.04),0 4px 20px rgba(0,0,0,.04);
@@ -55,7 +55,7 @@ const CSS = `
 
   /* ═══ HERO ═══ */
   .hero{
-    max-width:1100px;margin:0 auto;padding:148px 24px 0;
+    max-width:1100px;margin:0 auto;padding:164px 24px 0;
     text-align:center;
   }
   .hero-pill{

@@ -16,7 +16,7 @@ import { Footer } from "@/components/landing/footer"
 
 export default function PreLaunchPage() {
   return (
-    <div className="min-h-screen bg-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen font-sans antialiased overflow-x-hidden" style={{ background: "#ffffff" }}>
       <style>{`
         * { -webkit-font-smoothing: antialiased; }
         a, button { transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1), box-shadow 0.2s cubic-bezier(0.16,1,0.3,1); }

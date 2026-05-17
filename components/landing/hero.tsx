@@ -1,223 +1,417 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { FadeIn, motion, AnimatePresence } from "./motion"
+import Image from "next/image"
+import { motion } from "./motion"
 import { useWaitlist } from "@/components/waitlist-modal"
 
-export function Hero() {
-  const { open: openWaitlist } = useWaitlist()
+/* ─── Mini Jobingen Desktop Dashboard ─── */
+function DesktopScreen() {
   return (
-    <section className="relative overflow-hidden pt-[108px]">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] via-white to-white" />
+    <div style={{ display: "flex", height: "100%", background: "#f7f8fc", fontSize: 0 }}>
 
-      <div className="relative max-w-[1200px] mx-auto px-5 sm:px-8 pt-8 sm:pt-10 lg:pt-14 pb-12 sm:pb-16">
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-
-          {/* ── Left — Content ─────────────────── */}
-          <div className="flex-1 text-center lg:text-left">
-            <FadeIn delay={0.06}>
-              <h1 className="text-[clamp(32px,5.5vw,56px)] font-black text-slate-900 leading-[1.06] tracking-[-0.04em] mb-5">
-                The Last Engine
-                <br />
-                you need for{" "}
-                <span className="bg-gradient-to-r from-[#1d3a8f] to-[#3b5bdb] bg-clip-text text-transparent">
-                  Job Search.
-                </span>
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.12}>
-              <p className="text-[clamp(16px,1.6vw,19px)] text-slate-500 leading-[1.75] mb-8 max-w-[480px] mx-auto lg:mx-0">
-                Smarter job discovery, AI-powered resumes, mock interviews, and hands-on bootcamps — everything in one place.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.18}>
-              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-8">
-                <button
-                  onClick={openWaitlist}
-                  className="w-full sm:w-auto text-[15px] font-bold text-white px-8 py-3.5 rounded-xl shadow-[0_4px_16px_rgba(29,58,143,0.28)] hover:shadow-[0_8px_24px_rgba(29,58,143,0.35)] transition-all duration-300 hover:-translate-y-0.5 border-0 cursor-pointer"
-                  style={{ background: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)" }}
-                >
-                  Get Started — It&apos;s Free
-                </button>
-                <a
-                  href="#ai-tools"
-                  className="w-full sm:w-auto text-[15px] font-semibold text-slate-600 px-8 py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200"
-                >
-                  Explore Tools
-                </a>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.24}>
-              <div className="flex items-center gap-6 justify-center lg:justify-start text-[13px] text-slate-400 font-medium flex-wrap">
-                {["AI Resume Builder", "Smart Job Matching", "Mock Interviews"].map((label) => (
-                  <span key={label} className="flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-[#1d3a8f]/40" />
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* ── Right — AI Chatbot Card ────── */}
-          <FadeIn direction="left" delay={0.15} className="flex-1 w-full max-w-[480px] lg:max-w-none">
-            <ChatbotCard />
-          </FadeIn>
-
+      {/* Sidebar */}
+      <div style={{ width: 110, background: "white", borderRight: "1px solid #f1f5f9", display: "flex", flexDirection: "column", padding: "10px 0", flexShrink: 0 }}>
+        {/* Logo */}
+        <div style={{ padding: "0 10px 10px", borderBottom: "1px solid #f1f5f9", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em" }}>jobingen</div>
         </div>
+        {/* Nav label */}
+        <div style={{ fontSize: 7, fontWeight: 700, color: "#94a3b8", letterSpacing: ".06em", textTransform: "uppercase", padding: "0 10px", marginBottom: 4 }}>Career Hub</div>
+        {/* Nav items */}
+        {[
+          { label: "Dashboard", active: true },
+          { label: "Resumes" },
+          { label: "Mentors" },
+        ].map(item => (
+          <div key={item.label} style={{
+            display: "flex", alignItems: "center", gap: 5,
+            padding: "4px 10px", margin: "1px 6px", borderRadius: 6,
+            background: item.active ? "#eef1fd" : "transparent",
+          }}>
+            <div style={{ width: 7, height: 7, borderRadius: 2, background: item.active ? "#1d3a8f" : "#e2e8f0", flexShrink: 0 }} />
+            <span style={{ fontSize: 8, fontWeight: item.active ? 700 : 500, color: item.active ? "#1d3a8f" : "#64748b" }}>{item.label}</span>
+          </div>
+        ))}
+        <div style={{ fontSize: 7, fontWeight: 700, color: "#94a3b8", letterSpacing: ".06em", textTransform: "uppercase", padding: "8px 10px 4px", marginBottom: 2 }}>Learn</div>
+        {["Bootcamps", "Masterclasses"].map(label => (
+          <div key={label} style={{ display: "flex", alignItems: "center", gap: 5, padding: "4px 10px", margin: "1px 6px", borderRadius: 6 }}>
+            <div style={{ width: 7, height: 7, borderRadius: 2, background: "#e2e8f0", flexShrink: 0 }} />
+            <span style={{ fontSize: 8, fontWeight: 500, color: "#64748b" }}>{label}</span>
+          </div>
+        ))}
+        <div style={{ fontSize: 7, fontWeight: 700, color: "#94a3b8", letterSpacing: ".06em", textTransform: "uppercase", padding: "8px 10px 4px" }}>Coming Soon</div>
+        {["Interview AI", "AutoApply"].map(label => (
+          <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "4px 10px", margin: "1px 6px", borderRadius: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <div style={{ width: 7, height: 7, borderRadius: 2, background: "#f1f5f9", flexShrink: 0 }} />
+              <span style={{ fontSize: 8, fontWeight: 500, color: "#94a3b8" }}>{label}</span>
+            </div>
+            <span style={{ fontSize: 6, fontWeight: 700, color: "#f97316", background: "#fff7ed", padding: "1px 4px", borderRadius: 3 }}>Soon</span>
+          </div>
+        ))}
+      </div>
 
-        {/* Trusted by strip */}
-        <FadeIn delay={0.3}>
-          <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-100">
-            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.1em] text-center mb-4">Trusted by students from</p>
-            <div className="flex items-center justify-center gap-4 sm:gap-8 text-[13px] sm:text-[14px] text-slate-300 font-bold flex-wrap">
-              {["IITs", "NITs", "IIITs", "BITS", "DTU", "VIT", "SRM", "NSUT"].map((name) => (
-                <span key={name} className="hover:text-slate-500 transition-colors duration-200">{name}</span>
-              ))}
+      {/* Main content */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, overflow: "hidden" }}>
+        {/* Top bar */}
+        <div style={{ height: 28, background: "white", borderBottom: "1px solid #f1f5f9", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 10px", flexShrink: 0 }}>
+          <span style={{ fontSize: 9, fontWeight: 700, color: "#0f172a" }}>Dashboard</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <div style={{ width: 70, height: 14, background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 99, display: "flex", alignItems: "center", paddingLeft: 6, gap: 4 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#cbd5e1" }} />
+              <span style={{ fontSize: 6.5, color: "#94a3b8" }}>Search...</span>
+            </div>
+            <div style={{ width: 16, height: 16, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 7, fontWeight: 800, color: "white" }}>J</span>
             </div>
           </div>
-        </FadeIn>
+        </div>
+
+        {/* Body */}
+        <div style={{ flex: 1, padding: 10, display: "flex", flexDirection: "column", gap: 8, overflow: "hidden" }}>
+
+          {/* Hero banner */}
+          <div style={{ background: "linear-gradient(135deg,#eef0ff 0%,#e8edff 100%)", borderRadius: 10, padding: "10px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
+            <div>
+              <div style={{ fontSize: 7.5, fontWeight: 600, color: "#3b5bdb", marginBottom: 3 }}>Rise and shine, Jobingen 👋</div>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "#0f172a", lineHeight: 1.3, maxWidth: 160 }}>A clear head, a clean draft, a closer goal</div>
+              <div style={{ display: "flex", gap: 4, marginTop: 7 }}>
+                <div style={{ fontSize: 6.5, fontWeight: 700, color: "white", background: "#1d3a8f", padding: "3px 7px", borderRadius: 5, display: "flex", alignItems: "center", gap: 3 }}>
+                  <span>+</span> New Resume
+                </div>
+                <div style={{ fontSize: 6.5, fontWeight: 600, color: "#334155", background: "white", border: "1px solid #e2e8f0", padding: "3px 7px", borderRadius: 5 }}>Improve with AI</div>
+                <div style={{ fontSize: 6.5, fontWeight: 600, color: "#334155", background: "white", border: "1px solid #e2e8f0", padding: "3px 7px", borderRadius: 5 }}>Tailor for a Role</div>
+              </div>
+            </div>
+            {/* Floating card */}
+            <div style={{ width: 64, height: 52, background: "white", borderRadius: 8, boxShadow: "0 4px 16px rgba(0,0,0,0.1)", marginRight: 4, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 3 }}>
+              <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#eef1fd", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", border: "1.5px solid #3b5bdb", borderTopColor: "transparent" }} />
+              </div>
+              <div style={{ width: 36, height: 3, background: "#e2e8f0", borderRadius: 2 }} />
+              <div style={{ width: 28, height: 3, background: "#f1f5f9", borderRadius: 2 }} />
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 6, flexShrink: 0 }}>
+            {[
+              { val: "0", label: "Total Resumes",   sub: "Create your first", ic: "#dbeafe", tc: "#1d3a8f" },
+              { val: "—", label: "Best ATS Score",  sub: "Run analysis",      ic: "#dcfce7", tc: "#16a34a" },
+              { val: "0", label: "Mentor Sessions", sub: "Book a session",    ic: "#fed7aa", tc: "#ea580c" },
+              { val: "0", label: "Saved Jobs",      sub: "Coming soon",       ic: "#ede9fe", tc: "#7c3aed" },
+            ].map(s => (
+              <div key={s.label} style={{ background: "white", borderRadius: 8, padding: "7px 8px", border: "1px solid #f1f5f9" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 4 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 4, background: s.ic, flexShrink: 0 }} />
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>{s.val}</div>
+                <div style={{ fontSize: 6.5, color: "#64748b", marginTop: 2 }}>{s.label}</div>
+                <div style={{ fontSize: 6, fontWeight: 600, color: s.tc, marginTop: 2 }}>{s.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Recent resumes */}
+          <div style={{ flex: 1, background: "white", borderRadius: 8, padding: "8px", border: "1px solid #f1f5f9", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 5 }}>
+            <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            </div>
+            <div style={{ fontSize: 8, fontWeight: 700, color: "#0f172a" }}>No resumes yet</div>
+            <div style={{ fontSize: 7, color: "#94a3b8" }}>Create your first resume</div>
+            <div style={{ fontSize: 7, fontWeight: 700, color: "white", background: "#1d3a8f", padding: "4px 10px", borderRadius: 20 }}>Create Resume</div>
+          </div>
+
+        </div>
       </div>
-    </section>
+
+      {/* Right AI panel */}
+      <div style={{ width: 100, background: "white", borderLeft: "1px solid #f1f5f9", padding: 8, display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 8, fontWeight: 800, color: "#0f172a" }}>AI Insights</span>
+          <span style={{ fontSize: 6.5, fontWeight: 700, color: "#16a34a", display: "flex", alignItems: "center", gap: 2 }}>
+            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />Live
+          </span>
+        </div>
+        {[
+          { title: "ATS score can improve 18%", color: "#dbeafe", tc: "#1d3a8f" },
+          { title: "Missing measurable impact", color: "#fff7ed", tc: "#ea580c" },
+          { title: "Tailor for Product roles", color: "#ede9fe", tc: "#7c3aed" },
+        ].map((item, i) => (
+          <div key={i} style={{ background: "#f8fafc", borderRadius: 6, padding: "5px 6px" }}>
+            <div style={{ width: 12, height: 12, borderRadius: 4, background: item.color, marginBottom: 4 }} />
+            <div style={{ fontSize: 7, fontWeight: 600, color: "#0f172a", lineHeight: 1.4 }}>{item.title}</div>
+          </div>
+        ))}
+        <div style={{ marginTop: 4 }}>
+          <div style={{ fontSize: 8, fontWeight: 800, color: "#0f172a", marginBottom: 6 }}>Recent Bootcamps</div>
+          {[
+            { title: "Recursion Deep Dive", price: "₹29", open: true },
+            { title: "ML Masterclass", price: "₹29", open: true },
+          ].map((b, i) => (
+            <div key={i} style={{ padding: "5px 0", borderBottom: i === 0 ? "1px solid #f1f5f9" : "none" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+                <span style={{ fontSize: 7, fontWeight: 700, color: "#0f172a" }}>{b.title}</span>
+                <span style={{ fontSize: 7, fontWeight: 800, color: "#1d3a8f" }}>{b.price}</span>
+              </div>
+              <span style={{ fontSize: 6, fontWeight: 700, color: "#16a34a", background: "#dcfce7", padding: "1px 5px", borderRadius: 3 }}>Open</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
   )
 }
 
-/* ── Chatbot Card ──────────────────────────────────── */
-
-function ChatbotCard() {
-  const [showToast, setShowToast] = useState(false)
-  const [inputVal, setInputVal] = useState("")
-
-  function handleSend() {
-    setShowToast(true)
-    setTimeout(() => setShowToast(false), 2000)
-  }
-
+/* ─── Mini Jobingen Mobile Dashboard ─── */
+function MobileScreen() {
   return (
-    <div className="relative">
-      <motion.div
-        className="relative"
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="bg-white rounded-2xl border border-slate-200/70 shadow-[0_8px_48px_rgba(0,0,0,0.07)] overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-[#1d3a8f] to-[#3b5bdb]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-[13px] font-bold text-white leading-tight">Jobingen AI</div>
-                <div className="flex items-center gap-1">
-                  <span className="w-[5px] h-[5px] rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[10px] text-white/70 font-medium">Online</span>
-                </div>
-              </div>
-            </div>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", background: "#f7f8fc" }}>
+
+      {/* Top bar */}
+      <div style={{ background: "white", padding: "8px 10px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #f1f5f9", flexShrink: 0 }}>
+        <span style={{ fontSize: 10, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em" }}>jobingen</span>
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          <div style={{ width: 16, height: 16, borderRadius: "50%", background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="8" height="8" fill="none" viewBox="0 0 24 24" stroke="#64748b" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           </div>
-
-          {/* Messages */}
-          <div className="p-4 space-y-3 bg-[#fafbfc]">
-            {/* User */}
-            <div className="flex justify-end">
-              <div className="bg-[#1d3a8f] text-white text-[12px] px-3.5 py-2 rounded-2xl rounded-br-md max-w-[80%] leading-relaxed font-medium">
-                Build me a resume for an AI Engineer role
-              </div>
-            </div>
-
-            {/* AI */}
-            <div className="flex gap-2 items-start">
-              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#1d3a8f] to-[#3b5bdb] flex items-center justify-center shrink-0 mt-0.5">
-                <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                </svg>
-              </div>
-              <div className="bg-white border border-slate-200 text-[12px] text-slate-600 px-3.5 py-2.5 rounded-2xl rounded-bl-md max-w-[85%] leading-[1.6] shadow-sm">
-                <p className="mb-2 text-slate-700 font-medium">Creating your tailored resume:</p>
-                <div className="space-y-1.5">
-                  {["Professional Summary", "Work Experience", "Skills & Tools"].map((item) => (
-                    <div key={item} className="flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                        <svg width="7" height="7" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                      </div>
-                      <span className="text-[11px] text-slate-500">{item}</span>
-                    </div>
-                  ))}
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-3.5 h-3.5 rounded-full border-[1.5px] border-[#1d3a8f] border-t-transparent animate-spin shrink-0" />
-                    <span className="text-[11px] font-medium text-[#1d3a8f]">Optimizing for ATS...</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Resume file */}
-            <div className="flex gap-2 items-start">
-              <div className="w-6 shrink-0" />
-              <div className="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex-1 max-w-[85%]">
-                <div className="flex items-center gap-2 mb-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#1d3a8f] to-[#3b5bdb] flex items-center justify-center shrink-0">
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /></svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[11px] font-bold text-slate-700 truncate">Resume_AI_Engineer.pdf</div>
-                    <div className="text-[9px] text-slate-400">ATS-Optimized</div>
-                  </div>
-                  <div className="bg-emerald-50 text-emerald-600 text-[9px] font-bold px-1.5 py-0.5 rounded border border-emerald-200/60 shrink-0">92%</div>
-                </div>
-                <div className="flex gap-1.5">
-                  <div className="flex-1 bg-[#1d3a8f] text-white text-[10px] font-bold py-1.5 rounded-lg text-center">Download</div>
-                  <div className="flex-1 bg-slate-50 text-slate-500 text-[10px] font-bold py-1.5 rounded-lg text-center border border-slate-200">Edit</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Input + Coming Soon toast */}
-          <div className="px-4 py-2.5 border-t border-slate-100 bg-white relative">
-            <AnimatePresence>
-              {showToast && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 4 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute -top-9 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap z-10"
-                >
-                  Coming Soon
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
-              <input
-                type="text"
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                placeholder="Type your prompt..."
-                className="text-[13px] text-slate-700 placeholder:text-slate-400 flex-1 bg-transparent outline-none font-medium"
-              />
-              <button
-                onClick={handleSend}
-                className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 hover:opacity-80 transition-opacity"
-                style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}
-              >
-                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                </svg>
-              </button>
-            </div>
+          <div style={{ width: 16, height: 16, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: 7, fontWeight: 800, color: "white" }}>J</span>
           </div>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Scrollable content */}
+      <div style={{ flex: 1, padding: 8, display: "flex", flexDirection: "column", gap: 8, overflow: "hidden" }}>
+
+        {/* Hero banner */}
+        <div style={{ background: "linear-gradient(135deg,#eef0ff 0%,#e8edff 100%)", borderRadius: 10, padding: "10px 12px" }}>
+          <div style={{ fontSize: 7.5, fontWeight: 600, color: "#3b5bdb", marginBottom: 3 }}>Good morning, Jobingen 👋</div>
+          <div style={{ fontSize: 10, fontWeight: 800, color: "#0f172a", lineHeight: 1.3, marginBottom: 8 }}>A fresh day, a fresh chance to inch closer</div>
+          <div style={{ display: "flex", gap: 5 }}>
+            <div style={{ fontSize: 7, fontWeight: 700, color: "white", background: "#1d3a8f", padding: "4px 8px", borderRadius: 20, display: "flex", alignItems: "center", gap: 2 }}>
+              + New Resume
+            </div>
+            <div style={{ fontSize: 7, fontWeight: 600, color: "#334155", background: "white", border: "1px solid #e2e8f0", padding: "4px 8px", borderRadius: 20 }}>AI Improve</div>
+          </div>
+        </div>
+
+        {/* Stats 2x2 */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          {[
+            { val: "0", label: "Total Resumes",   sub: "Create your first", ic: "#dbeafe" },
+            { val: "—", label: "Best ATS Score",  sub: "Run analysis",      ic: "#dcfce7" },
+            { val: "0", label: "Mentor Sessions", sub: "Book a session",    ic: "#fed7aa" },
+            { val: "0", label: "Saved Jobs",      sub: "Coming soon",       ic: "#ede9fe" },
+          ].map(s => (
+            <div key={s.label} style={{ background: "white", borderRadius: 8, padding: "8px", border: "1px solid #f1f5f9" }}>
+              <div style={{ width: 16, height: 16, borderRadius: 5, background: s.ic, marginBottom: 5 }} />
+              <div style={{ fontSize: 14, fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>{s.val}</div>
+              <div style={{ fontSize: 7, color: "#64748b", marginTop: 3 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Recent resumes */}
+        <div style={{ flex: 1, background: "white", borderRadius: 8, padding: "10px", border: "1px solid #f1f5f9", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div style={{ fontSize: 9, fontWeight: 700, color: "#0f172a" }}>No resumes yet</div>
+          <div style={{ fontSize: 8, fontWeight: 700, color: "white", background: "#1d3a8f", padding: "5px 14px", borderRadius: 20 }}>Create Resume</div>
+        </div>
+
+      </div>
+
+      {/* Bottom nav */}
+      <div style={{ background: "white", borderTop: "1px solid #f1f5f9", display: "flex", padding: "8px 0 4px", flexShrink: 0 }}>
+        {[
+          { label: "Home",    active: true },
+          { label: "Resume"  },
+          { label: "Mentors" },
+          { label: "Learn"   },
+          { label: "More"    },
+        ].map(item => (
+          <div key={item.label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+            <div style={{ width: 14, height: 14, borderRadius: 4, background: item.active ? "#eef1fd" : "#f8fafc" }} />
+            <span style={{ fontSize: 6.5, fontWeight: item.active ? 700 : 500, color: item.active ? "#1d3a8f" : "#94a3b8" }}>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
     </div>
+  )
+}
+
+/* ─── Laptop Frame ─── */
+function LaptopFrame() {
+  return (
+    <div style={{ background: "#1a1f2e", borderRadius: 14, padding: "8px 8px 0", boxShadow: "0 40px 100px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.04)" }}>
+      {/* Mac dots */}
+      <div style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 8px 6px" }}>
+        {["#ff5f57", "#febc2e", "#28c840"].map(c => (
+          <div key={c} style={{ width: 8, height: 8, borderRadius: "50%", background: c }} />
+        ))}
+      </div>
+      {/* Screen */}
+      <div style={{ borderRadius: "6px 6px 0 0", overflow: "hidden", height: 260 }}>
+        <DesktopScreen />
+      </div>
+      {/* Base */}
+      <div style={{ height: 14, background: "#141924", margin: "0 -8px", borderRadius: "0 0 4px 4px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ width: 50, height: 5, background: "#252d3d", borderRadius: 3 }} />
+      </div>
+    </div>
+  )
+}
+
+/* ─── Phone Frame ─── */
+function PhoneFrame() {
+  return (
+    <div style={{ background: "#1a1f2e", borderRadius: 28, padding: 7, boxShadow: "0 24px 64px rgba(0,0,0,0.30), 0 0 0 1px rgba(255,255,255,0.05)", width: 148, flexShrink: 0 }}>
+      {/* Notch */}
+      <div style={{ height: 16, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ width: 40, height: 8, background: "#0d1117", borderRadius: 99 }} />
+      </div>
+      {/* Screen */}
+      <div style={{ borderRadius: 20, overflow: "hidden", height: 272 }}>
+        <MobileScreen />
+      </div>
+      {/* Home bar */}
+      <div style={{ height: 16, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ width: 40, height: 4, background: "#252d3d", borderRadius: 99 }} />
+      </div>
+    </div>
+  )
+}
+
+/* ─── Hero ─── */
+export function Hero() {
+  const { open: openWaitlist } = useWaitlist()
+
+  return (
+    <section
+      className="mt-[114px] lg:mt-[146px] min-h-[calc(100vh-114px)] lg:min-h-[calc(100vh-146px)]"
+      style={{ position: "relative", overflow: "hidden", background: "#ffffff", display: "flex", alignItems: "center" }}
+    >
+
+      <div className="relative w-full max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center px-5 sm:px-8 lg:pl-16 lg:pr-0 py-10 lg:py-0">
+
+        {/* ── LEFT ── */}
+        <div className="flex-shrink-0 w-full lg:w-[44%] text-center lg:text-left" style={{ maxWidth: 560 }}>
+
+          {/* Badge */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "white", border: "1px solid #e2e8f0",
+            borderRadius: 99, padding: "7px 18px", marginBottom: 28,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+          }}>
+            <span style={{ fontSize: 16 }}>🎓</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#475569" }}>Trusted by</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: "#1d3a8f" }}>10,000+ students</span>
+          </div>
+
+          {/* H1 */}
+          <h1 style={{
+            fontSize: "clamp(48px, 6vw, 80px)", fontWeight: 900,
+            lineHeight: 1.02, letterSpacing: "-0.04em",
+            color: "#0c1a35", marginBottom: 20,
+          }}>
+            Everything<br />
+            <span style={{
+              background: "linear-gradient(135deg,#1d3a8f,#3b5bdb,#6366f1)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}>Career.</span>
+          </h1>
+
+          {/* Subtext */}
+          <p className="mx-auto lg:mx-0" style={{
+            fontSize: 18, color: "#334155", lineHeight: 1.72,
+            marginBottom: 36, maxWidth: 460, fontWeight: 500,
+          }}>
+            AI-crafted resumes, smart job matching, real mock interviews, and expert bootcamps — all in one intelligent platform.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex items-center gap-3 justify-center lg:justify-start" style={{ marginBottom: 24 }}>
+            <button
+              onClick={openWaitlist}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.opacity = "0.9"; el.style.transform = "translateY(-1px)" }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.opacity = "1"; el.style.transform = "" }}
+              style={{
+                fontSize: 15, fontWeight: 700, color: "white",
+                padding: "13px 24px", borderRadius: 12, border: "none", cursor: "pointer",
+                background: "#0c1a35", boxShadow: "0 4px 20px rgba(12,26,53,0.3)",
+                transition: "all .2s ease", whiteSpace: "nowrap",
+              }}>
+              Get Started
+            </button>
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div style={{
+                position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)",
+                background: "#3b5bdb", color: "white", fontSize: 10, fontWeight: 800,
+                padding: "2px 8px", borderRadius: 99, whiteSpace: "nowrap", letterSpacing: ".04em",
+              }}>It&apos;s Free</div>
+              <a href="/ai-tools" style={{
+                display: "block", fontSize: 15, fontWeight: 600, color: "#1d3a8f",
+                padding: "13px 24px", borderRadius: 12, textDecoration: "none",
+                background: "#dce3ff", border: "1.5px solid #c7d2fe", transition: "all .2s ease",
+                whiteSpace: "nowrap",
+              }}>
+                Explore Features
+              </a>
+            </div>
+          </div>
+
+          {/* Trust row */}
+          <div className="flex items-center gap-5 justify-center lg:justify-start flex-wrap">
+            {[
+              { icon: "✓", text: "Free for students" },
+              { icon: "✓", text: "No credit card" },
+              { icon: "✓", text: "Instant access" },
+            ].map(item => (
+              <span key={item.text} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13.5, fontWeight: 500, color: "#64748b" }}>
+                <span style={{ width: 18, height: 18, borderRadius: "50%", background: "#e8edff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: "#1d3a8f", flexShrink: 0 }}>{item.icon}</span>
+                {item.text}
+              </span>
+            ))}
+          </div>
+
+        </div>
+
+        {/* ── RIGHT — mobile: centered below text | desktop: fills to screen edge ── */}
+        <motion.div
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="w-full lg:flex-1 mt-6 lg:mt-0"
+          style={{ minWidth: 0 }}>
+          {/* Mobile */}
+          <div className="lg:hidden flex justify-center">
+            <Image
+              src="/screenshots/devices-mockup.png"
+              alt="Jobingen App"
+              width={960}
+              height={720}
+              style={{ width: "100%", maxWidth: 440, height: "auto", objectFit: "contain" }}
+              priority
+            />
+          </div>
+          {/* Desktop */}
+          <div className="hidden lg:flex items-center justify-end" style={{ alignSelf: "stretch", height: "100%" }}>
+            <Image
+              src="/screenshots/devices-mockup.png"
+              alt="Jobingen App"
+              width={1080}
+              height={810}
+              style={{ width: "100%", height: "auto", maxHeight: "85vh", objectFit: "contain", objectPosition: "right center", display: "block" }}
+              priority
+            />
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
   )
 }

@@ -115,7 +115,7 @@ export default function CreatorCommunityPage() {
         .cc-hero {
           position:relative; overflow:hidden; text-align:center;
           background:linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
-          padding:120px 24px 96px;
+          padding:164px 24px 96px;
         }
         .cc-hero-blob1 { position:absolute; top:-8%;  right:4%;  width:460px; height:460px; border-radius:50%; background:radial-gradient(circle,rgba(29,58,143,.07) 0%,transparent 70%); pointer-events:none; }
         .cc-hero-blob2 { position:absolute; bottom:-6%; left:2%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(59,91,219,.05) 0%,transparent 70%); pointer-events:none; }

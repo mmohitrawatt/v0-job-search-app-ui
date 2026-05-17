@@ -71,7 +71,7 @@ const CSS = `
     --ind-l: #e8edfe;
     --ind-xl: #f4f6ff;
     --cream: #f7f7fb;
-    --white: #ffffff;
+    --white: #f7f8fc;
     --ink: #09090f;
     --ink2: #3d3d52;
     --ink3: #8a8aa8;
@@ -104,7 +104,7 @@ const CSS = `
   .si-hero {
     position: relative; overflow: hidden;
     background: linear-gradient(175deg, var(--ind-xl) 0%, var(--white) 60%);
-    padding: 120px 24px 64px;
+    padding: 164px 24px 64px;
     border-bottom: 1px solid var(--jb);
   }
   .si-hero-grid {

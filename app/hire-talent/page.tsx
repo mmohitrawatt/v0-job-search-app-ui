@@ -414,7 +414,7 @@ const CSS = `
     --ind-l:#e8edfe;
     --ind-xl:#f4f6ff;
     --cream:#f7f7fb;
-    --white:#ffffff;
+    --white:#f7f8fc;
     --ink:  #09090f;
     --ink2: #3d3d52;
     --ink3: #8a8aa8;
@@ -452,9 +452,9 @@ const CSS = `
   .hire-hero {
     position:relative; overflow:hidden;
     background:linear-gradient(175deg,var(--ind-xl) 0%,var(--white) 65%);
-    padding:120px 24px 80px; border-bottom:1px solid var(--jb);
+    padding:164px 24px 80px; border-bottom:1px solid var(--jb);
   }
-  @media(max-width:600px){ .hire-hero{padding:100px 18px 60px} }
+  @media(max-width:600px){ .hire-hero{padding:128px 18px 60px} }
   .hire-hero-grid {
     position:absolute; inset:0; pointer-events:none; opacity:.45;
     background-image:linear-gradient(var(--ind-l) 1px,transparent 1px),linear-gradient(90deg,var(--ind-l) 1px,transparent 1px);

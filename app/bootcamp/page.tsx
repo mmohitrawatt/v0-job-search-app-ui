@@ -10,7 +10,7 @@ const CSS = `
     --ink2:   #3d3d52;
     --ink3:   #8a8aa8;
     --cream:  #f4f4f8;
-    --white:  #ffffff;
+    --white:  #f7f8fc;
     --border: rgba(10,10,20,0.08);
     --ind:    #1d3a8f;
     --ind2:   #2548c5;

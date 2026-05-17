@@ -9,7 +9,7 @@ const CSS = `
     --ink:    #09090f;
     --ink2:   #3d3d52;
     --ink3:   #8a8aa8;
-    --white:  #ffffff;
+    --white:  #f7f8fc;
     --cream:  #f7f7fb;
     --cream2: #f0f0f8;
     --border: rgba(10,10,20,0.08);
@@ -135,7 +135,7 @@ const CSS = `
   /* ── HERO ── */
   .ml-hero {
     background: linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
-    padding: 110px 28px 72px;
+    padding: 164px 28px 72px;
     text-align: center;
     position: relative;
     overflow: hidden;

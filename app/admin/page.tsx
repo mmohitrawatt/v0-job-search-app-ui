@@ -62,7 +62,8 @@ type MentorApplication = {
   mentorship_topics: string[]; session_price?: number; session_duration?: string
   pricing_expectation?: string
   mentorship_format: string[]; available_days?: string[]; motivation?: string
-  portfolio_url?: string; additional_note?: string; photo_url?: string; created_at: string
+  portfolio_url?: string; additional_note?: string; photo_url?: string
+  is_published?: boolean; created_at: string
 }
 
 type EarlyApply = {
@@ -205,6 +206,22 @@ export default function AdminPage() {
       setDeleteModal(null)
     }
   }, [deleteModal, activeTab])
+
+  const handlePublishMentor = useCallback(async (id: string, currentVal: boolean) => {
+    const pwd = typeof window !== "undefined" ? sessionStorage.getItem("adm_auth") : null
+    if (!pwd) return
+    try {
+      const res = await fetch("/api/admin/publish-mentor", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${pwd}` },
+        body: JSON.stringify({ id, is_published: !currentVal }),
+      })
+      if (!res.ok) throw new Error((await res.json()).error)
+      setMentorApps(p => p.map(m => m.id === id ? { ...m, is_published: !currentVal } : m))
+    } catch (err) {
+      alert(`Publish failed: ${err instanceof Error ? err.message : "Unknown error"}`)
+    }
+  }, [])
 
   const eaFiltered  = useMemo(() => filterRows(earlyAccess, search), [earlyAccess, search])
   const b1Filtered  = useMemo(() => filterRows(bootcamp1, search), [bootcamp1, search])
@@ -944,7 +961,7 @@ export default function AdminPage() {
                       <table>
                         <thead>
                           <tr>
-                            <th>#</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th>
+                            <th>#</th><th>Published</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th><th>Location</th>
                             <th>Domain</th><th>Role</th><th>Experience</th><th>LinkedIn</th>
                             <th>Topics</th><th>Price</th><th>Duration</th><th>Format</th>
                             <th>Days</th><th>Photo</th><th>Bio</th><th>Date</th><th></th>
@@ -954,6 +971,19 @@ export default function AdminPage() {
                           {mentorApps.map((m, i) => (
                             <tr key={m.id}>
                               <td className="c-num">{i + 1}</td>
+                              <td>
+                                <button
+                                  onClick={() => handlePublishMentor(m.id, !!m.is_published)}
+                                  style={{
+                                    fontSize: 11, fontWeight: 700, padding: "4px 11px", borderRadius: 20, border: "1.5px solid", cursor: "pointer", transition: "all .15s",
+                                    background: m.is_published ? "#dcfce7" : "#f1f5f9",
+                                    color:      m.is_published ? "#15803d" : "#64748b",
+                                    borderColor: m.is_published ? "#bbf7d0" : "#e2e8f0",
+                                  }}
+                                >
+                                  {m.is_published ? "✓ Live" : "Publish"}
+                                </button>
+                              </td>
                               <td><span className="c-tag" style={{ background: m.role_type === "Workshop Lead" ? "#fff7ed" : "#f5f3ff", color: m.role_type === "Workshop Lead" ? "#ea580c" : "#7c3aed", borderColor: m.role_type === "Workshop Lead" ? "#fed7aa" : "#ddd6fe" }}>{m.role_type || "Mentor"}</span></td>
                               <td className="c-name">{m.full_name}</td>
                               <td className="c-email">{m.email}</td>

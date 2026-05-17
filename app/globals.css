@@ -4,12 +4,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* iOS-inspired light theme — #F8F9FB base */
-  --background: oklch(0.978 0.003 247);
+  /* Premium off-white — #F7F8FC subtle cool-white */
+  --background: oklch(0.972 0.007 258);
   --foreground: oklch(0.13 0.01 255);
-  --card: oklch(1 0 0);
+  --card: oklch(0.997 0.001 255);
   --card-foreground: oklch(0.13 0.01 255);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.997 0.001 255);
   --popover-foreground: oklch(0.13 0.01 255);
 
   /* Jobingen brand blue — deep navy to cobalt from logo */
@@ -130,11 +130,11 @@
     @apply border-border outline-ring/50;
   }
   html {
-    background-color: oklch(0.94 0.008 255); /* matches --muted, prevents edge white flash */
+    background-color: #f7f8fc;
     overscroll-behavior: none;
   }
   body {
-    @apply bg-muted text-foreground;
+    @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
