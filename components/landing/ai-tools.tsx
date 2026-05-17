@@ -127,7 +127,10 @@ const TOOLS = [
 ]
 
 export function AITools() {
-  const outerRef = useRef<HTMLDivElement>(null)
+  const outerRef  = useRef<HTMLDivElement>(null)
+  const cardRef   = useRef<HTMLDivElement>(null)
+  const idxRef    = useRef(0)
+  const timerRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [idx, setIdx] = useState(0)
   const tool = TOOLS[idx] ?? TOOLS[0]
 
@@ -135,21 +138,39 @@ export function AITools() {
     const onScroll = () => {
       const el = outerRef.current
       if (!el) return
-      const top    = el.getBoundingClientRect().top + window.scrollY
+      const top     = el.getBoundingClientRect().top + window.scrollY
       const scrolled = window.scrollY - top
-      const i = Math.floor(scrolled / window.innerHeight)
-      setIdx(Math.max(0, Math.min(TOOLS.length - 1, i)))
+      const next    = Math.max(0, Math.min(TOOLS.length - 1, Math.floor(scrolled / window.innerHeight)))
+      if (next === idxRef.current) return
+      idxRef.current = next
+
+      // Fade out → swap content → fade in
+      const card = cardRef.current
+      if (!card) { setIdx(next); return }
+      card.style.transition = "opacity 0.18s ease, transform 0.18s ease"
+      card.style.opacity    = "0"
+      card.style.transform  = "translateY(16px)"
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
+        setIdx(next)
+        requestAnimationFrame(() => {
+          if (!cardRef.current) return
+          cardRef.current.style.opacity   = "1"
+          cardRef.current.style.transform = "translateY(0)"
+        })
+      }, 190)
     }
     window.addEventListener("scroll", onScroll, { passive: true })
     onScroll()
-    return () => window.removeEventListener("scroll", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
   }, [])
 
   return (
     <>
       <style>{`
-        @keyframes ait-up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-        .ait-card-in { animation: ait-up .42s cubic-bezier(.16,1,.3,1) both; }
         .ait-cta { transition: opacity .15s, transform .15s; display: inline-flex; align-items: center; gap: 8px; }
         .ait-cta:hover { opacity: .86; transform: translateY(-2px); }
         .ait-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 52px; align-items: center; padding: 44px 52px; }
@@ -188,8 +209,8 @@ export function AITools() {
             </div>
           </div>
 
-          {/* Tool card — key=idx remounts → triggers animation */}
-          <div key={idx} className="ait-card-in" style={{ padding: "0 clamp(18px,3.5vw,52px)", maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+          {/* Tool card */}
+          <div ref={cardRef} style={{ padding: "0 clamp(18px,3.5vw,52px)", maxWidth: 1200, margin: "0 auto", width: "100%" }}>
             <div style={{ borderRadius: 28, overflow: "hidden", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.08)", boxShadow: "0 4px 40px rgba(0,0,0,0.09)" }}>
 
               <div style={{ height: 5, background: tool.gradient }} />
