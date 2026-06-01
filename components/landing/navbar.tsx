@@ -13,18 +13,15 @@ const NAV_LINKS = [
   { label: "Mentors",        href: "/mentors" },
   { label: "Creator",        href: "/creator-community" },
   { label: "Ambassador",     href: "/campus-ambassador" },
-  { label: "Summer Training",href: "/early-apply", badge: "New" },
   { label: "Hire Talent",    href: "/hire-talent" },
 ]
 
-const BAR_H = 40   // announcement bar height
 const NAV_H = 96   // navbar height
 
 /* exported so hero can calculate its top offset */
-export const HEADER_H = BAR_H + 10 + NAV_H   // 146px
+export const HEADER_H = 10 + NAV_H   // 106px
 
 export function Navbar() {
-  const [barVisible, setBarVisible]   = useState(true)
   const [mobileOpen, setMobileOpen]   = useState(false)
   const [activePath, setActivePath]   = useState("")
   const { open: openWaitlist }        = useWaitlist()
@@ -32,44 +29,11 @@ export function Navbar() {
 
   useEffect(() => { setActivePath(pathname) }, [pathname])
 
-  const navTop = barVisible ? BAR_H + 10 : 10
-
   return (
     <>
-      {/* ── Announcement Bar ── */}
-      <AnimatePresence>
-        {barVisible && (
-          <motion.div
-            initial={{ height: BAR_H, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28 }}
-            className="px-8 sm:px-12"
-            style={{
-              position: "fixed", top: 0, left: 0, right: 0, zIndex: 60,
-              background: "#0c1a35", overflow: "hidden",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              gap: 6, fontSize: 13, fontWeight: 500, color: "white",
-            }}
-          >
-            <span className="hidden sm:inline">🎓</span>
-            <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 12 }}>
-              <span className="hidden sm:inline">Summer Training 2026 · AI, ML &amp; Full Stack · Limited seats available</span>
-              <span className="sm:hidden">Summer Training 2026 · Limited seats</span>
-            </span>
-            <a href="/early-apply" style={{ fontWeight: 700, color: "#60a5fa", textDecoration: "none", marginLeft: 4, whiteSpace: "nowrap" }}>
-              Apply now →
-            </a>
-            <button
-              onClick={() => setBarVisible(false)}
-              style={{ position: "absolute", right: 12, background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: 18, cursor: "pointer", lineHeight: 1, padding: "4px 6px" }}
-            >×</button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* ── Floating Navbar ── */}
       <motion.header
-        animate={{ top: navTop }}
+        animate={{ top: 10 }}
         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         className="px-3 sm:px-5 lg:px-8"
         style={{ position: "fixed", left: 0, right: 0, zIndex: 50 }}
