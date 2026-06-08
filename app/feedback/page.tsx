@@ -1,5 +1,1 @@
-import { redirect } from "next/navigation"
-
-export default function FeedbackRedirect() {
-  redirect("/bootcamp")
-}
+export { default } from "@/app/bootcamp/page"
