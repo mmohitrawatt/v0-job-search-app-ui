@@ -502,6 +502,7 @@ export function CareersClient() {
         @keyframes cr-slide-in { from{transform:translateX(100%)} to{transform:translateX(0)} }
         @keyframes cr-fade-bg  { from{opacity:0} to{opacity:1} }
         @keyframes cr-spin     { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes cr-slide-up { from{transform:translateY(100%)} to{transform:translateY(0)} }
 
         .cr-reveal { opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
         .cr-visible { opacity:1!important; transform:none!important; }
@@ -825,14 +826,49 @@ export function CareersClient() {
         .cr-btn-ghost:hover { background:#eff6ff; border-color:#1d3a8f; }
 
         @media(max-width:600px){
-          .cr-hero { padding:160px 18px 60px; }
-          .cr-hero-stats { flex-direction:column; }
-          .cr-stat { border-right:none; border-bottom:1px solid #f1f5f9; }
-          .cr-stat:last-child { border-bottom:none; }
-          .cr-cta-banner { padding:32px 22px; }
+          /* ── hero ── */
+          .cr-hero { padding:96px 18px 52px; }
+          .cr-hero-sub { font-size:15px; margin-bottom:28px; }
+          .cr-hero-actions { flex-direction:column; width:100%; gap:10px; }
+          .cr-hero-actions .cr-btn-primary,
+          .cr-hero-actions .cr-btn-secondary { width:100%; justify-content:center; }
+          .cr-hero-stats { display:grid; grid-template-columns:1fr 1fr; width:100%; margin-top:32px; }
+          .cr-stat { padding:16px 12px; border-right:none; border-bottom:1px solid #f1f5f9; }
+          .cr-stat:nth-child(odd) { border-right:1px solid #f1f5f9; }
+          .cr-stat:nth-last-child(-n+2) { border-bottom:none; }
+          /* ── sections ── */
+          .cr-sec,.cr-sec-alt { padding:52px 16px; }
+          .cr-inner { padding:0 16px; }
+          .cr-sec-title { font-size:clamp(22px,6vw,34px); }
+          /* ── filters → horizontal scroll ── */
+          .cr-filters { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; padding-bottom:6px; margin-bottom:20px; }
+          .cr-filters::-webkit-scrollbar { display:none; }
+          .cr-dept-btn { flex-shrink:0; }
+          /* ── perks ── */
+          .cr-perks-grid { grid-template-columns:1fr; margin-top:28px; }
+          /* ── open cta strip ── */
+          .cr-open-cta { flex-direction:column; align-items:stretch; gap:12px; }
+          .cr-btn-ghost { width:100%; justify-content:center; }
+          /* ── cta banner ── */
+          .cr-cta-banner { padding:28px 18px; flex-direction:column; align-items:center; text-align:center; }
           .cr-cta-title { font-size:20px; }
-          .cr-sec,.cr-sec-alt { padding:56px 18px; }
-          .cr-drawer-header,.cr-drawer-body { padding-left:18px; padding-right:18px; }
+          .cr-cta-sub { font-size:13px; max-width:100%; }
+          .cr-cta-actions { flex-direction:column; width:100%; }
+          .cr-btn-white,.cr-btn-outline-white { width:100%; justify-content:center; }
+          /* ── drawer → bottom sheet ── */
+          .cr-drawer { top:auto; left:0; right:0; bottom:0; width:100%; height:92vh; border-radius:20px 20px 0 0; animation:cr-slide-up .28s cubic-bezier(.16,1,.3,1) both; }
+          .cr-drawer::before { content:''; display:block; width:40px; height:4px; background:#e2e8f0; border-radius:99px; margin:12px auto 0; flex-shrink:0; }
+          .cr-drawer-header { padding:10px 18px 16px; }
+          .cr-drawer-body { padding:16px 18px 48px; }
+        }
+        @media(max-width:480px){
+          .cr-grid-2 { grid-template-columns:1fr; }
+          .cr-hero { padding:88px 14px 44px; }
+          .cr-hero-badge { margin-bottom:16px; }
+          .cr-stat-val { font-size:18px; }
+          .cr-role-card { border-radius:16px; }
+          .cr-process-card { padding:24px 20px; }
+          .cr-perk-card { padding:20px 18px; }
         }
       `}</style>
 

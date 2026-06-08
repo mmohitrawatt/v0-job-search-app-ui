@@ -86,7 +86,13 @@ type HiringRequest = {
   work_model?: string; additional_details?: string; created_at: string
 }
 
-type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent"
+type CareersApplication = {
+  id: string; name: string; email: string; phone: string
+  role_id: string; role_title: string; college: string; year: string
+  linkedin?: string; portfolio?: string; why?: string; resume_url?: string; created_at: string
+}
+
+type TabKey = "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent" | "careers"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "ml",           label: "ML Masterclass",    icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Z M12 8v4l3 3", color: "#7C3AED" },
@@ -106,6 +112,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "creators",    label: "Creators",           icon: "M15 10l4.553-2.069A1 1 0 0 1 21 8.882v6.236a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z", color: "#0891b2" },
   { key: "early-apply", label: "Early Apply",        icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#16a34a" },
   { key: "hire-talent", label: "Hiring Requests",    icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#0891b2" },
+  { key: "careers",     label: "Careers (Intern)",   icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#1d3a8f" },
 ]
 
 function fmt(iso: string) {
@@ -146,6 +153,7 @@ export default function AdminPage() {
   const [creatorApps, setCreatorApps] = useState<CreatorApplication[]>([])
   const [earlyApply, setEarlyApply] = useState<EarlyApply[]>([])
   const [hiringRequests, setHiringRequests] = useState<HiringRequest[]>([])
+  const [careersApps, setCareersApps] = useState<CareersApplication[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -160,7 +168,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -199,6 +207,7 @@ export default function AdminPage() {
       else if (tbl === "creator_community_applications") setCreatorApps(p => p.filter(r => r.id !== id))
       else if (tbl === "early_apply") setEarlyApply(p => p.filter(r => r.id !== id))
       else if (tbl === "hiring_requests") setHiringRequests(p => p.filter(r => r.id !== id))
+      else if (tbl === "careers_applications") setCareersApps(p => p.filter(r => r.id !== id))
     } catch (err) {
       alert(`Delete failed: ${err instanceof Error ? err.message : "Unknown error"}`)
     } finally {
@@ -238,6 +247,7 @@ export default function AdminPage() {
     return hackathonSubs.filter(r => r.leader_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.team_name.toLowerCase().includes(s) || r.project_title.toLowerCase().includes(s))
   }, [hackathonSubs, search])
   const eaplyFiltered = useMemo(() => filterRows(earlyApply, search), [earlyApply, search])
+  const careersFiltered = useMemo(() => filterRows(careersApps, search), [careersApps, search])
 
   const ccFiltered = useMemo(() => {
     if (!search.trim()) return creatorApps
@@ -269,6 +279,7 @@ export default function AdminPage() {
     creators: creatorApps.length,
     "early-apply": earlyApply.length,
     "hire-talent": hiringRequests.length,
+    "careers": careersApps.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -1340,6 +1351,75 @@ export default function AdminPage() {
                               </td>
                               <td className="c-date">{fmt(r.created_at)}</td>
                               <td><DelBtn table="hiring_requests" id={r.id} name={r.company_name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Careers Applications ── */}
+              {activeTab === "careers" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Careers — Internship Applications</div>
+                      <div className="adm-sec-badge">{careersFiltered.length} applications</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(careersFiltered as unknown as Record<string, unknown>[], "careers-applications.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {careersFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">👤</div>{search ? `No results for "${search}"` : "No internship applications yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                            <th>Role</th><th>College</th><th>Year</th>
+                            <th>LinkedIn</th><th>Portfolio</th><th>Resume</th>
+                            <th>Why</th><th>Date</th><th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {careersFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name}</td>
+                              <td className="c-email">{r.email}</td>
+                              <td className="c-phone">{r.phone}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#eef2ff", color: "#1d3a8f", borderColor: "#dde5ff" }}>
+                                  {r.role_title}
+                                </span>
+                              </td>
+                              <td style={{ fontSize: 13 }}>{r.college}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.year}</td>
+                              <td>
+                                {r.linkedin
+                                  ? <a className="c-link" href={r.linkedin.startsWith("http") ? r.linkedin : `https://${r.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
+                                  : "—"}
+                              </td>
+                              <td>
+                                {r.portfolio
+                                  ? <a className="c-link" href={r.portfolio.startsWith("http") ? r.portfolio : `https://${r.portfolio}`} target="_blank" rel="noopener noreferrer">View</a>
+                                  : "—"}
+                              </td>
+                              <td>
+                                {r.resume_url
+                                  ? <a className="c-link" href={r.resume_url} target="_blank" rel="noopener noreferrer">Download</a>
+                                  : "—"}
+                              </td>
+                              <td><span className="c-why" title={r.why}>{r.why || "—"}</span></td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="careers_applications" id={r.id} name={r.name} /></td>
                             </tr>
                           ))}
                         </tbody>
