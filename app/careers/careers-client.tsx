@@ -114,7 +114,7 @@ const PERKS = [
   { icon: "🚀", title: "Ship real products", desc: "Your code, design, or content goes live to real users. No busywork, no fake tasks.", color: "#1d3a8f", bg: "#eef2ff" },
   { icon: "🧑‍💻", title: "Work with founders", desc: "Direct access to the founding team. Get feedback, mentorship, and the full picture.", color: "#0369a1", bg: "#e0f2fe" },
   { icon: "📜", title: "Certificate + LOR", desc: "Official Jobingen certificate and a strong Letter of Recommendation on completion.", color: "#7c3aed", bg: "#f5f3ff" },
-  { icon: "💰", title: "Paid stipend", desc: "Competitive pay based on your role — ₹4k to ₹18k per month, performance-linked.", color: "#0f766e", bg: "#f0fdf4" },
+  { icon: "📈", title: "Career growth", desc: "Build real experience, grow your skills, and add meaningful work to your portfolio.", color: "#0f766e", bg: "#f0fdf4" },
   { icon: "⚡", title: "PPO for top interns", desc: "Top performers get a Pre-Placement Offer consideration at the end of 3 months.", color: "#b45309", bg: "#fffbeb" },
   { icon: "🌐", title: "100% remote", desc: "Work from anywhere in India. Async-friendly culture, flexible hours.", color: "#dc2626", bg: "#fef2f2" },
 ]
@@ -192,8 +192,6 @@ function RoleCard({ role, onApply }: { role: typeof ROLES[0]; onApply: (id: stri
       {/* Footer */}
       <div className="cr-role-footer">
         <div className="cr-role-meta">
-          <span className="cr-stipend">{role.stipend}</span>
-          <span className="cr-dot-sep">·</span>
           <span className="cr-duration">{role.duration}</span>
           <span className="cr-dot-sep">·</span>
           <span className="cr-mode">Remote</span>
@@ -360,7 +358,6 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
                 </FSelect>
                 {roleData && (
                   <div className="cr-role-chips">
-                    <span className="cr-chip-green">{roleData.stipend}</span>
                     <span className="cr-chip-gray">{roleData.duration}</span>
                     <span className="cr-chip-blue">{roleData.dept}</span>
                   </div>
@@ -889,7 +886,6 @@ export function CareersClient() {
           <div className="cr-hero-stats">
             {[
               { val: `${ROLES.length}`, label: "Open roles" },
-              { val: "Paid",            label: "Stipend" },
               { val: "100%",            label: "Remote" },
               { val: "LOR",             label: "On exit" },
               { val: "PPO",             label: "Top interns" },
@@ -910,7 +906,6 @@ export function CareersClient() {
         <div className="cr-ticker-track">
           {[...Array(2)].flatMap(() => [
             "🚀 Ship real products",
-            "💰 Paid stipend",
             "📜 Certificate + LOR",
             "⚡ PPO for top interns",
             "🧑‍💻 Work with founders",
