@@ -15,9 +15,10 @@ type BootcampFeedback = {
   liked: string; improve?: string; recommend?: string; next_topic?: string
   bootcamp: string; created_at: string
 }
-type CampusAmbassador = {
+type JobingenClubApplication = {
   id: string; name: string; email: string; phone: string; college: string
-  course_year: string; linkedin?: string; instagram?: string; why_ambassador: string; created_at: string
+  city: string; year: string; branch: string; linkedin?: string; instagram?: string
+  current_role?: string; why_lead: string; created_at: string
 }
 type QuizAnswer = { question: string; answer: string }
 type JobApplication = {
@@ -102,7 +103,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "bootcamp1",    label: "Bootcamp 1",        icon: "M4.26 10.15a60.44 60.44 0 0 0-.49 6.33l7.85 4.53L19.47 17a60.2 60.2 0 0 0-.49-6.27L12 14.53Z M2 8.5l10 5.78L22 8.5 12 2.72Z", color: "#0891b2" },
   { key: "jobs",         label: "Job Applications",  icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#7c3aed" },
   { key: "hackathon",    label: "Hackathon",         icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5 M2 12l10 5 10-5", color: "#ea580c" },
-  { key: "ambassadors",  label: "Ambassadors",       icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#16a34a" },
+  { key: "ambassadors",  label: "Jobingen Club",     icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#1d3a8f" },
   { key: "early-access", label: "Early Access",      icon: "M12 2v4 M12 18v4 M4.93 4.93l2.83 2.83 M16.24 16.24l2.83 2.83 M2 12h4 M18 12h4 M4.93 19.07l2.83-2.83 M16.24 7.76l2.83-2.83", color: "#d946ef" },
   { key: "insights",     label: "Student Insights",  icon: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z", color: "#0d9488" },
   { key: "mentors",      label: "Mentors",            icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#8b5cf6" },
@@ -143,7 +144,7 @@ export default function AdminPage() {
   const [recursionBootcamp, setRecursionBootcamp] = useState<HackathonReg[]>([])
   const [mlMasterclass, setMlMasterclass] = useState<HackathonReg[]>([])
   const [feedback, setFeedback] = useState<BootcampFeedback[]>([])
-  const [ambassadors, setAmbassadors] = useState<CampusAmbassador[]>([])
+  const [ambassadors, setAmbassadors] = useState<JobingenClubApplication[]>([])
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
   const [hackathonSubs, setHackathonSubs] = useState<HackathonSubmission[]>([])
   const [studentInsights, setStudentInsights] = useState<StudentInsight[]>([])
@@ -168,7 +169,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.campusAmbassadors || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -197,7 +198,7 @@ export default function AdminPage() {
       else if (tbl === "hackathon_registrations" && activeTab === "recursion") setRecursionBootcamp(p => p.filter(r => r.id !== id))
       else if (tbl === "ml_masterclass_registrations") setMlMasterclass(p => p.filter(r => r.id !== id))
       else if (tbl === "bootcamp_feedback") setFeedback(p => p.filter(r => r.id !== id))
-      else if (tbl === "campus_ambassador_applications") setAmbassadors(p => p.filter(r => r.id !== id))
+      else if (tbl === "jobingen_club_applications") setAmbassadors(p => p.filter(r => r.id !== id))
       else if (tbl === "job_applications") setJobApplications(p => p.filter(r => r.id !== id))
       else if (tbl === "hackathon_submissions") setHackathonSubs(p => p.filter(r => r.id !== id))
       else if (tbl === "student_insights") setStudentInsights(p => p.filter(r => r.id !== id))
@@ -773,16 +774,16 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* ── Campus Ambassadors ── */}
+              {/* ── Jobingen Club ── */}
               {activeTab === "ambassadors" && (
                 <div className="adm-sec">
                   <div className="adm-sec-head">
                     <div className="adm-sec-hl">
-                      <div className="adm-sec-title">Campus Ambassador Applications</div>
+                      <div className="adm-sec-title">Jobingen Club — President Applications</div>
                       <div className="adm-sec-badge">{caFiltered.length} applications</div>
                     </div>
                     <div className="adm-sec-actions">
-                      <button className="adm-csv" onClick={() => exportCSV(caFiltered as unknown as Record<string, unknown>[], "campus-ambassadors.csv")}>
+                      <button className="adm-csv" onClick={() => exportCSV(caFiltered as unknown as Record<string, unknown>[], "jobingen-club-applications.csv")}>
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         Export CSV
                       </button>
@@ -794,7 +795,7 @@ export default function AdminPage() {
                     ) : (
                       <table>
                         <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Course / Year</th><th>LinkedIn</th><th>Instagram</th><th>Why Ambassador</th><th>Date</th><th></th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>City</th><th>Year</th><th>Branch</th><th>Current Role</th><th>LinkedIn</th><th>Instagram</th><th>Why Lead</th><th>Date</th><th></th></tr>
                         </thead>
                         <tbody>
                           {caFiltered.map((a, i) => (
@@ -804,16 +805,19 @@ export default function AdminPage() {
                               <td className="c-email">{a.email}</td>
                               <td className="c-phone">{a.phone}</td>
                               <td style={{ fontSize: 13 }}>{a.college}</td>
-                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.course_year}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.city}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.year}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.branch}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.current_role || "—"}</td>
                               <td>
                                 {a.linkedin
                                   ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
                                   : "—"}
                               </td>
                               <td style={{ fontSize: 12, color: "#64748b" }}>{a.instagram || "—"}</td>
-                              <td><span className="c-why" title={a.why_ambassador}>{a.why_ambassador}</span></td>
+                              <td><span className="c-why" title={a.why_lead}>{a.why_lead}</span></td>
                               <td className="c-date">{fmt(a.created_at)}</td>
-                              <td><DelBtn table="campus_ambassador_applications" id={a.id} name={a.name} /></td>
+                              <td><DelBtn table="jobingen_club_applications" id={a.id} name={a.name} /></td>
                             </tr>
                           ))}
                         </tbody>

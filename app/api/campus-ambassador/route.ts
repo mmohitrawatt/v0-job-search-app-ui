@@ -4,32 +4,33 @@ import { createServerClient } from "@/lib/supabase"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, college, course_year, email, phone, linkedin, instagram, why_ambassador } = body
+    const { name, email, phone, college, city, year, branch, linkedin, instagram, current_role, why_lead } = body
 
     if (!name?.trim()) return NextResponse.json({ error: "Name is required." }, { status: 400 })
-    if (!college?.trim()) return NextResponse.json({ error: "College name is required." }, { status: 400 })
-    if (!course_year?.trim()) return NextResponse.json({ error: "Course / Year is required." }, { status: 400 })
-    if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return NextResponse.json({ error: "A valid email is required." }, { status: 400 })
-    }
-    if (!phone?.trim() || phone.replace(/\D/g, "").length < 10) {
+    if (!phone?.trim() || phone.replace(/\D/g, "").length < 10)
       return NextResponse.json({ error: "A valid 10-digit phone number is required." }, { status: 400 })
-    }
-    if (!why_ambassador?.trim()) {
-      return NextResponse.json({ error: "Please tell us why you want to become a Campus Ambassador." }, { status: 400 })
-    }
+    if (!college?.trim()) return NextResponse.json({ error: "College name is required." }, { status: 400 })
+    if (!city?.trim()) return NextResponse.json({ error: "City is required." }, { status: 400 })
+    if (!year?.trim()) return NextResponse.json({ error: "Year of study is required." }, { status: 400 })
+    if (!branch?.trim()) return NextResponse.json({ error: "Branch is required." }, { status: 400 })
+    if (!why_lead?.trim()) return NextResponse.json({ error: "Please tell us why you want to lead Jobingen Club." }, { status: 400 })
 
     const supabase = createServerClient()
 
-    const { error } = await supabase.from("campus_ambassador_applications").insert({
+    const { error } = await supabase.from("jobingen_club_applications").insert({
       name: name.trim(),
-      college: college.trim(),
-      course_year: course_year.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
+      college: college.trim(),
+      city: city.trim(),
+      year: year.trim(),
+      branch: branch.trim(),
       linkedin: linkedin?.trim() || null,
       instagram: instagram?.trim() || null,
-      why_ambassador: why_ambassador.trim(),
+      current_role: current_role?.trim() || null,
+      why_lead: why_lead.trim(),
     })
 
     if (error) {
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (err) {
-    console.error("Campus ambassador route error:", err)
+    console.error("Jobingen Club route error:", err)
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 })
   }
 }
