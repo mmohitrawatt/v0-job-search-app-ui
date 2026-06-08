@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: "Mentors",        href: "/mentors" },
   { label: "Creator",        href: "/creator-community" },
   { label: "Ambassador",     href: "/campus-ambassador" },
+  { label: "Careers",        href: "/careers" },
   { label: "Hire Talent",    href: "/hire-talent" },
 ]
 
