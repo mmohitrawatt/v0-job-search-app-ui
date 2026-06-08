@@ -1,7 +1,29 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import React from "react"
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────────────────────────────────────────────── */
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { el.classList.add("cr-visible"); obs.unobserve(el) } },
+      { threshold: 0.1 }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return ref
+}
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useScrollReveal()
+  return <div ref={ref} className="cr-reveal" style={{ transitionDelay: `${delay}ms` }}>{children}</div>
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    DATA
@@ -11,73 +33,73 @@ const ROLES = [
     id: "frontend-engineering-intern",
     title: "Frontend Engineering Intern",
     dept: "Engineering",
-    deptColor: "#1d3a8f", deptBg: "#eff6ff",
-    stipend: "₹8k–15k/mo", duration: "3–6 months", mode: "Remote",
-    desc: "Build user-facing features in Next.js + TypeScript. Your code ships to thousands of students daily.",
+    color: "#1d3a8f", bg: "#eef2ff",
+    stipend: "₹8k – 15k/mo", duration: "3–6 months",
     tags: ["Next.js", "TypeScript", "React"],
+    desc: "Build user-facing features shipped to thousands of students daily. You'll work directly in the production codebase from day one.",
   },
   {
     id: "backend-engineering-intern",
     title: "Backend Engineering Intern",
     dept: "Engineering",
-    deptColor: "#1d3a8f", deptBg: "#eff6ff",
-    stipend: "₹8k–15k/mo", duration: "3–6 months", mode: "Remote",
-    desc: "Design APIs and data pipelines that power Jobingen's job matching and AI features.",
+    color: "#1d3a8f", bg: "#eef2ff",
+    stipend: "₹8k – 15k/mo", duration: "3–6 months",
     tags: ["Node.js", "Supabase", "Postgres"],
+    desc: "Design APIs and data pipelines that power Jobingen's job matching, resume parsing, and AI features.",
   },
   {
     id: "ai-ml-intern",
     title: "AI / ML Engineering Intern",
     dept: "AI & Data",
-    deptColor: "#0891b2", deptBg: "#ecfeff",
-    stipend: "₹10k–18k/mo", duration: "3–6 months", mode: "Remote",
-    desc: "Work on LLMs, RAG pipelines, resume AI, and job-matching models that help students land jobs.",
-    tags: ["LLMs", "Python", "RAG"],
+    color: "#0369a1", bg: "#e0f2fe",
+    stipend: "₹10k – 18k/mo", duration: "3–6 months",
+    tags: ["LLMs", "Python", "RAG", "Embeddings"],
+    desc: "Work on Vibe AI, resume tailoring, and job-matching models. You'll experiment with LLMs and ship AI features students use daily.",
   },
   {
     id: "uiux-design-intern",
     title: "UI/UX Design Intern",
     dept: "Design",
-    deptColor: "#7c3aed", deptBg: "#f5f3ff",
-    stipend: "₹6k–12k/mo", duration: "3–6 months", mode: "Remote",
-    desc: "Design screens and flows in Figma. Your designs go directly into production.",
+    color: "#7c3aed", bg: "#f5f3ff",
+    stipend: "₹6k – 12k/mo", duration: "3–6 months",
     tags: ["Figma", "User Research", "Prototyping"],
+    desc: "Design screens, flows, and components that go directly into production. Real user testing, real feedback, real impact.",
   },
   {
     id: "product-management-intern",
     title: "Product Management Intern",
     dept: "Product",
-    deptColor: "#b45309", deptBg: "#fffbeb",
-    stipend: "₹6k–10k/mo", duration: "3 months", mode: "Remote",
-    desc: "Write PRDs and shape Jobingen's roadmap working directly with the founding team.",
-    tags: ["PRDs", "Roadmap", "Strategy"],
+    color: "#b45309", bg: "#fffbeb",
+    stipend: "₹6k – 10k/mo", duration: "3 months",
+    tags: ["PRDs", "Roadmap", "Data-driven"],
+    desc: "Write PRDs, shape the roadmap, and work directly with the founding team. Ideal if you want to understand what building a product really means.",
   },
   {
     id: "marketing-growth-intern",
     title: "Marketing & Growth Intern",
     dept: "Marketing",
-    deptColor: "#dc2626", deptBg: "#fef2f2",
-    stipend: "₹5k–8k/mo", duration: "3 months", mode: "Remote",
-    desc: "Run campaigns, SEO experiments, and A/B tests to grow Jobingen's user base.",
-    tags: ["SEO", "Growth", "Analytics"],
+    color: "#dc2626", bg: "#fef2f2",
+    stipend: "₹5k – 8k/mo", duration: "3 months",
+    tags: ["SEO", "Paid Ads", "Analytics"],
+    desc: "Run campaigns, A/B tests, and SEO experiments to grow Jobingen's user base. You own channels end-to-end.",
   },
   {
     id: "content-social-intern",
     title: "Content & Social Media Intern",
     dept: "Marketing",
-    deptColor: "#dc2626", deptBg: "#fef2f2",
-    stipend: "₹4k–7k/mo", duration: "3 months", mode: "Remote",
-    desc: "Own Jobingen's voice on LinkedIn and Instagram. Write guides, threads, and newsletters.",
+    color: "#dc2626", bg: "#fef2f2",
+    stipend: "₹4k – 7k/mo", duration: "3 months",
     tags: ["LinkedIn", "Writing", "Instagram"],
+    desc: "Own Jobingen's voice on LinkedIn and Instagram. Write career guides, company breakdowns, and newsletters that students actually read.",
   },
   {
     id: "hr-operations-intern",
     title: "HR & Operations Intern",
     dept: "Operations",
-    deptColor: "#be185d", deptBg: "#fdf2f8",
-    stipend: "₹4k–6k/mo", duration: "3 months", mode: "Remote",
-    desc: "Manage candidate pipelines, coordinate interviews, and improve internal ops processes.",
-    tags: ["Hiring", "Ops", "Coordination"],
+    color: "#0f766e", bg: "#f0fdf4",
+    stipend: "₹4k – 6k/mo", duration: "3 months",
+    tags: ["Hiring", "Coordination", "Ops"],
+    desc: "Manage candidate pipelines, coordinate interviews, and improve internal processes. Great for students interested in people & culture.",
   },
 ]
 
@@ -85,14 +107,156 @@ const DEPTS = ["All", "Engineering", "AI & Data", "Design", "Product", "Marketin
 
 const YEAR_OPTIONS = [
   "1st Year", "2nd Year", "3rd Year", "4th Year",
-  "Postgrad (MBA/M.Tech/MCA)", "PhD", "Recent Graduate",
+  "Postgrad (MBA / M.Tech / MCA)", "PhD", "Recent Graduate",
 ]
+
+const PERKS = [
+  { icon: "🚀", title: "Ship real products", desc: "Your code, design, or content goes live to real users. No busywork, no fake tasks.", color: "#1d3a8f", bg: "#eef2ff" },
+  { icon: "🧑‍💻", title: "Work with founders", desc: "Direct access to the founding team. Get feedback, mentorship, and the full picture.", color: "#0369a1", bg: "#e0f2fe" },
+  { icon: "📜", title: "Certificate + LOR", desc: "Official Jobingen certificate and a strong Letter of Recommendation on completion.", color: "#7c3aed", bg: "#f5f3ff" },
+  { icon: "💰", title: "Paid stipend", desc: "Competitive pay based on your role — ₹4k to ₹18k per month, performance-linked.", color: "#0f766e", bg: "#f0fdf4" },
+  { icon: "⚡", title: "PPO for top interns", desc: "Top performers get a Pre-Placement Offer consideration at the end of 3 months.", color: "#b45309", bg: "#fffbeb" },
+  { icon: "🌐", title: "100% remote", desc: "Work from anywhere in India. Async-friendly culture, flexible hours.", color: "#dc2626", bg: "#fef2f2" },
+]
+
+const STEPS = [
+  { num: "01", title: "Browse & pick a role", desc: "Go through the open roles below. Click Apply on any card — the form auto-selects that role for you." },
+  { num: "02", title: "Fill the common form", desc: "One form for all roles. Select your role, fill in your details, upload your resume, and submit." },
+  { num: "03", title: "We reach out in 5–7 days", desc: "Our team reviews every application personally. Shortlisted candidates get a quick intro call with the team." },
+]
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ROLE CARD
+───────────────────────────────────────────────────────────────────────────── */
+function RoleCard({ role, onApply }: { role: typeof ROLES[0]; onApply: (id: string) => void }) {
+  return (
+    <div className="cr-role-card">
+      {/* Top strip */}
+      <div className="cr-role-top">
+        <div className="cr-role-icon" style={{ background: role.bg, border: `1.5px solid ${role.color}22`, color: role.color }}>
+          {role.dept === "Engineering" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          )}
+          {role.dept === "AI & Data" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.93 4.93l2.12 2.12m9.9 9.9 2.12 2.12M4.93 19.07l2.12-2.12m9.9-9.9 2.12-2.12"/>
+            </svg>
+          )}
+          {role.dept === "Design" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          )}
+          {role.dept === "Product" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            </svg>
+          )}
+          {role.dept === "Marketing" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          )}
+          {role.dept === "Operations" && (
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          )}
+        </div>
+
+        <div className="cr-hiring-badge">
+          <span className="cr-live-dot" />
+          Hiring Now
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="cr-role-body">
+        <span className="cr-dept-chip" style={{ color: role.color, background: role.bg, border: `1px solid ${role.color}20` }}>
+          {role.dept}
+        </span>
+        <h3 className="cr-role-title">{role.title}</h3>
+        <p className="cr-role-desc">{role.desc}</p>
+
+        {/* Tags */}
+        <div className="cr-tags">
+          {role.tags.map(t => (
+            <span key={t} className="cr-tag">{t}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="cr-role-footer">
+        <div className="cr-role-meta">
+          <span className="cr-stipend">{role.stipend}</span>
+          <span className="cr-dot-sep">·</span>
+          <span className="cr-duration">{role.duration}</span>
+          <span className="cr-dot-sep">·</span>
+          <span className="cr-mode">Remote</span>
+        </div>
+        <button
+          className="cr-apply-btn"
+          style={{ "--role-color": role.color } as React.CSSProperties}
+          onClick={() => onApply(role.id)}
+        >
+          Apply
+          <svg width="11" height="11" fill="none" viewBox="0 0 16 16">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FORM PRIMITIVES
+───────────────────────────────────────────────────────────────────────────── */
+function FLabel({ children }: { children: React.ReactNode }) {
+  return <label className="cr-label">{children}</label>
+}
+function FInput({ value, onChange, placeholder, type = "text" }: {
+  value: string; onChange: (v: string) => void; placeholder?: string; type?: string
+}) {
+  return (
+    <input
+      type={type} value={value} placeholder={placeholder}
+      onChange={e => onChange(e.target.value)}
+      className="cr-input"
+      onFocus={e => e.target.classList.add("cr-input-focus")}
+      onBlur={e => e.target.classList.remove("cr-input-focus")}
+    />
+  )
+}
+function FSelect({ value, onChange, children }: {
+  value: string; onChange: (v: string) => void; children: React.ReactNode
+}) {
+  return (
+    <div style={{ position: "relative" }}>
+      <select
+        value={value} onChange={e => onChange(e.target.value)}
+        className="cr-input cr-select"
+        onFocus={e => e.target.classList.add("cr-input-focus")}
+        onBlur={e => e.target.classList.remove("cr-input-focus")}
+      >{children}</select>
+      <div className="cr-select-arrow">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+    </div>
+  )
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    APPLY DRAWER
 ───────────────────────────────────────────────────────────────────────────── */
 function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: () => void }) {
-  const [selectedRole, setSelectedRole] = useState(initialRole)
+  const [role, setRole]         = useState(initialRole)
   const [name, setName]         = useState("")
   const [email, setEmail]       = useState("")
   const [phone, setPhone]       = useState("")
@@ -105,37 +269,36 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
   const [submitting, setSubmitting] = useState(false)
   const [error, setError]       = useState("")
   const [success, setSuccess]   = useState(false)
-  const fileRef = useRef<HTMLInputElement>(null)
-
-  const role = ROLES.find(r => r.id === selectedRole)
+  const fileRef                 = useRef<HTMLInputElement>(null)
+  const roleData                = ROLES.find(r => r.id === role)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError("")
-    if (!selectedRole) return setError("Please select a role.")
-    if (!name.trim()) return setError("Please enter your full name.")
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError("Enter a valid email.")
-    if (!phone.trim() || phone.replace(/\D/g, "").length < 10) return setError("Enter a valid phone number.")
-    if (!college.trim()) return setError("Please enter your college.")
-    if (!year) return setError("Please select your year of study.")
-    if (!file) return setError("Please upload your resume.")
+    if (!role)         return setError("Please select a role.")
+    if (!name.trim())  return setError("Please enter your full name.")
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError("Please enter a valid email.")
+    if (!phone.trim() || phone.replace(/\D/g, "").length < 10)       return setError("Please enter a valid phone number.")
+    if (!college.trim()) return setError("Please enter your college / university.")
+    if (!year)           return setError("Please select your year of study.")
+    if (!file)           return setError("Please upload your resume.")
 
     setSubmitting(true)
     try {
       const fd = new FormData()
-      fd.append("role_id", selectedRole)
-      fd.append("role_title", role?.title ?? selectedRole)
-      fd.append("name", name.trim())
-      fd.append("email", email.trim().toLowerCase())
-      fd.append("phone", phone.trim())
-      fd.append("college", college.trim())
-      fd.append("year", year)
-      fd.append("linkedin", linkedin.trim())
-      fd.append("portfolio", portfolio.trim())
-      fd.append("why", why.trim())
-      fd.append("resume", file)
+      fd.append("role_id",    role)
+      fd.append("role_title", roleData?.title ?? role)
+      fd.append("name",       name.trim())
+      fd.append("email",      email.trim().toLowerCase())
+      fd.append("phone",      phone.trim())
+      fd.append("college",    college.trim())
+      fd.append("year",       year)
+      fd.append("linkedin",   linkedin.trim())
+      fd.append("portfolio",  portfolio.trim())
+      fd.append("why",        why.trim())
+      fd.append("resume",     file)
 
-      const res = await fetch("/api/careers/apply", { method: "POST", body: fd })
+      const res  = await fetch("/api/careers/apply", { method: "POST", body: fd })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Submission failed.")
       setSuccess(true)
@@ -148,216 +311,179 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        style={{
-          position: "fixed", inset: 0, zIndex: 998,
-          background: "rgba(15,23,42,0.4)",
-          backdropFilter: "blur(3px)",
-          animation: "fadeBg 0.22s ease both",
-        }}
-      />
-
-      {/* Drawer */}
-      <div style={{
-        position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 999,
-        width: "min(540px, 100vw)",
-        background: "white",
-        boxShadow: "-8px 0 48px rgba(15,23,42,0.14)",
-        display: "flex", flexDirection: "column",
-        animation: "slideInRight 0.3s cubic-bezier(0.16,1,0.3,1) both",
-      }}>
+      <div className="cr-backdrop" onClick={onClose} />
+      <div className="cr-drawer">
 
         {/* Drawer header */}
-        <div style={{
-          padding: "20px 24px 18px",
-          borderBottom: "1px solid #f1f5f9",
-          flexShrink: 0,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#16a34a", letterSpacing: "0.06em", textTransform: "uppercase" }}>Internship Application</span>
-              </div>
-              <h2 style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", margin: 0, letterSpacing: "-0.025em" }}>Apply at Jobingen</h2>
+        <div className="cr-drawer-header">
+          <div>
+            <div className="cr-drawer-eyebrow">
+              <span className="cr-live-dot" />
+              Internship Application
             </div>
-            <button onClick={onClose} style={{
-              width: 34, height: 34, borderRadius: 9, border: "1.5px solid #e2e8f0",
-              background: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#94a3b8", transition: "all .15s", flexShrink: 0,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#f8fafc"; e.currentTarget.style.borderColor = "#cbd5e1" }}
-              onMouseLeave={e => { e.currentTarget.style.background = "white"; e.currentTarget.style.borderColor = "#e2e8f0" }}>
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
+            <h2 className="cr-drawer-title">Apply at Jobingen</h2>
+            <p className="cr-drawer-sub">One form · all roles · reviewed personally</p>
           </div>
+          <button className="cr-close-btn" onClick={onClose}>
+            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
         </div>
 
         {/* Scrollable body */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px 32px" }}>
+        <div className="cr-drawer-body">
           {success ? (
-            <div style={{ textAlign: "center", padding: "48px 16px" }}>
-              <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#f0fdf4", border: "2px solid #bbf7d0", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 18px" }}>
-                <svg width="26" height="26" fill="none" viewBox="0 0 40 40"><path d="M10 20L16 26L30 12" stroke="#15803d" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div className="cr-success">
+              <div className="cr-success-icon">
+                <svg width="28" height="28" fill="none" viewBox="0 0 40 40">
+                  <path d="M10 20L16 26L30 12" stroke="#15803d" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <h3 style={{ fontSize: 19, fontWeight: 900, color: "#0f172a", margin: "0 0 8px", letterSpacing: "-0.025em" }}>Application Sent!</h3>
-              <p style={{ fontSize: 13.5, color: "#64748b", lineHeight: 1.75, margin: "0 0 28px", maxWidth: 320, marginLeft: "auto", marginRight: "auto" }}>
-                We&apos;ve received your application for <strong style={{ color: "#0f172a" }}>{role?.title}</strong>. Our team reviews every application personally and will reach out within 5–7 days.
+              <h3 className="cr-success-title">Application Submitted!</h3>
+              <p className="cr-success-body">
+                We&apos;ve received your application for <strong>{roleData?.title}</strong>.
+                Our team will review it and reach out within 5–7 days.
               </p>
-              <button onClick={onClose} style={{ padding: "11px 26px", borderRadius: 10, background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "white", border: "none", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: "-0.01em" }}>
-                Done
-              </button>
+              <button className="cr-btn-primary" onClick={onClose}>Done</button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <form onSubmit={handleSubmit} className="cr-form">
+              {error && <div className="cr-error">{error}</div>}
 
-              {error && (
-                <div style={{ background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: 9, padding: "10px 14px", color: "#be123c", fontSize: 13, fontWeight: 600 }}>
-                  {error}
-                </div>
-              )}
-
-              {/* Role select */}
-              <FormGroup label="Role you're applying for" required>
-                <NativeSelect value={selectedRole} onChange={setSelectedRole}>
+              {/* Role */}
+              <div className="cr-field">
+                <FLabel>Role you&apos;re applying for <span className="cr-req">*</span></FLabel>
+                <FSelect value={role} onChange={setRole}>
                   <option value="" disabled>Select a role…</option>
                   {ROLES.map(r => <option key={r.id} value={r.id}>{r.title}</option>)}
-                </NativeSelect>
-                {role && (
-                  <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginTop: 7 }}>
-                    <Chip color={role.deptColor} bg={role.deptBg}>{role.dept}</Chip>
-                    <Chip color="#15803d" bg="#f0fdf4">{role.stipend}</Chip>
-                    <Chip color="#6b7280" bg="#f4f6fb">{role.duration}</Chip>
+                </FSelect>
+                {roleData && (
+                  <div className="cr-role-chips">
+                    <span className="cr-chip-green">{roleData.stipend}</span>
+                    <span className="cr-chip-gray">{roleData.duration}</span>
+                    <span className="cr-chip-blue">{roleData.dept}</span>
                   </div>
                 )}
-              </FormGroup>
-
-              <Divider />
-
-              {/* Personal info */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <FormGroup label="Full Name" required>
-                  <TextInput value={name} onChange={setName} placeholder="Rahul Sharma" />
-                </FormGroup>
-                <FormGroup label="Email" required>
-                  <TextInput type="email" value={email} onChange={setEmail} placeholder="rahul@email.com" />
-                </FormGroup>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <FormGroup label="Phone" required>
-                  <TextInput type="tel" value={phone} onChange={setPhone} placeholder="+91 98765 43210" />
-                </FormGroup>
-                <FormGroup label="College / University" required>
-                  <TextInput value={college} onChange={setCollege} placeholder="IIT Delhi, BITS…" />
-                </FormGroup>
+              <div className="cr-divider" />
+
+              {/* Name + Email */}
+              <div className="cr-grid-2">
+                <div className="cr-field">
+                  <FLabel>Full Name <span className="cr-req">*</span></FLabel>
+                  <FInput value={name} onChange={setName} placeholder="Rahul Sharma" />
+                </div>
+                <div className="cr-field">
+                  <FLabel>Email <span className="cr-req">*</span></FLabel>
+                  <FInput type="email" value={email} onChange={setEmail} placeholder="rahul@email.com" />
+                </div>
               </div>
 
-              <FormGroup label="Year of Study" required>
-                <NativeSelect value={year} onChange={setYear}>
-                  <option value="" disabled>Select…</option>
+              {/* Phone + College */}
+              <div className="cr-grid-2">
+                <div className="cr-field">
+                  <FLabel>Phone <span className="cr-req">*</span></FLabel>
+                  <FInput type="tel" value={phone} onChange={setPhone} placeholder="+91 98765 43210" />
+                </div>
+                <div className="cr-field">
+                  <FLabel>College / University <span className="cr-req">*</span></FLabel>
+                  <FInput value={college} onChange={setCollege} placeholder="IIT Delhi, BITS…" />
+                </div>
+              </div>
+
+              {/* Year */}
+              <div className="cr-field">
+                <FLabel>Year of Study <span className="cr-req">*</span></FLabel>
+                <FSelect value={year} onChange={setYear}>
+                  <option value="" disabled>Select year…</option>
                   {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
-                </NativeSelect>
-              </FormGroup>
+                </FSelect>
+              </div>
 
-              <Divider />
+              <div className="cr-divider" />
 
-              {/* Optional links */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <FormGroup label="LinkedIn">
-                  <TextInput value={linkedin} onChange={setLinkedin} placeholder="linkedin.com/in/rahul" />
-                </FormGroup>
-                <FormGroup label="Portfolio / GitHub">
-                  <TextInput value={portfolio} onChange={setPortfolio} placeholder="github.com/rahul" />
-                </FormGroup>
+              {/* LinkedIn + Portfolio */}
+              <div className="cr-grid-2">
+                <div className="cr-field">
+                  <FLabel>LinkedIn <span className="cr-opt">(optional)</span></FLabel>
+                  <FInput value={linkedin} onChange={setLinkedin} placeholder="linkedin.com/in/rahul" />
+                </div>
+                <div className="cr-field">
+                  <FLabel>Portfolio / GitHub <span className="cr-opt">(optional)</span></FLabel>
+                  <FInput value={portfolio} onChange={setPortfolio} placeholder="github.com/rahul" />
+                </div>
               </div>
 
               {/* Why */}
-              <FormGroup label="Why Jobingen?" note="optional, but it helps">
+              <div className="cr-field">
+                <FLabel>
+                  Why Jobingen? <span className="cr-opt">(optional, but helps a lot)</span>
+                </FLabel>
                 <textarea
-                  value={why}
-                  onChange={e => setWhy(e.target.value)}
-                  placeholder="What excites you about this role and what you want to build here…"
+                  value={why} onChange={e => setWhy(e.target.value)}
+                  placeholder="What excites you about this role and what you'd like to build here…"
                   rows={3}
-                  style={{
-                    width: "100%", border: "1.5px solid #e2e8f0", borderRadius: 10,
-                    padding: "9px 13px", fontSize: 13.5, color: "#0f172a",
-                    outline: "none", background: "#fff", boxSizing: "border-box",
-                    fontFamily: "inherit", resize: "vertical", lineHeight: 1.6,
-                    transition: "border-color .16s",
-                  }}
-                  onFocus={e => e.target.style.borderColor = "#1d3a8f"}
-                  onBlur={e => e.target.style.borderColor = "#e2e8f0"}
+                  className="cr-textarea"
+                  onFocus={e => e.target.classList.add("cr-input-focus")}
+                  onBlur={e => e.target.classList.remove("cr-input-focus")}
                 />
-              </FormGroup>
+              </div>
 
               {/* Resume */}
-              <FormGroup label="Resume" required note="PDF, DOC or DOCX · max 10MB">
+              <div className="cr-field">
+                <FLabel>
+                  Resume <span className="cr-req">*</span>
+                  <span className="cr-opt"> — PDF, DOC or DOCX · max 10MB</span>
+                </FLabel>
                 <div
+                  className={`cr-upload${file ? " cr-upload-done" : ""}`}
                   onClick={() => fileRef.current?.click()}
-                  style={{
-                    border: `2px dashed ${file ? "#86efac" : "#e2e8f0"}`,
-                    borderRadius: 10, padding: "18px 14px",
-                    textAlign: "center", cursor: "pointer",
-                    background: file ? "#f0fdf4" : "#fafafa",
-                    transition: "all .18s",
-                  }}
-                  onMouseEnter={e => { if (!file) { (e.currentTarget as HTMLDivElement).style.borderColor = "#c7d2fe"; (e.currentTarget as HTMLDivElement).style.background = "#f5f7ff" } }}
-                  onMouseLeave={e => { if (!file) { (e.currentTarget as HTMLDivElement).style.borderColor = "#e2e8f0"; (e.currentTarget as HTMLDivElement).style.background = "#fafafa" } }}
                 >
-                  <input ref={fileRef} type="file"
+                  <input
+                    ref={fileRef} type="file"
                     accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     style={{ display: "none" }}
                     onChange={e => setFile(e.target.files?.[0] ?? null)}
                   />
                   {file ? (
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-                      <div style={{ width: 34, height: 34, borderRadius: 9, background: "#dcfce7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <svg width="16" height="16" fill="none" viewBox="0 0 22 22" stroke="#15803d" strokeWidth="1.5"><rect x="4" y="2" width="14" height="18" rx="2"/><path d="M7.5 7.5H14.5M7.5 11H12M7.5 14.5H13" strokeLinecap="round"/></svg>
+                    <div className="cr-upload-file">
+                      <div className="cr-upload-file-icon">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 22 22" stroke="#15803d" strokeWidth="1.5">
+                          <rect x="4" y="2" width="14" height="18" rx="2"/>
+                          <path d="M7.5 7.5H14.5M7.5 11H12M7.5 14.5H13" strokeLinecap="round"/>
+                        </svg>
                       </div>
-                      <div style={{ textAlign: "left" }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>{file.name}</div>
-                        <div style={{ fontSize: 11, color: "#4ade80" }}>{(file.size / 1024).toFixed(1)} KB · tap to change</div>
+                      <div>
+                        <div className="cr-upload-name">{file.name}</div>
+                        <div className="cr-upload-size">{(file.size / 1024).toFixed(1)} KB · click to change</div>
                       </div>
                     </div>
                   ) : (
-                    <div>
-                      <div style={{ width: 36, height: 36, borderRadius: 10, background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <div className="cr-upload-empty">
+                      <div className="cr-upload-icon-wrap">
+                        <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
                       </div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>Click to upload resume</div>
-                      <div style={{ fontSize: 11.5, color: "#9ca3af", marginTop: 3 }}>PDF, DOC, DOCX</div>
+                      <div className="cr-upload-text">Click to upload your resume</div>
+                      <div className="cr-upload-hint">PDF, DOC, DOCX accepted</div>
                     </div>
                   )}
                 </div>
-              </FormGroup>
+              </div>
 
               {/* Submit */}
-              <button
-                type="submit" disabled={submitting}
-                style={{
-                  background: submitting ? "#93c5fd" : "linear-gradient(135deg,#1d3a8f,#3b5bdb)",
-                  color: "white", border: "none", borderRadius: 11,
-                  padding: "13px 20px", fontSize: 14.5, fontWeight: 800,
-                  cursor: submitting ? "not-allowed" : "pointer",
-                  letterSpacing: "-0.015em", marginTop: 4,
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                  transition: "opacity .18s",
-                }}
-                onMouseEnter={e => { if (!submitting) e.currentTarget.style.opacity = "0.88" }}
-                onMouseLeave={e => { e.currentTarget.style.opacity = "1" }}
-              >
+              <button type="submit" disabled={submitting} className="cr-submit-btn">
                 {submitting ? (
-                  <><Spinner /> Submitting…</>
+                  <><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="cr-spinner"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Submitting…</>
                 ) : (
                   <>Submit Application <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></>
                 )}
               </button>
-              <p style={{ fontSize: 11, color: "#cbd5e1", textAlign: "center", margin: 0 }}>
-                We review every application personally. No spam, ever.
-              </p>
+              <p className="cr-form-note">We review every application personally — no spam, ever.</p>
             </form>
           )}
         </div>
@@ -367,350 +493,572 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   SMALL REUSABLE PIECES
-───────────────────────────────────────────────────────────────────────────── */
-function FormGroup({ label, required, note, children }: { label: string; required?: boolean; note?: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label style={{ fontSize: 12, fontWeight: 700, color: "#374151", display: "flex", alignItems: "center", gap: 5, marginBottom: 6 }}>
-        {label}
-        {required && <span style={{ color: "#ef4444" }}>*</span>}
-        {note && <span style={{ fontSize: 11, fontWeight: 500, color: "#94a3b8" }}>— {note}</span>}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-function TextInput({ value, onChange, placeholder, type = "text" }: {
-  value: string; onChange: (v: string) => void; placeholder?: string; type?: string
-}) {
-  return (
-    <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
-      style={{
-        width: "100%", border: "1.5px solid #e2e8f0", borderRadius: 10,
-        padding: "9px 13px", fontSize: 13.5, color: "#0f172a",
-        outline: "none", background: "#fff", boxSizing: "border-box",
-        fontFamily: "inherit", transition: "border-color .16s",
-      }}
-      onFocus={e => e.target.style.borderColor = "#1d3a8f"}
-      onBlur={e => e.target.style.borderColor = "#e2e8f0"}
-    />
-  )
-}
-
-function NativeSelect({ value, onChange, children }: { value: string; onChange: (v: string) => void; children: React.ReactNode }) {
-  const [focused, setFocused] = useState(false)
-  return (
-    <div style={{ position: "relative" }}>
-      <select value={value} onChange={e => onChange(e.target.value)}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{
-          width: "100%", border: `1.5px solid ${focused ? "#1d3a8f" : "#e2e8f0"}`,
-          borderRadius: 10, padding: "9px 34px 9px 13px",
-          fontSize: 13.5, fontWeight: value ? 500 : 400,
-          color: value ? "#0f172a" : "#94a3b8",
-          outline: "none", background: "#fff", appearance: "none",
-          cursor: "pointer", fontFamily: "inherit", transition: "border-color .16s",
-        }}
-      >{children}</select>
-      <div style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#94a3b8" }}>
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M6 9l6 6 6-6"/></svg>
-      </div>
-    </div>
-  )
-}
-
-function Chip({ children, color, bg }: { children: React.ReactNode; color: string; bg: string }) {
-  return (
-    <span style={{ fontSize: 10.5, fontWeight: 700, color, background: bg, border: `1px solid ${color}22`, padding: "2px 8px", borderRadius: 99 }}>
-      {children}
-    </span>
-  )
-}
-
-function Divider() {
-  return <div style={{ height: 1, background: "#f1f5f9", margin: "2px 0" }} />
-}
-
-function Spinner() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ animation: "spin 0.7s linear infinite" }}>
-      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-    </svg>
-  )
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   ROLE ROW
-───────────────────────────────────────────────────────────────────────────── */
-function RoleRow({ role, onApply, index }: { role: typeof ROLES[0]; onApply: (id: string) => void; index: number }) {
-  const [hov, setHov] = useState(false)
-
-  return (
-    <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        background: "white",
-        borderRadius: 14,
-        border: hov ? `1.5px solid ${role.deptColor}30` : "1.5px solid #eef0f6",
-        padding: "18px 20px",
-        display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
-        boxShadow: hov ? `0 8px 28px ${role.deptColor}10` : "0 1px 4px rgba(0,0,0,0.03)",
-        transform: hov ? "translateX(3px)" : "translateX(0)",
-        transition: "all 0.22s cubic-bezier(0.16,1,0.3,1)",
-        cursor: "default",
-        animation: `fadeUp 0.38s ease ${index * 0.055}s both`,
-      }}
-    >
-      {/* Left accent */}
-      <div style={{ position: "absolute", left: 0, top: 12, bottom: 12, width: 3, borderRadius: 99, background: `linear-gradient(180deg,${role.deptColor},${role.deptColor}55)`, opacity: hov ? 1 : 0, transition: "opacity 0.22s" }} />
-
-      {/* Icon */}
-      <div style={{
-        width: 42, height: 42, borderRadius: 11, flexShrink: 0,
-        background: role.deptBg, border: `1.5px solid ${role.deptColor}20`,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color: role.deptColor,
-        transform: hov ? "scale(1.06)" : "scale(1)",
-        transition: "transform 0.22s",
-      }}>
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          {role.dept === "Engineering" && <><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></>}
-          {role.dept === "AI & Data"   && <><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.93 4.93l2.12 2.12m9.9 9.9 2.12 2.12M4.93 19.07l2.12-2.12m9.9-9.9 2.12-2.12"/></>}
-          {role.dept === "Design"      && <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></>}
-          {role.dept === "Product"     && <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>}
-          {role.dept === "Marketing"   && <><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></>}
-          {role.dept === "Operations"  && <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></>}
-        </svg>
-      </div>
-
-      {/* Title + desc */}
-      <div style={{ flex: 1, minWidth: 180 }}>
-        <div style={{ fontSize: 14.5, fontWeight: 800, color: "#0f172a", marginBottom: 3, letterSpacing: "-0.015em" }}>
-          {role.title}
-        </div>
-        <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.55 }}>{role.desc}</div>
-      </div>
-
-      {/* Tags */}
-      <div style={{ display: "flex", gap: 5, flexWrap: "wrap", flexShrink: 0 }} className="role-tags">
-        {role.tags.map(t => (
-          <span key={t} style={{ fontSize: 10.5, fontWeight: 600, color: "#6b7280", background: "#f4f6fb", border: "1px solid #e8ecf5", padding: "3px 9px", borderRadius: 99 }}>
-            {t}
-          </span>
-        ))}
-      </div>
-
-      {/* Meta */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }} className="role-meta">
-        <span style={{ fontSize: 12, fontWeight: 700, color: "#15803d" }}>{role.stipend}</span>
-        <span style={{ fontSize: 11, color: "#94a3b8" }}>{role.duration} · {role.mode}</span>
-      </div>
-
-      {/* Apply button */}
-      <button
-        onClick={() => onApply(role.id)}
-        style={{
-          padding: "9px 18px", borderRadius: 9, flexShrink: 0,
-          background: hov ? `linear-gradient(135deg,${role.deptColor},${role.deptColor}cc)` : "white",
-          color: hov ? "white" : role.deptColor,
-          border: `1.5px solid ${role.deptColor}35`,
-          fontSize: 12.5, fontWeight: 700, cursor: "pointer",
-          display: "flex", alignItems: "center", gap: 5,
-          transition: "all 0.22s ease",
-          boxShadow: hov ? `0 4px 14px ${role.deptColor}28` : "none",
-          whiteSpace: "nowrap",
-        }}
-      >
-        Apply
-        <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      </button>
-    </div>
-  )
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   MAIN
+   MAIN PAGE
 ───────────────────────────────────────────────────────────────────────────── */
 export function CareersClient() {
   const [applyRole, setApplyRole] = useState<string | null>(null)
   const [activeDept, setActiveDept] = useState("All")
-
   const filtered = activeDept === "All" ? ROLES : ROLES.filter(r => r.dept === activeDept)
 
   return (
-    <>
+    <div className="cr">
       <style>{`
-        @keyframes fadeUp       { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes fadeBg       { from{opacity:0} to{opacity:1} }
-        @keyframes slideInRight { from{transform:translateX(100%)} to{transform:translateX(0)} }
-        @keyframes pulseDot     { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.7)} }
-        @keyframes spin         { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        /* ── RESET ── */
+        .cr * { box-sizing: border-box; margin: 0; padding: 0; }
+        .cr { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
 
-        .role-row { position: relative; }
-        @media(max-width:640px) {
-          .role-tags { display: none !important; }
-          .role-meta { display: none !important; }
+        /* ── ANIMATIONS ── */
+        @keyframes cr-fade-up  { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+        @keyframes cr-pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.65)} }
+        @keyframes cr-marquee  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        @keyframes cr-slide-in { from{transform:translateX(100%)} to{transform:translateX(0)} }
+        @keyframes cr-fade-bg  { from{opacity:0} to{opacity:1} }
+        @keyframes cr-spin     { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+        .cr-reveal { opacity:0; transform:translateY(20px); transition:opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+        .cr-visible { opacity:1!important; transform:none!important; }
+
+        /* ── LIVE DOT ── */
+        .cr-live-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#16a34a; box-shadow:0 0 5px rgba(22,163,74,.5); animation:cr-pulse 2s infinite; flex-shrink:0; }
+
+        /* ── HERO ── */
+        .cr-hero {
+          position:relative; overflow:hidden;
+          background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%);
+          padding:188px 24px 88px;
+          text-align:center;
+          border-bottom:1px solid #e0e7ff;
+        }
+        .cr-hero-blob1 { position:absolute;top:-8%;right:4%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(29,58,143,0.07) 0%,transparent 70%);pointer-events:none; }
+        .cr-hero-blob2 { position:absolute;bottom:-5%;left:3%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(59,91,219,0.05) 0%,transparent 70%);pointer-events:none; }
+        .cr-hero-grid  { position:absolute;inset:0;background-image:radial-gradient(rgba(29,58,143,0.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none; }
+
+        .cr-hero-inner { position:relative; max-width:800px; margin:0 auto; }
+
+        .cr-hero-badge {
+          display:inline-flex; align-items:center; gap:7px;
+          padding:6px 18px; background:white; border:1.5px solid #dde5ff;
+          border-radius:99px; margin-bottom:28px;
+          box-shadow:0 2px 12px rgba(29,58,143,0.08);
+          animation:cr-fade-up .6s cubic-bezier(.16,1,.3,1) both;
+        }
+        .cr-hero-badge-text { font-size:11px; font-weight:800; color:#1d3a8f; letter-spacing:.06em; text-transform:uppercase; }
+
+        .cr-hero-h1 {
+          font-size:clamp(34px,5.5vw,62px); font-weight:900; color:#0f172a;
+          letter-spacing:-0.04em; line-height:1.06; margin-bottom:20px;
+          animation:cr-fade-up .7s cubic-bezier(.16,1,.3,1) .06s both;
+        }
+        .cr-grad { background:linear-gradient(135deg,#1d3a8f,#3b5bdb); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+        .cr-hero-sub {
+          font-size:17px; color:#475569; line-height:1.75; max-width:520px; margin:0 auto 40px;
+          animation:cr-fade-up .8s cubic-bezier(.16,1,.3,1) .12s both;
+        }
+        .cr-hero-actions {
+          display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+          animation:cr-fade-up .9s cubic-bezier(.16,1,.3,1) .18s both;
+        }
+        .cr-btn-primary {
+          display:inline-flex; align-items:center; gap:8px;
+          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          color:#fff; padding:14px 32px; border-radius:12px; border:none;
+          font-size:15px; font-weight:700; cursor:pointer; text-decoration:none;
+          box-shadow:0 4px 20px rgba(29,58,143,0.28);
+          transition:all .25s cubic-bezier(.16,1,.3,1);
+          font-family:inherit;
+        }
+        .cr-btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(29,58,143,0.38); }
+        .cr-btn-secondary {
+          display:inline-flex; align-items:center; gap:7px;
+          background:white; color:#1d3a8f; padding:14px 28px; border-radius:12px;
+          font-size:14px; font-weight:700; text-decoration:none; cursor:pointer; border:none;
+          border:1.5px solid #dde5ff; box-shadow:0 2px 8px rgba(29,58,143,0.06);
+          transition:all .25s; font-family:inherit;
+        }
+        .cr-btn-secondary:hover { border-color:#1d3a8f; background:#f8faff; }
+
+        .cr-hero-stats {
+          display:inline-flex; align-items:center; background:white;
+          border:1.5px solid #e0e7ff; border-radius:16px; overflow:hidden;
+          box-shadow:0 4px 20px rgba(29,58,143,0.08);
+          animation:cr-fade-up 1s cubic-bezier(.16,1,.3,1) .24s both;
+          margin-top:52px;
+        }
+        .cr-stat { padding:18px 28px; text-align:center; border-right:1px solid #f1f5f9; }
+        .cr-stat:last-child { border-right:none; }
+        .cr-stat-val { font-size:22px; font-weight:900; color:#1d3a8f; letter-spacing:-0.03em; line-height:1; }
+        .cr-stat-label { font-size:11px; font-weight:600; color:#94a3b8; margin-top:4px; }
+
+        /* ── TICKER ── */
+        .cr-ticker { background:white; border-bottom:1px solid #f1f5f9; padding:12px 0; overflow:hidden; }
+        .cr-ticker-track { display:flex; gap:0; width:max-content; animation:cr-marquee 32s linear infinite; }
+        .cr-ticker-item { display:inline-flex; align-items:center; gap:8px; padding:0 28px; font-size:12px; font-weight:700; color:#334155; white-space:nowrap; }
+        .cr-ticker-dot { width:4px; height:4px; border-radius:50%; background:#dde5ff; }
+
+        /* ── SECTION LAYOUT ── */
+        .cr-inner { max-width:1100px; margin:0 auto; padding:0 24px; }
+        .cr-sec { padding:80px 24px; }
+        .cr-sec-alt { padding:80px 24px; background:#f8faff; }
+
+        .cr-eyebrow {
+          display:inline-flex; align-items:center; gap:8px;
+          font-size:11px; font-weight:800; color:#1d3a8f; letter-spacing:.08em; text-transform:uppercase;
+          margin-bottom:14px;
+        }
+        .cr-eyebrow-line { display:inline-block; width:20px; height:2px; background:#1d3a8f; border-radius:2px; }
+        .cr-sec-title { font-size:clamp(26px,3.5vw,40px); font-weight:900; color:#0f172a; letter-spacing:-0.035em; line-height:1.1; margin-bottom:14px; }
+        .cr-sec-sub { font-size:16px; color:#64748b; line-height:1.75; max-width:560px; }
+
+        /* ── ROLES GRID ── */
+        .cr-roles-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:36px; }
+        @media(max-width:720px){ .cr-roles-grid{ grid-template-columns:1fr; } }
+
+        .cr-role-card {
+          background:white; border-radius:20px; border:1.5px solid #eaecf4;
+          box-shadow:0 2px 12px rgba(0,0,0,0.04);
+          display:flex; flex-direction:column;
+          transition:box-shadow .25s cubic-bezier(.16,1,.3,1), transform .25s cubic-bezier(.16,1,.3,1), border-color .25s;
+          overflow:hidden;
+        }
+        .cr-role-card:hover { box-shadow:0 12px 36px rgba(29,58,143,0.12); transform:translateY(-4px); border-color:#dde5ff; }
+
+        .cr-role-top {
+          display:flex; align-items:center; justify-content:space-between;
+          padding:20px 22px 0; margin-bottom:16px;
+        }
+        .cr-role-icon {
+          width:46px; height:46px; border-radius:13px;
+          display:flex; align-items:center; justify-content:center;
+          transition:transform .25s;
+        }
+        .cr-role-card:hover .cr-role-icon { transform:scale(1.08); }
+
+        .cr-hiring-badge {
+          display:flex; align-items:center; gap:6px;
+          background:#f0fdf4; border:1px solid #bbf7d0; border-radius:99px;
+          padding:4px 11px; font-size:10px; font-weight:700; color:#15803d;
+        }
+
+        .cr-role-body { padding:0 22px 0; flex:1; }
+        .cr-dept-chip { font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-block; margin-bottom:10px; letter-spacing:.04em; text-transform:uppercase; }
+        .cr-role-title { font-size:16px; font-weight:800; color:#0f172a; letter-spacing:-0.02em; line-height:1.3; margin-bottom:8px; }
+        .cr-role-desc { font-size:13px; color:#64748b; line-height:1.7; margin-bottom:14px; }
+
+        .cr-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+        .cr-tag { font-size:11px; font-weight:600; color:#334155; background:#f4f6fb; border:1px solid #e8ecf5; padding:3px 10px; border-radius:99px; }
+
+        .cr-role-footer {
+          display:flex; align-items:center; justify-content:space-between;
+          padding:14px 22px; border-top:1px solid #f1f5f9; background:#fafbff;
+          gap:10px; flex-wrap:wrap;
+        }
+        .cr-role-meta { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .cr-stipend { font-size:12px; font-weight:700; color:#15803d; }
+        .cr-dot-sep { font-size:10px; color:#cbd5e1; }
+        .cr-duration,.cr-mode { font-size:12px; color:#94a3b8; font-weight:500; }
+
+        .cr-apply-btn {
+          display:inline-flex; align-items:center; gap:5px;
+          padding:8px 16px; border-radius:9px; font-size:12.5px; font-weight:700;
+          background:white; color:var(--role-color,#1d3a8f);
+          border:1.5px solid color-mix(in srgb,var(--role-color,#1d3a8f) 30%,transparent);
+          cursor:pointer; transition:all .2s; font-family:inherit; white-space:nowrap;
+        }
+        .cr-apply-btn:hover {
+          background:var(--role-color,#1d3a8f); color:white;
+          box-shadow:0 4px 14px color-mix(in srgb,var(--role-color,#1d3a8f) 30%,transparent);
+        }
+
+        /* ── DEPT FILTERS ── */
+        .cr-filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:28px; }
+        .cr-dept-btn { padding:7px 16px; border-radius:99px; font-size:12.5px; font-weight:700; cursor:pointer; transition:all .18s; font-family:inherit; }
+        .cr-dept-btn-inactive { background:white; color:#4b5563; border:1.5px solid #e0e7ff; }
+        .cr-dept-btn-inactive:hover { border-color:#1d3a8f; color:#1d3a8f; }
+        .cr-dept-btn-active { background:#1d3a8f; color:white; border:1.5px solid #1d3a8f; }
+
+        /* ── PERKS GRID ── */
+        .cr-perks-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:48px; }
+        @media(max-width:900px){ .cr-perks-grid{ grid-template-columns:repeat(2,1fr); } }
+        @media(max-width:540px){ .cr-perks-grid{ grid-template-columns:1fr; } }
+
+        .cr-perk-card {
+          background:white; border-radius:16px; border:1.5px solid #eaecf4;
+          padding:24px 22px; box-shadow:0 1px 6px rgba(0,0,0,0.04);
+          transition:box-shadow .2s, border-color .2s, transform .2s;
+        }
+        .cr-perk-card:hover { box-shadow:0 8px 24px rgba(29,58,143,0.09); border-color:#dde5ff; transform:translateY(-2px); }
+        .cr-perk-icon { font-size:26px; margin-bottom:14px; }
+        .cr-perk-title { font-size:15px; font-weight:800; color:#0f172a; margin-bottom:7px; letter-spacing:-0.018em; }
+        .cr-perk-desc { font-size:13px; color:#64748b; line-height:1.7; }
+
+        /* ── PROCESS CARDS ── */
+        .cr-process { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:48px; }
+        @media(max-width:700px){ .cr-process{ grid-template-columns:1fr; } }
+
+        .cr-process-card {
+          background:white; border-radius:20px; border:1.5px solid #e0e7ff;
+          padding:32px 28px; position:relative; overflow:hidden;
+          box-shadow:0 2px 16px rgba(29,58,143,0.06);
+        }
+        .cr-process-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#1d3a8f,#3b5bdb); }
+        .cr-process-num {
+          width:44px; height:44px; border-radius:12px;
+          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          color:white; font-size:18px; font-weight:900;
+          display:flex; align-items:center; justify-content:center;
+          margin-bottom:20px; box-shadow:0 4px 12px rgba(29,58,143,0.25);
+          font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+        }
+        .cr-process-title { font-size:16px; font-weight:800; color:#0f172a; margin-bottom:8px; letter-spacing:-0.02em; }
+        .cr-process-desc { font-size:13px; color:#64748b; line-height:1.7; }
+
+        /* ── CTA BANNER ── */
+        .cr-cta-banner {
+          background:linear-gradient(135deg,#0f172a 0%,#1d3a8f 100%);
+          border-radius:24px; padding:48px 40px;
+          display:flex; align-items:center; justify-content:space-between;
+          gap:24px; flex-wrap:wrap;
+          box-shadow:0 12px 48px rgba(15,23,42,0.2);
+        }
+        .cr-cta-title { font-size:26px; font-weight:900; color:white; letter-spacing:-0.03em; margin-bottom:8px; }
+        .cr-cta-sub { font-size:15px; color:rgba(255,255,255,0.6); line-height:1.65; max-width:460px; }
+        .cr-cta-actions { display:flex; gap:12px; flex-wrap:wrap; flex-shrink:0; }
+        .cr-btn-white {
+          display:inline-flex; align-items:center; gap:8px;
+          background:white; color:#1d3a8f; padding:14px 28px; border-radius:12px; border:none;
+          font-size:14px; font-weight:700; cursor:pointer; transition:all .2s;
+          box-shadow:0 4px 16px rgba(0,0,0,0.15); font-family:inherit;
+        }
+        .cr-btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+        .cr-btn-outline-white {
+          display:inline-flex; align-items:center; gap:7px;
+          background:rgba(255,255,255,0.08); color:white; padding:14px 24px; border-radius:12px;
+          font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit;
+          border:1.5px solid rgba(255,255,255,0.18);
+        }
+        .cr-btn-outline-white:hover { background:rgba(255,255,255,0.14); }
+
+        /* ── DRAWER ── */
+        .cr-backdrop { position:fixed; inset:0; z-index:998; background:rgba(15,23,42,0.45); backdrop-filter:blur(3px); animation:cr-fade-bg .2s ease both; }
+        .cr-drawer {
+          position:fixed; top:0; right:0; bottom:0; z-index:999;
+          width:min(560px,100vw); background:white;
+          box-shadow:-8px 0 48px rgba(15,23,42,0.14);
+          display:flex; flex-direction:column;
+          animation:cr-slide-in .28s cubic-bezier(.16,1,.3,1) both;
+        }
+        .cr-drawer-header {
+          padding:22px 26px 20px; border-bottom:1px solid #f1f5f9; flex-shrink:0;
+          display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+        }
+        .cr-drawer-eyebrow { display:flex; align-items:center; gap:7px; font-size:11px; font-weight:800; color:#15803d; letter-spacing:.06em; text-transform:uppercase; margin-bottom:5px; }
+        .cr-drawer-title { font-size:20px; font-weight:900; color:#0f172a; letter-spacing:-0.03em; margin-bottom:3px; }
+        .cr-drawer-sub { font-size:12.5px; color:#94a3b8; font-weight:500; }
+        .cr-close-btn {
+          width:34px; height:34px; border-radius:9px; border:1.5px solid #e2e8f0;
+          background:white; cursor:pointer; display:flex; align-items:center; justify-content:center;
+          color:#94a3b8; flex-shrink:0; transition:all .15s;
+        }
+        .cr-close-btn:hover { background:#f8fafc; border-color:#cbd5e1; color:#374151; }
+
+        .cr-drawer-body { flex:1; overflow-y:auto; padding:22px 26px 36px; scrollbar-width:thin; scrollbar-color:#e2e8f0 transparent; }
+        .cr-drawer-body::-webkit-scrollbar { width:4px; }
+        .cr-drawer-body::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:99px; }
+
+        /* ── FORM ── */
+        .cr-form { display:flex; flex-direction:column; gap:16px; }
+        .cr-field { display:flex; flex-direction:column; gap:6px; }
+        .cr-label { font-size:12px; font-weight:700; color:#374151; }
+        .cr-req { color:#ef4444; }
+        .cr-opt { font-size:11px; font-weight:500; color:#94a3b8; }
+        .cr-input {
+          width:100%; border:1.5px solid #e2e8f0; border-radius:10px;
+          padding:9px 13px; font-size:13.5px; color:#0f172a;
+          outline:none; background:#fff; font-family:inherit; transition:border-color .16s;
+        }
+        .cr-input-focus { border-color:#1d3a8f!important; }
+        .cr-select { appearance:none; cursor:pointer; padding-right:34px; }
+        .cr-select-arrow { position:absolute; right:11px; top:50%; transform:translateY(-50%); pointer-events:none; color:#94a3b8; }
+        .cr-textarea { width:100%; border:1.5px solid #e2e8f0; border-radius:10px; padding:9px 13px; font-size:13.5px; color:#0f172a; outline:none; background:#fff; font-family:inherit; resize:vertical; line-height:1.6; transition:border-color .16s; }
+        .cr-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        @media(max-width:480px){ .cr-grid-2{ grid-template-columns:1fr; } }
+        .cr-divider { height:1px; background:#f1f5f9; }
+
+        .cr-role-chips { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; }
+        .cr-chip-green { font-size:10.5px; font-weight:700; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; padding:2px 9px; border-radius:99px; }
+        .cr-chip-gray  { font-size:10.5px; font-weight:600; color:#6b7280; background:#f4f6fb; border:1px solid #e8ecf5; padding:2px 9px; border-radius:99px; }
+        .cr-chip-blue  { font-size:10.5px; font-weight:700; color:#1d3a8f; background:#eff6ff; border:1px solid #bfdbfe; padding:2px 9px; border-radius:99px; }
+
+        /* ── FILE UPLOAD ── */
+        .cr-upload { border:2px dashed #e2e8f0; border-radius:12px; padding:20px 16px; text-align:center; cursor:pointer; background:#fafafa; transition:all .18s; }
+        .cr-upload:hover { border-color:#c7d2fe; background:#f5f7ff; }
+        .cr-upload-done { border-color:#86efac; background:#f0fdf4; }
+        .cr-upload-done:hover { border-color:#4ade80; }
+        .cr-upload-file { display:flex; align-items:center; justify-content:center; gap:10px; }
+        .cr-upload-file-icon { width:34px; height:34px; border-radius:9px; background:#dcfce7; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .cr-upload-name { font-size:13px; font-weight:700; color:#166534; text-align:left; }
+        .cr-upload-size { font-size:11px; color:#4ade80; text-align:left; }
+        .cr-upload-empty {}
+        .cr-upload-icon-wrap { width:36px; height:36px; border-radius:10px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; margin:0 auto 8px; }
+        .cr-upload-text { font-size:13px; font-weight:600; color:#374151; }
+        .cr-upload-hint { font-size:11.5px; color:#9ca3af; margin-top:3px; }
+
+        /* ── SUBMIT ── */
+        .cr-submit-btn {
+          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          color:white; border:none; border-radius:11px;
+          padding:13px 20px; font-size:14.5px; font-weight:800;
+          cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+          font-family:inherit; letter-spacing:-0.015em; transition:opacity .18s; margin-top:4px;
+        }
+        .cr-submit-btn:hover { opacity:.88; }
+        .cr-submit-btn:disabled { background:#93c5fd; cursor:not-allowed; }
+        .cr-spinner { animation:cr-spin .7s linear infinite; }
+        .cr-form-note { font-size:11px; color:#cbd5e1; text-align:center; }
+
+        /* ── ERROR / SUCCESS ── */
+        .cr-error { background:#fff1f2; border:1px solid #fecdd3; border-radius:10px; padding:11px 14px; color:#be123c; font-size:13px; font-weight:600; }
+        .cr-success { text-align:center; padding:52px 16px; }
+        .cr-success-icon { width:60px; height:60px; border-radius:50%; background:#f0fdf4; border:2px solid #bbf7d0; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+        .cr-success-title { font-size:20px; font-weight:900; color:#0f172a; margin-bottom:10px; letter-spacing:-0.025em; }
+        .cr-success-body { font-size:14px; color:#64748b; line-height:1.75; max-width:320px; margin:0 auto 28px; }
+
+        /* ── OPEN CTA STRIP ── */
+        .cr-open-cta {
+          margin-top:28px; background:white; border-radius:16px; border:1.5px solid #e0e7ff;
+          padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+        }
+        .cr-open-cta-title { font-size:14.5px; font-weight:800; color:#0f172a; margin-bottom:3px; letter-spacing:-0.015em; }
+        .cr-open-cta-sub { font-size:12.5px; color:#64748b; }
+        .cr-btn-ghost {
+          display:inline-flex; align-items:center; gap:6px;
+          padding:9px 18px; border-radius:9px; font-size:13px; font-weight:700;
+          background:white; color:#1d3a8f; border:1.5px solid #c7d2fe; cursor:pointer;
+          font-family:inherit; flex-shrink:0; transition:all .15s;
+        }
+        .cr-btn-ghost:hover { background:#eff6ff; border-color:#1d3a8f; }
+
+        @media(max-width:600px){
+          .cr-hero { padding:160px 18px 60px; }
+          .cr-hero-stats { flex-direction:column; }
+          .cr-stat { border-right:none; border-bottom:1px solid #f1f5f9; }
+          .cr-stat:last-child { border-bottom:none; }
+          .cr-cta-banner { padding:32px 22px; }
+          .cr-cta-title { font-size:20px; }
+          .cr-sec,.cr-sec-alt { padding:56px 18px; }
+          .cr-drawer-header,.cr-drawer-body { padding-left:18px; padding-right:18px; }
         }
       `}</style>
 
       {/* ══════════════════════════════════════════════════════
-          HERO — clean white with blue accent
+          HERO
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "white", borderBottom: "1px solid #eef0f6", paddingTop: 140 }}>
-        <div style={{ maxWidth: 820, margin: "0 auto", padding: "52px 24px 56px", textAlign: "center" }}>
+      <section className="cr-hero">
+        <div className="cr-hero-blob1" />
+        <div className="cr-hero-blob2" />
+        <div className="cr-hero-grid" />
 
-          {/* Badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginBottom: 20, padding: "5px 14px", borderRadius: 99, background: "#f0fdf4", border: "1.5px solid #bbf7d0", animation: "fadeUp 0.4s ease both" }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 11.5, fontWeight: 700, color: "#15803d", letterSpacing: "0.03em" }}>We&apos;re hiring — {ROLES.length} open internship roles</span>
+        <div className="cr-hero-inner">
+          <div className="cr-hero-badge">
+            <span className="cr-live-dot" />
+            <span className="cr-hero-badge-text">We&apos;re hiring — {ROLES.length} open internship roles</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(30px,5vw,54px)", fontWeight: 900, color: "#0f172a", margin: "0 0 14px", letterSpacing: "-0.04em", lineHeight: 1.07, animation: "fadeUp 0.4s ease 0.08s both" }}>
-            Come build with us at<br />
-            <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Jobingen.</span>
+          <h1 className="cr-hero-h1">
+            Come build with us<br />
+            <span className="cr-grad">at Jobingen.</span>
           </h1>
 
-          <p style={{ fontSize: 16, color: "#64748b", maxWidth: 460, margin: "0 auto 32px", lineHeight: 1.75, fontWeight: 400, animation: "fadeUp 0.4s ease 0.15s both" }}>
-            Paid internships, real projects, direct mentorship from founders. 100% remote. Every intern ships something real.
+          <p className="cr-hero-sub">
+            Paid internships. Real products. Direct mentorship from founders.
+            100% remote — every intern ships something real within their first week.
           </p>
 
-          {/* Stats row */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 0, background: "#f8fafc", border: "1.5px solid #eef0f6", borderRadius: 14, overflow: "hidden", animation: "fadeUp 0.4s ease 0.22s both" }}>
-            {[
-              { val: "8", label: "Open roles" },
-              { val: "100%", label: "Remote" },
-              { val: "Paid", label: "Stipend" },
-              { val: "LOR", label: "On exit" },
-            ].map((s, i) => (
-              <React.Fragment key={s.label}>
-                {i > 0 && <div style={{ width: 1, height: 36, background: "#eef0f6" }} />}
-                <div style={{ padding: "10px 22px", textAlign: "center" }}>
-                  <div style={{ fontSize: 15, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.025em" }}>{s.val}</div>
-                  <div style={{ fontSize: 10.5, color: "#94a3b8", fontWeight: 600 }}>{s.label}</div>
-                </div>
-              </React.Fragment>
-            ))}
+          <div className="cr-hero-actions">
+            <button className="cr-btn-primary" onClick={() => setApplyRole(ROLES[0].id)}>
+              Apply Now
+              <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <a href="#open-roles" className="cr-btn-secondary">
+              Browse Roles
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </a>
           </div>
 
+          <div className="cr-hero-stats">
+            {[
+              { val: `${ROLES.length}`, label: "Open roles" },
+              { val: "Paid",            label: "Stipend" },
+              { val: "100%",            label: "Remote" },
+              { val: "LOR",             label: "On exit" },
+              { val: "PPO",             label: "Top interns" },
+            ].map((s, i) => (
+              <div className="cr-stat" key={i}>
+                <div className="cr-stat-val">{s.val}</div>
+                <div className="cr-stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          PERKS STRIP
+          TICKER
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "#f7f8fc", borderBottom: "1px solid #eef0f6" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "28px 24px", display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
-          {[
-            { icon: "🚀", text: "Ship real products" },
-            { icon: "🧑‍💻", text: "Work with founders" },
-            { icon: "📜", text: "Certificate + LOR" },
-            { icon: "⚡", text: "PPO for top interns" },
-            { icon: "💬", text: "1-on-1 mentorship" },
-            { icon: "🕐", text: "Flexible hours" },
-          ].map(p => (
-            <div key={p.text} style={{ display: "flex", alignItems: "center", gap: 8, background: "white", border: "1.5px solid #eef0f6", borderRadius: 99, padding: "7px 16px", fontSize: 12.5, fontWeight: 600, color: "#374151", boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
-              <span>{p.icon}</span>{p.text}
-            </div>
+      <div className="cr-ticker">
+        <div className="cr-ticker-track">
+          {[...Array(2)].flatMap(() => [
+            "🚀 Ship real products",
+            "💰 Paid stipend",
+            "📜 Certificate + LOR",
+            "⚡ PPO for top interns",
+            "🧑‍💻 Work with founders",
+            "🌐 100% Remote",
+            "💬 1-on-1 mentorship",
+            "🕐 Flexible hours",
+          ]).map((item, i) => (
+            <span key={i} className="cr-ticker-item">
+              <span className="cr-ticker-dot" />
+              {item}
+            </span>
           ))}
         </div>
-      </section>
+      </div>
 
       {/* ══════════════════════════════════════════════════════
           OPEN ROLES
       ══════════════════════════════════════════════════════ */}
-      <section style={{ background: "#f4f6fb", padding: "44px 24px 80px", minHeight: "60vh" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-
-          {/* Section header */}
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-            <div>
-              <h2 style={{ fontSize: 19, fontWeight: 900, color: "#0f172a", margin: "0 0 3px", letterSpacing: "-0.025em" }}>Open Roles</h2>
-              <p style={{ fontSize: 12.5, color: "#94a3b8", margin: 0 }}>{filtered.length} positions · single common form for all roles</p>
-            </div>
-            <button
-              onClick={() => setApplyRole(ROLES[0].id)}
-              style={{
-                padding: "9px 18px", borderRadius: 9,
-                background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)",
-                color: "white", border: "none", fontSize: 12.5, fontWeight: 700,
-                cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
-                boxShadow: "0 4px 14px rgba(29,58,143,0.22)",
-                transition: "opacity .15s",
-              }}
-              onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
-              onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-            >
-              Apply Now
-              <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
-          </div>
-
-          {/* Dept filter tabs */}
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 }}>
-            {DEPTS.map(d => (
-              <button
-                key={d}
-                onClick={() => setActiveDept(d)}
-                style={{
-                  padding: "6px 14px", borderRadius: 99, fontSize: 12, fontWeight: 700,
-                  border: `1.5px solid ${activeDept === d ? "#1d3a8f" : "#e0e7ff"}`,
-                  background: activeDept === d ? "#1d3a8f" : "white",
-                  color: activeDept === d ? "white" : "#4b5563",
-                  cursor: "pointer", transition: "all .15s",
-                }}
-              >
-                {d}
-                {d === "All" ? ` (${ROLES.length})` : ` (${ROLES.filter(r => r.dept === d).length})`}
-              </button>
-            ))}
-          </div>
-
-          {/* Role list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, position: "relative" }}>
-            {filtered.map((role, i) => (
-              <div key={role.id} style={{ position: "relative" }}>
-                <RoleRow role={role} index={i} onApply={id => setApplyRole(id)} />
+      <section className="cr-sec" id="open-roles">
+        <div className="cr-inner">
+          <Reveal>
+            <div className="cr-eyebrow"><span className="cr-eyebrow-line" /> Open Positions</div>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 14, marginBottom: 6 }}>
+              <div>
+                <h2 className="cr-sec-title">Internship Roles</h2>
+                <p className="cr-sec-sub">One common form for all roles — pick the role you want, apply once.</p>
               </div>
+              <button className="cr-btn-primary" onClick={() => setApplyRole(ROLES[0].id)} style={{ flexShrink: 0, padding: "10px 22px", fontSize: "13px" }}>
+                Common Apply Form
+                <svg width="12" height="12" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
+          </Reveal>
+
+          {/* Dept filters */}
+          <Reveal delay={60}>
+            <div className="cr-filters">
+              {DEPTS.map(d => (
+                <button
+                  key={d}
+                  onClick={() => setActiveDept(d)}
+                  className={`cr-dept-btn ${activeDept === d ? "cr-dept-btn-active" : "cr-dept-btn-inactive"}`}
+                >
+                  {d} ({d === "All" ? ROLES.length : ROLES.filter(r => r.dept === d).length})
+                </button>
+              ))}
+            </div>
+          </Reveal>
+
+          <div className="cr-roles-grid">
+            {filtered.map((role, i) => (
+              <Reveal key={role.id} delay={i * 60}>
+                <RoleCard role={role} onApply={id => setApplyRole(id)} />
+              </Reveal>
             ))}
           </div>
 
-          {/* Open application CTA */}
-          <div style={{
-            marginTop: 32, borderRadius: 16,
-            background: "white", border: "1.5px solid #e0e7ff",
-            padding: "20px 24px",
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            flexWrap: "wrap", gap: 14,
-          }}>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", marginBottom: 3, letterSpacing: "-0.015em" }}>Don&apos;t see your role? Apply anyway.</div>
-              <div style={{ fontSize: 12.5, color: "#64748b" }}>Open applications are always welcome — we reach out when the right fit opens.</div>
+          {/* Open application strip */}
+          <Reveal delay={120}>
+            <div className="cr-open-cta">
+              <div>
+                <div className="cr-open-cta-title">Don&apos;t see your role? Apply anyway.</div>
+                <div className="cr-open-cta-sub">Open applications always welcome — we reach out when the right fit opens up.</div>
+              </div>
+              <button className="cr-btn-ghost" onClick={() => setApplyRole(ROLES[0].id)}>
+                Open Application
+                <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
             </div>
-            <button
-              onClick={() => setApplyRole(ROLES[0].id)}
-              style={{
-                padding: "9px 18px", borderRadius: 9,
-                background: "white", color: "#1d3a8f",
-                border: "1.5px solid #c7d2fe",
-                fontSize: 12.5, fontWeight: 700, cursor: "pointer", flexShrink: 0,
-                display: "flex", alignItems: "center", gap: 6,
-                transition: "all .15s",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; e.currentTarget.style.borderColor = "#1d3a8f" }}
-              onMouseLeave={e => { e.currentTarget.style.background = "white"; e.currentTarget.style.borderColor = "#c7d2fe" }}
-            >
-              Open Application
-              <svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          WHY JOBINGEN
+      ══════════════════════════════════════════════════════ */}
+      <section className="cr-sec-alt">
+        <div className="cr-inner">
+          <Reveal>
+            <div className="cr-eyebrow"><span className="cr-eyebrow-line" /> Intern Life</div>
+            <h2 className="cr-sec-title">Why intern at Jobingen?</h2>
+            <p className="cr-sec-sub">Not your average internship. We treat interns like early employees from day one.</p>
+          </Reveal>
+
+          <div className="cr-perks-grid">
+            {PERKS.map((p, i) => (
+              <Reveal key={p.title} delay={i * 60}>
+                <div className="cr-perk-card">
+                  <div className="cr-perk-icon">{p.icon}</div>
+                  <div className="cr-perk-title">{p.title}</div>
+                  <div className="cr-perk-desc">{p.desc}</div>
+                </div>
+              </Reveal>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          HOW TO APPLY
+      ══════════════════════════════════════════════════════ */}
+      <section className="cr-sec">
+        <div className="cr-inner">
+          <Reveal>
+            <div className="cr-eyebrow"><span className="cr-eyebrow-line" /> Process</div>
+            <h2 className="cr-sec-title">How to apply</h2>
+            <p className="cr-sec-sub">Three simple steps. Takes less than 5 minutes.</p>
+          </Reveal>
+
+          <div className="cr-process">
+            {STEPS.map((s, i) => (
+              <Reveal key={s.num} delay={i * 80}>
+                <div className="cr-process-card">
+                  <div className="cr-process-num">{s.num}</div>
+                  <div className="cr-process-title">{s.title}</div>
+                  <div className="cr-process-desc">{s.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          CTA
+      ══════════════════════════════════════════════════════ */}
+      <section className="cr-sec-alt">
+        <div className="cr-inner">
+          <Reveal>
+            <div className="cr-cta-banner">
+              <div>
+                <div className="cr-cta-title">Ready to build something real?</div>
+                <div className="cr-cta-sub">Apply today — our team reads every single application. If you&apos;re shortlisted, you&apos;ll hear back within 5–7 days for a quick intro call.</div>
+              </div>
+              <div className="cr-cta-actions">
+                <button className="cr-btn-white" onClick={() => setApplyRole(ROLES[0].id)}>
+                  Apply Now
+                  <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+                <a href="#open-roles" className="cr-btn-outline-white">View Roles</a>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Drawer */}
       {applyRole && <ApplyDrawer initialRole={applyRole} onClose={() => setApplyRole(null)} />}
-    </>
+    </div>
   )
 }
