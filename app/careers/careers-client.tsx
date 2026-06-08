@@ -33,8 +33,7 @@ const ROLES = [
     id: "frontend-engineering-intern",
     title: "Frontend Engineering Intern",
     dept: "Engineering",
-    color: "#1d3a8f", bg: "#eef2ff",
-    stipend: "₹8k – 15k/mo", duration: "3–6 months",
+    duration: "3–6 months",
     tags: ["Next.js", "TypeScript", "React"],
     desc: "Build user-facing features shipped to thousands of students daily. You'll work directly in the production codebase from day one.",
   },
@@ -42,8 +41,7 @@ const ROLES = [
     id: "backend-engineering-intern",
     title: "Backend Engineering Intern",
     dept: "Engineering",
-    color: "#1d3a8f", bg: "#eef2ff",
-    stipend: "₹8k – 15k/mo", duration: "3–6 months",
+    duration: "3–6 months",
     tags: ["Node.js", "Supabase", "Postgres"],
     desc: "Design APIs and data pipelines that power Jobingen's job matching, resume parsing, and AI features.",
   },
@@ -51,8 +49,7 @@ const ROLES = [
     id: "ai-ml-intern",
     title: "AI / ML Engineering Intern",
     dept: "AI & Data",
-    color: "#0369a1", bg: "#e0f2fe",
-    stipend: "₹10k – 18k/mo", duration: "3–6 months",
+    duration: "3–6 months",
     tags: ["LLMs", "Python", "RAG", "Embeddings"],
     desc: "Work on Vibe AI, resume tailoring, and job-matching models. You'll experiment with LLMs and ship AI features students use daily.",
   },
@@ -60,8 +57,7 @@ const ROLES = [
     id: "uiux-design-intern",
     title: "UI/UX Design Intern",
     dept: "Design",
-    color: "#7c3aed", bg: "#f5f3ff",
-    stipend: "₹6k – 12k/mo", duration: "3–6 months",
+    duration: "3–6 months",
     tags: ["Figma", "User Research", "Prototyping"],
     desc: "Design screens, flows, and components that go directly into production. Real user testing, real feedback, real impact.",
   },
@@ -69,8 +65,7 @@ const ROLES = [
     id: "product-management-intern",
     title: "Product Management Intern",
     dept: "Product",
-    color: "#b45309", bg: "#fffbeb",
-    stipend: "₹6k – 10k/mo", duration: "3 months",
+    duration: "3 months",
     tags: ["PRDs", "Roadmap", "Data-driven"],
     desc: "Write PRDs, shape the roadmap, and work directly with the founding team. Ideal if you want to understand what building a product really means.",
   },
@@ -78,8 +73,7 @@ const ROLES = [
     id: "marketing-growth-intern",
     title: "Marketing & Growth Intern",
     dept: "Marketing",
-    color: "#dc2626", bg: "#fef2f2",
-    stipend: "₹5k – 8k/mo", duration: "3 months",
+    duration: "3 months",
     tags: ["SEO", "Paid Ads", "Analytics"],
     desc: "Run campaigns, A/B tests, and SEO experiments to grow Jobingen's user base. You own channels end-to-end.",
   },
@@ -87,8 +81,7 @@ const ROLES = [
     id: "content-social-intern",
     title: "Content & Social Media Intern",
     dept: "Marketing",
-    color: "#dc2626", bg: "#fef2f2",
-    stipend: "₹4k – 7k/mo", duration: "3 months",
+    duration: "3 months",
     tags: ["LinkedIn", "Writing", "Instagram"],
     desc: "Own Jobingen's voice on LinkedIn and Instagram. Write career guides, company breakdowns, and newsletters that students actually read.",
   },
@@ -96,8 +89,7 @@ const ROLES = [
     id: "hr-operations-intern",
     title: "HR & Operations Intern",
     dept: "Operations",
-    color: "#0f766e", bg: "#f0fdf4",
-    stipend: "₹4k – 6k/mo", duration: "3 months",
+    duration: "3 months",
     tags: ["Hiring", "Coordination", "Ops"],
     desc: "Manage candidate pipelines, coordinate interviews, and improve internal processes. Great for students interested in people & culture.",
   },
@@ -111,12 +103,12 @@ const YEAR_OPTIONS = [
 ]
 
 const PERKS = [
-  { icon: "🚀", title: "Ship real products", desc: "Your code, design, or content goes live to real users. No busywork, no fake tasks.", color: "#1d3a8f", bg: "#eef2ff" },
-  { icon: "🧑‍💻", title: "Work with founders", desc: "Direct access to the founding team. Get feedback, mentorship, and the full picture.", color: "#0369a1", bg: "#e0f2fe" },
-  { icon: "📜", title: "Certificate + LOR", desc: "Official Jobingen certificate and a strong Letter of Recommendation on completion.", color: "#7c3aed", bg: "#f5f3ff" },
-  { icon: "📈", title: "Career growth", desc: "Build real experience, grow your skills, and add meaningful work to your portfolio.", color: "#0f766e", bg: "#f0fdf4" },
-  { icon: "⚡", title: "PPO for top interns", desc: "Top performers get a Pre-Placement Offer consideration at the end of 3 months.", color: "#b45309", bg: "#fffbeb" },
-  { icon: "🌐", title: "100% remote", desc: "Work from anywhere in India. Async-friendly culture, flexible hours.", color: "#dc2626", bg: "#fef2f2" },
+  { icon: "🚀", title: "Ship real products", desc: "Your code, design, or content goes live to real users. No busywork, no fake tasks." },
+  { icon: "🧑‍💻", title: "Work with founders", desc: "Direct access to the founding team. Get feedback, mentorship, and the full picture." },
+  { icon: "📜", title: "Certificate + LOR", desc: "Official Jobingen certificate and a strong Letter of Recommendation on completion." },
+  { icon: "📈", title: "Career growth", desc: "Build real experience, grow your skills, and add meaningful work to your portfolio." },
+  { icon: "⚡", title: "PPO for top interns", desc: "Top performers get a Pre-Placement Offer consideration at the end of 3 months." },
+  { icon: "🌐", title: "100% remote", desc: "Work from anywhere in India. Async-friendly culture, flexible hours." },
 ]
 
 const STEPS = [
@@ -133,7 +125,7 @@ function RoleCard({ role, onApply }: { role: typeof ROLES[0]; onApply: (id: stri
     <div className="cr-role-card">
       {/* Top strip */}
       <div className="cr-role-top">
-        <div className="cr-role-icon" style={{ background: role.bg, border: `1.5px solid ${role.color}22`, color: role.color }}>
+        <div className="cr-role-icon">
           {role.dept === "Engineering" && (
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
@@ -175,7 +167,7 @@ function RoleCard({ role, onApply }: { role: typeof ROLES[0]; onApply: (id: stri
 
       {/* Body */}
       <div className="cr-role-body">
-        <span className="cr-dept-chip" style={{ color: role.color, background: role.bg, border: `1px solid ${role.color}20` }}>
+        <span className="cr-dept-chip">
           {role.dept}
         </span>
         <h3 className="cr-role-title">{role.title}</h3>
@@ -198,7 +190,6 @@ function RoleCard({ role, onApply }: { role: typeof ROLES[0]; onApply: (id: stri
         </div>
         <button
           className="cr-apply-btn"
-          style={{ "--role-color": role.color } as React.CSSProperties}
           onClick={() => onApply(role.id)}
         >
           Apply
@@ -359,7 +350,7 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
                 {roleData && (
                   <div className="cr-role-chips">
                     <span className="cr-chip-gray">{roleData.duration}</span>
-                    <span className="cr-chip-blue">{roleData.dept}</span>
+                    <span className="cr-chip-gray">{roleData.dept}</span>
                   </div>
                 )}
               </div>
@@ -627,6 +618,7 @@ export function CareersClient() {
         .cr-role-icon {
           width:46px; height:46px; border-radius:13px;
           display:flex; align-items:center; justify-content:center;
+          background:#eef2ff; border:1.5px solid #c7d2fe; color:#1d3a8f;
           transition:transform .25s;
         }
         .cr-role-card:hover .cr-role-icon { transform:scale(1.08); }
@@ -638,7 +630,7 @@ export function CareersClient() {
         }
 
         .cr-role-body { padding:0 22px 0; flex:1; }
-        .cr-dept-chip { font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-block; margin-bottom:10px; letter-spacing:.04em; text-transform:uppercase; }
+        .cr-dept-chip { font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; display:inline-block; margin-bottom:10px; letter-spacing:.04em; text-transform:uppercase; color:#1d3a8f; background:#eef2ff; border:1px solid #c7d2fe; }
         .cr-role-title { font-size:16px; font-weight:800; color:#0f172a; letter-spacing:-0.02em; line-height:1.3; margin-bottom:8px; }
         .cr-role-desc { font-size:13px; color:#64748b; line-height:1.7; margin-bottom:14px; }
 
@@ -658,14 +650,10 @@ export function CareersClient() {
         .cr-apply-btn {
           display:inline-flex; align-items:center; gap:5px;
           padding:8px 16px; border-radius:9px; font-size:12.5px; font-weight:700;
-          background:white; color:var(--role-color,#1d3a8f);
-          border:1.5px solid color-mix(in srgb,var(--role-color,#1d3a8f) 30%,transparent);
+          background:white; color:#1d3a8f; border:1.5px solid #c7d2fe;
           cursor:pointer; transition:all .2s; font-family:inherit; white-space:nowrap;
         }
-        .cr-apply-btn:hover {
-          background:var(--role-color,#1d3a8f); color:white;
-          box-shadow:0 4px 14px color-mix(in srgb,var(--role-color,#1d3a8f) 30%,transparent);
-        }
+        .cr-apply-btn:hover { background:#1d3a8f; color:white; box-shadow:0 4px 14px rgba(29,58,143,0.22); }
 
         /* ── DEPT FILTERS ── */
         .cr-filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:28px; }
