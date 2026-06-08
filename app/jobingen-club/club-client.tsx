@@ -356,8 +356,8 @@ export function JobingenClubClient() {
         }
       `}</style>
 
+      <Navbar />
       <div className="ca">
-        <Navbar />
 
         {/* ── HERO ── */}
         <section className="ca-hero">
@@ -662,8 +662,8 @@ export function JobingenClubClient() {
           </Reveal>
         </section>
 
-        <Footer />
       </div>
+      <Footer />
     </>
   )
 }

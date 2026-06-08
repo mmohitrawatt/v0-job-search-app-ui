@@ -393,8 +393,8 @@ function FeedbackSuccessScreen() {
         <h1 className="fade-up-2" style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 900, letterSpacing: "-.03em", color: "var(--ink)", lineHeight: 1.1, marginBottom: 14 }}>
           Thank you for your<br /><span className="shimmer">honest feedback</span>
         </h1>
-        <p className="fade-up-3" style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 360, margin: "0 auto 32px" }}>
-          Your response has been recorded. We&apos;ll use it to build an even better experience for the next bootcamp.
+        <p className="fade-up-3" style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 380, margin: "0 auto 32px" }}>
+          Your response has been recorded. We&apos;ll use it to build an even better experience for the next Summer Training.
         </p>
         <div className="fade-up-3" style={{ background: "var(--white)", border: "1.5px solid var(--border)", borderRadius: 18, padding: "18px 22px", marginBottom: 24, boxShadow: "var(--shadow-sm)" }}>
           <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: ".07em", color: "var(--ink3)", marginBottom: 14 }}>Stay in the loop</div>
@@ -511,10 +511,8 @@ export default function FeedbackPage() {
   const [form, setForm] = useState({
     name: "", email: "",
     overall_rating: 0, content_rating: 0, mentor_rating: 0,
-    liked: "", improve: "", recommend: "", next_topic: "",
+    liked: "", recommend: "",
   })
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([])
-  const [customTopic, setCustomTopic] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -541,17 +539,11 @@ export default function FeedbackPage() {
     setServerError("")
   }
 
-  function toggleTopic(topic: string) {
-    setSelectedTopics(prev =>
-      prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]
-    )
-  }
-
   function validate() {
     const e: Record<string, string> = {}
     if (!form.name.trim()) e.name = "Name is required"
     if (!form.overall_rating) e.overall_rating = "Please rate your overall experience"
-    if (!form.liked.trim()) e.liked = "Please tell us what you liked"
+    if (!form.liked.trim()) e.liked = "Please share your feedback — it means a lot to us"
     return e
   }
 
@@ -562,11 +554,10 @@ export default function FeedbackPage() {
     setLoading(true)
     setServerError("")
     try {
-      const allTopics = [...selectedTopics, ...(customTopic.trim() ? [customTopic.trim()] : [])].join(", ")
       const res = await fetch("/api/bootcamp-feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, next_topic: allTopics }),
+        body: JSON.stringify({ ...form, bootcamp: "summer_training" }),
       })
       const data = await res.json()
       if (!res.ok) { setServerError(data.error || "Something went wrong."); setLoading(false); return }
@@ -658,19 +649,19 @@ export default function FeedbackPage() {
           <div style={{ position: "relative", maxWidth: 560, margin: "0 auto" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 18, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
               <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinejoin="round"/></svg>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Frontend Masterclass · 19 Apr 2026</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Offline Summer Training · June 2026</span>
             </div>
             <h1 style={{ fontSize: "clamp(26px,4vw,42px)", fontWeight: 900, color: "#0f172a", lineHeight: 1.08, letterSpacing: "-0.04em", marginBottom: 12 }}>
               How was your{" "}
               <span style={{ background: "linear-gradient(135deg,#1d3a8f 0%,#3b5bdb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                bootcamp experience?
+                Summer Training?
               </span>
             </h1>
-            <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.75, maxWidth: 400, margin: "0 auto 22px" }}>
-              Takes 2 minutes. Your honest feedback shapes everything we build next.
+            <p style={{ fontSize: 15, color: "#64748b", lineHeight: 1.75, maxWidth: 420, margin: "0 auto 22px" }}>
+              2 minutes. Your honest words directly shape what we build for the next batch of students.
             </p>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 0, background: "white", border: "1.5px solid #e0e7ff", borderRadius: 14, padding: "10px 4px", boxShadow: "0 2px 12px rgba(29,58,143,0.07)" }}>
-              {[["~2 min","to complete"],["5","questions"],["100%","anonymous"]].map(([v, l], i) => (
+              {[["~2 min","to complete"],["4","questions"],["100%","anonymous"]].map(([v, l], i) => (
                 <div key={v} style={{ display: "flex", alignItems: "stretch", gap: 0 }}>
                   <div style={{ textAlign: "center", padding: "0 20px" }}>
                     <div style={{ fontSize: 14, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.02em" }}>{v}</div>
@@ -725,30 +716,54 @@ export default function FeedbackPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                     <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink2)", marginBottom: 4 }}>Rate specific areas</div>
                     <div style={{ background: "var(--cream)", borderRadius: 14, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 16 }}>
-                      <MiniStarRow label="Content Quality" value={form.content_rating} onChange={v => set("content_rating", v)} />
+                      <MiniStarRow label="Content Coverage & Clarity" value={form.content_rating} onChange={v => set("content_rating", v)} />
                       <div style={{ height: 1, background: "var(--border)" }} />
-                      <MiniStarRow label="Mentor / Teaching" value={form.mentor_rating} onChange={v => set("mentor_rating", v)} />
+                      <MiniStarRow label="Mentor Interaction & Support" value={form.mentor_rating} onChange={v => set("mentor_rating", v)} />
                     </div>
                   </div>
                 </div>
 
-                {/* Section 3 — Your Thoughts */}
+                {/* Motivational banner */}
+                <div style={{
+                  padding: "16px 20px", borderRadius: 16,
+                  background: "linear-gradient(135deg, #eef1fd 0%, #f0f4ff 100%)",
+                  border: "1.5px solid rgba(29,58,143,0.18)",
+                  display: "flex", gap: 14, alignItems: "flex-start",
+                }}>
+                  <div style={{ fontSize: 26, lineHeight: 1, flexShrink: 0, marginTop: 2 }}>💙</div>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ind)", marginBottom: 5 }}>
+                      You are a part of our dream
+                    </div>
+                    <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7 }}>
+                      Your feedback isn&apos;t just a form — it&apos;s the foundation of our next program.
+                      Every honest word you write shapes what we build for the next batch of students like you.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3 — Your Feedback */}
                 <div className="section-card fade-up-3">
                   <div className="section-label">
                     <span className="section-num">3</span>
-                    <span style={{ marginLeft: 8 }}>Your Thoughts</span>
+                    <span style={{ marginLeft: 8 }}>Your Feedback</span>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What did you like most? <span style={{ color: "var(--rose)" }}>*</span></label>
-                    <p style={{ fontSize: 12, color: "var(--ink3)" }}>Sessions, projects, mentors — anything that stood out</p>
-                    <textarea className={`field-input${errors.liked ? " err" : ""}`} rows={3} placeholder="e.g. The RAG session was really practical, loved the hands-on hackathon project..." value={form.liked} onChange={e => set("liked", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
+                    <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>
+                      What&apos;s your feedback &amp; suggestions? <span style={{ color: "var(--rose)" }}>*</span>
+                    </label>
+                    <p style={{ fontSize: 12, color: "var(--ink3)" }}>
+                      What worked, what didn&apos;t, what would make the next training 10x better? Be honest — your words are gold.
+                    </p>
+                    <textarea
+                      className={`field-input${errors.liked ? " err" : ""}`}
+                      rows={4}
+                      placeholder="e.g. The sessions were really engaging. Mentor explained concepts very clearly. I wish we had more time for Q&A and hands-on practice..."
+                      value={form.liked}
+                      onChange={e => set("liked", e.target.value)}
+                      style={{ lineHeight: 1.65, marginTop: 4 }}
+                    />
                     {errors.liked && <span style={{ fontSize: 11, color: "var(--rose)", fontWeight: 600 }}>{errors.liked}</span>}
-                  </div>
-                  <div style={{ height: 1, background: "var(--border)" }} />
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>What could be better? <span style={{ color: "var(--ink3)", fontWeight: 400 }}>(optional)</span></label>
-                    <p style={{ fontSize: 12, color: "var(--ink3)" }}>Pacing, content depth, schedule — be honest!</p>
-                    <textarea className="field-input" rows={3} placeholder="e.g. More time for Q&A, slower pace on Day 2, more coding exercises..." value={form.improve} onChange={e => set("improve", e.target.value)} style={{ lineHeight: 1.65, marginTop: 4 }} />
                   </div>
                 </div>
 
@@ -758,7 +773,7 @@ export default function FeedbackPage() {
                     <span className="section-num">4</span>
                     <span style={{ marginLeft: 8 }}>Would You Recommend?</span>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)", marginBottom: 4 }}>Would you recommend this bootcamp to a friend or classmate?</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink2)", marginBottom: 4 }}>Would you recommend this training to a friend or classmate?</div>
                   <div className="recommend-row" style={{ display: "flex", gap: 8 }}>
                     {RECOMMEND_OPTIONS.map(opt => (
                       <div key={opt.label} className={`recommend-card${form.recommend === opt.label ? " selected" : ""}`} onClick={() => set("recommend", opt.label)}>
@@ -767,39 +782,6 @@ export default function FeedbackPage() {
                         <div style={{ fontSize: 10, color: "var(--ink3)", fontWeight: 500 }}>{opt.sub}</div>
                       </div>
                     ))}
-                  </div>
-                </div>
-
-                {/* Section 5 — Next Bootcamp Topics */}
-                <div className="section-card">
-                  <div className="section-label">
-                    <span className="section-num">5</span>
-                    <span style={{ marginLeft: 8 }}>Next Bootcamp</span>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>What topics should we cover next?</div>
-                    <div style={{ fontSize: 12, color: "var(--ink3)" }}>Pick as many as you like — this directly influences our next curriculum</div>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                    {TOPIC_SUGGESTIONS.map(({ label }) => {
-                      const isSelected = selectedTopics.includes(label)
-                      return (
-                        <div key={label} className={`topic-chip${isSelected ? " selected" : ""}`} onClick={() => toggleTopic(label)}>
-                          <span className="chip-dot" />
-                          {label}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  {selectedTopics.length > 0 && (
-                    <div style={{ fontSize: 12, color: "var(--ind)", fontWeight: 600, display: "flex", alignItems: "center", gap: 5 }}>
-                      <svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M2.5 6.5L5.5 9.5L10.5 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      {selectedTopics.length} topic{selectedTopics.length > 1 ? "s" : ""} selected
-                    </div>
-                  )}
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink3)" }}>Anything else not listed above?</label>
-                    <input className="field-input" placeholder="Type a topic..." value={customTopic} onChange={e => setCustomTopic(e.target.value)} />
                   </div>
                 </div>
 
@@ -821,7 +803,7 @@ export default function FeedbackPage() {
                 </button>
 
                 <p style={{ textAlign: "center", fontSize: 11, color: "var(--ink3)", lineHeight: 1.6 }}>
-                  Your response is confidential and used only to improve future bootcamps.
+                  Your response is confidential and used only to improve future programs.
                 </p>
               </form>
 

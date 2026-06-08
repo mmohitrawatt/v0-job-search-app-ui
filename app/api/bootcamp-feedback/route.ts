@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const improve           = (body.improve as string | null)?.trim() ?? ""
     const recommend         = (body.recommend as string | null) ?? ""
     const next_topic        = (body.next_topic as string | null)?.trim() ?? ""
+    const bootcamp_id       = (body.bootcamp as string | null)?.trim() || "bootcamp_1"
 
     if (!name)           return NextResponse.json({ error: "Name is required." }, { status: 400 })
     if (!overall_rating) return NextResponse.json({ error: "Please give an overall rating." }, { status: 400 })
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
       improve,
       recommend,
       next_topic,
-      bootcamp: "bootcamp_1",
+      bootcamp: bootcamp_id,
     })
 
     if (error) {
