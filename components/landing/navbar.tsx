@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { label: "Bootcamps",      href: "/bootcamps" },
   { label: "Mentors",        href: "/mentors" },
   { label: "Creator",        href: "/creator-community" },
-  { label: "Club",            href: "/campus-ambassador" },
+  { label: "Club",            href: "/jobingen-club" },
   { label: "Careers",        href: "/careers" },
   { label: "Hire Talent",    href: "/hire-talent" },
 ]

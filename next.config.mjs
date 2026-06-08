@@ -10,6 +10,7 @@ const nextConfig = {
     return [
       { source: '/pre-launch', destination: '/', permanent: true },
       { source: '/app', destination: '/dashboard', permanent: true },
+      { source: '/campus-ambassador', destination: '/jobingen-club', permanent: true },
     ]
   },
 }
