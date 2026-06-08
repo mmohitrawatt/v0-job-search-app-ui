@@ -78,7 +78,7 @@ export default function JobingenClubPage() {
   const [form, setForm] = useState({
     name: "", email: "", phone: "", college: "", city: "",
     year: "", branch: "", linkedin: "", instagram: "",
-    current_role: "", why_lead: "",
+    campus_role: "", why_lead: "",
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -629,7 +629,7 @@ export default function JobingenClubPage() {
                   {/* Current Role */}
                   <div className="ca-form-group">
                     <label className="ca-form-label">Current Club / Position on Campus</label>
-                    <input className="ca-form-input" placeholder="E.g. GDSC Lead, E-Cell Co-founder, Coding Club President..." value={form.current_role} onChange={set("current_role")} />
+                    <input className="ca-form-input" placeholder="E.g. GDSC Lead, E-Cell Co-founder, Coding Club President..." value={form.campus_role} onChange={set("campus_role")} />
                     <span className="ca-form-hint">Leave blank if you don't currently hold any position</span>
                   </div>
 

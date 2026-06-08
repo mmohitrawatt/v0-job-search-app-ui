@@ -4,7 +4,7 @@ import { createServerClient } from "@/lib/supabase"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, phone, college, city, year, branch, linkedin, instagram, current_role, why_lead } = body
+    const { name, email, phone, college, city, year, branch, linkedin, instagram, campus_role, why_lead } = body
 
     if (!name?.trim()) return NextResponse.json({ error: "Name is required." }, { status: 400 })
     if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       branch: branch.trim(),
       linkedin: linkedin?.trim() || null,
       instagram: instagram?.trim() || null,
-      current_role: current_role?.trim() || null,
+      campus_role: campus_role?.trim() || null,
       why_lead: why_lead.trim(),
     })
 

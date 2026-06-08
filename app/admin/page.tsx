@@ -18,7 +18,7 @@ type BootcampFeedback = {
 type JobingenClubApplication = {
   id: string; name: string; email: string; phone: string; college: string
   city: string; year: string; branch: string; linkedin?: string; instagram?: string
-  current_role?: string; why_lead: string; created_at: string
+  campus_role?: string; why_lead: string; created_at: string
 }
 type QuizAnswer = { question: string; answer: string }
 type JobApplication = {
@@ -808,7 +808,7 @@ export default function AdminPage() {
                               <td style={{ fontSize: 12, color: "#64748b" }}>{a.city}</td>
                               <td style={{ fontSize: 12, color: "#64748b" }}>{a.year}</td>
                               <td style={{ fontSize: 12, color: "#64748b" }}>{a.branch}</td>
-                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.current_role || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{a.campus_role || "—"}</td>
                               <td>
                                 {a.linkedin
                                   ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
