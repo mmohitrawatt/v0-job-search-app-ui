@@ -271,6 +271,7 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
     if (!college.trim()) return setError("Please enter your college / university.")
     if (!year)           return setError("Please select your year of study.")
     if (!file)           return setError("Please upload your resume.")
+    if (!why.trim())     return setError("Please tell us why you want to join Jobingen.")
 
     setSubmitting(true)
     try {
@@ -407,7 +408,7 @@ function ApplyDrawer({ initialRole, onClose }: { initialRole: string; onClose: (
               {/* Why */}
               <div className="cr-field">
                 <FLabel>
-                  Why Jobingen? <span className="cr-opt">(optional, but helps a lot)</span>
+                  Why Jobingen? <span className="cr-req">*</span>
                 </FLabel>
                 <textarea
                   value={why} onChange={e => setWhy(e.target.value)}
@@ -892,8 +893,8 @@ export function CareersClient() {
           </h1>
 
           <p className="cr-hero-sub">
-            Paid internships. Real products. Direct mentorship from founders.
-            100% remote — every intern ships something real within their first week.
+            Paid or not — it&apos;s about the value you add. Real products that reach real users.
+            Direct mentorship from founders. Every intern ships something live within their first week.
           </p>
 
           <div className="cr-hero-actions">
