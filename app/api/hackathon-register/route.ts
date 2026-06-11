@@ -5,21 +5,22 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
 
-    const name = (formData.get("name") as string | null)?.trim() ?? ""
-    const email = (formData.get("email") as string | null)?.trim().toLowerCase() ?? ""
-    const phone = (formData.get("phone") as string | null)?.trim() ?? ""
-    const college = (formData.get("college") as string | null)?.trim() ?? ""
-    const team_name = (formData.get("team_name") as string | null)?.trim() ?? "Individual"
-    const upi_transaction_id = (formData.get("upi_transaction_id") as string | null)?.trim() ?? ""
-    const screenshot = formData.get("screenshot") as File | null
+    const name       = (formData.get("name")       as string | null)?.trim() ?? ""
+    const email      = (formData.get("email")      as string | null)?.trim().toLowerCase() ?? ""
+    const phone      = (formData.get("phone")      as string | null)?.trim() ?? ""
+    const college    = (formData.get("college")    as string | null)?.trim() ?? ""
+    const year       = (formData.get("year")       as string | null)?.trim() ?? ""
+    const team_name  = (formData.get("team_name")  as string | null)?.trim() ?? "Solo"
+    const github     = (formData.get("github")     as string | null)?.trim() ?? ""
+    const tech_stack = (formData.get("tech_stack") as string | null)?.trim() ?? ""
+    const why        = (formData.get("why")        as string | null)?.trim() ?? ""
 
-    // Validate required fields
     const errors: string[] = []
-    if (!name) errors.push("Name is required.")
+    if (!name)    errors.push("Full name is required.")
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("Valid email is required.")
     if (!phone || phone.replace(/\D/g, "").length < 10) errors.push("Valid 10-digit phone number is required.")
-    if (!college) errors.push("College / Company name is required.")
-    if (!upi_transaction_id) errors.push("UPI Transaction ID is required.")
+    if (!college) errors.push("College / institution is required.")
+    if (!year)    errors.push("Year of study is required.")
 
     if (errors.length > 0) {
       return NextResponse.json({ error: errors[0] }, { status: 400 })
@@ -27,42 +28,19 @@ export async function POST(req: NextRequest) {
 
     const supabase = createServerClient()
 
-    // Upload screenshot if provided
-    let payment_screenshot_url: string | null = null
-    if (screenshot && screenshot.size > 0) {
-      const ext = screenshot.name.split(".").pop() ?? "jpg"
-      const fileName = `screenshots/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const arrayBuffer = await screenshot.arrayBuffer()
-      const buffer = new Uint8Array(arrayBuffer)
-
-      const { error: uploadError } = await supabase.storage
-        .from("hackathon-screenshots")
-        .upload(fileName, buffer, {
-          contentType: screenshot.type || "image/jpeg",
-          upsert: false,
-        })
-
-      if (uploadError) {
-        console.error("Screenshot upload error:", JSON.stringify(uploadError))
-        return NextResponse.json({ error: `Screenshot upload failed: ${uploadError.message}` }, { status: 500 })
-      } else {
-        const { data: urlData } = supabase.storage
-          .from("hackathon-screenshots")
-          .getPublicUrl(fileName)
-        payment_screenshot_url = urlData.publicUrl
-      }
-    }
-
-    // Insert registration
     const { error } = await supabase.from("hackathon_registrations").insert({
       name,
       email,
       phone,
       college,
-      team_name,
-      upi_transaction_id,
-      payment_screenshot_url,
-      bootcamp: "bootcamp_2",
+      team_name: team_name || "Solo",
+      year_of_study:       year       || null,
+      github_url:          github     || null,
+      tech_stack:          tech_stack || null,
+      why_participate:     why        || null,
+      upi_transaction_id:  null,
+      payment_screenshot_url: null,
+      bootcamp: "ai_content_engine_hackathon",
     })
 
     if (error) {
@@ -73,6 +51,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (err) {
     console.error("Hackathon register route error:", err)
-    return NextResponse.json({ error: "Something went wrong." }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 })
   }
 }
