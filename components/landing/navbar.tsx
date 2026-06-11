@@ -52,7 +52,7 @@ export function Navbar() {
 
           {/* Logo */}
           <a href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0, textDecoration: "none" }}>
-            <JobingenLogo height={88} />
+            <JobingenLogo className="h-[54px] lg:h-[88px] w-auto" style={{ height: undefined }} />
           </a>
 
           {/* Center nav — desktop */}
@@ -105,14 +105,14 @@ export function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             style={{ background: "none", border: "none", cursor: "pointer", padding: 6 }}
           >
-            <div style={{ width: 20, display: "flex", flexDirection: "column", gap: 5 }}>
+            <div style={{ width: 22, display: "flex", flexDirection: "column", gap: 5 }}>
               {[
-                mobileOpen ? "rotate(45deg) translateY(6.5px)" : "none",
+                mobileOpen ? "rotate(45deg) translateY(7px)" : "none",
                 undefined,
-                mobileOpen ? "rotate(-45deg) translateY(-6.5px)" : "none",
+                mobileOpen ? "rotate(-45deg) translateY(-7px)" : "none",
               ].map((transform, i) => (
                 <span key={i} style={{
-                  display: "block", height: 1.5, background: "#475569",
+                  display: "block", height: 2, background: "#334155",
                   borderRadius: 2, transition: "all .28s",
                   transform: transform || "none",
                   opacity: i === 1 && mobileOpen ? 0 : 1,
@@ -132,7 +132,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            style={{ position: "fixed", left: 10, right: 10, zIndex: 40, top: navTop + NAV_H + 6 }}
+            style={{ position: "fixed", left: 10, right: 10, zIndex: 40, top: 80 }}
           >
             <div style={{
               background: "white", borderRadius: 18,
