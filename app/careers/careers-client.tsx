@@ -634,6 +634,172 @@ export function CareersClient() {
         .cr-stat-label { font-size: 11px; font-weight: 600; color: #94a3b8; margin-top: 5px; text-transform: uppercase; letter-spacing: .04em; }
 
         /* ══════════════════════════════════════════════════
+           HACKATHON CARD
+        ══════════════════════════════════════════════════ */
+        .cr-hk-wrap {
+          background: #f8faff;
+          padding: 48px 24px;
+          border-bottom: 1px solid #e8edff;
+        }
+        .cr-hk-card {
+          max-width: 1100px; margin: 0 auto;
+          background: white;
+          border: 1.5px solid #dde5ff;
+          border-radius: 24px;
+          box-shadow: 0 4px 24px rgba(29,58,143,0.07), 0 1px 4px rgba(29,58,143,0.04);
+          overflow: hidden;
+          display: grid;
+          grid-template-columns: 1fr 300px;
+        }
+        @media(max-width:860px){ .cr-hk-card { grid-template-columns: 1fr; } }
+
+        /* ── top accent bar ── */
+        .cr-hk-card::before {
+          content: '';
+          grid-column: 1 / -1;
+          height: 3px;
+          background: linear-gradient(90deg, #1d3a8f, #4668f5, #7c3aed);
+          display: block;
+        }
+
+        /* ── LEFT ── */
+        .cr-hk-left {
+          padding: 32px 36px;
+          border-right: 1px solid #f0f4ff;
+          display: flex; flex-direction: column; gap: 20px;
+        }
+        @media(max-width:860px){
+          .cr-hk-left { border-right: none; border-bottom: 1px solid #f1f5f9; padding: 28px 22px; }
+        }
+
+        .cr-hk-badge {
+          display: inline-flex; align-items: center; gap: 7px;
+          padding: 5px 14px; border-radius: 99px;
+          background: #eef2ff; border: 1px solid #c7d2fe;
+          font-size: 10.5px; font-weight: 800; color: #1d3a8f;
+          letter-spacing: .07em; text-transform: uppercase;
+          width: fit-content;
+        }
+
+        .cr-hk-title {
+          font-size: clamp(20px, 2.8vw, 28px);
+          font-weight: 900; color: #0f172a;
+          letter-spacing: -0.035em; line-height: 1.15;
+        }
+        .cr-hk-title-accent {
+          background: linear-gradient(135deg, #1d3a8f, #4668f5);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .cr-hk-desc {
+          font-size: 14px; color: #475569; line-height: 1.78;
+        }
+
+        .cr-hk-modules-label {
+          font-size: 10.5px; font-weight: 800; color: #94a3b8;
+          letter-spacing: .07em; text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+        .cr-hk-modules {
+          display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .cr-hk-module {
+          font-size: 11.5px; font-weight: 600; color: #334155;
+          background: #f4f6fb; border: 1px solid #e2e8f0;
+          padding: 4px 11px; border-radius: 99px;
+        }
+
+        .cr-hk-actions {
+          display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+          padding-top: 4px;
+        }
+        .cr-hk-btn-primary {
+          display: inline-flex; align-items: center; gap: 7px;
+          padding: 12px 24px; border-radius: 11px; border: none;
+          background: linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5);
+          color: white; font-size: 13.5px; font-weight: 700;
+          cursor: pointer; text-decoration: none; font-family: inherit;
+          box-shadow: 0 3px 14px rgba(29,58,143,0.28);
+          transition: all .22s cubic-bezier(.16,1,.3,1);
+        }
+        .cr-hk-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(29,58,143,0.38); }
+        .cr-hk-btn-ghost {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 12px 20px; border-radius: 11px;
+          background: white; color: #1d3a8f;
+          border: 1.5px solid #c7d2fe;
+          font-size: 13px; font-weight: 700;
+          cursor: pointer; text-decoration: none; font-family: inherit;
+          transition: all .18s;
+        }
+        .cr-hk-btn-ghost:hover { background: #eef2ff; border-color: #1d3a8f; }
+
+        /* ── RIGHT ── */
+        .cr-hk-right {
+          background: #fafbff;
+          padding: 32px 26px;
+          display: flex; flex-direction: column; gap: 0;
+        }
+        @media(max-width:860px){ .cr-hk-right { padding: 24px 22px; } }
+
+        .cr-hk-prize-eyebrow {
+          font-size: 10px; font-weight: 800; color: #94a3b8;
+          letter-spacing: .1em; text-transform: uppercase;
+          margin-bottom: 6px;
+        }
+        .cr-hk-prize-title {
+          font-size: 16px; font-weight: 900; color: #0f172a;
+          letter-spacing: -0.025em; margin-bottom: 20px;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .cr-hk-prize-title span {
+          font-size: 20px;
+        }
+
+        .cr-hk-perks {
+          display: flex; flex-direction: column; gap: 11px;
+          flex: 1;
+        }
+        .cr-hk-perk {
+          display: flex; align-items: flex-start; gap: 10px;
+        }
+        .cr-hk-perk-tick {
+          width: 18px; height: 18px; border-radius: 5px;
+          background: #eef2ff; border: 1px solid #c7d2fe;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0; margin-top: 1px;
+        }
+        .cr-hk-perk-text {
+          font-size: 13px; color: #475569; line-height: 1.5;
+        }
+        .cr-hk-perk-text strong { color: #0f172a; font-weight: 700; }
+
+        .cr-hk-divider { height: 1px; background: #f1f5f9; margin: 18px 0; }
+
+        .cr-hk-spots {
+          display: flex; align-items: center; gap: 7px;
+          background: #fffbeb; border: 1px solid #fde68a;
+          border-radius: 10px; padding: 10px 14px;
+        }
+        .cr-hk-spots-dot {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: #f59e0b; flex-shrink: 0;
+          box-shadow: 0 0 5px rgba(245,158,11,.5);
+          animation: cr-pulse 2s infinite;
+        }
+        .cr-hk-spots-text {
+          font-size: 12px; font-weight: 700; color: #92400e;
+          line-height: 1.4;
+        }
+
+        @media(max-width:600px){
+          .cr-hk-wrap { padding: 32px 16px; }
+          .cr-hk-actions { flex-direction: column; }
+          .cr-hk-btn-primary, .cr-hk-btn-ghost { width: 100%; justify-content: center; }
+        }
+
+        /* ══════════════════════════════════════════════════
            TICKER
         ══════════════════════════════════════════════════ */
         .cr-ticker { background: white; border-bottom: 1px solid #f0f4ff; padding: 13px 0; overflow: hidden; }
@@ -1039,6 +1205,101 @@ export function CareersClient() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════════
+          HACKATHON CARD
+      ══════════════════════════════════════════════════════ */}
+      <div className="cr-hk-wrap">
+        <Reveal>
+          <div className="cr-hk-card">
+
+            {/* LEFT */}
+            <div className="cr-hk-left">
+              <div className="cr-hk-badge">
+                <span className="cr-live-dot" />
+                Open Hackathon · Registrations Live
+              </div>
+
+              <h2 className="cr-hk-title">
+                Build the AI Content Engine.<br />
+                <span className="cr-hk-title-accent">Win an Internship Offer.</span>
+              </h2>
+
+              <p className="cr-hk-desc">
+                Jobingen is running an open hackathon — no resume screening, no shortlisting process.
+                Participate, build Jobingen&apos;s AI-powered brand automation system, and the best
+                performers walk away with a direct <strong>AI Engineer Intern offer</strong> (6–8 weeks, remote).
+                Code is the only filter.
+              </p>
+
+              <div>
+                <div className="cr-hk-modules-label">What you&apos;ll build — 8 modules</div>
+                <div className="cr-hk-modules">
+                  {[
+                    "Persona Engine", "Content Planner", "Copy Generator",
+                    "Critic / QA", "Design Renderer", "Content Store",
+                    "Approval Queue", "Orchestrator",
+                  ].map(m => (
+                    <span key={m} className="cr-hk-module">{m}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="cr-hk-actions">
+                <a href="/hackathon" className="cr-hk-btn-primary">
+                  Register for Hackathon
+                  <svg width="13" height="13" fill="none" viewBox="0 0 16 16">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+                <a href="/hackathon" className="cr-hk-btn-ghost">
+                  View Problem Statement
+                </a>
+              </div>
+            </div>
+
+            {/* RIGHT — prize */}
+            <div className="cr-hk-right">
+              <div className="cr-hk-prize-eyebrow">Grand Prize</div>
+              <div className="cr-hk-prize-title">
+                <span>🏆</span> AI Engineer Intern
+              </div>
+
+              <div className="cr-hk-perks">
+                {[
+                  { label: "Duration",   val: "6–8 weeks" },
+                  { label: "Mode",       val: "100% Remote" },
+                  { label: "Exit",       val: "Certificate + LOR" },
+                  { label: "Bonus",      val: "PPO for top performer" },
+                  { label: "From Day 1", val: "Ship to real users" },
+                  { label: "Mentorship", val: "Direct founder access" },
+                ].map(p => (
+                  <div key={p.label} className="cr-hk-perk">
+                    <div className="cr-hk-perk-tick">
+                      <svg width="9" height="9" fill="none" viewBox="0 0 12 12">
+                        <path d="M2 6l3 3 5-5" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <div className="cr-hk-perk-text">
+                      <strong>{p.label}:</strong> {p.val}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="cr-hk-divider" />
+
+              <div className="cr-hk-spots">
+                <span className="cr-hk-spots-dot" />
+                <span className="cr-hk-spots-text">
+                  Limited offer — only top 2–3 participants selected
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </Reveal>
+      </div>
 
       {/* ══════════════════════════════════════════════════════
           TICKER
