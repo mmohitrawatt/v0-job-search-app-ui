@@ -155,6 +155,7 @@ export default function AdminPage() {
   const [earlyApply, setEarlyApply] = useState<EarlyApply[]>([])
   const [hiringRequests, setHiringRequests] = useState<HiringRequest[]>([])
   const [careersApps, setCareersApps] = useState<CareersApplication[]>([])
+  const [aiContentEngineRegs, setAiContentEngineRegs] = useState<HackathonReg[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -169,7 +170,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []) })
+      .then(d => { setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []); setAiContentEngineRegs(d.aiContentEngineHackathon || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -269,7 +270,7 @@ export default function AdminPage() {
     bootcamp2: bootcamp2.length,
     bootcamp1: bootcamp1.length,
     jobs: jobApplications.length,
-    hackathon: hackathonSubs.length,
+    hackathon: aiContentEngineRegs.length,
     ambassadors: ambassadors.length,
     "early-access": earlyAccess.length,
     insights: studentInsights.length,
@@ -727,44 +728,45 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* ── Hackathon ── */}
+              {/* ── Hackathon Registrations ── */}
               {activeTab === "hackathon" && (
                 <div className="adm-sec">
                   <div className="adm-sec-head">
                     <div className="adm-sec-hl">
-                      <div className="adm-sec-title">Hackathon Submissions</div>
-                      <div className="adm-sec-badge">{hsFiltered.length} projects</div>
+                      <div className="adm-sec-title">AI Content Engine Hackathon — Registrations</div>
+                      <div className="adm-sec-badge">{aiContentEngineRegs.length} registered</div>
                     </div>
                     <div className="adm-sec-actions">
-                      <button className="adm-csv" onClick={() => exportCSV(hsFiltered as unknown as Record<string, unknown>[], "hackathon-submissions.csv")}>
+                      <button className="adm-csv" onClick={() => exportCSV(aiContentEngineRegs as unknown as Record<string, unknown>[], "ai-hackathon-registrations.csv")}>
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         Export CSV
                       </button>
                     </div>
                   </div>
                   <div className="adm-tbl-wrap">
-                    {hsFiltered.length === 0 ? (
-                      <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No submissions yet"}</div>
+                    {aiContentEngineRegs.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🚀</div>{search ? `No results for "${search}"` : "No registrations yet"}</div>
                     ) : (
                       <table>
-                        <thead><tr><th>#</th><th>Team</th><th>Leader</th><th>Email</th><th>Project</th><th>Tech Stack</th><th>GitHub</th><th>Demo</th><th>Screenshot</th><th>Date</th><th></th></tr></thead>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Year</th><th>Tech Stack</th><th>Team</th><th>GitHub</th><th>Date</th><th></th></tr></thead>
                         <tbody>
-                          {hsFiltered.map((r, i) => (
+                          {aiContentEngineRegs.filter(r => {
+                            if (!search.trim()) return true
+                            const s = search.toLowerCase()
+                            return r.name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || (r.college||"").toLowerCase().includes(s)
+                          }).map((r, i) => (
                             <tr key={r.id}>
                               <td className="c-num">{i + 1}</td>
-                              <td className="c-name">{r.team_name}</td>
-                              <td style={{ fontSize: 13 }}>{r.leader_name}</td>
+                              <td className="c-name">{r.name}</td>
                               <td className="c-email">{r.email}</td>
-                              <td>
-                                <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a" }}>{r.project_title}</div>
-                                <span className="c-why" title={r.description}>{r.description}</span>
-                              </td>
-                              <td style={{ fontSize: 12, color: "#64748b", maxWidth: 160 }}>{r.tech_stack}</td>
-                              <td><a className="c-link" href={r.github_link} target="_blank" rel="noopener noreferrer">Repo</a></td>
-                              <td>{r.demo_link ? <a className="c-link" href={r.demo_link} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
-                              <td>{r.screenshot_url ? <a className="c-link" href={r.screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.phone || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{(r as unknown as Record<string,string>).year_of_study || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{(r as unknown as Record<string,string>).tech_stack || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.team_name || "Solo"}</td>
+                              <td>{(r as unknown as Record<string,string>).github_url ? <a className="c-link" href={(r as unknown as Record<string,string>).github_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
                               <td className="c-date">{fmt(r.created_at)}</td>
-                              <td><DelBtn table="hackathon_submissions" id={r.id} name={r.team_name} /></td>
+                              <td><DelBtn table="hackathon_registrations" id={r.id} name={r.name} /></td>
                             </tr>
                           ))}
                         </tbody>
