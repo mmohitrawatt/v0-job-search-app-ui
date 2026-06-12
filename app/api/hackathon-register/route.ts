@@ -38,8 +38,6 @@ export async function POST(req: NextRequest) {
       github_url:          github     || null,
       tech_stack:          tech_stack || null,
       why_participate:     why        || null,
-      upi_transaction_id:  null,
-      payment_screenshot_url: null,
       bootcamp: "ai_content_engine_hackathon",
     })
 
