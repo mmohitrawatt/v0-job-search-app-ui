@@ -457,7 +457,7 @@ export default function MentorsPage() {
           </p>
 
           {/* Stats row */}
-          <div className="hero-stats" style={{ display: "inline-flex", alignItems: "center", background: "white", border: "1.5px solid #e0e7ff", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 20px rgba(29,58,143,0.08)" }}>
+          <div className="hero-stats" style={{ display: "inline-flex", alignItems: "center", background: "white", border: "1.5px solid #e0e7ff", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 20px rgba(29,58,143,0.08)", marginBottom: 32 }}>
             {[
               { val: `${MENTORS.length}+`, label: "Total Mentors" },
               { val: `${activeMentors.length}`, label: "Active Now" },
@@ -469,6 +469,23 @@ export default function MentorsPage() {
                 <div style={{ fontSize: 11, fontWeight: 600, color: "#94a3b8", marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
+          </div>
+
+          {/* Apply CTA */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+            <Link href="/become-mentor" style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "13px 28px", borderRadius: 13,
+              background: "linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5)",
+              color: "white", fontWeight: 800, fontSize: 14, textDecoration: "none",
+              boxShadow: "0 4px 18px rgba(29,58,143,0.32)",
+            }}>
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              Apply as Mentor
+            </Link>
+            <span style={{ fontSize: 12.5, color: "#94a3b8", fontWeight: 500 }}>Free to apply · Takes 5 minutes</span>
           </div>
         </div>
       </section>
