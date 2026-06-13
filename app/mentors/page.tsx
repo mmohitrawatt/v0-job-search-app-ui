@@ -431,12 +431,16 @@ export default function MentorsPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="hero-section" style={{ background: "linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%)", padding: "180px 24px 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section className="hero-section" style={{ background: "linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%)", textAlign: "center", position: "relative", overflow: "hidden", paddingBottom: 64, paddingLeft: 24, paddingRight: 24 }}>
         {/* background blobs */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
           <div style={{ position: "absolute", top: "-10%", right: "5%", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%)" }} />
           <div style={{ position: "absolute", bottom: "-5%", left: "3%", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,91,219,0.05) 0%, transparent 70%)" }} />
         </div>
+
+        {/* navbar spacer — pushes content below fixed navbar on all screen sizes */}
+        <div style={{ height: "var(--navbar-offset, 60px)" }} />
+        <style>{`:root{--navbar-offset:60px}@media(min-width:1024px){:root{--navbar-offset:100px}}`}</style>
 
         <div style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
           {/* Badge */}
