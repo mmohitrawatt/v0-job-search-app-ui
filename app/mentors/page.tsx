@@ -457,22 +457,39 @@ export default function MentorsPage() {
           </p>
 
           {/* Stats row */}
-          <div className="hero-stats" style={{ display: "inline-flex", alignItems: "center", background: "white", border: "1.5px solid #e0e7ff", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 20px rgba(29,58,143,0.08)", marginBottom: 32 }}>
+          <style>{`
+            .mn-stats { display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 420px; margin: 0 auto 28px; background: white; border: 1.5px solid #e0e7ff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(29,58,143,0.08); }
+            .mn-stat { padding: 16px 20px; text-align: center; }
+            .mn-stat:nth-child(1), .mn-stat:nth-child(2) { border-bottom: 1px solid #f1f5f9; }
+            .mn-stat:nth-child(odd) { border-right: 1px solid #f1f5f9; }
+            .mn-stat-val { font-size: 22px; font-weight: 900; color: #1d3a8f; letter-spacing: -0.03em; line-height: 1; }
+            .mn-stat-lbl { font-size: 11px; font-weight: 600; color: #94a3b8; margin-top: 4px; }
+            @media(min-width: 600px) {
+              .mn-stats { grid-template-columns: repeat(4, 1fr); max-width: 560px; }
+              .mn-stat:nth-child(1), .mn-stat:nth-child(2) { border-bottom: none; }
+              .mn-stat:nth-child(odd) { border-right: 1px solid #f1f5f9; }
+              .mn-stat:not(:last-child) { border-right: 1px solid #f1f5f9; }
+            }
+            .mn-cta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+            @media(min-width: 480px) { .mn-cta { flex-direction: row; justify-content: center; } }
+          `}</style>
+
+          <div className="mn-stats">
             {[
               { val: `${MENTORS.length}+`, label: "Total Mentors" },
               { val: `${activeMentors.length}`, label: "Active Now" },
               { val: `${COMPANIES.length}+`, label: "Companies" },
               { val: `${avgRating}★`, label: "Avg Rating" },
-            ].map((s, i) => (
-              <div key={s.label} style={{ padding: "18px 28px", textAlign: "center", borderRight: i < 3 ? "1px solid #f1f5f9" : "none" }}>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "#1d3a8f", letterSpacing: "-0.03em", lineHeight: 1 }}>{s.val}</div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#94a3b8", marginTop: 4 }}>{s.label}</div>
+            ].map(s => (
+              <div key={s.label} className="mn-stat">
+                <div className="mn-stat-val">{s.val}</div>
+                <div className="mn-stat-lbl">{s.label}</div>
               </div>
             ))}
           </div>
 
           {/* Apply CTA */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+          <div className="mn-cta">
             <Link href="/become-mentor" style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "13px 28px", borderRadius: 13,
