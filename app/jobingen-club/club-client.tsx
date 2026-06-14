@@ -77,7 +77,7 @@ const BRANCHES = ["Computer Science / IT", "Electronics / ECE", "Mechanical", "C
 export function JobingenClubClient() {
   const [form, setForm] = useState({
     name: "", email: "", phone: "", college: "", city: "",
-    year: "", branch: "", linkedin: "", instagram: "",
+    year: "", degree: "", linkedin: "", instagram: "",
     campus_role: "", why_lead: "",
   })
   const [loading, setLoading] = useState(false)
@@ -122,8 +122,9 @@ export function JobingenClubClient() {
         .ca-hero {
           position: relative; overflow: hidden;
           background: linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
-          padding: 188px 24px 88px; text-align: center;
+          padding: 100px 24px 72px; text-align: center;
         }
+        @media(min-width: 768px) { .ca-hero { padding: 188px 24px 88px; } }
         .ca-hero-blob1 { position:absolute; top:-10%; right:5%; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%); pointer-events:none; }
         .ca-hero-blob2 { position:absolute; bottom:-5%; left:3%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(59,91,219,0.05) 0%, transparent 70%); pointer-events:none; }
         .ca-hero-dot-grid { position:absolute; inset:0; background-image:radial-gradient(circle,rgba(29,58,143,0.06) 1px,transparent 1px); background-size:28px 28px; pointer-events:none; }
@@ -524,27 +525,6 @@ export function JobingenClubClient() {
                 Fill this form and our team will reach out within 48 hours. We review every application personally.
               </p>
 
-              <div className="ca-step">
-                <div className="ca-step-num">1</div>
-                <div>
-                  <div className="ca-step-title">Fill the Application</div>
-                  <div className="ca-step-desc">Takes under 5 minutes. Be specific about your current campus involvement.</div>
-                </div>
-              </div>
-              <div className="ca-step">
-                <div className="ca-step-num">2</div>
-                <div>
-                  <div className="ca-step-title">15-Min Onboarding Call</div>
-                  <div className="ca-step-desc">Our team will call you to understand your college and your vision for the club.</div>
-                </div>
-              </div>
-              <div className="ca-step">
-                <div className="ca-step-num">3</div>
-                <div>
-                  <div className="ca-step-title">Get Your Kit &amp; Launch</div>
-                  <div className="ca-step-desc">Receive your Club President kit — branding, resources, mentor introductions — and launch.</div>
-                </div>
-              </div>
             </div>
 
             {/* Right — Form */}
@@ -604,11 +584,8 @@ export function JobingenClubClient() {
                       </select>
                     </div>
                     <div className="ca-form-group">
-                      <label className="ca-form-label">Branch *</label>
-                      <select className="ca-form-select" value={form.branch} onChange={set("branch")} required>
-                        <option value="">Select branch</option>
-                        {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
-                      </select>
+                      <label className="ca-form-label">Degree *</label>
+                      <input className="ca-form-input" placeholder="e.g. B.Tech, BCA, MBA, B.Sc…" value={form.degree} onChange={set("degree")} required />
                     </div>
                   </div>
 
