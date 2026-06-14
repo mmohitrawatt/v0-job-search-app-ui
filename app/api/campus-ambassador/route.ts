@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     if (!college?.trim()) return NextResponse.json({ error: "College name is required." }, { status: 400 })
     if (!city?.trim()) return NextResponse.json({ error: "City is required." }, { status: 400 })
     if (!year?.trim()) return NextResponse.json({ error: "Year of study is required." }, { status: 400 })
-    if (!degree?.trim()) return NextResponse.json({ error: "Branch is required." }, { status: 400 })
+    if (!degree?.trim()) return NextResponse.json({ error: "Degree is required." }, { status: 400 })
     if (!why_lead?.trim()) return NextResponse.json({ error: "Please tell us why you want to lead Jobingen Club." }, { status: 400 })
 
     const supabase = createServerClient()
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       college: college.trim(),
       city: city.trim(),
       year: year.trim(),
-      degree: degree.trim(),
+      branch: degree.trim(),
       linkedin: linkedin?.trim() || null,
       instagram: instagram?.trim() || null,
       campus_role: campus_role?.trim() || null,
