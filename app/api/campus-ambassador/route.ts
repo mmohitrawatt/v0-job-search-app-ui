@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       college: college.trim(),
       city: city.trim(),
       year: year.trim(),
-      branch: degree.trim(),
+      degree: degree.trim(),
       linkedin: linkedin?.trim() || null,
       instagram: instagram?.trim() || null,
       campus_role: campus_role?.trim() || null,
