@@ -439,8 +439,8 @@ export default function MentorsPage() {
         </div>
 
         {/* navbar spacer — pushes content below fixed navbar on all screen sizes */}
-        <div style={{ height: "var(--navbar-offset, 60px)" }} />
-        <style>{`:root{--navbar-offset:60px}@media(min-width:1024px){:root{--navbar-offset:100px}}`}</style>
+        <div style={{ height: "var(--navbar-offset, 90px)" }} />
+        <style>{`:root{--navbar-offset:90px}@media(min-width:1024px){:root{--navbar-offset:126px}}`}</style>
 
         <div style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
           {/* Badge */}

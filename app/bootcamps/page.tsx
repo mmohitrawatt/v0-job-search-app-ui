@@ -8,6 +8,7 @@ import { Footer } from "@/components/landing/footer"
 
 const MENTORS_MAP: Record<string, { initials: string; color: string; name: string; role: string }> = {
   AD: { initials: "AD", color: "#1d3a8f", name: "Aditya D.",      role: "AI Engineer" },
+  AV: { initials: "AV", color: "#7c3aed", name: "Aayushman V.",   role: "SDE" },
   TR: { initials: "TR", color: "#7c3aed", name: "Tarsh",          role: "DSA Instructor" },
   SP: { initials: "SP", color: "#0f766e", name: "Shubham P.",     role: "ML Engineer" },
   JV: { initials: "JV", color: "#7c3aed", name: "Jay V.",         role: "Full Stack Dev" },
@@ -21,11 +22,35 @@ const MENTORS_MAP: Record<string, { initials: string; color: string; name: strin
 
 const BOOTCAMPS = [
   {
-    id: 5,
+    id: 6,
     status: "upcoming" as const,
+    featured: true,
+    num: "Flagship Bootcamp",
+    date: "27 June 2026",
+    link: "/flagship-training",
+    title: "Think Like a Problem Solver. Build Like an Engineer.",
+    description: "Jobingen's premier live bootcamp — 3 transformative modules covering DSA problem solving, spec-driven software development, and advanced RAG/AI systems. The most comprehensive session we've run.",
+    duration: "Live Session",
+    format: "₹29 · Online",
+    students: null,
+    topics: ["DSA Problem Solving Mindset", "Spec-Driven Development", "Advanced RAG Systems", "Vector Databases & Embeddings", "Interview Frameworks", "AI Application Architecture"],
+    delivered: ["Live Training", "Learning Resources", "Certificate", "Community Access", "Mentor Guidance"],
+    mentorKeys: ["AD", "AV"],
+    mentorLabel: "Aditya D. + Aayushman V." as string | null,
+    mentorSub: "AI Engineer · SDE" as string | null,
+    rating: 0,
+    accent: "linear-gradient(90deg,#1d3a8f,#3b52f0,#7c3aed)",
+    accentSolid: "#1d3a8f",
+    tagColor: "#1d3a8f",
+    tagBg: "#eef1fd",
+  },
+  {
+    id: 5,
+    status: "completed" as const,
+    featured: false,
     num: "Bootcamp 5",
     date: "17 May 2026",
-    link: "/ml-masterclass",
+    link: null as string | null,
     title: "ML Masterclass: Core Algorithms to Real Pipelines",
     description: "4-hour live deep dive into Machine Learning — from data preprocessing and feature engineering to training, evaluating, and deploying real ML models with hands-on notebooks.",
     duration: "4 Hours",
@@ -36,10 +61,10 @@ const BOOTCAMPS = [
     mentorKeys: ["AD"],
     mentorLabel: null as string | null,
     mentorSub: null as string | null,
-    rating: 0,
-    accent: "#059669",
-    tagColor: "#059669",
-    tagBg: "#ecfdf5",
+    rating: 4.6,
+    accent: "#64748b",
+    tagColor: "#475569",
+    tagBg: "#f1f5f9",
   },
   {
     id: 4,
@@ -146,21 +171,35 @@ function Stars({ rating }: { rating: number }) {
 
 /* ── Bootcamp Card ────────────────────────────────────────────── */
 function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
+  const strokeColor = ("accentSolid" in bc ? bc.accentSolid : bc.accent) as string
+  const isFeatured = "featured" in bc && bc.featured
   return (
     <div style={{
-      background: "white", borderRadius: 20, border: "1.5px solid #eef0f6",
+      background: isFeatured ? "linear-gradient(160deg,#0d1445 0%,#0f172a 50%,#1a0a3d 100%)" : "white",
+      borderRadius: 20,
+      border: isFeatured ? "1.5px solid rgba(99,102,241,0.25)" : "1.5px solid #eef0f6",
       overflow: "hidden", display: "flex", flexDirection: "column",
-      boxShadow: "0 2px 16px rgba(0,0,0,0.05)",
-      animation: `fadeUp 0.5s ease ${bc.id * 0.1}s both`,
+      boxShadow: isFeatured ? "0 8px 40px rgba(29,58,143,0.22)" : "0 2px 16px rgba(0,0,0,0.05)",
+      animation: `fadeUp 0.5s ease ${isFeatured ? 0 : bc.id * 0.07}s both`,
     }}>
       {/* Top accent */}
-      <div style={{ height: 4, background: bc.accent }} />
+      <div style={{ height: isFeatured ? 5 : 4, background: bc.accent }} />
 
       <div style={{ padding: "20px 22px 22px", display: "flex", flexDirection: "column", flex: 1 }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            {bc.status === "upcoming" ? (
+            {isFeatured && (
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                background: "rgba(165,180,252,0.12)", color: "#a5b4fc",
+                fontSize: 10, fontWeight: 800, padding: "4px 10px", borderRadius: 99,
+                border: "1px solid rgba(165,180,252,0.25)", letterSpacing: "0.05em", textTransform: "uppercase",
+              }}>
+                ★ Flagship
+              </span>
+            )}
+            {!isFeatured && bc.status === "upcoming" ? (
               <span style={{
                 display: "inline-flex", alignItems: "center", gap: 5,
                 background: "#f5f3ff", color: "#7c3aed",
@@ -170,7 +209,7 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#7c3aed", display: "inline-block", animation: "pulseDot 1.5s infinite" }} />
                 Open for Registration
               </span>
-            ) : (
+            ) : !isFeatured && (
               <span style={{
                 display: "inline-flex", alignItems: "center", gap: 5,
                 background: "#f0fdf4", color: "#16a34a",
@@ -189,10 +228,10 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
         </div>
 
         {/* Title */}
-        <h3 style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", marginBottom: 8, lineHeight: 1.2 }}>
+        <h3 style={{ fontSize: 18, fontWeight: 900, color: isFeatured ? "white" : "#0f172a", letterSpacing: "-0.025em", marginBottom: 8, lineHeight: 1.2 }}>
           {bc.title}
         </h3>
-        <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.65, marginBottom: 16 }}>
+        <p style={{ fontSize: 13, color: isFeatured ? "#94a3b8" : "#64748b", lineHeight: 1.65, marginBottom: 16 }}>
           {bc.description}
         </p>
 
@@ -201,21 +240,25 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
           {[bc.duration, bc.format, ...(bc.students ? [bc.students + " Students"] : [])].map(l => (
             <span key={l} style={{
               fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 99,
-              color: bc.tagColor, background: bc.tagBg, border: `1px solid ${bc.tagColor}20`,
+              color: isFeatured ? "#a5b4fc" : bc.tagColor,
+              background: isFeatured ? "rgba(165,180,252,0.1)" : bc.tagBg,
+              border: isFeatured ? "1px solid rgba(165,180,252,0.2)" : `1px solid ${bc.tagColor}20`,
             }}>{l}</span>
           ))}
         </div>
 
         {/* Topics */}
         <div style={{ marginBottom: 16 }}>
-          <p style={{ fontSize: 10, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>What Was Covered</p>
+          <p style={{ fontSize: 10, fontWeight: 800, color: isFeatured ? "rgba(165,180,252,0.6)" : "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>
+            {bc.status === "upcoming" ? "What You Will Learn" : "What Was Covered"}
+          </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px" }}>
             {bc.topics.map(t => (
               <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
-                <svg width="9" height="9" fill="none" viewBox="0 0 24 24" style={{ flexShrink: 0, marginTop: 2, color: bc.accent }}>
-                  <path d="M20 6L9 17l-5-5" stroke={bc.accent} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg width="9" height="9" fill="none" viewBox="0 0 24 24" style={{ flexShrink: 0, marginTop: 2 }}>
+                  <path d="M20 6L9 17l-5-5" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span style={{ fontSize: 11, color: "#374151", fontWeight: 500, lineHeight: 1.4 }}>{t}</span>
+                <span style={{ fontSize: 11, color: isFeatured ? "rgba(255,255,255,0.72)" : "#374151", fontWeight: 500, lineHeight: 1.4 }}>{t}</span>
               </div>
             ))}
           </div>
@@ -223,27 +266,30 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
 
         {/* Delivered */}
         <div style={{ marginBottom: 20 }}>
-          <p style={{ fontSize: 10, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Students Got</p>
+          <p style={{ fontSize: 10, fontWeight: 800, color: isFeatured ? "rgba(165,180,252,0.6)" : "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Students Get</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {bc.delivered.map(d => (
               <span key={d} style={{
                 fontSize: 10, fontWeight: 600, padding: "3px 10px", borderRadius: 6,
-                color: "#475569", background: "#f8fafc", border: "1px solid #e2e8f0",
+                color: isFeatured ? "rgba(255,255,255,0.6)" : "#475569",
+                background: isFeatured ? "rgba(255,255,255,0.06)" : "#f8fafc",
+                border: isFeatured ? "1px solid rgba(255,255,255,0.1)" : "1px solid #e2e8f0",
               }}>{d}</span>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: "1px solid #f1f5f9", marginTop: "auto" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 14, borderTop: isFeatured ? "1px solid rgba(255,255,255,0.08)" : "1px solid #f1f5f9", marginTop: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ display: "flex" }}>
               {bc.mentorKeys.map((k, i) => {
                 const m = MENTORS_MAP[k]
+                if (!m) return null
                 return (
                   <div key={k} style={{
                     width: 28, height: 28, borderRadius: "50%",
-                    border: "2px solid white",
+                    border: isFeatured ? "2px solid rgba(255,255,255,0.15)" : "2px solid white",
                     background: m.color,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: 9, fontWeight: 800, color: "white",
@@ -255,10 +301,10 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
               })}
             </div>
             <div>
-              <div style={{ fontSize: 11, color: "#334155", fontWeight: 700 }}>
+              <div style={{ fontSize: 11, color: isFeatured ? "rgba(255,255,255,0.8)" : "#334155", fontWeight: 700 }}>
                 {bc.mentorLabel ?? `${bc.mentorKeys.length} Mentor${bc.mentorKeys.length > 1 ? "s" : ""}`}
               </div>
-              {bc.mentorSub && <div style={{ fontSize: 10, color: "#94a3b8", fontWeight: 500, marginTop: 1 }}>{bc.mentorSub}</div>}
+              {bc.mentorSub && <div style={{ fontSize: 10, color: isFeatured ? "#94a3b8" : "#94a3b8", fontWeight: 500, marginTop: 1 }}>{bc.mentorSub}</div>}
             </div>
           </div>
           {bc.status === "completed" && <Stars rating={bc.rating} />}
@@ -269,14 +315,15 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
           <a href={bc.link ?? "#"} style={{
             marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
             padding: "12px 0", borderRadius: 12,
-            background: "linear-gradient(135deg,#7c3aed,#4f46e5)",
+            background: isFeatured ? "linear-gradient(135deg,#1d3a8f,#3b52f0)" : "linear-gradient(135deg,#7c3aed,#4f46e5)",
             border: "none", fontSize: 13, fontWeight: 800, color: "white", textDecoration: "none",
-            boxShadow: "0 4px 16px rgba(124,58,237,0.3)", transition: "all 0.2s ease",
+            boxShadow: isFeatured ? "0 4px 16px rgba(29,58,143,0.4)" : "0 4px 16px rgba(124,58,237,0.3)",
+            transition: "all 0.2s ease",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(124,58,237,0.4)" }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(124,58,237,0.3)" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = isFeatured ? "0 8px 28px rgba(29,58,143,0.5)" : "0 6px 20px rgba(124,58,237,0.4)" }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = isFeatured ? "0 4px 16px rgba(29,58,143,0.4)" : "0 4px 16px rgba(124,58,237,0.3)" }}
           >
-            Register Now →
+            {isFeatured ? "Register Now — ₹29 →" : "Register Now →"}
           </a>
         ) : (
           <a href="/bootcamp" style={{
@@ -342,14 +389,14 @@ export default function BootcampsPage() {
       <Navbar />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", position: "relative", overflow: "hidden", paddingTop: 164 }}>
+      <section style={{ background: "linear-gradient(180deg,#f8faff 0%,#eef2ff 50%,#fff 100%)", borderBottom: "1px solid #e8edf8", position: "relative", overflow: "hidden", paddingTop: 100 }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(rgba(29,58,143,0.035) 1px,transparent 1px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top: -80, right: "8%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle,rgba(29,58,143,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
 
         <div className="bc-hero-pad" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)", animation: "fadeUp 0.5s ease both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>4 Sessions Completed · ML Masterclass open now</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Flagship Bootcamp · 27 June 2026 · ₹29</span>
           </div>
 
           <h1 style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", lineHeight: 1.08, letterSpacing: "-0.04em", marginBottom: 14, animation: "fadeUp 0.5s ease 0.08s both" }}>
@@ -389,12 +436,12 @@ export default function BootcampsPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px" }}>
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, background: "#f0fdf4", border: "1px solid #bbf7d0", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <div style={{ width: 28, height: 28, borderRadius: 8, background: "#eef1fd", border: "1px solid #c7d2fe", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#1d3a8f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
-              <h2 style={{ fontSize: 20, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em" }}>Completed Sessions</h2>
+              <h2 style={{ fontSize: 20, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em" }}>All Sessions</h2>
             </div>
-            <p style={{ fontSize: 13, color: "#94a3b8", marginLeft: 38 }}>All sessions are recorded — participants get lifetime access</p>
+            <p style={{ fontSize: 13, color: "#94a3b8", marginLeft: 38 }}>Upcoming sessions open for registration · Completed sessions include lifetime recording access</p>
           </div>
 
           <div className="bc-grid">

@@ -292,7 +292,7 @@ export function Hero() {
 
   return (
     <section
-      className="mt-[114px] lg:mt-[146px] min-h-[calc(100vh-114px)] lg:min-h-[calc(100vh-146px)]"
+      className="mt-[74px] lg:mt-[106px] min-h-[calc(100vh-74px)] lg:min-h-[calc(100vh-106px)]"
       style={{ position: "relative", overflow: "hidden", background: "#ffffff", display: "flex", alignItems: "center" }}
     >
 
