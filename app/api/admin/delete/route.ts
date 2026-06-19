@@ -13,6 +13,12 @@ const ALLOWED_TABLES = [
   "mentor_applications",
   "creator_community_applications",
   "hiring_requests",
+  "flagship_training_registrations",
+  "ml_masterclass_registrations",
+  "jobingen_club_applications",
+  "patent_analyst_feedback",
+  "early_apply",
+  "careers_applications",
 ]
 
 export async function DELETE(req: NextRequest) {
