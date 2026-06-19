@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     const {
       full_name, email, phone, location,
-      domain, job_title, experience, linkedin,
+      domain, job_title, company, experience, linkedin,
       short_intro, professional_bio,
       mentorship_topics, session_price, session_duration,
       pricing_expectation,
@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
       location: location || null,
       domain,
       job_title,
+      company: company || null,
       experience,
       linkedin: linkedin || null,
       short_intro: short_intro || null,

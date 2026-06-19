@@ -146,7 +146,11 @@ export default function BecomeMentorPage() {
         additional_note: note,
       }))
       if (photo) fd.append("photo", photo)
-      await fetch("/api/become-mentor", { method: "POST", body: fd })
+      const res = await fetch("/api/become-mentor", { method: "POST", body: fd })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || `Server error (${res.status})`)
+      }
       setDone(true)
       window.scrollTo({ top: 0, behavior: "smooth" })
     } catch { alert("Something went wrong. Please try again.") }
