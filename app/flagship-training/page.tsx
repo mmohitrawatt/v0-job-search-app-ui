@@ -1127,27 +1127,6 @@ export default function FlagshipTrainingPage() {
                 </R>
               ))}
             </div>
-
-            {/* Solution Banner */}
-            <R d={80}>
-              <div className="ft-sol-banner">
-                <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
-                  <div className="ft-sol-pill">
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "inline-block" }}/>
-                    The Solution
-                  </div>
-                  <div className="ft-sol-title">
-                    Jobingen Flagship Bootcamp addresses<br/>exactly these three gaps.
-                  </div>
-                  <div className="ft-sol-body">
-                    27-28 June · Live · ₹29 · Day 1: Three modules. Day 2: Hackathon. Win a Jobingen internship.
-                  </div>
-                </div>
-                <div className="ft-sol-badge">
-                  <Zap/>
-                </div>
-              </div>
-            </R>
           </div>
         </section>
 
