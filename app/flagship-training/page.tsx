@@ -638,6 +638,28 @@ const CSS = `
     .ft-tags { gap:8px; }
     .ft-tag { font-size:12px; padding:6px 12px; }
   }
+
+  /* ── 2-DAY FORMAT ── */
+  .ft-days-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:56px; }
+  @media(max-width:720px){.ft-days-grid{grid-template-columns:1fr;}}
+  .ft-day-card { border-radius:24px; overflow:hidden; padding:36px 32px; box-shadow:0 20px 60px rgba(0,0,0,.28); transition:transform .28s var(--ease); position:relative; }
+  .ft-day-card:hover { transform:translateY(-6px); }
+  .ft-day-num { font-size:10px; font-weight:800; color:rgba(165,180,252,.7); letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+  .ft-day-date { font-size:28px; font-weight:900; color:white; letter-spacing:-.04em; margin-bottom:4px; }
+  .ft-day-title { font-size:17px; font-weight:700; color:rgba(255,255,255,.75); margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .ft-day-topic { display:flex; align-items:center; gap:10px; margin-bottom:11px; font-size:13px; color:rgba(255,255,255,.68); font-weight:500; line-height:1.5; }
+  .ft-day-prize { display:flex; align-items:center; gap:10px; margin-top:24px; padding:14px 18px; background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.28); border-radius:12px; font-size:13.5px; font-weight:700; color:#fde68a; }
+
+  /* ── PRIZE BANNER ── */
+  .ft-prize-banner {
+    margin-top:28px; background:linear-gradient(135deg,#1a0a3d 0%,#2d1b69 50%,#1a0a3d 100%);
+    border-radius:22px; padding:40px 40px; display:flex; align-items:center; gap:32px;
+    border:1.5px solid rgba(245,158,11,.2); box-shadow:0 16px 56px rgba(45,27,105,.22);
+    position:relative; overflow:hidden;
+  }
+  .ft-prize-banner::before { content:''; position:absolute; top:-120px; right:-80px; width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(245,158,11,.07) 0%,transparent 65%); pointer-events:none; }
+  .ft-prize-banner::after { content:''; position:absolute; bottom:-80px; left:-40px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.1) 0%,transparent 65%); pointer-events:none; }
+  @media(max-width:680px){ .ft-prize-banner{flex-direction:column;padding:28px 22px;gap:20px;} }
 `
 
 /* ─── SVG Icons ─────────────────────────────────────────────────── */
@@ -771,8 +793,8 @@ function HeroVisual() {
           <Zap/>
         </div>
         <div>
-          <div style={{ fontSize: 11, fontWeight: 900, color: "#09090f", letterSpacing: "-.02em" }}>₹29 · 27 June</div>
-          <div style={{ fontSize: 10, fontWeight: 600, color: "#8a8aa8" }}>Online Live Bootcamp</div>
+          <div style={{ fontSize: 11, fontWeight: 900, color: "#09090f", letterSpacing: "-.02em" }}>₹29 · 27-28 June</div>
+          <div style={{ fontSize: 10, fontWeight: 600, color: "#8a8aa8" }}>Bootcamp + Hackathon</div>
         </div>
       </div>
     </div>
@@ -967,14 +989,14 @@ export default function FlagshipTrainingPage() {
             </h1>
 
             <p className="ft-sub">
-              One live session. Three modules. Problem solving, real-world engineering, and AI systems — the skills companies actually hire for.
+              Two days. Three modules. One hackathon. Problem solving, real-world engineering, and AI systems — plus a chance to win a real Jobingen internship.
             </p>
 
             {/* Info tags */}
             <div className="ft-tags">
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#22c55e" }}/>
-                Live Online Session
+                2-Day Live Experience
               </div>
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#1d3a8f" }}/>
@@ -982,11 +1004,15 @@ export default function FlagshipTrainingPage() {
               </div>
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#f59e0b" }}/>
-                Limited Seats
+                Day 2: Hackathon
               </div>
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#7c3aed" }}/>
                 Certificate Included
+              </div>
+              <div className="ft-tag">
+                <span className="ft-tag-dot" style={{ background: "#f43f5e" }}/>
+                Internship Prize
               </div>
             </div>
 
@@ -1004,10 +1030,10 @@ export default function FlagshipTrainingPage() {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div className="ft-stats-row">
                 {[
-                  { v: "27 June",  l: "Program Date" },
-                  { v: "₹29",     l: "Registration Fee" },
-                  { v: "Online",  l: "Live Bootcamp" },
-                  { v: "Limited", l: "Seats Left" },
+                  { v: "27-28 June", l: "Program Dates" },
+                  { v: "₹29",       l: "Registration Fee" },
+                  { v: "Online",    l: "Live Bootcamp" },
+                  { v: "Limited",   l: "Seats Left" },
                 ].map(s => (
                   <div key={s.l} className="ft-stat">
                     <div className="ft-stat-v">{s.v}</div>
@@ -1032,6 +1058,53 @@ export default function FlagshipTrainingPage() {
             ))}
           </div>
         </div>
+
+        {/* ── 2-DAY FORMAT ── */}
+        <section className="ft-sec-dk">
+          <div className="ft-wrap">
+            <R>
+              <div className="ft-eyebrow"><span className="ft-eyebrow-dot ft-eyebrow-dot-w"/>Program Structure</div>
+              <h2 className="ft-ttl-w">2 Days. Complete Transformation.</h2>
+              <p className="ft-desc-w">Day 1 you learn. Day 2 you build. The best builder wins an internship.</p>
+            </R>
+
+            <div className="ft-days-grid">
+              {/* Day 1 */}
+              <R d={0}>
+                <div className="ft-day-card" style={{ background: "linear-gradient(148deg,#0d1b60 0%,#132263 40%,#0e1f6e 100%)", border: "1.5px solid rgba(59,91,219,.25)" }}>
+                  <div className="ft-day-num">Day 1</div>
+                  <div className="ft-day-date">27 June</div>
+                  <div className="ft-day-title">Live Bootcamp Class</div>
+                  {["Module 1 — DSA & Problem Solving Mindset", "Module 2 — Spec Driven Development", "Module 3 — Advanced RAG Systems", "Hands-on walkthroughs with mentors", "Problem statement revealed at end of session"].map(t => (
+                    <div key={t} className="ft-day-topic">
+                      <div className="ft-curr-check" style={{ flexShrink: 0 }}><Check color="rgba(255,255,255,.7)"/></div>
+                      <span>{t}</span>
+                    </div>
+                  ))}
+                </div>
+              </R>
+
+              {/* Day 2 */}
+              <R d={90}>
+                <div className="ft-day-card" style={{ background: "linear-gradient(148deg,#2d1b69 0%,#3b1fa3 40%,#1e0a6b 100%)", border: "1.5px solid rgba(124,58,237,.25)" }}>
+                  <div className="ft-day-num" style={{ color: "rgba(196,181,253,.7)" }}>Day 2</div>
+                  <div className="ft-day-date">28 June</div>
+                  <div className="ft-day-title">Hackathon</div>
+                  {["Solo competition — build from scratch", "Problem statement from Day 1", "Apply DSA + engineering + AI skills", "Mentors as judges", "Submit and present your solution"].map(t => (
+                    <div key={t} className="ft-day-topic">
+                      <div className="ft-curr-check" style={{ flexShrink: 0 }}><Check color="rgba(255,255,255,.7)"/></div>
+                      <span>{t}</span>
+                    </div>
+                  ))}
+                  <div className="ft-day-prize">
+                    <span style={{ fontSize: 20 }}>🏆</span>
+                    <span>Winner gets a <strong>Jobingen Internship</strong></span>
+                  </div>
+                </div>
+              </R>
+            </div>
+          </div>
+        </section>
 
         {/* ── WHY STUDENTS STRUGGLE ── */}
         <section className="ft-sec">
@@ -1067,7 +1140,7 @@ export default function FlagshipTrainingPage() {
                     Jobingen Flagship Bootcamp addresses<br/>exactly these three gaps.
                   </div>
                   <div className="ft-sol-body">
-                    27 June · Live · ₹29 · Three modules that change how you think, build, and ship.
+                    27-28 June · Live · ₹29 · Day 1: Three modules. Day 2: Hackathon. Win a Jobingen internship.
                   </div>
                 </div>
                 <div className="ft-sol-badge">
@@ -1226,6 +1299,31 @@ export default function FlagshipTrainingPage() {
           </div>
         </section>
 
+        {/* ── INTERNSHIP PRIZE BANNER ── */}
+        <section className="ft-sec" style={{ paddingTop: 0 }}>
+          <div className="ft-wrap">
+            <R d={40}>
+              <div className="ft-prize-banner">
+                <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
+                  <div className="ft-sol-pill">
+                    <span style={{ fontSize: 14 }}>🏆</span>
+                    Hackathon Prize
+                  </div>
+                  <div className="ft-sol-title">
+                    Win a Real Jobingen Internship.
+                  </div>
+                  <div className="ft-sol-body">
+                    The top performer from the Day 2 Hackathon wins an actual internship at Jobingen — not a participation trophy. Build the best solution, earn the opportunity.
+                  </div>
+                </div>
+                <div className="ft-sol-badge" style={{ background: "rgba(245,158,11,.12)", border: "1px solid rgba(245,158,11,.2)", width: 96, height: 96, borderRadius: 24 }}>
+                  <span style={{ fontSize: 40 }}>🏆</span>
+                </div>
+              </div>
+            </R>
+          </div>
+        </section>
+
         {/* ── TESTIMONIALS ── */}
         <section className="ft-sec-b">
           <div className="ft-wrap">
@@ -1276,7 +1374,7 @@ export default function FlagshipTrainingPage() {
                     {/* Form header */}
                     <div className="ft-reg-head">
                       <div className="ft-reg-head-title">Join Jobingen Flagship Bootcamp</div>
-                      <div className="ft-reg-head-sub">27 June · Online Live · ₹29 · Certificate included</div>
+                      <div className="ft-reg-head-sub">27-28 June · Online Live · ₹29 · Certificate + Internship Prize</div>
                       {/* Progress bar */}
                       <div className="ft-reg-progress">
                         {Object.keys(form).map((k, i) => (
@@ -1530,8 +1628,8 @@ function SuccessState({ email }: { email: string }) {
 
         <div style={{ background: "var(--ind-xl)", border: "1.5px solid rgba(29,58,143,.12)", borderRadius: 18, padding: "22px 28px", maxWidth: 380, margin: "0 auto 28px", textAlign: "left" }}>
           {[
-            { icon: "📅", label: "Date", value: "27 June 2026" },
-            { icon: "💻", label: "Mode", value: "Online Live Bootcamp" },
+            { icon: "📅", label: "Day 1 — Bootcamp", value: "27 June 2026 · Online Live" },
+            { icon: "⚡", label: "Day 2 — Hackathon", value: "28 June 2026 · Build & Win" },
             { icon: "📧", label: "Confirmation", value: email || "Your registered email" },
             { icon: "📱", label: "WhatsApp", value: "Updates on your registered number" },
           ].map((r, idx, arr) => (
@@ -1553,7 +1651,7 @@ function SuccessState({ email }: { email: string }) {
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "var(--grn)" }}>
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          See you on 27 June. This is going to change things.
+          See you on 27 June for the Bootcamp and 28 June for the Hackathon. This is going to change things.
         </div>
       </div>
     </div>
