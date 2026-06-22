@@ -793,7 +793,7 @@ function HeroVisual() {
           <Zap/>
         </div>
         <div>
-          <div style={{ fontSize: 11, fontWeight: 900, color: "#09090f", letterSpacing: "-.02em" }}>₹29 · 27-28 June</div>
+          <div style={{ fontSize: 11, fontWeight: 900, color: "#09090f", letterSpacing: "-.02em" }}>₹49 · 27-28 June</div>
           <div style={{ fontSize: 10, fontWeight: 600, color: "#8a8aa8" }}>Bootcamp + Hackathon</div>
         </div>
       </div>
@@ -822,14 +822,14 @@ function UpiPaymentCard() {
         <div style={{ width:36, height:36, borderRadius:10, background:"rgba(255,255,255,.18)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>💳</div>
         <div>
           <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,.6)", textTransform:"uppercase", letterSpacing:".07em" }}>Registration Fee</div>
-          <div style={{ fontSize:24, fontWeight:900, color:"white", lineHeight:1.1 }}>₹29 <span style={{ fontSize:13, fontWeight:500, opacity:.7 }}>only</span></div>
+          <div style={{ fontSize:24, fontWeight:900, color:"white", lineHeight:1.1 }}>₹49 <span style={{ fontSize:13, fontWeight:500, opacity:.7 }}>only</span></div>
         </div>
       </div>
       <div className="ft-upi-body">
         <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:20 }}>
           {[
             { n:"1", text:"Scan the QR code or copy the UPI ID below" },
-            { n:"2", text:"Pay ₹29 using any UPI app (PhonePe, Paytm, GPay, BHIM)" },
+            { n:"2", text:"Pay ₹49 using any UPI app (PhonePe, Paytm, GPay, BHIM)" },
             { n:"3", text:"Enter your Transaction ID + upload screenshot in the form" },
           ].map(s => (
             <div key={s.n} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
@@ -1000,7 +1000,7 @@ export default function FlagshipTrainingPage() {
               </div>
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#1d3a8f" }}/>
-                ₹29 Registration
+                ₹49 Registration
               </div>
               <div className="ft-tag">
                 <span className="ft-tag-dot" style={{ background: "#f59e0b" }}/>
@@ -1019,7 +1019,7 @@ export default function FlagshipTrainingPage() {
             {/* CTAs */}
             <div className="ft-ctas">
               <a href="#register" className="ft-btn-p">
-                Register Now — ₹29 <ChevronRight/>
+                Register Now — ₹49 <ChevronRight/>
               </a>
               <a href="#curriculum" className="ft-btn-s">
                 View Curriculum
@@ -1031,7 +1031,7 @@ export default function FlagshipTrainingPage() {
               <div className="ft-stats-row">
                 {[
                   { v: "27-28 June", l: "Program Dates" },
-                  { v: "₹29",       l: "Registration Fee" },
+                  { v: "₹49",       l: "Registration Fee" },
                   { v: "Online",    l: "Live Bootcamp" },
                   { v: "Limited",   l: "Seats Left" },
                 ].map(s => (
@@ -1353,7 +1353,7 @@ export default function FlagshipTrainingPage() {
                     {/* Form header */}
                     <div className="ft-reg-head">
                       <div className="ft-reg-head-title">Join Jobingen Flagship Bootcamp</div>
-                      <div className="ft-reg-head-sub">27-28 June · Online Live · ₹29 · Certificate + Internship Prize</div>
+                      <div className="ft-reg-head-sub">27-28 June · Online Live · ₹49 · Certificate + Internship Prize</div>
                       {/* Progress bar */}
                       <div className="ft-reg-progress">
                         {Object.keys(form).map((k, i) => (
@@ -1554,7 +1554,7 @@ export default function FlagshipTrainingPage() {
                             </>
                           ) : (
                             <>
-                              Submit Registration — ₹29 Paid <ChevronRight/>
+                              Submit Registration — ₹49 Paid <ChevronRight/>
                             </>
                           )}
                         </button>

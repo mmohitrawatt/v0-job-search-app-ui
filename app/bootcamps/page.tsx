@@ -31,7 +31,7 @@ const BOOTCAMPS = [
     title: "Think Like a Problem Solver. Build Like an Engineer.",
     description: "Jobingen's premier 2-day live experience — Day 1: 3 transformative modules on DSA, spec-driven development, and RAG/AI systems. Day 2: Solo Hackathon on a live problem statement. Winner gets a Jobingen internship.",
     duration: "2-Day Live",
-    format: "₹29 · Online",
+    format: "₹49 · Online",
     students: null,
     topics: ["DSA Problem Solving Mindset", "Spec-Driven Development", "Advanced RAG Systems", "Day 2: Solo Hackathon", "Live Problem Statement", "Internship Prize for Winner"],
     delivered: ["Live Training", "Learning Resources", "Certificate", "Community Access", "Mentor Guidance", "Internship Prize (Winner)"],
@@ -323,7 +323,7 @@ function BootcampCard({ bc }: { bc: typeof BOOTCAMPS[0] }) {
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = isFeatured ? "0 8px 28px rgba(29,58,143,0.5)" : "0 6px 20px rgba(124,58,237,0.4)" }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = isFeatured ? "0 4px 16px rgba(29,58,143,0.4)" : "0 4px 16px rgba(124,58,237,0.3)" }}
           >
-            {isFeatured ? "Register Now — ₹29 →" : "Register Now →"}
+            {isFeatured ? "Register Now — ₹49 →" : "Register Now →"}
           </a>
         ) : (
           <a href="/bootcamp" style={{
@@ -396,7 +396,7 @@ export default function BootcampsPage() {
         <div className="bc-hero-pad" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "60px 24px 56px", textAlign: "center" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 20, padding: "5px 16px", borderRadius: 99, background: "white", border: "1.5px solid #e0e7ff", boxShadow: "0 2px 12px rgba(29,58,143,0.07)", animation: "fadeUp 0.5s ease both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", animation: "pulseDot 2s infinite", display: "inline-block" }} />
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Flagship Bootcamp · 27-28 June 2026 · ₹29</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>Flagship Bootcamp · 27-28 June 2026 · ₹49</span>
           </div>
 
           <h1 style={{ fontSize: "clamp(30px,5vw,52px)", fontWeight: 900, color: "#0f172a", lineHeight: 1.08, letterSpacing: "-0.04em", marginBottom: 14, animation: "fadeUp 0.5s ease 0.08s both" }}>
