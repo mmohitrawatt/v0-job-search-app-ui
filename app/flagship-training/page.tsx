@@ -1129,9 +1129,9 @@ export default function FlagshipTrainingPage() {
 
             {/* CTAs */}
             <div className="ft-ctas">
-              <div className="ft-btn-p" style={{ opacity: .55, cursor: "not-allowed", userSelect: "none" }}>
-                Registrations Closed
-              </div>
+              <a href="#register" className="ft-btn-p">
+                Reserve Your Seat →
+              </a>
               <a href="#curriculum" className="ft-btn-s">
                 View Curriculum
               </a>
