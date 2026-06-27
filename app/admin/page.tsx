@@ -93,13 +93,24 @@ type CareersApplication = {
   linkedin?: string; portfolio?: string; why?: string; resume_url?: string; created_at: string
 }
 
+type BugEntry = {
+  page_url: string; feature_area: string; category: string; severity: string
+  what_tried: string; steps: [string, string, string]
+  expected: string; actual: string; screenshot_note?: string
+}
+
+type BugBashReport = {
+  id: string; tester_name: string; tester_email?: string; team_name?: string
+  bugs: BugEntry[]; created_at: string
+}
+
 type FlagshipReg = {
   id: string; full_name: string; email: string; phone: string; college: string
   status: string; skill_level: string; motivation?: string
   upi_transaction_id?: string; payment_screenshot_url?: string; created_at: string
 }
 
-type TabKey = "flagship" | "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent" | "careers"
+type TabKey = "flagship" | "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent" | "careers" | "bug-bash"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "flagship",     label: "Flagship Bootcamp", icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5 M2 12l10 5 10-5", color: "#1d3a8f" },
@@ -121,6 +132,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "early-apply", label: "Early Apply",        icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z M9 12h6 M9 16h4", color: "#16a34a" },
   { key: "hire-talent", label: "Hiring Requests",    icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#0891b2" },
   { key: "careers",     label: "Careers (Intern)",   icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#1d3a8f" },
+  { key: "bug-bash",    label: "Bug Bash",           icon: "M14.5 3H9.5a1 1 0 0 0-.9.55L7 6H4a1 1 0 0 0 0 2h1v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h1a1 1 0 0 0 0-2h-3l-1.6-2.45A1 1 0 0 0 14.5 3Z", color: "#dc2626" },
 ]
 
 function fmt(iso: string) {
@@ -164,6 +176,7 @@ export default function AdminPage() {
   const [hiringRequests, setHiringRequests] = useState<HiringRequest[]>([])
   const [careersApps, setCareersApps] = useState<CareersApplication[]>([])
   const [aiContentEngineRegs, setAiContentEngineRegs] = useState<HackathonReg[]>([])
+  const [bugBashReports, setBugBashReports] = useState<BugBashReport[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -178,7 +191,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setFlagshipRegs(d.flagshipTraining || []); setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []); setAiContentEngineRegs(d.aiContentEngineHackathon || []) })
+      .then(d => { setFlagshipRegs(d.flagshipTraining || []); setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []); setAiContentEngineRegs(d.aiContentEngineHackathon || []); setBugBashReports(d.bugBashReports || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -219,6 +232,7 @@ export default function AdminPage() {
       else if (tbl === "early_apply") setEarlyApply(p => p.filter(r => r.id !== id))
       else if (tbl === "hiring_requests") setHiringRequests(p => p.filter(r => r.id !== id))
       else if (tbl === "careers_applications") setCareersApps(p => p.filter(r => r.id !== id))
+      else if (tbl === "bug_bash_reports") setBugBashReports(p => p.filter(r => r.id !== id))
     } catch (err) {
       alert(`Delete failed: ${err instanceof Error ? err.message : "Unknown error"}`)
     } finally {
@@ -297,6 +311,7 @@ export default function AdminPage() {
     "early-apply": earlyApply.length,
     "hire-talent": hiringRequests.length,
     "careers": careersApps.length,
+    "bug-bash": bugBashReports.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -1514,13 +1529,24 @@ export default function AdminPage() {
                       <div className="adm-empty"><div className="adm-empty-ico">📋</div>{search ? `No results for "${search}"` : "No feedback yet"}</div>
                     ) : (
                       <table>
-                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Overall</th><th>Content</th><th>Mentor</th><th>Liked</th><th>Improve</th><th>Recommend</th><th>Next Topic</th><th>Date</th><th></th></tr></thead>
+                        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Bootcamp</th><th>Overall</th><th>Content</th><th>Mentor</th><th>Liked</th><th>Improve</th><th>Recommend</th><th>Next Topic</th><th>Date</th><th></th></tr></thead>
                         <tbody>
                           {fbFiltered.map((r, i) => (
                             <tr key={r.id}>
                               <td className="c-num">{i + 1}</td>
                               <td className="c-name">{r.name}</td>
                               <td className="c-email">{r.email || "—"}</td>
+                              <td>
+                                <span style={{
+                                  fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 99,
+                                  background: r.bootcamp === "flagship_2026" ? "#eef1fd" : "#f0fdf4",
+                                  color: r.bootcamp === "flagship_2026" ? "#1d3a8f" : "#16a34a",
+                                  border: `1px solid ${r.bootcamp === "flagship_2026" ? "rgba(29,58,143,.2)" : "rgba(22,163,74,.2)"}`,
+                                  whiteSpace: "nowrap",
+                                }}>
+                                  {r.bootcamp === "flagship_2026" ? "Flagship 2026" : r.bootcamp || "—"}
+                                </span>
+                              </td>
                               <td>
                                 <span style={{
                                   display: "inline-flex", alignItems: "center", gap: 4,
@@ -1540,6 +1566,117 @@ export default function AdminPage() {
                               <td style={{ fontSize: 12, color: "#64748b" }}>{r.next_topic || "—"}</td>
                               <td className="c-date">{fmt(r.created_at)}</td>
                               <td><DelBtn table="bootcamp_feedback" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* ── Bug Bash Reports ── */}
+              {activeTab === "bug-bash" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Bug Bash Reports</div>
+                      <div className="adm-sec-badge">{bugBashReports.length} reports</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(
+                        bugBashReports.map(r => ({
+                          id: r.id,
+                          tester_name: r.tester_name,
+                          tester_email: r.tester_email || "",
+                          team_name: r.team_name || "",
+                          bug_count: r.bugs?.length ?? 0,
+                          bugs_json: JSON.stringify(r.bugs),
+                          created_at: r.created_at,
+                        })) as unknown as Record<string, unknown>[],
+                        "bug-bash-reports.csv"
+                      )}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {bugBashReports.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🐛</div>No bug reports yet</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr><th>#</th><th>Tester</th><th>Email</th><th>Team</th><th>Bugs</th><th>Date</th><th>View</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                          {bugBashReports.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.tester_name}</td>
+                              <td className="c-email">{r.tester_email || "—"}</td>
+                              <td style={{ fontSize: 12, color: "#64748b" }}>{r.team_name || "—"}</td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#fef2f2", color: "#dc2626", borderColor: "#fecaca" }}>
+                                  {r.bugs?.length ?? 0} bug{(r.bugs?.length ?? 0) !== 1 ? "s" : ""}
+                                </span>
+                              </td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td>
+                                <button
+                                  className="c-link"
+                                  style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }}
+                                  onClick={() => {
+                                    const w = window.open("", "_blank", "width=720,height=800")
+                                    if (!w) return
+                                    const severityColor: Record<string, string> = { Critical: "#dc2626", High: "#ea580c", Medium: "#d97706", Low: "#16a34a" }
+                                    const categoryColor = "#1d3a8f"
+                                    w.document.write(`<!DOCTYPE html><html><head><title>Bug Report — ${r.tester_name}</title><style>
+                                      *{box-sizing:border-box;margin:0;padding:0}
+                                      body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f8;padding:32px 24px}
+                                      h1{font-size:22px;font-weight:900;color:#09090f;margin-bottom:4px}
+                                      .sub{font-size:14px;color:#64748b;margin-bottom:28px}
+                                      .bug{background:#fff;border:1.5px solid #e2e8f0;border-radius:16px;padding:20px 24px;margin-bottom:18px}
+                                      .bug-hdr{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f1f5f9}
+                                      .bug-num{font-size:13px;font-weight:800;color:#1d3a8f}
+                                      .badge{display:inline-flex;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;border:1px solid}
+                                      .row{margin-bottom:12px}
+                                      .lbl{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+                                      .val{font-size:14px;color:#334155;line-height:1.55;background:#f8fafc;border-radius:8px;padding:10px 14px}
+                                      .steps{list-style:none;display:flex;flex-direction:column;gap:6px}
+                                      .step{display:flex;gap:10px;align-items:flex-start}
+                                      .step-n{min-width:22px;height:22px;border-radius:50%;background:#1d3a8f;color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+                                      .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+                                    </style></head><body>
+                                    <h1>Bug Bash Report</h1>
+                                    <div class="sub">${r.tester_name}${r.team_name ? ` · ${r.team_name}` : ""}${r.tester_email ? ` · ${r.tester_email}` : ""} · ${new Date(r.created_at).toLocaleString("en-IN")}</div>
+                                    ${(r.bugs || []).map((b, bi) => `
+                                      <div class="bug">
+                                        <div class="bug-hdr">
+                                          <span class="bug-num">Bug #${bi + 1}</span>
+                                          <span class="badge" style="background:${(severityColor[b.severity] || "#64748b")}18;color:${severityColor[b.severity] || "#64748b"};border-color:${severityColor[b.severity] || "#64748b"}40">${b.severity}</span>
+                                          <span class="badge" style="background:#eef2ff;color:${categoryColor};border-color:#dde5ff">${b.category}</span>
+                                        </div>
+                                        <div class="grid2">
+                                          <div class="row"><div class="lbl">Page / URL</div><div class="val">${b.page_url}</div></div>
+                                          <div class="row"><div class="lbl">Feature / Area</div><div class="val">${b.feature_area}</div></div>
+                                        </div>
+                                        <div class="row"><div class="lbl">What You Tried</div><div class="val">${b.what_tried}</div></div>
+                                        <div class="row"><div class="lbl">Steps to Reproduce</div><div class="val"><ul class="steps">${b.steps.filter(Boolean).map((s, si) => `<li class="step"><span class="step-n">${si + 1}</span><span>${s}</span></li>`).join("")}</ul></div></div>
+                                        <div class="grid2">
+                                          <div class="row"><div class="lbl">Expected Result</div><div class="val">${b.expected}</div></div>
+                                          <div class="row"><div class="lbl">Actual Result</div><div class="val">${b.actual}</div></div>
+                                        </div>
+                                        ${b.screenshot_note ? `<div class="row"><div class="lbl">Screenshot</div><div class="val">${/^https?:\/\//.test(b.screenshot_note) ? `<a href="${b.screenshot_note}" target="_blank" rel="noopener noreferrer" style="color:#2563eb;font-weight:600;text-decoration:none">${b.screenshot_note}</a>` : b.screenshot_note}</div></div>` : ""}
+                                      </div>
+                                    `).join("")}
+                                    </body></html>`)
+                                    w.document.close()
+                                  }}
+                                >
+                                  View Bugs
+                                </button>
+                              </td>
+                              <td><DelBtn table="bug_bash_reports" id={r.id} name={r.tester_name} /></td>
                             </tr>
                           ))}
                         </tbody>

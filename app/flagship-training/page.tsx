@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, FormEvent } from "react"
+import { useState, useRef, useEffect, FormEvent, useCallback } from "react"
 import { Navbar } from "@/components/landing/navbar"
 import { Footer } from "@/components/landing/footer"
 
@@ -87,7 +87,7 @@ const CURRICULUM = [
 ]
 
 /* mentor names we want to show — fetched live from /api/mentors */
-const MENTOR_NAMES = ["Aayushman Verma", "Aditya Dubey"]
+const MENTOR_NAMES = ["Aayushman Verma", "Aditya Dubey", "Ashirvad Kar Pathak", "Shubham Kaushik"]
 /* DB may store name without spaces — fuzzy match helper */
 function mentorMatch(dbName: string, target: string) {
   const a = dbName.toLowerCase().replace(/\s+/g, "")
@@ -99,27 +99,51 @@ function mentorMatch(dbName: string, target: string) {
 const MENTOR_FALLBACK: Record<string, MentorCard> = {
   "Aayushman Verma": {
     name: "Aayushman Verma",
-    role: "SDE",
-    company: "Software Development",
+    role: "Software Engineer",
+    company: "Jobingen",
     initials: "AV",
     photo: "",
     color: "#1d3a8f",
     bg: "#eef1fd",
     exp: "Industry Experience",
-    bio: "Software development professional with hands-on experience in full-stack engineering. Guides students on what actually matters in interviews and on the job.",
-    topics: ["Resume Review", "Career Guidance", "Interview Preparation"],
+    bio: "Software engineer with hands-on experience in full-stack development and AI-driven products. Guides students on what actually matters in interviews and on the job.",
+    topics: ["Resume Review", "Career Guidance", "Interview Preparation", "Full-Stack Dev"],
   },
   "Aditya Dubey": {
     name: "Aditya Dubey",
     role: "AI Engineer",
-    company: "AI / ML",
+    company: "Cograd",
     initials: "AD",
     photo: "/mentors/aditya-dubey.jpg",
-    color: "#7c3aed",
-    bg: "#f5f3ff",
+    color: "#1d3a8f",
+    bg: "#eef1fd",
+    exp: "M.Tech — NIT Allahabad",
+    bio: "AI Engineer focused on building and deploying intelligent systems for business growth and automation. Has mentored more than 12,000 professionals and students in AI technologies and real-world industry applications.",
+    topics: ["AI/ML Strategy", "Career Guidance", "Resume Review", "Mock Interviews"],
+  },
+  "Ashirvad Kar Pathak": {
+    name: "Ashirvad Kar Pathak",
+    role: "Software Engineer 2",
+    company: "Dell Technologies",
+    initials: "AK",
+    photo: "/mentors/Ashirvad Kar Pathak.jpeg",
+    color: "#0f766e",
+    bg: "#f0fdfa",
+    exp: "Dell Technologies",
+    bio: "Software Engineer 2 at Dell Technologies working on Data Protection appliances. Strong foundation in C, C++, and core computer science. Mentors students through DSA, systems programming, and placement preparation.",
+    topics: ["C / C++", "DSA", "Interview Prep", "Systems Programming"],
+  },
+  "Shubham Kaushik": {
+    name: "Shubham Kaushik",
+    role: "AI & Financial Intelligence Researcher",
+    company: "KPMG",
+    initials: "SK",
+    photo: "/mentors/shubham-kaushik.jpg",
+    color: "#b45309",
+    bg: "#fffbeb",
     exp: "5+ Years",
-    bio: "AI Engineer who has mentored 20,000+ students and professionals in AI technologies and real-world applications. M.Tech in Information Systems from NIT Allahabad.",
-    topics: ["AI/ML Strategy", "RAG Systems", "Career Guidance", "Mock Interviews"],
+    bio: "AI and financial intelligence researcher with more than five years of experience in AI, machine learning, and full-stack development. His work focuses on applied AI research including large language models, intelligent data systems, and scalable applications for financial analysis.",
+    topics: ["AI Research", "Full-Stack Dev", "Interview Prep", "Salary Negotiation"],
   },
 }
 
@@ -316,8 +340,9 @@ const CSS = `
   .ft-h1 { font-size:clamp(36px,5.5vw,64px); font-weight:900; color:var(--ink); letter-spacing:-.048em; line-height:1.04; margin-bottom:22px; animation:ft-fade .7s var(--ease) .1s both; }
   .ft-sub { font-size:clamp(15.5px,1.7vw,18px); color:var(--ink2); line-height:1.8; max-width:600px; margin:0 auto 36px; animation:ft-fade .8s var(--ease) .16s both; }
 
-  .ft-tags { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:40px; animation:ft-fade .85s var(--ease) .22s both; }
-  .ft-tag { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:99px; border:1.5px solid rgba(29,58,143,.15); background:white; font-size:12.5px; font-weight:700; color:var(--ink2); box-shadow:var(--shadow-sm); }
+  .ft-tags { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:nowrap; margin-bottom:40px; animation:ft-fade .85s var(--ease) .22s both; overflow-x:auto; scrollbar-width:none; padding-bottom:2px; }
+  .ft-tags::-webkit-scrollbar { display:none; }
+  .ft-tag { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:99px; border:1.5px solid rgba(29,58,143,.15); background:white; font-size:12px; font-weight:700; color:var(--ink2); box-shadow:var(--shadow-sm); white-space:nowrap; flex-shrink:0; }
   .ft-tag-dot { width:7px; height:7px; border-radius:50%; }
 
   .ft-ctas { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:56px; animation:ft-fade .9s var(--ease) .28s both; }
@@ -421,7 +446,8 @@ const CSS = `
   .ft-curr-topic-text { font-size:13px; color:rgba(255,255,255,.72); line-height:1.6; font-weight:500; }
 
   /* ── MENTORS ── */
-  .ft-ment-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:56px; max-width:880px; margin-left:auto; margin-right:auto; align-items:stretch; }
+  .ft-ment-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:56px; max-width:1120px; margin-left:auto; margin-right:auto; align-items:stretch; }
+  .ft-ment-grid > .ft-rev { height:100%; }
   @media(max-width:720px){.ft-ment-grid{grid-template-columns:1fr;}}
   .ft-ment-card {
     background:white; border-radius:24px; border:1.5px solid var(--jb);
@@ -617,6 +643,71 @@ const CSS = `
   .ft-cta-btn:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(0,0,0,.34); }
   .ft-cta-note { display:inline-flex; align-items:center; gap:7px; color:#64748b; font-size:12.5px; font-weight:600; margin-top:18px; }
   .ft-cta-ndot { width:6px; height:6px; background:#22c55e; border-radius:50%; animation:ft-pulse-dot 2s ease-in-out infinite; }
+
+  /* ── LIVE FEEDBACK ── */
+  .ft-live-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:32px; }
+  .ft-live-stats { display:flex; gap:12px; flex-wrap:wrap; }
+  .ft-live-stat { padding:14px 22px; background:white; border:1.5px solid var(--jb); border-radius:16px; text-align:center; box-shadow:var(--shadow-sm); }
+  .ft-live-stat-v { font-size:22px; font-weight:900; color:var(--ind); letter-spacing:-.04em; line-height:1; }
+  .ft-live-stat-l { font-size:9.5px; font-weight:700; color:var(--ink3); margin-top:4px; letter-spacing:.06em; text-transform:uppercase; }
+  .ft-live-grid { columns:1; gap:14px; }
+  @media(min-width:580px){.ft-live-grid{columns:2;}}
+  @media(min-width:900px){.ft-live-grid{columns:3;}}
+  .ft-live-card {
+    break-inside:avoid; background:white; border-radius:20px; border:1.5px solid var(--jb);
+    overflow:hidden; transition:all .25s var(--ease); margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+  }
+  .ft-live-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:rgba(29,58,143,.14); }
+  .ft-live-card-body { padding:20px 22px; }
+  .ft-live-quote { font-size:13.5px; color:var(--ink2); line-height:1.78; margin:14px 0 16px; }
+  .ft-live-author { display:flex; align-items:center; gap:10px; padding-top:14px; border-top:1px solid var(--jb); }
+  .ft-live-av { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:white; flex-shrink:0; }
+  .ft-live-name { font-size:13px; font-weight:800; color:var(--ink); }
+  .ft-live-role { font-size:11px; color:var(--ink3); }
+  .ft-live-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 12px; background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.2);
+    border-radius:99px; font-size:10.5px; font-weight:700; color:#16a34a;
+  }
+  .ft-live-pulse { width:6px; height:6px; background:#22c55e; border-radius:50%; animation:ft-pulse-dot 2s ease-in-out infinite; }
+  .ft-live-empty { text-align:center; padding:48px 24px; background:white; border:1.5px solid var(--jb); border-radius:20px; }
+  .ft-live-cta { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:12px; background:linear-gradient(135deg,var(--ind),var(--vio)); color:white; font-size:14px; font-weight:800; text-decoration:none; box-shadow:0 4px 18px rgba(29,58,143,.3); transition:all .22s var(--ease); }
+  .ft-live-cta:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(29,58,143,.4); }
+  @keyframes ft-live-in { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+  .ft-live-card { animation:ft-live-in .4s var(--ease) both; }
+
+  /* ── HACKATHON CARD ── */
+  .ft-hk-wrap { padding: 40px 24px 40px; max-width: 1120px; margin: 0 auto; }
+  .ft-hk-card {
+    background: white; border: 1.5px solid var(--jb);
+    border-radius: 24px; box-shadow: var(--shadow-lg);
+    overflow: hidden; display: flex; align-items: stretch; position: relative;
+  }
+  .ft-hk-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--ind),var(--vio)); }
+  .ft-hk-left { flex:1; padding:36px 40px; min-width:0; }
+  .ft-hk-right { width:300px; flex-shrink:0; padding:36px 32px; background:var(--ind-xl); border-left:1px solid var(--jb); }
+  .ft-hk-badge { display:inline-flex; align-items:center; gap:7px; background:var(--ind-xl); border:1px solid rgba(29,58,143,.18); border-radius:99px; padding:5px 13px; font-size:10.5px; font-weight:800; color:var(--ind); letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px; }
+  .ft-hk-dot { width:6px; height:6px; border-radius:50%; background:#22c55e; animation:ft-pulse-dot 2s infinite; }
+  .ft-hk-h2 { font-size:clamp(20px,2.4vw,28px); font-weight:900; color:var(--ink); letter-spacing:-.04em; line-height:1.1; margin-bottom:12px; }
+  .ft-hk-h2 span { color:var(--ind); }
+  .ft-hk-desc { font-size:14px; color:var(--ink2); line-height:1.75; margin-bottom:20px; max-width:520px; }
+  .ft-hk-mod-label { font-size:10px; font-weight:800; color:var(--ink3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+  .ft-hk-chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:26px; }
+  .ft-hk-chip { font-size:12px; font-weight:600; color:var(--ink2); background:var(--ind-xl); border:1px solid rgba(29,58,143,.12); border-radius:99px; padding:5px 13px; }
+  .ft-hk-btns { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .ft-hk-btn-p { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:12px; background:var(--ind); color:white; font-size:14px; font-weight:700; text-decoration:none; box-shadow:0 4px 16px rgba(29,58,143,.3); transition:all .2s; }
+  .ft-hk-btn-p:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(29,58,143,.4); }
+  .ft-hk-btn-s { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:12px; background:white; color:var(--ind); font-size:14px; font-weight:700; text-decoration:none; border:1.5px solid rgba(29,58,143,.2); transition:all .2s; }
+  .ft-hk-btn-s:hover { border-color:var(--ind); background:var(--ind-xl); }
+  .ft-hk-prize-label { font-size:10px; font-weight:800; color:var(--ink3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+  .ft-hk-prize-title { display:flex; align-items:center; gap:8px; font-size:20px; font-weight:900; color:var(--ink); letter-spacing:-.03em; margin-bottom:18px; }
+  .ft-hk-prize-row { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--ink2); margin-bottom:10px; line-height:1.45; }
+  .ft-hk-check { width:18px; height:18px; border-radius:5px; background:var(--grn-l); border:1px solid rgba(16,185,129,.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .ft-hk-limited { margin-top:18px; padding:13px 15px; background:#fffbeb; border:1px solid rgba(245,158,11,.3); border-radius:11px; font-size:12.5px; font-weight:700; color:#92400e; line-height:1.5; display:flex; align-items:flex-start; gap:8px; }
+  .ft-hk-limited-dot { width:7px; height:7px; border-radius:50%; background:#f59e0b; flex-shrink:0; margin-top:4px; }
+  @media(max-width:860px){ .ft-hk-card{flex-direction:column;} .ft-hk-right{width:100%;border-left:none;border-top:1px solid var(--jb);} }
+  @media(max-width:560px){ .ft-hk-left{padding:24px 20px;} .ft-hk-right{padding:22px 20px;} .ft-hk-wrap{padding:24px 16px 0;} }
 
   /* ── GLOBAL RESPONSIVE ── */
   @media(max-width:860px){
@@ -865,6 +956,26 @@ export default function FlagshipTrainingPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState<Partial<FormData>>({})
+  /* live participant feedback */
+  const [liveReviews, setLiveReviews] = useState<{ name: string; rating: number; quote: string; recommend: string; created_at?: string }[]>([])
+  const [liveStats, setLiveStats] = useState<{ total: number; avgRating: number; recommendPct: number } | null>(null)
+
+  const fetchLiveFeedback = useCallback(() => {
+    fetch("/api/flagship-feedback")
+      .then(r => r.json())
+      .then(d => {
+        if (d.reviews) setLiveReviews(d.reviews)
+        if (d.stats) setLiveStats(d.stats)
+      })
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    fetchLiveFeedback()
+    const id = setInterval(fetchLiveFeedback, 30000)
+    return () => clearInterval(id)
+  }, [fetchLiveFeedback])
+
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [screenshotName, setScreenshotName] = useState("")
   const [screenshotError, setScreenshotError] = useState("")
@@ -1018,9 +1129,9 @@ export default function FlagshipTrainingPage() {
 
             {/* CTAs */}
             <div className="ft-ctas">
-              <a href="#register" className="ft-btn-p">
-                Register Now — ₹49 <ChevronRight/>
-              </a>
+              <div className="ft-btn-p" style={{ opacity: .55, cursor: "not-allowed", userSelect: "none" }}>
+                Registrations Closed
+              </div>
               <a href="#curriculum" className="ft-btn-s">
                 View Curriculum
               </a>
@@ -1049,6 +1160,70 @@ export default function FlagshipTrainingPage() {
         {/* ── HERO VISUAL (mobile) ── */}
         <section style={{ padding: "48px 24px", background: "var(--cream)", borderBottom: "1px solid var(--jb)", display: "none" }}>
         </section>
+
+        {/* ── HACKATHON PROMO CARD ── */}
+        <div className="ft-hk-wrap">
+          <div className="ft-hk-card">
+            {/* Left */}
+            <div className="ft-hk-left">
+              <div className="ft-hk-badge">
+                <span className="ft-hk-dot"/>
+                Open Hackathon · Registrations Live
+              </div>
+              <h2 className="ft-hk-h2">
+                Build the AI Content Engine.<br/>
+                <span>Win an Internship Offer.</span>
+              </h2>
+              <p className="ft-hk-desc">
+                Jobingen is running an open hackathon — no resume screening, no shortlisting process.
+                Participate, build Jobingen&apos;s AI-powered brand automation system, and the best performers
+                walk away with a direct <strong>AI Engineer Intern offer</strong> (6–8 weeks, remote).
+                Code is the only filter.
+              </p>
+              <div className="ft-hk-mod-label">What You&apos;ll Build — 8 Modules</div>
+              <div className="ft-hk-chips">
+                {["Persona Engine","Content Planner","Copy Generator","Critic / QA","Design Renderer","Content Store","Approval Queue","Orchestrator"].map(m => (
+                  <span key={m} className="ft-hk-chip">{m}</span>
+                ))}
+              </div>
+              <div className="ft-hk-btns">
+                <a href="/hackathon" className="ft-hk-btn-p">
+                  Register for Hackathon →
+                </a>
+                <a href="/hackathon#problem" className="ft-hk-btn-s">
+                  View Problem Statement
+                </a>
+              </div>
+            </div>
+
+            {/* Right */}
+            <div className="ft-hk-right">
+              <div className="ft-hk-prize-label">Grand Prize</div>
+              <div className="ft-hk-prize-title">
+                <span>🏆</span> AI Engineer Intern
+              </div>
+              {[
+                { label: "Duration", val: "6–8 weeks" },
+                { label: "Mode", val: "100% Remote" },
+                { label: "Exit", val: "Certificate + LOR" },
+                { label: "Bonus", val: "PPO for top performer" },
+                { label: "From Day 1", val: "Ship to real users" },
+                { label: "Mentorship", val: "Direct founder access" },
+              ].map(r => (
+                <div key={r.label} className="ft-hk-prize-row">
+                  <div className="ft-hk-check">
+                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#10b981" strokeWidth="2.8" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <span><strong style={{ color: "var(--ink)" }}>{r.label}:</strong> {r.val}</span>
+                </div>
+              ))}
+              <div className="ft-hk-limited">
+                <span className="ft-hk-limited-dot"/>
+                Limited offer — only top 2–3 participants selected
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* ── COLLEGE TICKER ── */}
         <div className="ft-ticker">
@@ -1333,6 +1508,103 @@ export default function FlagshipTrainingPage() {
 
 
 
+        {/* ── LIVE PARTICIPANT FEEDBACK ── */}
+        <section className="ft-sec">
+          <div className="ft-wrap">
+            <R>
+              <div className="ft-live-header">
+                <div>
+                  <div className="ft-eyebrow"><span className="ft-eyebrow-dot"/>Live Participant Reviews</div>
+                  <h2 className="ft-ttl" style={{ marginBottom: 8 }}>What Participants Are Saying</h2>
+                  <p className="ft-desc" style={{ marginBottom: 0 }}>Live feedback from bootcamp attendees — updates every 30 seconds.</p>
+                </div>
+                {liveStats && liveStats.total > 0 && (
+                  <div className="ft-live-stats">
+                    <div className="ft-live-stat">
+                      <div className="ft-live-stat-v">{liveStats.avgRating.toFixed(1)}</div>
+                      <div className="ft-live-stat-l">Avg Rating</div>
+                    </div>
+                    <div className="ft-live-stat">
+                      <div className="ft-live-stat-v" style={{ color: "#16a34a" }}>{liveStats.recommendPct}%</div>
+                      <div className="ft-live-stat-l">Recommend</div>
+                    </div>
+                    <div className="ft-live-stat">
+                      <div className="ft-live-stat-v" style={{ color: "#7c3aed" }}>{liveStats.total}</div>
+                      <div className="ft-live-stat-l">Reviews</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 28 }}>
+                <div className="ft-live-badge">
+                  <span className="ft-live-pulse"/>
+                  Live — updates every 30 seconds
+                </div>
+                <a href="/flagship-feedback" className="ft-live-cta">
+                  Share Your Feedback
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </R>
+
+            {liveReviews.length === 0 ? (
+              <R d={80}>
+                <div className="ft-live-empty">
+                  <div style={{ fontSize: 36, marginBottom: 14 }}>✨</div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: "var(--ink)", marginBottom: 8 }}>Be the first to leave a review</div>
+                  <div style={{ fontSize: 13.5, color: "var(--ink2)", marginBottom: 24, lineHeight: 1.7 }}>
+                    Attended the bootcamp? Share your experience and help future students.
+                  </div>
+                  <a href="/flagship-feedback" className="ft-live-cta">
+                    Leave Feedback
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </R>
+            ) : (
+              <div className="ft-live-grid">
+                {liveReviews.slice(0, 9).map((r, i) => {
+                  const AV_COLORS = ["#1d3a8f", "#7c3aed", "#0f766e", "#b45309", "#0891b2", "#dc2626", "#16a34a", "#ea580c", "#d97706"]
+                  const col = AV_COLORS[i % AV_COLORS.length]
+                  const recommends = r.recommend?.toLowerCase().includes("yes")
+                  return (
+                    <div key={i} className="ft-live-card" style={{ animationDelay: `${i * 50}ms` }}>
+                      <div style={{ height: 3, background: `linear-gradient(90deg, ${col}, ${col}66)` }}/>
+                      <div className="ft-live-card-body">
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <div style={{ display: "flex", gap: 2 }}>
+                            {[1,2,3,4,5].map(s => (
+                              <svg key={s} width="14" height="14" viewBox="0 0 24 24">
+                                <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" fill={s <= r.rating ? "#fbbf24" : "#e5e7eb"}/>
+                              </svg>
+                            ))}
+                          </div>
+                          {recommends && (
+                            <span style={{ fontSize: 10, fontWeight: 700, color: "#16a34a", background: "#f0fdf4", padding: "2px 8px", borderRadius: 99, border: "1px solid #bbf7d0" }}>
+                              Recommends ✓
+                            </span>
+                          )}
+                        </div>
+                        <p className="ft-live-quote">"{r.quote}"</p>
+                        <div className="ft-live-author">
+                          <div className="ft-live-av" style={{ background: `linear-gradient(135deg, ${col}, ${col}cc)` }}>
+                            {r.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="ft-live-name">{r.name}</div>
+                            <div className="ft-live-role">Bootcamp Attendee</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* ── REGISTRATION + PAYMENT ── */}
         <section className="ft-sec-alt" id="register">
           <div className="ft-wrap">
@@ -1345,8 +1617,24 @@ export default function FlagshipTrainingPage() {
             <R d={60}>
               <div className="ft-reg-outer">
               <div className="ft-reg-wrap">
-                {success ? (
-                  <SuccessState email={form.email}/>
+                {true ? (
+                  <div className="ft-reg-card">
+                    <div style={{ padding: "64px 48px", textAlign: "center" }}>
+                      <div style={{ width: 72, height: 72, borderRadius: 22, background: "linear-gradient(135deg,#0c1445,#1d3a8f)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", boxShadow: "0 12px 40px rgba(29,58,143,.25)" }}>
+                        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                      </div>
+                      <h2 style={{ fontSize: "clamp(22px,3.5vw,30px)", fontWeight: 900, color: "var(--ink)", letterSpacing: "-.04em", marginBottom: 10 }}>
+                        Registrations Closed
+                      </h2>
+                      <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 380, margin: "0 auto 28px" }}>
+                        The Jobingen Flagship Bootcamp 2026 registration window has closed. Follow us for updates on the next batch.
+                      </p>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 12, background: "var(--ind-xl)", border: "1.5px solid rgba(29,58,143,.15)", fontSize: 13, fontWeight: 700, color: "var(--ind)" }}>
+                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", display: "inline-block" }}/>
+                        Registration window closed
+                      </div>
+                    </div>
+                  </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="ft-reg-card" noValidate>
 
