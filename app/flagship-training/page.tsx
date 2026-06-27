@@ -1617,7 +1617,7 @@ export default function FlagshipTrainingPage() {
             <R d={60}>
               <div className="ft-reg-outer">
               <div className="ft-reg-wrap">
-                {true ? (
+                {false ? (
                   <div className="ft-reg-card">
                     <div style={{ padding: "64px 48px", textAlign: "center" }}>
                       <div style={{ width: 72, height: 72, borderRadius: 22, background: "linear-gradient(135deg,#0c1445,#1d3a8f)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", boxShadow: "0 12px 40px rgba(29,58,143,.25)" }}>
