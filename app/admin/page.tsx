@@ -100,7 +100,7 @@ type BugEntry = {
 }
 
 type BugBashReport = {
-  id: string; tester_name: string; tester_email?: string; team_name?: string
+  id: string; tester_name: string; tester_email?: string; tester_phone?: string; team_name?: string
   bugs: BugEntry[]; created_at: string
 }
 
@@ -841,6 +841,52 @@ export default function AdminPage() {
                               <td>{(r as unknown as Record<string,string>).github_url ? <a className="c-link" href={(r as unknown as Record<string,string>).github_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
                               <td className="c-date">{fmt(r.created_at)}</td>
                               <td><DelBtn table="hackathon_registrations" id={r.id} name={r.name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Hackathon Submissions ── */}
+              {activeTab === "hackathon" && (
+                <div className="adm-sec" style={{ marginTop: 32 }}>
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">AI Content Engine Hackathon — Project Submissions</div>
+                      <div className="adm-sec-badge">{hsFiltered.length} submissions</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(hsFiltered as unknown as Record<string, unknown>[], "hackathon-submissions.csv")}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {hsFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🏗️</div>{search ? `No results for "${search}"` : "No submissions yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr><th>#</th><th>Team</th><th>Leader</th><th>Email</th><th>Project</th><th>Tech Stack</th><th>GitHub</th><th>Demo</th><th>Screenshot</th><th>Date</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                          {hsFiltered.map((s, i) => (
+                            <tr key={s.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{s.team_name}</td>
+                              <td style={{ fontSize: 13 }}>{s.leader_name}</td>
+                              <td className="c-email">{s.email}</td>
+                              <td style={{ fontSize: 13, fontWeight: 600, color: "#0A1F44", maxWidth: 180 }}>{s.project_title}</td>
+                              <td style={{ fontSize: 12, color: "#64748b", maxWidth: 160 }}><span title={s.tech_stack}>{s.tech_stack.length > 40 ? s.tech_stack.slice(0, 40) + "…" : s.tech_stack}</span></td>
+                              <td>{s.github_link ? <a className="c-link" href={s.github_link.startsWith("http") ? s.github_link : `https://${s.github_link}`} target="_blank" rel="noopener noreferrer">GitHub</a> : "—"}</td>
+                              <td>{s.demo_link ? <a className="c-link" href={s.demo_link.startsWith("http") ? s.demo_link : `https://${s.demo_link}`} target="_blank" rel="noopener noreferrer">Demo</a> : "—"}</td>
+                              <td>{s.screenshot_url ? <a className="c-link" href={s.screenshot_url} target="_blank" rel="noopener noreferrer">View</a> : "—"}</td>
+                              <td className="c-date">{fmt(s.created_at)}</td>
+                              <td><DelBtn table="hackathon_submissions" id={s.id} name={s.team_name} /></td>
                             </tr>
                           ))}
                         </tbody>
@@ -1606,7 +1652,7 @@ export default function AdminPage() {
                     ) : (
                       <table>
                         <thead>
-                          <tr><th>#</th><th>Tester</th><th>Email</th><th>Team</th><th>Bugs</th><th>Date</th><th>View</th><th></th></tr>
+                          <tr><th>#</th><th>Tester</th><th>Email</th><th>Phone</th><th>Team</th><th>Bugs</th><th>Date</th><th>View</th><th></th></tr>
                         </thead>
                         <tbody>
                           {bugBashReports.map((r, i) => (
@@ -1614,6 +1660,7 @@ export default function AdminPage() {
                               <td className="c-num">{i + 1}</td>
                               <td className="c-name">{r.tester_name}</td>
                               <td className="c-email">{r.tester_email || "—"}</td>
+                              <td className="c-phone">{r.tester_phone || "—"}</td>
                               <td style={{ fontSize: 12, color: "#64748b" }}>{r.team_name || "—"}</td>
                               <td>
                                 <span className="c-tag" style={{ background: "#fef2f2", color: "#dc2626", borderColor: "#fecaca" }}>
@@ -1666,7 +1713,14 @@ export default function AdminPage() {
                                           <div class="row"><div class="lbl">Expected Result</div><div class="val">${b.expected}</div></div>
                                           <div class="row"><div class="lbl">Actual Result</div><div class="val">${b.actual}</div></div>
                                         </div>
-                                        ${b.screenshot_note ? `<div class="row"><div class="lbl">Screenshot</div><div class="val">${/^https?:\/\//.test(b.screenshot_note) ? `<a href="${b.screenshot_note}" target="_blank" rel="noopener noreferrer" style="color:#2563eb;font-weight:600;text-decoration:none">${b.screenshot_note}</a>` : b.screenshot_note}</div></div>` : ""}
+                                        <div class="row"><div class="lbl">Screenshot</div><div class="val">${(() => {
+                                          const url = (b.screenshot_note || "").trim()
+                                          if (!url) return '<span style="color:#94a3b8;font-size:13px">Not uploaded</span>'
+                                          const isImg = /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url)
+                                          if (isImg) return `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${url}" alt="screenshot" style="max-width:100%;max-height:300px;border-radius:8px;border:1px solid #e2e8f0;display:block;margin-bottom:6px"></a><a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#2563eb;font-size:12px;font-weight:600">Open full size ↗</a>`
+                                          if (/^https?:\/\//.test(url)) return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;background:#eff6ff;color:#2563eb;font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px;text-decoration:none;border:1px solid #bfdbfe">📎 View Screenshot / PDF ↗</a>`
+                                          return `<span style="font-size:13px;color:#334155">${url}</span>`
+                                        })()}</div></div>
                                       </div>
                                     `).join("")}
                                     </body></html>`)

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, FormEvent } from "react"
+import { useState, useRef, FormEvent } from "react"
 
 type BugEntry = {
   page_url: string
@@ -12,6 +12,8 @@ type BugEntry = {
   expected: string
   actual: string
   screenshot_note: string
+  screenshotFile: File | null
+  screenshotName: string
 }
 
 const EMPTY_BUG = (): BugEntry => ({
@@ -24,11 +26,14 @@ const EMPTY_BUG = (): BugEntry => ({
   expected: "",
   actual: "",
   screenshot_note: "",
+  screenshotFile: null,
+  screenshotName: "",
 })
 
 type FormState = {
   tester_name: string
   tester_email: string
+  tester_phone: string
   team_name: string
   bugs: BugEntry[]
 }
@@ -36,6 +41,7 @@ type FormState = {
 const INIT: FormState = {
   tester_name: "",
   tester_email: "",
+  tester_phone: "",
   team_name: "",
   bugs: [EMPTY_BUG()],
 }
@@ -58,7 +64,6 @@ const CSS = `
   @keyframes bb-fade { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
   @keyframes bb-spin { to{transform:rotate(360deg)} }
   @keyframes bb-check { 0%{transform:scale(0) rotate(-15deg);opacity:0} 65%{transform:scale(1.18) rotate(4deg)} 100%{transform:scale(1) rotate(0);opacity:1} }
-  @keyframes bb-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   .bb-page { max-width:700px; margin:0 auto; padding:40px 20px 80px; }
 
@@ -112,6 +117,11 @@ const CSS = `
   .bb-step-num { width:26px; height:26px; border-radius:50%; background:#1d3a8f; color:white;
     font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
+  .bb-upload-area { width:100%; padding:18px 20px; border-radius:13px; border:2px dashed rgba(10,10,20,.12);
+    background:var(--cream); text-align:center; cursor:pointer; transition:all .2s; }
+  .bb-upload-area:hover { border-color:rgba(29,58,143,.35); background:#eef2ff; }
+  .bb-upload-area.has-file { border-color:#16a34a; background:#f0fdf4; border-style:solid; }
+
   .bb-bug-card { background:white; border-radius:18px; border:1.5px solid #e2e8f0;
     box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
   .bb-bug-header { padding:16px 20px; background:linear-gradient(135deg,#f0f4ff,#eef1fd);
@@ -160,10 +170,23 @@ function BugCard({
   onRemove: () => void
   errors: Partial<Record<string, string>>
 }) {
+  const fileRef = useRef<HTMLInputElement>(null)
+
   function setStep(i: number, val: string) {
     const steps = [...bug.steps] as [string, string, string]
     steps[i] = val
     onChange({ ...bug, steps })
+  }
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    onChange({ ...bug, screenshotFile: file, screenshotName: file.name })
+  }
+
+  function clearFile() {
+    if (fileRef.current) fileRef.current.value = ""
+    onChange({ ...bug, screenshotFile: null, screenshotName: "" })
   }
 
   return (
@@ -264,7 +287,7 @@ function BugCard({
               <div key={i} className="bb-step">
                 <div className="bb-step-num">{i + 1}</div>
                 <input
-                  className={`bb-input${errors[`step${i}`] ? " bb-err" : ""}`}
+                  className="bb-input"
                   placeholder={i === 0 ? "First, navigate to..." : i === 1 ? "Then, click / enter..." : "Then observe..."}
                   value={bug.steps[i]}
                   onChange={e => setStep(i, e.target.value)}
@@ -302,12 +325,55 @@ function BugCard({
           </div>
         </div>
 
-        {/* Screenshot */}
+        {/* Screenshot — upload + link both always visible */}
         <div className="bb-field">
-          <label className="bb-label">Screenshot URL / Note <span className="bb-opt">Optional</span></label>
+          <label className="bb-label">Screenshot <span className="bb-opt">Image upload · PDF via link below</span></label>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*,.pdf"
+            style={{ display: "none" }}
+            onChange={handleFile}
+          />
+
+          {/* Upload area */}
+          <div
+            className={`bb-upload-area${bug.screenshotName ? " has-file" : ""}`}
+            onClick={() => fileRef.current?.click()}
+            style={{ cursor: "pointer" }}
+          >
+            {bug.screenshotName ? (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#16a34a" strokeWidth="2.2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#16a34a" }}>{bug.screenshotName}</span>
+                <button
+                  type="button"
+                  onClick={e => { e.stopPropagation(); clearFile() }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8", fontSize: 18, lineHeight: 1, padding: "0 2px" }}
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <div>
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="1.8" style={{ margin: "0 auto 8px", display: "block" }}>
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#64748b" }}>Click to upload screenshot</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 4 }}>PNG, JPG, PDF — max 5MB</div>
+              </div>
+            )}
+          </div>
+
+          {/* OR paste link — always visible */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "6px 0" }}>
+            <div style={{ flex: 1, height: 1, background: "rgba(10,10,20,.08)" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: ".06em" }}>OR PASTE LINK</span>
+            <div style={{ flex: 1, height: 1, background: "rgba(10,10,20,.08)" }} />
+          </div>
           <input
             className="bb-input"
-            placeholder="Paste screenshot URL or a short description of the screenshot"
+            placeholder="https://drive.google.com/... or any screenshot URL"
             value={bug.screenshot_note}
             onChange={e => onChange({ ...bug, screenshot_note: e.target.value })}
           />
@@ -353,27 +419,41 @@ export default function BugBashPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const errs: Record<string, string> = {}
-    if (!form.tester_name.trim()) errs.tester_name = "Please enter your name"
-
-    form.bugs.forEach((bug, idx) => {
-      Object.assign(errs, validateBug(bug, idx))
-    })
-
+    if (!form.tester_name.trim()) errs.tester_name = "Name required"
+    if (!form.tester_email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.tester_email.trim())) errs.tester_email = "Valid email required"
+    if (!form.tester_phone.trim() || form.tester_phone.replace(/\D/g, "").length < 10) errs.tester_phone = "Valid 10-digit mobile required"
+    form.bugs.forEach((bug, idx) => Object.assign(errs, validateBug(bug, idx)))
     if (Object.keys(errs).length) { setErrors(errs); return }
 
     setLoading(true)
     setServerError("")
     try {
-      const res = await fetch("/api/bug-bash", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          tester_name: form.tester_name.trim(),
-          tester_email: form.tester_email.trim() || null,
-          team_name: form.team_name.trim() || null,
-          bugs: form.bugs,
-        }),
+      const fd = new globalThis.FormData()
+      fd.append("tester_name", form.tester_name.trim())
+      fd.append("tester_email", form.tester_email.trim())
+      fd.append("tester_phone", form.tester_phone.trim())
+      fd.append("team_name", form.team_name.trim())
+
+      // bugs JSON without File objects
+      const bugsData = form.bugs.map(b => ({
+        page_url: b.page_url,
+        feature_area: b.feature_area,
+        category: b.category,
+        severity: b.severity,
+        what_tried: b.what_tried,
+        steps: b.steps,
+        expected: b.expected,
+        actual: b.actual,
+        screenshot_note: b.screenshot_note,
+      }))
+      fd.append("bugs", JSON.stringify(bugsData))
+
+      // attach each screenshot file as screenshot_0, screenshot_1 etc.
+      form.bugs.forEach((b, i) => {
+        if (b.screenshotFile) fd.append(`screenshot_${i}`, b.screenshotFile)
       })
+
+      const res = await fetch("/api/bug-bash", { method: "POST", body: fd })
       const data = await res.json()
       if (!res.ok) { setServerError(data.error || "Something went wrong. Try again."); return }
       setSuccess(true)
@@ -400,7 +480,7 @@ export default function BugBashPage() {
                 </div>
                 <h2 className="bb-success-h2">Report Submitted!</h2>
                 <p className="bb-success-p">
-                  Your bug report with {form.bugs.length} bug{form.bugs.length > 1 ? "s" : ""} has been received. The team will review it shortly. Great hunting!
+                  Your bug report with {form.bugs.length} bug{form.bugs.length > 1 ? "s" : ""} has been received. Great hunting!
                 </p>
               </div>
             </div>
@@ -435,24 +515,38 @@ export default function BugBashPage() {
                       {errors.tester_name && <span className="bb-err-msg">{errors.tester_name}</span>}
                     </div>
                     <div className="bb-field">
-                      <label className="bb-label">Email <span className="bb-opt">Optional</span></label>
+                      <label className="bb-label">Mobile Number <span className="bb-req">*</span></label>
                       <input
-                        type="email"
-                        className="bb-input"
-                        placeholder="you@email.com"
-                        value={form.tester_email}
-                        onChange={e => setForm(f => ({ ...f, tester_email: e.target.value }))}
+                        type="tel"
+                        className={`bb-input${errors.tester_phone ? " bb-err" : ""}`}
+                        placeholder="9876543210"
+                        value={form.tester_phone ?? ""}
+                        onChange={e => { setForm(f => ({ ...f, tester_phone: e.target.value })); setErrors(er => ({ ...er, tester_phone: "" })) }}
                       />
+                      {errors.tester_phone && <span className="bb-err-msg">{errors.tester_phone}</span>}
                     </div>
                   </div>
-                  <div className="bb-field">
-                    <label className="bb-label">Team Name <span className="bb-opt">Optional</span></label>
-                    <input
-                      className="bb-input"
-                      placeholder="e.g. Bug Hunters Team A"
-                      value={form.team_name}
-                      onChange={e => setForm(f => ({ ...f, team_name: e.target.value }))}
-                    />
+                  <div className="bb-grid2" style={{ marginBottom: 14 }}>
+                    <div className="bb-field">
+                      <label className="bb-label">Email <span className="bb-req">*</span></label>
+                      <input
+                        type="email"
+                        className={`bb-input${errors.tester_email ? " bb-err" : ""}`}
+                        placeholder="you@email.com"
+                        value={form.tester_email}
+                        onChange={e => { setForm(f => ({ ...f, tester_email: e.target.value })); setErrors(er => ({ ...er, tester_email: "" })) }}
+                      />
+                      {errors.tester_email && <span className="bb-err-msg">{errors.tester_email}</span>}
+                    </div>
+                    <div className="bb-field">
+                      <label className="bb-label">Team Name <span className="bb-opt">Optional</span></label>
+                      <input
+                        className="bb-input"
+                        placeholder="e.g. Bug Hunters Team A"
+                        value={form.team_name}
+                        onChange={e => setForm(f => ({ ...f, team_name: e.target.value }))}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -492,7 +586,7 @@ export default function BugBashPage() {
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" style={{ animation: "bb-spin 1s linear infinite" }}>
                           <path d="M21 12a9 9 0 11-6.219-8.56"/>
                         </svg>
-                        Submitting Report...
+                        Uploading & Submitting...
                       </>
                     ) : (
                       <>
