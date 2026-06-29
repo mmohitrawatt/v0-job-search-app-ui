@@ -1129,9 +1129,9 @@ export default function FlagshipTrainingPage() {
 
             {/* CTAs */}
             <div className="ft-ctas">
-              <a href="#register" className="ft-btn-p">
-                Reserve Your Seat →
-              </a>
+              <div className="ft-btn-p" style={{ opacity: .55, cursor: "not-allowed", userSelect: "none" }}>
+                Bootcamp Completed ✓
+              </div>
               <a href="#curriculum" className="ft-btn-s">
                 View Curriculum
               </a>
@@ -1141,10 +1141,10 @@ export default function FlagshipTrainingPage() {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div className="ft-stats-row">
                 {[
-                  { v: "27-28 June", l: "Program Dates" },
-                  { v: "₹49",       l: "Registration Fee" },
-                  { v: "Online",    l: "Live Bootcamp" },
-                  { v: "Limited",   l: "Seats Left" },
+                  { v: "130+",    l: "Students Trained" },
+                  { v: "4.6★",    l: "Avg. Rating" },
+                  { v: "2 Days",  l: "Live Bootcamp" },
+                  { v: "✓ Done",  l: "Batch Completed" },
                 ].map(s => (
                   <div key={s.l} className="ft-stat">
                     <div className="ft-stat-v">{s.v}</div>
@@ -1617,21 +1617,21 @@ export default function FlagshipTrainingPage() {
             <R d={60}>
               <div className="ft-reg-outer">
               <div className="ft-reg-wrap">
-                {false ? (
+                {true ? (
                   <div className="ft-reg-card">
                     <div style={{ padding: "64px 48px", textAlign: "center" }}>
                       <div style={{ width: 72, height: 72, borderRadius: 22, background: "linear-gradient(135deg,#0c1445,#1d3a8f)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", boxShadow: "0 12px 40px rgba(29,58,143,.25)" }}>
                         <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                       </div>
                       <h2 style={{ fontSize: "clamp(22px,3.5vw,30px)", fontWeight: 900, color: "var(--ink)", letterSpacing: "-.04em", marginBottom: 10 }}>
-                        Registrations Closed
+                        Bootcamp Completed!
                       </h2>
                       <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, maxWidth: 380, margin: "0 auto 28px" }}>
-                        The Jobingen Flagship Bootcamp 2026 registration window has closed. Follow us for updates on the next batch.
+                        The Jobingen Flagship Bootcamp 2026 has successfully concluded with 130+ students and a 4.6★ average rating. Stay tuned for the next batch.
                       </p>
                       <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 12, background: "var(--ind-xl)", border: "1.5px solid rgba(29,58,143,.15)", fontSize: 13, fontWeight: 700, color: "var(--ind)" }}>
-                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444", display: "inline-block" }}/>
-                        Registration window closed
+                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#22c55e", display: "inline-block" }}/>
+                        Batch Successfully Completed
                       </div>
                     </div>
                   </div>

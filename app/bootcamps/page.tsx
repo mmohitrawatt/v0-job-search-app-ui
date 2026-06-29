@@ -23,7 +23,7 @@ const MENTORS_MAP: Record<string, { initials: string; color: string; name: strin
 const BOOTCAMPS = [
   {
     id: 6,
-    status: "upcoming" as const,
+    status: "completed" as const,
     featured: true,
     num: "Flagship Bootcamp",
     date: "27-28 June 2026",
@@ -32,13 +32,13 @@ const BOOTCAMPS = [
     description: "Jobingen's premier 2-day live experience — Day 1: 3 transformative modules on DSA, spec-driven development, and RAG/AI systems. Day 2: Solo Hackathon on a live problem statement. Winner gets a Jobingen internship.",
     duration: "2-Day Live",
     format: "₹49 · Online",
-    students: null,
+    students: 130,
     topics: ["DSA Problem Solving Mindset", "Spec-Driven Development", "Advanced RAG Systems", "Day 2: Solo Hackathon", "Live Problem Statement", "Internship Prize for Winner"],
     delivered: ["Live Training", "Learning Resources", "Certificate", "Community Access", "Mentor Guidance", "Internship Prize (Winner)"],
     mentorKeys: ["AD", "AV"],
     mentorLabel: "Aditya D. + Aayushman V." as string | null,
     mentorSub: "AI Engineer · SDE" as string | null,
-    rating: 0,
+    rating: 4.6,
     accent: "linear-gradient(90deg,#1d3a8f,#3b52f0,#7c3aed)",
     accentSolid: "#1d3a8f",
     tagColor: "#1d3a8f",
@@ -365,7 +365,7 @@ export default function BootcampsPage() {
     setNotified(true)
   }
 
-  const totalStudents = 500
+  const totalStudents = 2500
   const completedWithRating = BOOTCAMPS.filter(b => b.status === "completed" && b.rating > 0)
   const avgRating = (completedWithRating.reduce((s, b) => s + b.rating, 0) / completedWithRating.length).toFixed(1)
   const completedCount = completedWithRating.length
