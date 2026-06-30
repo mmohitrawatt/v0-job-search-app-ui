@@ -28,6 +28,7 @@ const COMPANY_COLORS: Record<string, string> = {
   "Groww":                  "#5367FF",
   "BrowserStack":           "#F1692F",
   "Trippyway":              "#0F766E",
+  "Tapwave":                "#2563EB",
   "Top Institute of India": "#1D3A8F",
   "Paytm":                  "#00BAF2",
   "Byju's":                 "#6D28D9",
@@ -39,6 +40,7 @@ const FEATURED_COMPANIES: Array<{
   name: string; industry: string; stage: string; size: string;
   tagline: string; active: boolean; roles?: number
 }> = [
+  { name: "Tapwave",               industry: "NFC · Smart Tech",       stage: "Startup",  size: "10+",    tagline: "NFC Business Cards & Digital Networking",     active: true,  roles: 2 },
   { name: "Trippyway",             industry: "Travel · AI",            stage: "Seed",     size: "50+",    tagline: "AI-powered travel discovery startup",         active: true,  roles: 3 },
   { name: "Netflix",               industry: "Streaming · Tech",       stage: "Public",   size: "12k+",   tagline: "World's leading entertainment platform",       active: true,  roles: 1 },
   { name: "Top Institute of India",industry: "Research · Academia",    stage: "Govt.",    size: "10k+",   tagline: "India's premier science & tech institution",   active: true,  roles: 1 },
@@ -173,10 +175,28 @@ function CategoryCard({ cat, index, onClick }: {
 /* ─────────────────────────────────────────────────────────────────────────────
    COMPANY LETTER ICON  (first word, first letter — styled)
 ───────────────────────────────────────────────────────────────────────────── */
+const COMPANY_LOGOS: Record<string, string> = {
+  "Tapwave":   "/tapwave.jpeg",
+  "Trippyway": "/trippyway-logo.jpg",
+}
+
 function CompanyIcon({ name, size = 52 }: { name: string; size?: number }) {
   const color = COMPANY_COLORS[name] || "#1d3a8f"
   const letter = name.trim()[0].toUpperCase()
   const r = Math.round(size * 0.22)
+  const logo = COMPANY_LOGOS[name]
+  if (logo) {
+    return (
+      <div style={{
+        width: size, height: size, borderRadius: r, flexShrink: 0,
+        border: `2px solid ${color}28`,
+        overflow: "hidden", background: "white",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <img src={logo} alt={name} style={{ width: "100%", height: "100%", objectFit: "contain", padding: "4px" }} />
+      </div>
+    )
+  }
   return (
     <div style={{
       width: size, height: size, borderRadius: r, flexShrink: 0,
@@ -224,7 +244,7 @@ function ActiveCard({ company, jobCount, onClick, index }: {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "0 18px", position: "relative",
       }}>
-        {/* Letter icon */}
+        {/* Letter / Logo icon */}
         <div style={{
           width: 52, height: 52, borderRadius: 14,
           background: "white", border: `1.5px solid ${color}28`,
@@ -235,9 +255,11 @@ function ActiveCard({ company, jobCount, onClick, index }: {
           letterSpacing: "-0.02em",
           transition: "transform 0.25s ease",
           transform: hov ? "scale(1.06)" : "scale(1)",
-          flexShrink: 0,
+          flexShrink: 0, overflow: "hidden",
         }}>
-          {letter}
+          {COMPANY_LOGOS[company.name]
+            ? <img src={COMPANY_LOGOS[company.name]} alt={company.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            : letter}
         </div>
         {/* Hiring badge */}
         <div style={{

@@ -102,9 +102,27 @@ const ROLES = [
     tags: ["Hiring", "Coordination", "Ops"],
     desc: "Manage candidate pipelines, coordinate interviews, and improve internal processes. Great for students interested in people & culture.",
   },
+  {
+    id: "tapwave-sales-executive",
+    title: "Sales Executive",
+    dept: "Sales",
+    duration: "Full-time",
+    tags: ["B2B Sales", "Client Management", "CRM", "NFC"],
+    desc: "Drive new business and manage client relationships for Tapwave's NFC Business Cards, Smart Standees, and Digital Networking Solutions. Achieve sales targets across B2B segments — businesses, educational institutions, clubs, and organizations.",
+    badge: "TAPWAVE",
+  },
+  {
+    id: "tapwave-graphic-designer",
+    title: "Graphic Designer",
+    dept: "Design",
+    duration: "Full-time",
+    tags: ["Adobe Creative Suite", "Branding", "Digital Design", "Print"],
+    desc: "Create eye-catching designs for digital and print for Tapwave's NFC and smart networking product line. Manage branding assets and collaborate closely with the marketing team. Basic SaaS knowledge required.",
+    badge: "TAPWAVE",
+  },
 ]
 
-const DEPTS = ["All", "Engineering", "AI & Data", "Design", "Product", "Marketing", "Operations"]
+const DEPTS = ["All", "Engineering", "AI & Data", "Design", "Product", "Marketing", "Operations", "Sales"]
 
 const YEAR_OPTIONS = [
   "1st Year", "2nd Year", "3rd Year", "4th Year",
@@ -188,20 +206,26 @@ const DEPT_ICONS: Record<string, React.ReactNode> = {
       <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
     </svg>
   ),
+  "Sales": (
+    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    </svg>
+  ),
 }
 
 function RoleCard({ role, onApply }: { role: typeof ROLES[number]; onApply: (id: string) => void }) {
-  const isNew = "badge" in role && role.badge === "NEW"
+  const badge = "badge" in role ? role.badge : undefined
+  const isFeatured = !!badge
   return (
-    <div className={`cr-role-card${isNew ? " cr-role-card-featured" : ""}`}>
-      {isNew && <div className="cr-role-featured-bar" />}
+    <div className={`cr-role-card${isFeatured ? " cr-role-card-featured" : ""}`}>
+      {isFeatured && <div className="cr-role-featured-bar" />}
       <div className="cr-role-top">
         <div className="cr-role-icon">
           {DEPT_ICONS[role.dept] ?? DEPT_ICONS["Engineering"]}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          {isNew && (
-            <span className="cr-new-badge">NEW</span>
+          {badge && (
+            <span className="cr-new-badge">{badge}</span>
           )}
           <div className="cr-hiring-badge">
             <span className="cr-live-dot" />

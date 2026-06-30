@@ -58,6 +58,34 @@ Draft job descriptions, outreach messages, and offer letters
 Help build Trippyway's employer brand across LinkedIn and job platforms`,
     apply_type: "direct",
   },
+  {
+    id: "tw-1",
+    title: "Sales Executive",
+    company: "Tapwave",
+    location: "Bengaluru, India",
+    slug: "sales-executive-tapwave",
+    description: `Drive new business and manage client relationships for Tapwave's NFC Business Cards, Smart Standees, and Digital Networking Solutions
+Achieve sales targets across B2B segments — businesses, educational institutions, clubs, and organizations
+Identify and pursue new business opportunities through cold calls, meetings, and networking
+Build and maintain strong, long-lasting client relationships with regular follow-ups
+Present and demonstrate Tapwave's products to potential clients effectively
+Maintain accurate records of leads, opportunities, and client interactions in CRM`,
+    apply_type: "direct",
+  },
+  {
+    id: "tw-2",
+    title: "Graphic Designer",
+    company: "Tapwave",
+    location: "Bengaluru, India",
+    slug: "graphic-designer-tapwave",
+    description: `Create eye-catching designs for digital and print for Tapwave's NFC and smart networking product line
+Manage and maintain branding assets — logos, templates, style guides, and marketing collateral
+Collaborate closely with the marketing team to deliver visually compelling campaigns
+Design product packaging, standee visuals, and NFC card layouts with precision
+Work with basic SaaS tools and Adobe Creative Suite to deliver high-quality output
+Iterate quickly on feedback and maintain consistency across all brand touchpoints`,
+    apply_type: "direct",
+  },
 ]
 
 export default async function JobDetailPage({ params }: { params: Promise<{ slug: string }> }) {

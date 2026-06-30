@@ -216,6 +216,48 @@ export const MOCK_JOBS: Job[] = [
       { portal: "internshala", benefit: "Direct Apply", recommended: true },
     ],
   },
+  {
+    id: "8",
+    title: "Sales Executive",
+    company: "Tapwave",
+    location: "Bengaluru, KA",
+    type: "Full-time",
+    skills: ["B2B Sales", "Client Management", "CRM", "Communication"],
+    missingSkills: ["NFC Technology", "SaaS Sales"],
+    matchScore: 72,
+    salary: "₹3–6 LPA",
+    initials: "TW",
+    color: "bg-blue-100 text-blue-700",
+    description:
+      "Drive new business and manage client relationships for Tapwave's NFC Business Cards, Smart Standees, and Digital Networking Solutions. Responsible for achieving sales targets across B2B segments — businesses, educational institutions, clubs, and organizations. Strong communication and a proactive approach required.",
+    isRemote: false,
+    portal: "linkedin",
+    portalListings: [
+      { portal: "linkedin", benefit: "Easy Apply", recommended: true },
+      { portal: "naukri", benefit: "Direct Apply", recommended: false },
+    ],
+  },
+  {
+    id: "9",
+    title: "Graphic Designer",
+    company: "Tapwave",
+    location: "Bengaluru, KA",
+    type: "Full-time",
+    skills: ["Adobe Creative Suite", "Branding", "Digital Design", "Print Design"],
+    missingSkills: ["Motion Graphics", "UI/UX"],
+    matchScore: 68,
+    salary: "₹2.5–5 LPA",
+    initials: "TW",
+    color: "bg-blue-100 text-blue-700",
+    description:
+      "Create eye-catching designs for digital and print for Tapwave's NFC and smart networking product line. Manage branding assets and collaborate closely with the marketing team. Proficiency in Adobe Creative Suite and basic SaaS knowledge required.",
+    isRemote: false,
+    portal: "naukri",
+    portalListings: [
+      { portal: "naukri", benefit: "Direct Apply", recommended: true },
+      { portal: "linkedin", benefit: "Easy Apply", recommended: false },
+    ],
+  },
 ]
 
 export type QuestionCategory = "technical" | "behavioral" | "system-design" | "debugging"

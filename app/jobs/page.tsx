@@ -23,6 +23,32 @@ export const revalidate = 60
 
 const STATIC_JOBS: Job[] = [
   {
+    id: "tw-1",
+    title: "Sales Executive",
+    company: "Tapwave",
+    location: "Bengaluru, India",
+    slug: "sales-executive-tapwave",
+    type: "Full Time",
+    department: "Sales",
+    experience: "0–2 yr",
+    mode: "On-site",
+    stipend: "₹3–6 LPA",
+    description: "Drive new business and manage client relationships for Tapwave's NFC Business Cards, Smart Standees, and Digital Networking Solutions. Achieve sales targets across B2B segments — businesses, educational institutions, clubs, and organizations. Strong communication and proactive approach required.",
+  },
+  {
+    id: "tw-2",
+    title: "Graphic Designer",
+    company: "Tapwave",
+    location: "Bengaluru, India",
+    slug: "graphic-designer-tapwave",
+    type: "Full Time",
+    department: "Design",
+    experience: "0–2 yr",
+    mode: "On-site",
+    stipend: "₹2.5–5 LPA",
+    description: "Create eye-catching designs for digital and print for Tapwave's NFC and smart networking product line. Manage branding assets and collaborate closely with the marketing team. Proficiency in Adobe Creative Suite and basic SaaS knowledge required.",
+  },
+  {
     id: "2",
     title: "AI Engineer Intern",
     company: "Trippyway",
@@ -63,20 +89,6 @@ const STATIC_JOBS: Job[] = [
     stipend: "₹5,000–8,000/mo",
     duration: "3 months",
     description: "Help build the team that builds the product. You'll source and screen candidates, coordinate interviews, manage onboarding, and help shape a culture that attracts top talent.",
-  },
-  {
-    id: "5",
-    title: "Software Engineering Intern",
-    company: "Netflix",
-    location: "India · US · Poland · Japan",
-    slug: "swe-intern-netflix",
-    type: "Internship",
-    department: "Engineering & Data",
-    experience: "Bachelor's / Master's / PhD",
-    mode: "On-site",
-    duration: "12 weeks (Summer)",
-    description: "12-week summer internship immersing you in Netflix's unique culture. Work on meaningful projects across Engineering, Data & Insights, Content, Finance, Marketing, and Program Management.",
-    applyUrl: "https://jobs.netflix.com/careers/internships",
   },
 ]
 
