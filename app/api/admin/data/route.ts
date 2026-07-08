@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf, cc, eaply, hireReq, careersRes, hrAICE, flagship, bugBash] = await Promise.all([
+  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf, cc, eaply, hireReq, careersRes, hrAICE, flagship, bugBash, campusAmb] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "ai_content_engine_hackathon").order("created_at", { ascending: false }),
     supabase.from("flagship_training_registrations").select("*").order("created_at", { ascending: false }),
     supabase.from("bug_bash_reports").select("*").order("created_at", { ascending: false }),
+    supabase.from("campus_ambassadors").select("*").order("submitted_at", { ascending: false }),
   ])
 
   // Build slug → title lookup for enriching job applications
@@ -69,5 +70,6 @@ export async function GET(req: NextRequest) {
     aiContentEngineHackathon: hrAICE.data || [],
     flagshipTraining: flagship.data || [],
     bugBashReports: bugBash.data || [],
+    campusAmbassadors: campusAmb.data || [],
   })
 }

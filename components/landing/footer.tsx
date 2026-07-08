@@ -20,7 +20,7 @@ const FOOTER_LINKS = [
       { label: "Student Insights",       href: "/student-insights" },
       { label: "Interview Experience",   href: "/interview-feedback" },
       { label: "Reviews",                href: "/reviews" },
-      { label: "Campus Ambassador",      href: "/campus-ambassador" },
+      { label: "Campus Ambassador",      href: "/campus-ambassador-program" },
     ],
   },
   {

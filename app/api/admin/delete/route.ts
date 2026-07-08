@@ -19,6 +19,7 @@ const ALLOWED_TABLES = [
   "patent_analyst_feedback",
   "early_apply",
   "careers_applications",
+  "campus_ambassadors",
 ]
 
 export async function DELETE(req: NextRequest) {

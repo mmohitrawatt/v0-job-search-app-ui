@@ -76,6 +76,67 @@ CREATE POLICY "Allow public insert" ON campus_ambassador_applications
 -- Admins can read all rows (service role bypasses RLS automatically)
 
 
+-- ─── Table: campus_ambassadors ───────────────────────────────────────────────
+-- Backs the Campus Ambassador Application Portal at /campus-ambassador-program
+CREATE TABLE IF NOT EXISTS campus_ambassadors (
+  id                     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Personal Information
+  full_name              TEXT NOT NULL,
+  email                  TEXT NOT NULL,
+  phone                  TEXT NOT NULL,
+  gender                 TEXT,
+  city                   TEXT,
+  state                  TEXT,
+  linkedin               TEXT,
+  instagram              TEXT,
+
+  -- Academic Information
+  college                TEXT NOT NULL,
+  university             TEXT,
+  degree                 TEXT,
+  branch                 TEXT,
+  year                   TEXT NOT NULL,
+  graduation_year        TEXT,
+
+  -- Campus Information
+  clubs                  TEXT[] NOT NULL DEFAULT '{}',
+  leadership_experience  TEXT,
+
+  -- Social Presence
+  instagram_followers    TEXT,
+  linkedin_followers     TEXT,
+  content_creator        TEXT NOT NULL,
+
+  -- Outreach Potential
+  student_reach          TEXT NOT NULL,
+
+  -- Motivation
+  motivation             TEXT NOT NULL,
+
+  -- Availability
+  availability           TEXT NOT NULL,
+  communication          TEXT NOT NULL,
+
+  -- Agreement
+  agreed_performance_based BOOLEAN NOT NULL DEFAULT FALSE,
+  agreed_communication     BOOLEAN NOT NULL DEFAULT FALSE,
+
+  -- Admin
+  status                 TEXT NOT NULL DEFAULT 'Pending',
+  submitted_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at              TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- RLS: allow inserts from anon (public form submissions)
+ALTER TABLE campus_ambassadors ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public insert" ON campus_ambassadors
+  FOR INSERT TO anon WITH CHECK (true);
+
+-- Admins can read/update all rows (service role bypasses RLS automatically)
+
+
 -- ─── Storage bucket: hackathon-screenshots ───────────────────────────────────
 -- Run this separately in Supabase Dashboard → Storage → New bucket
 -- OR execute via SQL:
