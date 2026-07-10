@@ -90,6 +90,19 @@ const STATIC_JOBS: Job[] = [
     duration: "3 months",
     description: "Help build the team that builds the product. You'll source and screen candidates, coordinate interviews, manage onboarding, and help shape a culture that attracts top talent.",
   },
+  {
+    id: "kv-1",
+    title: "Database Architect",
+    company: "Kendriya Vidyalaya",
+    location: "India",
+    slug: "database-architect-kendriya-vidyalaya",
+    type: "Full Time",
+    department: "Engineering",
+    experience: "3–8 yr",
+    mode: "On-site",
+    stipend: "₹50K–80K/month",
+    description: "Design and maintain scalable, secure, and high-performance database architectures. Create logical and physical data models, design schemas, indexing strategies, and normalization for optimal performance. Evaluate and implement SQL and NoSQL technologies, plan cloud migrations (AWS, Azure, or GCP), and optimize performance through query tuning, partitioning, and replication. Design high-availability, backup, and disaster recovery solutions, implement data governance and security best practices, and architect AI-ready data foundations supporting RAG, vector databases, and semantic search. Collaborate with application, DevOps, data engineering, and AI teams. Compensation ₹50K–80K per month, based on experience and expertise.",
+  },
 ]
 
 export default async function JobsPage() {

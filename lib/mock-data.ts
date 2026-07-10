@@ -258,6 +258,27 @@ export const MOCK_JOBS: Job[] = [
       { portal: "linkedin", benefit: "Easy Apply", recommended: false },
     ],
   },
+  {
+    id: "10",
+    title: "Database Architect",
+    company: "Kendriya Vidyalaya",
+    location: "India",
+    type: "Full-time",
+    skills: ["SQL", "NoSQL", "Database Design", "Cloud Migration", "Data Governance"],
+    missingSkills: ["Vector Databases", "RAG Architecture"],
+    matchScore: 78,
+    salary: "₹50K–80K/month",
+    initials: "KV",
+    color: "bg-emerald-100 text-emerald-700",
+    description:
+      "Design and maintain scalable, secure, and high-performance database architectures. Create logical and physical data models, design schemas, indexing strategies, and normalization for optimal performance. Evaluate and implement SQL and NoSQL technologies, plan cloud migrations (AWS, Azure, or GCP), and optimize performance through query tuning, partitioning, and replication. Design high-availability, backup, and disaster recovery solutions, implement data governance and security best practices, and architect AI-ready data foundations supporting RAG, vector databases, and semantic search. Collaborate with application, DevOps, data engineering, and AI teams. Compensation: ₹50K–80K per month based on experience and expertise.",
+    isRemote: false,
+    portal: "naukri",
+    portalListings: [
+      { portal: "naukri", benefit: "Direct Apply", recommended: true },
+      { portal: "linkedin", benefit: "Easy Apply", recommended: false },
+    ],
+  },
 ]
 
 export type QuestionCategory = "technical" | "behavioral" | "system-design" | "debugging"

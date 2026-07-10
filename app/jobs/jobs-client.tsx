@@ -29,6 +29,7 @@ const COMPANY_COLORS: Record<string, string> = {
   "BrowserStack":           "#F1692F",
   "Trippyway":              "#0F766E",
   "Tapwave":                "#2563EB",
+  "Kendriya Vidyalaya":     "#1D3A8F",
   "Top Institute of India": "#1D3A8F",
   "Paytm":                  "#00BAF2",
   "Byju's":                 "#6D28D9",
@@ -41,6 +42,7 @@ const FEATURED_COMPANIES: Array<{
   tagline: string; active: boolean; roles?: number
 }> = [
   { name: "Tapwave",               industry: "NFC · Smart Tech",       stage: "Startup",  size: "10+",    tagline: "NFC Business Cards & Digital Networking",     active: true,  roles: 2 },
+  { name: "Kendriya Vidyalaya",     industry: "Education · Govt.",      stage: "Govt.",    size: "10k+",   tagline: "Central government school organization",     active: true,  roles: 1 },
   { name: "Trippyway",             industry: "Travel · AI",            stage: "Seed",     size: "50+",    tagline: "AI-powered travel discovery startup",         active: true,  roles: 3 },
   { name: "Netflix",               industry: "Streaming · Tech",       stage: "Public",   size: "12k+",   tagline: "World's leading entertainment platform",       active: true,  roles: 1 },
   { name: "Top Institute of India",industry: "Research · Academia",    stage: "Govt.",    size: "10k+",   tagline: "India's premier science & tech institution",   active: true,  roles: 1 },
@@ -176,8 +178,9 @@ function CategoryCard({ cat, index, onClick }: {
    COMPANY LETTER ICON  (first word, first letter — styled)
 ───────────────────────────────────────────────────────────────────────────── */
 const COMPANY_LOGOS: Record<string, string> = {
-  "Tapwave":   "/tapwave.jpeg",
-  "Trippyway": "/trippyway-logo.jpg",
+  "Tapwave":             "/tapwave.jpeg",
+  "Trippyway":           "/trippyway-logo.jpg",
+  "Kendriya Vidyalaya":  "/kendriya-vidyalaya-logo.svg",
 }
 
 function CompanyIcon({ name, size = 52 }: { name: string; size?: number }) {

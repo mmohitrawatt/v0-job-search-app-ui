@@ -86,7 +86,36 @@ Work with basic SaaS tools and Adobe Creative Suite to deliver high-quality outp
 Iterate quickly on feedback and maintain consistency across all brand touchpoints`,
     apply_type: "direct",
   },
+  {
+    id: "kv-1",
+    title: "Database Architect",
+    company: "Kendriya Vidyalaya",
+    location: "India",
+    slug: "database-architect-kendriya-vidyalaya",
+    description: `Design and maintain scalable, secure, and high-performance database architectures
+Create logical and physical data models based on business and application requirements
+Design database schemas, relationships, indexing strategies, and normalization for optimal performance
+Evaluate, select, and implement appropriate SQL and NoSQL database technologies
+Plan and execute database migration and modernization initiatives, including cloud migrations (AWS, Azure, or GCP)
+Optimize database performance through query tuning, partitioning, replication, and indexing
+Design high-availability, backup, disaster recovery, and failover solutions
+Implement data governance, security, encryption, access control, and compliance best practices
+Develop data integration strategies for applications, APIs, ETL pipelines, analytics, and AI/ML platforms
+Architect AI-ready data foundations that support RAG, vector databases, semantic search, recommendation systems, and intelligent analytics
+Collaborate with application, DevOps, data engineering, and AI teams to ensure scalable and reliable data infrastructure
+Monitor database health, troubleshoot production issues, and continuously improve performance, scalability, and reliability
+Document database architecture, standards, migration plans, and operational procedures
+Evaluate emerging database technologies and recommend architectural improvements aligned with business goals
+Compensation ₹50K–80K per month, based on experience and expertise`,
+    apply_type: "direct",
+  },
 ]
+
+const COMPANY_LOGOS: Record<string, string> = {
+  "Tapwave": "/tapwave.jpeg",
+  "Trippyway": "/trippyway-logo.jpg",
+  "Kendriya Vidyalaya": "/kendriya-vidyalaya-logo.svg",
+}
 
 export default async function JobDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -141,7 +170,16 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           marginBottom: 24,
         }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-            <div>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
+              {COMPANY_LOGOS[(job as Job).company] && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={COMPANY_LOGOS[(job as Job).company]}
+                  alt={(job as Job).company}
+                  style={{ width: 56, height: 56, borderRadius: 12, border: "1.5px solid #e2e8f0", objectFit: "contain", padding: 4, background: "#fff", flexShrink: 0 }}
+                />
+              )}
+              <div>
               <h1 style={{ fontSize: "clamp(22px,4vw,30px)", fontWeight: 900, color: "#0f172a", margin: "0 0 10px", letterSpacing: "-.4px", lineHeight: 1.2 }}>
                 {(job as Job).title}
               </h1>
@@ -163,6 +201,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                   </svg>
                   {(job as Job).location}
                 </span>
+              </div>
               </div>
             </div>
           </div>
