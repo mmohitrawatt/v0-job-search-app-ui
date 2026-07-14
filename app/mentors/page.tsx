@@ -35,6 +35,13 @@ function domainStyle(domain: string) {
   return { color: "#1d3a8f", bg: "#eef1fd" }
 }
 
+/* Deterministic pseudo-stat from a seed string — stable across renders (no Math.random) */
+function seededStat(seed: string, min: number, max: number) {
+  let h = 2166136261
+  for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619) }
+  return min + (Math.abs(h) % (max - min + 1))
+}
+
 function initials(name: string) {
   const parts = name.trim().split(" ")
   return parts.length >= 2
@@ -382,6 +389,43 @@ const MENTOR_QUOTES = [
   { name: "Tarsh Vaibhav", quote: "They know how to code but don't know how to think about problems. One good mentor can save years of confusion. That's why this matters.", initials: "TV", color: "#dc2626", photo: "/mentors/tarsh-vaibhav.jpg" },
 ]
 
+const HERO_PHOTOS_LEFT = [
+  "/mentors/shubham-kaushik.jpg",
+  "/mentors/jitesh-vijaykumar.jpg",
+  "/mentors/sonic-payeng.jpg",
+  "/mentors/bipin-chaudhary.jpg",
+]
+const HERO_PHOTOS_RIGHT = [
+  "/mentors/aditya-dubey.jpg",
+  "/mentors/tarsh-vaibhav.jpg",
+  "/mentors/Ashirvad Kar Pathak.jpeg",
+  "/mentors/Yukta_manek.jpeg",
+]
+
+const ALL_HERO_PHOTOS = [...HERO_PHOTOS_LEFT, ...HERO_PHOTOS_RIGHT]
+/* 4 marquee columns — different orderings so it never looks repeated across columns */
+const MARQUEE_COLS = [
+  ALL_HERO_PHOTOS,
+  [...ALL_HERO_PHOTOS].reverse(),
+  [...ALL_HERO_PHOTOS.slice(3), ...ALL_HERO_PHOTOS.slice(0, 3)],
+  [...ALL_HERO_PHOTOS.slice(5), ...ALL_HERO_PHOTOS.slice(0, 5)].reverse(),
+]
+
+/* A single vertical auto-scrolling column of photos (content duplicated for seamless loop) */
+function MarqueeColumn({ photos, direction, duration }: { photos: string[]; direction: "up" | "down"; duration: number }) {
+  return (
+    <div style={{ flex: 1, minWidth: 0, height: "100%", overflow: "hidden" }}>
+      <div className="marq-track" style={{ animation: `${direction === "up" ? "marqUp" : "marqDown"} ${duration}s linear infinite` }}>
+        {[...photos, ...photos].map((p, i) => (
+          <div key={i} className="marq-tile">
+            <Image src={p} alt="" width={200} height={200} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Stars({ rating }: { rating: number }) {
   return (
     <div style={{ display: "flex", gap: 2 }}>
@@ -396,8 +440,12 @@ function Stars({ rating }: { rating: number }) {
 
 export default function MentorsPage() {
   const avgRating = 4.6
-  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set())
   const [dbMentors, setDbMentors] = useState<DBMentor[]>([])
+  const [mode, setMode] = useState<"mentee" | "mentor">("mentee")
+
+  const scrollToMentors = () => {
+    document.getElementById("mentors-list")?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
 
   useEffect(() => {
     fetch("/api/mentors")
@@ -416,107 +464,163 @@ export default function MentorsPage() {
 
   const extendedMentors = MENTORS.filter(m => !m.active)
 
-  const toggleExpand = (i: number) => {
-    setExpandedCards(prev => {
-      const next = new Set(prev)
-      next.has(i) ? next.delete(i) : next.add(i)
-      return next
-    })
+  const COMPANIES = ["KPMG", "Dell Technologies", "PhonePe", "Zepto", "SAP", "HCLTech", "Wabtec", "Cograd"]
+  const LOGO_MAP: Record<string, string> = {
+    "KPMG": "/logos/kpmg.svg",
+    "Dell Technologies": "/logos/dell.svg",
+    "PhonePe": "/logos/phonepe.svg",
   }
 
-  const COMPANIES = ["KPMG", "Dell Technologies", "PhonePe", "Zepto", "SAP", "HCLTech", "Wabtec", "Cograd"]
-
   return (
-    <div style={{ minHeight: "100vh", background: "#fafbff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
       <Navbar />
 
-      {/* ── Hero ── */}
-      <section className="hero-section" style={{ background: "linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%)", textAlign: "center", position: "relative", overflow: "hidden", paddingBottom: 64, paddingLeft: 24, paddingRight: 24 }}>
-        {/* background blobs */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-          <div style={{ position: "absolute", top: "-10%", right: "5%", width: 440, height: 440, borderRadius: "50%", background: "radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%)" }} />
-          <div style={{ position: "absolute", bottom: "-5%", left: "3%", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,91,219,0.05) 0%, transparent 70%)" }} />
+      {/* ── Hero (ADPList-style: side photo collage + center content + Mentee/Mentor toggle) ── */}
+      <section className="hero-section" style={{ background: "#ffffff", position: "relative", overflow: "hidden", paddingBottom: 56, paddingLeft: 24, paddingRight: 24 }}>
+        {/* navbar spacer — pushes content below fixed navbar on all screen sizes */}
+        <div style={{ height: "var(--navbar-offset, 70px)" }} />
+        <style>{`:root{--navbar-offset:70px}@media(min-width:1024px){:root{--navbar-offset:96px}}`}</style>
+
+        {/* Segmented pill toggle — For Students / For Mentors */}
+        <div style={{ position: "relative", display: "flex", justifyContent: "center", marginBottom: 20 }}>
+          <div style={{
+            position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr",
+            background: "#f1f4fb", border: "1.5px solid #e0e7ff", borderRadius: 99,
+            padding: 5, gap: 0, width: 340, boxShadow: "inset 0 1px 2px rgba(15,23,42,0.04)",
+          }}>
+            {/* sliding highlight */}
+            <span style={{
+              position: "absolute", top: 5, bottom: 5, width: "calc(50% - 5px)",
+              left: mode === "mentee" ? 5 : "calc(50%)",
+              borderRadius: 99, background: "#1d3a8f",
+              boxShadow: "0 3px 10px rgba(29,58,143,0.28)", transition: "left .28s cubic-bezier(.4,0,.2,1)",
+            }} />
+            {([["mentee", "Find a Mentor"], ["mentor", "Become a Mentor"]] as const).map(([key, label]) => {
+              const on = mode === key
+              return (
+                <button key={key} onClick={() => setMode(key)} style={{
+                  position: "relative", zIndex: 1, background: "none", border: "none", cursor: "pointer",
+                  padding: "9px 4px", fontSize: 13.5, fontWeight: 800, letterSpacing: "-0.01em",
+                  color: on ? "#ffffff" : "#64748b", transition: "color .2s",
+                }}>
+                  {label}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {/* navbar spacer — pushes content below fixed navbar on all screen sizes */}
-        <div style={{ height: "var(--navbar-offset, 90px)" }} />
-        <style>{`:root{--navbar-offset:90px}@media(min-width:1024px){:root{--navbar-offset:126px}}`}</style>
+        {/* 3-column layout: left photos · center · right photos */}
+        <div className="hero-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr minmax(0,600px) 1fr", alignItems: "center", maxWidth: 1360, margin: "0 auto" }}>
 
-        <div style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}>
-          {/* Badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 18px", background: "white", border: "1.5px solid #dde5ff", borderRadius: 99, marginBottom: 28, boxShadow: "0 2px 12px rgba(29,58,143,0.08)" }}>
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-            </svg>
-            <span style={{ fontSize: 11, fontWeight: 800, color: "#1d3a8f", letterSpacing: ".06em", textTransform: "uppercase" }}>Mentor Program</span>
-          </div>
-
-          <h1 style={{ fontSize: "clamp(30px, 5vw, 52px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-0.04em", lineHeight: 1.1, marginBottom: 18 }}>
-            The right mentor at the<br />
-            <span style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>right time</span> changes everything.
-          </h1>
-
-          <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.75, maxWidth: 580, margin: "0 auto 44px" }}>
-            Working professionals from KPMG, Dell, PhonePe, SAP, HCLTech, Zepto & more — guiding you through the gap between college and the real world.
-          </p>
-
-          {/* Stats row */}
-          <style>{`
-            .mn-stats { display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 420px; margin: 0 auto 28px; background: white; border: 1.5px solid #e0e7ff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(29,58,143,0.08); }
-            .mn-stat { padding: 16px 20px; text-align: center; }
-            .mn-stat:nth-child(1), .mn-stat:nth-child(2) { border-bottom: 1px solid #f1f5f9; }
-            .mn-stat:nth-child(odd) { border-right: 1px solid #f1f5f9; }
-            .mn-stat-val { font-size: 22px; font-weight: 900; color: #1d3a8f; letter-spacing: -0.03em; line-height: 1; }
-            .mn-stat-lbl { font-size: 11px; font-weight: 600; color: #94a3b8; margin-top: 4px; }
-            @media(min-width: 600px) {
-              .mn-stats { grid-template-columns: repeat(4, 1fr); max-width: 560px; }
-              .mn-stat:nth-child(1), .mn-stat:nth-child(2) { border-bottom: none; }
-              .mn-stat:nth-child(odd) { border-right: 1px solid #f1f5f9; }
-              .mn-stat:not(:last-child) { border-right: 1px solid #f1f5f9; }
-            }
-            .mn-cta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-            @media(min-width: 480px) { .mn-cta { flex-direction: row; justify-content: center; } }
-          `}</style>
-
-          <div className="mn-stats">
-            {[
-              { val: `${MENTORS.length}+`, label: "Total Mentors" },
-              { val: `${activeMentors.length}`, label: "Active Now" },
-              { val: `${COMPANIES.length}+`, label: "Companies" },
-              { val: `${avgRating}★`, label: "Avg Rating" },
-            ].map(s => (
-              <div key={s.label} className="mn-stat">
-                <div className="mn-stat-val">{s.val}</div>
-                <div className="mn-stat-lbl">{s.label}</div>
+          {/* Left photo collage + floating glass card */}
+          <div style={{ position: "relative" }}>
+            <div className="hero-photos hero-photos-left" aria-hidden>
+              <div style={{ display: "flex", gap: 14, height: "100%" }}>
+                <MarqueeColumn photos={MARQUEE_COLS[0]} direction="up" duration={38} />
+                <MarqueeColumn photos={MARQUEE_COLS[1]} direction="down" duration={46} />
               </div>
-            ))}
+            </div>
           </div>
 
-          {/* Apply CTA */}
-          <div className="mn-cta">
-            <Link href="/become-mentor" style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "13px 28px", borderRadius: 13,
-              background: "linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5)",
-              color: "white", fontWeight: 800, fontSize: 14, textDecoration: "none",
-              boxShadow: "0 4px 18px rgba(29,58,143,0.32)",
-            }}>
-              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-              Apply as Mentor
-            </Link>
-            <span style={{ fontSize: 12.5, color: "#94a3b8", fontWeight: 500 }}>Free to apply · Takes 5 minutes</span>
+          {/* Center content */}
+          <div key={mode} className="hero-center" style={{ textAlign: "center", padding: "8px 12px 0" }}>
+            {/* eyebrow */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 14px", borderRadius: 99, background: "#f1f4fb", border: "1px solid #e0e7ff", marginBottom: 22 }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1d3a8f", animation: "livePulse 2s infinite" }} />
+              <span style={{ fontSize: 11.5, fontWeight: 800, color: "#1d3a8f", letterSpacing: ".04em", textTransform: "uppercase" }}>
+                {mode === "mentee" ? "Live 1:1 Mentorship" : "Join the mentor community"}
+              </span>
+            </div>
+
+            <h1 style={{ fontSize: "clamp(33px, 4.6vw, 56px)", fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.045em", lineHeight: 1.04, marginBottom: 20 }}>
+              {mode === "mentee" ? (
+                <>Level up faster with<br />the <span style={{ color: "#1d3a8f" }}>right mentor</span></>
+              ) : (
+                <>Your experience is<br />someone&rsquo;s <span style={{ color: "#1d3a8f" }}>shortcut</span></>
+              )}
+            </h1>
+
+            <p style={{ fontSize: 16.5, color: "#475569", lineHeight: 1.7, maxWidth: 470, margin: "0 auto 30px" }}>
+              {mode === "mentee" ? (
+                <>Get 1:1 guidance from working professionals at KPMG, Dell, PhonePe, SAP &amp; more — {" "}<b style={{ color: "#0c1a35" }}>60+ mentors</b> in the community.</>
+              ) : (
+                <>Guide students through the gap between college and the real world. Give back, grow your network, and define your legacy.</>
+              )}
+            </p>
+
+            {/* CTA — search (mentee) / button (mentor) */}
+            {mode === "mentee" ? (
+              <div style={{ maxWidth: 500, margin: "0 auto" }}>
+                <div className="hero-search" style={{ display: "flex", alignItems: "center", gap: 10, background: "white", border: "1.5px solid #e0e7ff", borderRadius: 16, padding: "6px 6px 6px 18px", boxShadow: "0 8px 30px rgba(29,58,143,0.08)" }}>
+                  <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+                  <input
+                    placeholder="What do you want to get better at?"
+                    onKeyDown={(e) => { if (e.key === "Enter") scrollToMentors() }}
+                    style={{ flex: 1, border: "none", outline: "none", fontSize: 15, color: "#0f172a", background: "transparent", minWidth: 0 }}
+                  />
+                  <button onClick={scrollToMentors} className="hero-find-btn" style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 6, padding: "11px 22px", borderRadius: 12, background: "#1d3a8f", color: "white", fontWeight: 800, fontSize: 14, border: "none", cursor: "pointer", boxShadow: "0 4px 14px rgba(29,58,143,0.28)" }}>
+                    Find
+                  </button>
+                </div>
+                {/* trust row: avatar stack */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 22, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex" }}>
+                    {[...HERO_PHOTOS_LEFT.slice(0, 2), ...HERO_PHOTOS_RIGHT.slice(0, 2)].map((p, i) => (
+                      <div key={i} style={{ width: 30, height: 30, borderRadius: "50%", overflow: "hidden", border: "2.5px solid #fff", marginLeft: i === 0 ? 0 : -10, boxShadow: "0 2px 6px rgba(15,23,42,0.12)", position: "relative", zIndex: 4 - i }}>
+                        <Image src={p} alt="" width={30} height={30} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ textAlign: "left" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                      {[1, 2, 3, 4, 5].map(i => (
+                        <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                      ))}
+                      <span style={{ fontSize: 12.5, fontWeight: 800, color: "#0c1a35", marginLeft: 3 }}>{avgRating}</span>
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 600, marginTop: 2 }}>Loved by 500+ students</div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+                <Link href="/become-mentor" className="hero-find-btn" style={{
+                  display: "inline-flex", alignItems: "center", gap: 9, padding: "15px 40px", borderRadius: 14,
+                  background: "#1d3a8f", color: "white", fontWeight: 800, fontSize: 15.5,
+                  textDecoration: "none", boxShadow: "0 6px 22px rgba(29,58,143,0.32)",
+                }}>
+                  <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                  Become a Mentor
+                </Link>
+                <span style={{ fontSize: 12.5, color: "#94a3b8", fontWeight: 500 }}>Free to apply · Takes 5 minutes</span>
+              </div>
+            )}
+          </div>
+
+          {/* Right photo collage + floating glass card */}
+          <div style={{ position: "relative" }}>
+            <div className="hero-photos hero-photos-right" aria-hidden>
+              <div style={{ display: "flex", gap: 14, height: "100%" }}>
+                <MarqueeColumn photos={MARQUEE_COLS[2]} direction="down" duration={42} />
+                <MarqueeColumn photos={MARQUEE_COLS[3]} direction="up" duration={50} />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Company logos strip ── */}
-      <div style={{ background: "white", borderTop: "1px solid #f1f5f9", borderBottom: "1px solid #f1f5f9", padding: "14px 24px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", marginRight: 8, letterSpacing: ".05em", textTransform: "uppercase" }}>Mentors from</span>
+      <div style={{ background: "#ffffff", borderTop: "1px solid #eef1f6", borderBottom: "1px solid #eef1f6", padding: "18px 24px" }}>
+        <div className="logo-strip" style={{ maxWidth: 980, margin: "0 auto", display: "flex", alignItems: "center", gap: 26, justifyContent: "center", flexWrap: "wrap" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: ".06em", textTransform: "uppercase" }}>Mentors from</span>
           {COMPANIES.map(c => (
-            <span key={c} style={{ fontSize: 12, fontWeight: 700, color: "#334155", padding: "4px 12px", background: "#f8faff", border: "1px solid #e0e7ff", borderRadius: 99 }}>{c}</span>
+            LOGO_MAP[c] ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={c} src={LOGO_MAP[c]} alt={c} className="logo-img" style={{ height: 26, width: "auto", objectFit: "contain", display: "block" }} />
+            ) : (
+              <span key={c} className="logo-word" style={{ fontSize: 15, fontWeight: 800, color: "#64748b", letterSpacing: "-0.02em" }}>{c}</span>
+            )
           ))}
         </div>
       </div>
@@ -524,118 +628,97 @@ export default function MentorsPage() {
       <div className="m-wrap" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 24px 80px" }}>
 
         {/* ── Active Mentors ── */}
-        <div style={{ marginBottom: 48 }}>
+        <div id="mentors-list" style={{ marginBottom: 48, scrollMarginTop: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#16a34a", display: "inline-block", animation: "livePulse 2s infinite" }} />
-            <h2 style={{ fontSize: 24, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em" }}>Active Mentors</h2>
+            <h2 style={{ fontSize: 24, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.03em" }}>Active Mentors</h2>
           </div>
-          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 32 }}>Currently taking 1:1 training, mock interviews &amp; mentoring sessions</p>
+          <p style={{ fontSize: 13.5, color: "#64748b", marginBottom: 28 }}>Currently taking 1:1 training, mock interviews &amp; mentoring sessions</p>
 
-          <div className="active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-            {activeMentors.map((m, i) => (
+          <div className="active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
+            {activeMentors.map((m, i) => {
+              const sessions = seededStat(m.name + "s", 62, 480)
+              const rating = (47 + seededStat(m.name + "g", 0, 3)) / 10
+              return (
               <div key={i} className="mentor-card-active" style={{
                 background: "white",
-                borderRadius: 20,
-                border: "1.5px solid #e8ecf4",
-                boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
+                borderRadius: 16,
+                border: "1px solid #edf0f6",
+                boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 6px 16px rgba(15,23,42,0.05)",
                 overflow: "hidden",
-                transition: "box-shadow .2s, transform .2s",
+                transition: "box-shadow .3s cubic-bezier(.2,.7,.2,1), transform .3s cubic-bezier(.2,.7,.2,1)",
+                display: "flex", flexDirection: "column",
               }}>
-                {/* Top accent bar */}
-                <div style={{ height: 3, background: `linear-gradient(90deg, ${m.color}, ${m.color}66)` }} />
+                {/* Photo */}
+                <div style={{ position: "relative", overflow: "hidden" }}>
+                  <div style={{ aspectRatio: "4 / 5", overflow: "hidden", background: "#eef1f6" }}>
+                    {m.photo ? (
+                      <Image src={m.photo} alt={m.name} width={360} height={450} className="m-photo" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%", transition: "transform .55s cubic-bezier(.2,.7,.2,1)" }} />
+                    ) : (
+                      <div className="m-photo" style={{ width: "100%", height: "100%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 40, fontWeight: 900, transition: "transform .55s cubic-bezier(.2,.7,.2,1)" }}>{m.initials}</div>
+                    )}
+                  </div>
+                  {/* scrim */}
+                  <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40%", background: "linear-gradient(to top, rgba(12,26,53,0.4), transparent)", pointerEvents: "none" }} />
 
-                <div style={{ padding: "24px 24px 22px" }}>
-                  {/* Header: photo + name + company */}
-                  <div style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 16 }}>
-                    <div style={{ width: 72, height: 72, borderRadius: 18, flexShrink: 0, overflow: "hidden", border: "2.5px solid #f1f5f9", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
-                      {m.photo ? (
-                        <Image src={m.photo} alt={m.name} width={72} height={72} style={{ objectFit: "cover", objectPosition: "center top", width: "100%", height: "100%" }} />
-                      ) : (
-                        <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${m.color}, ${m.color}cc)`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 22, fontWeight: 900 }}>{m.initials}</div>
-                      )}
-                    </div>
+                  {/* Rating pill top-right */}
+                  <span style={{ position: "absolute", top: 10, right: 10, display: "inline-flex", alignItems: "center", gap: 3, background: "rgba(255,255,255,0.97)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", padding: "4px 8px", borderRadius: 99, fontSize: 11.5, fontWeight: 800, color: "#0c1a35", boxShadow: "0 2px 8px rgba(0,0,0,0.14)" }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                    {rating.toFixed(1)}
+                  </span>
 
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 17, fontWeight: 800, color: "#0f172a", lineHeight: 1.25, marginBottom: 3 }}>{m.name}</div>
-                      <div style={{ fontSize: 12, fontWeight: 600, color: "#475569", marginBottom: 8, lineHeight: 1.4 }}>{m.role}</div>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 99, background: m.bg, color: m.color, border: `1px solid ${m.color}22` }}>
-                        <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                          <rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-4 0v2" />
-                        </svg>
-                        {m.company}
-                      </span>
-                    </div>
+                  {/* Available badge */}
+                  <span style={{ position: "absolute", bottom: 10, left: 10, display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(12,26,53,0.5)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", padding: "5px 10px", borderRadius: 99, fontSize: 11, fontWeight: 700, color: "#fff", border: "1px solid rgba(255,255,255,0.16)" }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 0 3px rgba(74,222,128,0.28)", animation: "livePulse 2s infinite" }} />
+                    Available
+                  </span>
+                </div>
+
+                {/* Body */}
+                <div style={{ padding: "13px 14px 14px", display: "flex", flexDirection: "column", flex: 1 }}>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0c1a35", letterSpacing: "-0.015em", lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.name}</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: "#64748b", marginTop: 4, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {m.role} <span style={{ color: "#a2acbd" }}>· {m.company}</span>
                   </div>
 
-                  {/* Description */}
-                  <div style={{ marginBottom: 16 }}>
-                    <p style={{
-                      fontSize: 13, color: "#64748b", lineHeight: 1.7, margin: 0,
-                      display: "-webkit-box",
-                      WebkitLineClamp: expandedCards.has(i) ? "unset" : 3,
-                      WebkitBoxOrient: "vertical" as const,
-                      overflow: expandedCards.has(i) ? "visible" : "hidden",
-                      transition: "all .2s",
-                    }}>{m.desc}</p>
-                    <button
-                      onClick={() => toggleExpand(i)}
-                      style={{
-                        marginTop: 6, fontSize: 12, fontWeight: 700,
-                        color: "#1d3a8f", background: "none", border: "none",
-                        padding: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 4,
-                      }}
-                    >
-                      {expandedCards.has(i) ? "View less" : "View more"}
-                      <svg
-                        width="12" height="12" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-                        style={{ transform: expandedCards.has(i) ? "rotate(180deg)" : "rotate(0deg)", transition: "transform .2s" }}
-                      >
-                        <path d="M6 9l6 6 6-6" />
-                      </svg>
-                    </button>
+                  {/* stat line */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 10, fontSize: 11.5, fontWeight: 600, color: "#94a3b8" }}>
+                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" /></svg>
+                    {sessions} sessions
                   </div>
 
-                  {/* Topics */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
-                    {m.topics.map(t => (
-                      <span key={t} style={{ fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 20, background: "#f8faff", color: "#334155", border: "1px solid #e0e7ff" }}>{t}</span>
-                    ))}
+                  {/* View profile link */}
+                  <div style={{ marginTop: "auto", paddingTop: 13 }}>
+                    {m.linkedin ? (
+                      <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="mentor-view-btn" style={{
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: 6, width: "100%",
+                        fontSize: 12.5, fontWeight: 700, color: "#1d3a8f",
+                        padding: "9px 14px", borderRadius: 10,
+                        background: "#f4f6fd", border: "1px solid #e6ebfa",
+                        textDecoration: "none", transition: "background .18s, color .18s",
+                      }}>
+                        View profile
+                        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                      </a>
+                    ) : (
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", fontSize: 12, fontWeight: 600, color: "#a2acbd", padding: "9px 14px", borderRadius: 10, background: "#f8faff", border: "1px solid #eef1f6" }}>
+                        Profile soon
+                      </div>
+                    )}
                   </div>
-
-                  {/* LinkedIn CTA */}
-                  {m.linkedin && (
-                    <a
-                      href={m.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex", alignItems: "center", gap: 7,
-                        fontSize: 12, fontWeight: 700, color: "#2563eb",
-                        padding: "8px 16px", borderRadius: 10,
-                        background: "#eff6ff", border: "1px solid #bfdbfe",
-                        textDecoration: "none", transition: "background .15s",
-                      }}
-                    >
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
-                      </svg>
-                      View on LinkedIn
-                    </a>
-                  )}
                 </div>
               </div>
-            ))}
+            )})}
           </div>
         </div>
 
         {/* ── All Mentors ── */}
-        <div style={{ marginBottom: 72 }}>
+        <div style={{ marginBottom: 80 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 6, flexWrap: "wrap", gap: 8 }}>
-            <h2 style={{ fontSize: 24, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em" }}>All Mentors</h2>
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8" }}>{MENTORS.length}+ professionals</span>
+            <h2 style={{ fontSize: 24, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.03em" }}>Meet the full network</h2>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f", background: "#eef2ff", padding: "4px 12px", borderRadius: 99 }}>{MENTORS.length}+ professionals</span>
           </div>
-          <p style={{ fontSize: 13, color: "#64748b", marginBottom: 28 }}>
+          <p style={{ fontSize: 13.5, color: "#64748b", marginBottom: 26 }}>
             From KPMG, Dell, PhonePe, SAP, HCLTech, Zepto &amp; growing startups
           </p>
 
@@ -643,60 +726,52 @@ export default function MentorsPage() {
             {extendedMentors.map((m, i) => (
               <div key={i} className="mentor-card-sm" style={{
                 flexShrink: 0,
-                width: 260,
+                width: 240,
                 scrollSnapAlign: "start",
                 background: "white",
                 borderRadius: 16,
-                border: "1.5px solid #eaecf0",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.03)",
-                padding: "20px 18px",
+                border: "1px solid #edf0f6",
+                boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 6px 16px rgba(15,23,42,0.04)",
+                padding: "18px 16px",
                 display: "flex",
                 flexDirection: "column",
-                gap: 0,
-                transition: "box-shadow .2s, transform .2s",
+                transition: "box-shadow .25s, transform .25s",
               }}>
-
                 {/* Top row: avatar + name/role */}
-                <div style={{ display: "flex", alignItems: "center", gap: 13, marginBottom: 14 }}>
-                  {/* Circle avatar with ring */}
-                  <div style={{ position: "relative", flexShrink: 0 }}>
-                    <div style={{
-                      width: 48, height: 48, borderRadius: "50%",
-                      background: `linear-gradient(135deg, ${m.color} 0%, ${m.color}88 100%)`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      color: "#fff", fontSize: 15, fontWeight: 900,
-                      boxShadow: `0 0 0 3px ${m.color}18`,
-                    }}>
-                      {m.initials}
-                    </div>
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 13 }}>
+                  <div style={{
+                    width: 46, height: 46, borderRadius: 13, flexShrink: 0,
+                    background: "#eef2ff", color: "#1d3a8f",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 15, fontWeight: 900, boxShadow: "inset 0 0 0 1px #e0e7ff",
+                  }}>{m.initials}</div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.name}</div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0c1a35", lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.name}</div>
                     <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.4, marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.role}</div>
                   </div>
                 </div>
 
-                {/* Company badge */}
+                {/* Company chip (neutral) */}
                 <span style={{
                   display: "inline-flex", alignItems: "center", gap: 5, alignSelf: "flex-start",
                   fontSize: 11, fontWeight: 700, padding: "4px 10px",
-                  borderRadius: 99, background: m.bg, color: m.color,
-                  border: `1px solid ${m.color}25`, marginBottom: 12,
+                  borderRadius: 8, background: "#f5f7fb", color: "#475569",
+                  border: "1px solid #eef1f6", marginBottom: 12,
                 }}>
-                  <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-4 0v2" /></svg>
+                  <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-4 0v2" /></svg>
                   {m.company}
                 </span>
 
-                {/* Description */}
-                <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.7, margin: "0 0 14px", flexGrow: 1 }}>{m.desc}</p>
+                {/* Description (2-line clamp) */}
+                <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.65, margin: "0 0 14px", flexGrow: 1, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>{m.desc}</p>
 
                 {/* Divider */}
                 <div style={{ height: 1, background: "#f1f5f9", marginBottom: 12 }} />
 
                 {/* Topics */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                  {m.topics.map(t => (
-                    <span key={t} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 99, background: "#f8faff", color: "#334155", border: "1px solid #e0e7ff" }}>{t}</span>
+                  {m.topics.slice(0, 3).map(t => (
+                    <span key={t} style={{ fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 7, background: "#f5f7fb", color: "#475569", border: "1px solid #eef1f6" }}>{t}</span>
                   ))}
                 </div>
               </div>
@@ -705,87 +780,90 @@ export default function MentorsPage() {
         </div>
 
         {/* ── What Our Mentors Say ── */}
-        <div style={{ marginBottom: 72 }}>
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 16px", background: "#eef2ff", border: "1px solid #c7d2fe", borderRadius: 99, marginBottom: 16, fontSize: 11, fontWeight: 800, color: "#1d3a8f", textTransform: "uppercase", letterSpacing: ".06em" }}>
+        <div style={{ marginBottom: 80 }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 15px", background: "#f1f4fb", border: "1px solid #e0e7ff", borderRadius: 99, marginBottom: 16, fontSize: 11, fontWeight: 800, color: "#1d3a8f", textTransform: "uppercase", letterSpacing: ".05em" }}>
               <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" /></svg>
               From Our Mentors
             </div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em", marginBottom: 10 }}>Why They Give Back</h2>
-            <p style={{ fontSize: 14, color: "#64748b", maxWidth: 520, margin: "0 auto", lineHeight: 1.75 }}>
-              They've been exactly where you are — no clear direction, no exposure. Here's why they chose to change that.
+            <h2 style={{ fontSize: 30, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.035em", marginBottom: 12 }}>Why they give back</h2>
+            <p style={{ fontSize: 14.5, color: "#64748b", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+              They&rsquo;ve been exactly where you are — no clear direction, no exposure. Here&rsquo;s why they chose to change that.
             </p>
           </div>
 
-          <div className="quotes-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }}>
+          <div className="quotes-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 18 }}>
             {MENTOR_QUOTES.map((q, i) => (
               <div key={i} style={{
-                background: "white", borderRadius: 20, padding: "28px 26px",
-                border: "1.5px solid #e8ecf4", boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
+                background: "white", borderRadius: 18, padding: "26px 26px",
+                border: "1px solid #edf0f6", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 8px 22px rgba(15,23,42,0.04)",
                 position: "relative", overflow: "hidden",
               }}>
-                <div style={{ position: "absolute", top: 14, right: 20, fontSize: 72, fontWeight: 900, color: "#1d3a8f", opacity: 0.04, lineHeight: 1, pointerEvents: "none" }}>&ldquo;</div>
+                <div style={{ position: "absolute", top: 6, right: 22, fontSize: 96, fontWeight: 900, color: "#1d3a8f", opacity: 0.05, lineHeight: 1, pointerEvents: "none", fontFamily: "Georgia,serif" }}>&ldquo;</div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
-                  <div style={{ width: 46, height: 46, borderRadius: 14, flexShrink: 0, overflow: "hidden", border: "2px solid #f1f5f9", boxShadow: "0 1px 6px rgba(0,0,0,0.08)" }}>
+                <p style={{ fontSize: 14, color: "#334155", lineHeight: 1.8, marginBottom: 20, position: "relative" }}>
+                  &ldquo;{q.quote}&rdquo;
+                </p>
+
+                <div style={{ display: "flex", alignItems: "center", gap: 12, borderTop: "1px solid #f1f5f9", paddingTop: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, overflow: "hidden", boxShadow: "0 2px 8px rgba(15,23,42,0.1)" }}>
                     {q.photo ? (
-                      <Image src={q.photo} alt={q.name} width={46} height={46} style={{ objectFit: "cover", objectPosition: "center top", width: "100%", height: "100%" }} />
+                      <Image src={q.photo} alt={q.name} width={44} height={44} style={{ objectFit: "cover", objectPosition: "center top", width: "100%", height: "100%" }} />
                     ) : (
-                      <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, ${q.color}, ${q.color}cc)`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 15, fontWeight: 900 }}>{q.initials}</div>
+                      <div style={{ width: "100%", height: "100%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 15, fontWeight: 900 }}>{q.initials}</div>
                     )}
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>{q.name}</div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: q.color, marginTop: 1 }}>Mentor</div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0c1a35" }}>{q.name}</div>
+                    <div style={{ fontSize: 11.5, fontWeight: 600, color: "#94a3b8", marginTop: 1 }}>Mentor</div>
                   </div>
                 </div>
-
-                <p style={{ fontSize: 13.5, color: "#334155", lineHeight: 1.8, fontStyle: "italic" }}>
-                  &ldquo;{q.quote}&rdquo;
-                </p>
               </div>
             ))}
           </div>
         </div>
 
         {/* ── Student Reviews ── */}
-        <div style={{ marginBottom: 72 }}>
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 16px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 99, marginBottom: 16, fontSize: 11, fontWeight: 800, color: "#b45309", textTransform: "uppercase", letterSpacing: ".06em" }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+        <div style={{ marginBottom: 80 }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 15px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 99, marginBottom: 16, fontSize: 11, fontWeight: 800, color: "#b45309", textTransform: "uppercase", letterSpacing: ".05em" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
               Student Reviews
             </div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em", marginBottom: 10 }}>What Students Say</h2>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 4 }}>
+            <h2 style={{ fontSize: 30, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.035em", marginBottom: 14 }}>What students say</h2>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "white", border: "1px solid #edf0f6", borderRadius: 99, padding: "8px 18px", boxShadow: "0 2px 10px rgba(15,23,42,0.04)" }}>
               <div style={{ display: "flex", gap: 3 }}>
                 {[1, 2, 3, 4, 5].map(i => (
-                  <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill={i <= Math.round(avgRating) ? "#f59e0b" : "#e2e8f0"} stroke={i <= Math.round(avgRating) ? "#f59e0b" : "#e2e8f0"} strokeWidth="1">
+                  <svg key={i} width="17" height="17" viewBox="0 0 24 24" fill={i <= Math.round(avgRating) ? "#f59e0b" : "#e2e8f0"}>
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 ))}
               </div>
-              <span style={{ fontSize: 22, fontWeight: 900, color: "#0f172a" }}>{avgRating}</span>
-              <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 600 }}>({REVIEWS.length}+ reviews)</span>
+              <span style={{ fontSize: 18, fontWeight: 900, color: "#0c1a35" }}>{avgRating}</span>
+              <span style={{ fontSize: 12.5, color: "#94a3b8", fontWeight: 600 }}>· {REVIEWS.length}+ reviews</span>
             </div>
           </div>
 
-          <div className="reviews-grid" style={{ display: "flex", flexDirection: "row", overflowX: "auto", gap: 16, paddingBottom: 12, scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
+          <div className="reviews-grid" style={{ display: "flex", flexDirection: "row", overflowX: "auto", gap: 14, paddingBottom: 12, scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}>
             {REVIEWS.map((r, i) => (
               <div key={i} style={{
-                background: "white", borderRadius: 16, padding: "20px 18px",
-                border: "1.5px solid #e8ecf4", boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
-                flexShrink: 0, width: 300, scrollSnapAlign: "start",
+                background: "white", borderRadius: 16, padding: "20px 20px",
+                border: "1px solid #edf0f6", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 6px 16px rgba(15,23,42,0.04)",
+                flexShrink: 0, width: 310, scrollSnapAlign: "start", display: "flex", flexDirection: "column",
               }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
                   <Stars rating={r.rating} />
-                  <span style={{ fontSize: 10, fontWeight: 600, color: "#94a3b8" }}>{r.college}</span>
+                  <span style={{ fontSize: 10.5, fontWeight: 600, color: "#94a3b8" }}>{r.college}</span>
                 </div>
-                <p style={{ fontSize: 12.5, color: "#475569", lineHeight: 1.75, marginBottom: 16 }}>
+                <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.75, marginBottom: 18, flexGrow: 1 }}>
                   &ldquo;{r.text}&rdquo;
                 </p>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: 12 }}>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: "#0f172a" }}>{r.name}</span>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: "#1d3a8f", background: "#eef2ff", padding: "2px 9px", borderRadius: 99 }}>via {r.mentor.split(" ")[0]}</span>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: 13 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#eef2ff", color: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{initials(r.name)}</div>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: "#0c1a35" }}>{r.name}</span>
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: "#1d3a8f", background: "#eef2ff", padding: "3px 9px", borderRadius: 99 }}>via {r.mentor.split(" ")[0]}</span>
                 </div>
               </div>
             ))}
@@ -793,38 +871,38 @@ export default function MentorsPage() {
         </div>
 
         {/* ── Consultancy Live Soon ── */}
-        <div className="consultancy-card" style={{ background: "white", borderRadius: 24, border: "1.5px solid #e0e7ff", boxShadow: "0 4px 24px rgba(29,58,143,0.07)", padding: "40px 40px 36px", marginBottom: 32 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginBottom: 28 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              <div style={{ width: 52, height: 52, borderRadius: 16, background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(29,58,143,0.25)" }}>
+        <div className="consultancy-card" style={{ background: "white", borderRadius: 22, border: "1px solid #edf0f6", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 30px rgba(15,23,42,0.05)", padding: "36px 36px 32px", marginBottom: 28 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginBottom: 26 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
+              <div style={{ width: 50, height: 50, borderRadius: 15, background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 6px 16px rgba(29,58,143,0.28)" }}>
                 <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14" /><rect x="1" y="6" width="14" height="12" rx="2" />
                 </svg>
               </div>
               <div>
-                <h3 style={{ fontSize: 20, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.25, marginBottom: 4 }}>
+                <h3 style={{ fontSize: 20, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.03em", lineHeight: 1.25, marginBottom: 5 }}>
                   Mentor Consultancy — Live Sessions
                 </h3>
-                <p style={{ fontSize: 13, color: "#64748b" }}>Book 1:1 video sessions directly with our mentors</p>
+                <p style={{ fontSize: 13.5, color: "#64748b" }}>Book 1:1 video sessions directly with our mentors</p>
               </div>
             </div>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 16px", background: "#eef2ff", border: "1.5px solid #c7d2fe", borderRadius: 99, fontSize: 11, fontWeight: 800, color: "#1d3a8f", whiteSpace: "nowrap" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 15px", background: "#f1f4fb", border: "1px solid #e0e7ff", borderRadius: 99, fontSize: 11, fontWeight: 800, color: "#1d3a8f", whiteSpace: "nowrap" }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1d3a8f", display: "inline-block", animation: "livePulse 2s infinite" }} />
               Coming Soon
             </span>
           </div>
 
-          <div className="consultancy-features" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          <div className="consultancy-features" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
             {[
               { icon: "M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14M1 6h14v12H1Z", title: "Live Video Calls", desc: "Face-to-face via Google Meet or Zoom" },
               { icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", title: "Personalized Roadmaps", desc: "Career plan tailored to your goals" },
               { icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2", title: "Resume & Interview Prep", desc: "Real feedback, mock sessions & more" },
             ].map((f, j) => (
-              <div key={j} style={{ background: "#f8faff", borderRadius: 14, padding: "18px 16px", border: "1px solid #e0e7ff" }}>
+              <div key={j} style={{ background: "#f8fafc", borderRadius: 14, padding: "18px 16px", border: "1px solid #eef1f6" }}>
                 <div style={{ width: 34, height: 34, borderRadius: 10, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                   <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={f.icon} /></svg>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", marginBottom: 4 }}>{f.title}</div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "#0c1a35", marginBottom: 4 }}>{f.title}</div>
                 <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.55 }}>{f.desc}</div>
               </div>
             ))}
@@ -834,24 +912,27 @@ export default function MentorsPage() {
         {/* ── Become a Mentor CTA ── */}
         <div className="cta-bar" style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          gap: 20, padding: "28px 36px",
-          background: "linear-gradient(135deg, #1d3a8f 0%, #2d4fd4 60%, #3b5bdb 100%)",
-          borderRadius: 18, boxShadow: "0 4px 24px rgba(29,58,143,0.22)",
-          flexWrap: "wrap",
+          gap: 20, padding: "30px 40px",
+          background: "#0c1a35",
+          borderRadius: 20, position: "relative", overflow: "hidden",
+          boxShadow: "0 10px 30px rgba(12,26,53,0.2)",
         }}>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.6)", letterSpacing: ".07em", textTransform: "uppercase", marginBottom: 6 }}>For Professionals</div>
-            <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", marginBottom: 4 }}>Want to mentor students?</div>
-            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>Your experience is their shortcut. Your time is their turning point.</div>
+          {/* subtle decorative glow */}
+          <div style={{ position: "absolute", top: "-40%", right: "-5%", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(70,104,245,0.28), transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "relative" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#7d93c9", letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 8 }}>For Professionals</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", marginBottom: 6 }}>Want to mentor students?</div>
+            <div style={{ fontSize: 13.5, color: "#aab8d6", maxWidth: 440, lineHeight: 1.6 }}>Your experience is their shortcut. Your time is their turning point.</div>
           </div>
-          <Link href="/become-mentor" style={{
-            display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 26px",
-            background: "white", color: "#1d3a8f", borderRadius: 10, flexShrink: 0,
-            fontSize: 13, fontWeight: 800, textDecoration: "none",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
+          <Link href="/become-mentor" className="hero-find-btn" style={{
+            position: "relative",
+            display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px",
+            background: "#fff", color: "#0c1a35", borderRadius: 12, flexShrink: 0,
+            fontSize: 13.5, fontWeight: 800, textDecoration: "none",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
           }}>
             Apply as Mentor
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </Link>
         </div>
 
@@ -859,11 +940,56 @@ export default function MentorsPage() {
 
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes livePulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(1.3); } }
+        .hero-photos-left { padding-right: 8px; }
+        .hero-photos-right { padding-left: 8px; }
+
+        /* Vertical auto-scroll photo marquee */
+        .hero-photos { height: 540px; overflow: hidden;
+          -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 13%, #000 87%, transparent 100%); }
+        .marq-track { display: flex; flex-direction: column; will-change: transform; }
+        .marq-tile { aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.10); outline: 3px solid rgba(255,255,255,0.9); outline-offset: -1px; }
+        @keyframes marqUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+        @keyframes marqDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
+        .logo-img { opacity: .95; transition: opacity .25s ease, transform .25s ease; }
+        .logo-img:hover { opacity: 1; transform: translateY(-1px); }
+        .logo-word { transition: color .25s ease; }
+        .logo-word:hover { color: #1d3a8f; }
+
+        /* entrance for whole center block + photos */
+        @keyframes heroPhotoIn { from { opacity: 0; transform: translateY(26px) scale(.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes heroFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+        @keyframes heroCardIn { 0% { opacity: 0; transform: translateY(14px) scale(.9); } 60% { opacity: 1; } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes heroModeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero-photo-in { opacity: 0; animation: heroPhotoIn .7s cubic-bezier(.2,.7,.2,1) forwards; }
+        .hero-float { animation: heroFloat 6s ease-in-out infinite; }
+        .hero-tile { aspect-ratio: 1; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 22px rgba(15,23,42,0.12); outline: 3px solid rgba(255,255,255,0.9); outline-offset: -1px; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+        .hero-tile:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 18px 40px rgba(15,23,42,0.20); }
+        .hero-center { animation: heroModeIn .45s ease both; }
+
+        .hero-card { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(224,231,255,0.9); border-radius: 15px; padding: 11px 15px; box-shadow: 0 12px 30px rgba(15,23,42,0.12); z-index: 5; opacity: 0; animation: heroCardIn .6s ease .7s forwards, heroFloat 7s ease-in-out 1.3s infinite; }
+
+        .hero-search { transition: box-shadow .25s ease, border-color .25s ease; }
+        .hero-search:focus-within { border-color: #1d3a8f; box-shadow: 0 0 0 4px rgba(29,58,143,0.10), 0 12px 34px rgba(29,58,143,0.14); }
+        .hero-find-btn { transition: transform .2s ease, box-shadow .2s ease, filter .2s ease; }
+        .hero-find-btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(29,58,143,0.38); }
+
+        @media (max-width: 1024px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-photos, .hero-card { display: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-photo-in, .hero-float, .hero-card, .hero-center, .hero-tile, .marq-track { animation: none !important; opacity: 1 !important; transform: none !important; }
+        }
         .all-grid::-webkit-scrollbar { display: none; }
         .all-grid { scrollbar-width: none; }
         .reviews-grid::-webkit-scrollbar { display: none; }
         .reviews-grid { scrollbar-width: none; }
-        .mentor-card-active:hover { box-shadow:0 8px 32px rgba(0,0,0,0.09) !important; transform:translateY(-2px); }
+        .mentor-card-active:hover { box-shadow:0 1px 2px rgba(15,23,42,0.05), 0 20px 44px rgba(15,23,42,0.14) !important; transform:translateY(-5px); }
+        .mentor-card-active:hover .m-photo { transform: scale(1.05); }
+        .mentor-view-btn:hover { background:#1d3a8f !important; color:#fff !important; border-color:#1d3a8f !important; }
         .mentor-card-sm:hover { box-shadow:0 6px 20px rgba(0,0,0,0.07) !important; transform:translateY(-2px); }
         @media (max-width: 640px) {
           .nav-spacer { height: 72px !important; }

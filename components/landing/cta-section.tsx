@@ -12,7 +12,7 @@ export function CTASection() {
         <FadeIn>
           <div
             className="relative overflow-hidden rounded-3xl px-8 py-12 sm:px-14 sm:py-16"
-            style={{ background: "linear-gradient(135deg, #0f172a 0%, #1d3a8f 100%)" }}
+            style={{ background: "#1d3a8f" }}
           >
 
             <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-10">

@@ -84,7 +84,7 @@ export function CampusAmbassadorProgramClient() {
         }
         .caa-btn-primary {
           display:inline-flex; align-items:center; gap:9px;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:#1d3a8f;
           color:#fff; padding:15px 34px; border-radius:12px;
           font-size:15px; font-weight:700; border:none; cursor:pointer;
           box-shadow:0 4px 20px rgba(29,58,143,0.28);

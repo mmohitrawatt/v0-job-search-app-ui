@@ -253,7 +253,7 @@ export default function ReviewsPage() {
                 </div>
                 <h4 className="text-[17px] font-extrabold text-slate-900 mb-2">Thank you!</h4>
                 <p className="text-[13px] text-slate-500">Your review has been submitted and will appear shortly.</p>
-                <button onClick={() => setShowModal(false)} className="mt-6 px-6 py-2.5 rounded-xl text-[13px] font-bold text-white cursor-pointer border-none" style={{ background: "linear-gradient(135deg, #7c3aed, #3b5bdb)", fontFamily: "inherit" }}>Done</button>
+                <button onClick={() => setShowModal(false)} className="mt-6 px-6 py-2.5 rounded-xl text-[13px] font-bold text-white cursor-pointer border-none" style={{ background: "#1d3a8f", fontFamily: "inherit" }}>Done</button>
               </div>
             ) : (
               <div className="px-6 py-5">

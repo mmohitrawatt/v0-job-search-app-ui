@@ -5,15 +5,15 @@
 
 :root {
   /* Premium off-white — #F7F8FC subtle cool-white */
-  --background: oklch(0.972 0.007 258);
+  --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.01 255);
   --card: oklch(0.997 0.001 255);
   --card-foreground: oklch(0.13 0.01 255);
   --popover: oklch(0.997 0.001 255);
   --popover-foreground: oklch(0.13 0.01 255);
 
-  /* Jobingen brand blue — deep navy to cobalt from logo */
-  --primary: oklch(0.44 0.20 258);
+  /* Jobingen brand blue — deep navy #1d3a8f */
+  --primary: #1d3a8f;
   --primary-foreground: oklch(1 0 0);
 
   --secondary: oklch(0.94 0.008 255);
@@ -130,7 +130,7 @@
     @apply border-border outline-ring/50;
   }
   html {
-    background-color: #f7f8fc;
+    background-color: #ffffff;
     overscroll-behavior: none;
   }
   body {

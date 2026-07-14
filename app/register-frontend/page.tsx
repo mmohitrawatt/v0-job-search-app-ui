@@ -109,7 +109,7 @@ export default function RegisterFrontendPage() {
                   placeholder="your@email.com"
                   style={{ flex: 1, padding: "12px 16px", borderRadius: 12, border: "1.5px solid #e0e7ff", fontSize: 14, color: "#0f172a", outline: "none", background: "#f8faff" }}
                 />
-                <button type="submit" style={{ padding: "12px 22px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                <button type="submit" style={{ padding: "12px 22px", borderRadius: 12, border: "none", background: "#1d3a8f", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
                   Notify Me
                 </button>
               </form>

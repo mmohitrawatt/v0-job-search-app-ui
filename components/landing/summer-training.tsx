@@ -116,7 +116,7 @@ export function SummerTraining() {
               }}>
                 Summer Training<br />
                 <span style={{
-                  background: "linear-gradient(90deg, #1a3585 0%, #4668f5 100%)",
+                  background: "#1d3a8f",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
                 }}>2026</span>
               </h2>
@@ -144,7 +144,7 @@ export function SummerTraining() {
               <div className="st-btns" style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <a href="/early-apply" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
-                  background: "linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5)",
+                  background: "#1d3a8f",
                   color: "white", fontSize: 14, fontWeight: 700,
                   padding: "13px 28px", borderRadius: 12, textDecoration: "none",
                   boxShadow: "0 4px 20px rgba(29,58,143,0.30)",

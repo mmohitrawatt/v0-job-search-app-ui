@@ -278,7 +278,7 @@ export default function FlagshipFeedbackPage() {
                     style={{
                       display: "inline-flex", alignItems: "center", gap: 8,
                       padding: "13px 26px", borderRadius: 13,
-                      background: "linear-gradient(135deg, #1d3a8f, #3b52f0)", color: "white",
+                      background: "#1d3a8f", color: "white",
                       fontSize: 14, fontWeight: 800, textDecoration: "none",
                     }}
                   >

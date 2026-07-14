@@ -11,7 +11,7 @@ const TOOLS = [
     color: "#1d3a8f",
     bg: "#eef1fd",
     border: "#bfcfff",
-    gradient: "linear-gradient(135deg, #1d3a8f 0%, #3b5bdb 100%)",
+    gradient: "#1d3a8f",
     stat: { value: "92%", label: "Avg ATS Score" },
     features: ["Smart JD Parsing", "ATS Optimization", "Multiple Templates", "Export PDF / DOCX"],
     badge: "Most Popular",
@@ -201,7 +201,7 @@ export function AITools() {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "#94a3b8" }}>{idx + 1} / {TOOLS.length}</span>
-                <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 13, fontWeight: 700, padding: "10px 20px", borderRadius: 12, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.28)" }}>
+                <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#1d3a8f", color: "white", fontSize: 13, fontWeight: 700, padding: "10px 20px", borderRadius: 12, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.28)" }}>
                   Explore All
                   <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </Link>

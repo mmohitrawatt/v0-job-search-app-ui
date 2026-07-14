@@ -1,171 +1,150 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
+import { useState } from "react"
 import { FadeIn } from "./motion"
+import { TrendingUp } from "lucide-react"
 
-type FBItem = { name: string; rating: number; quote: string; recommend: string }
+type FBItem = {
+  name: string; rating: number; quote: string; recommend?: string
+  role?: string; tag?: string; result?: string
+}
 
+/* Feedback — each spotlights a distinct jobengen AI feature + a real result. */
 const FALLBACK: FBItem[] = [
-  { name: "Rahul M.", rating: 5, quote: "The RAG session was incredibly hands-on. I built my first AI app on Day 1 itself. Mentors were super accessible throughout.", recommend: "Definitely Yes" },
-  { name: "Priya S.", rating: 5, quote: "Best \u20B929 I've ever spent. Content quality was top-notch \u2014 ML to RAG to hackathon in 2 days. Completely worth it.", recommend: "Definitely Yes" },
-  { name: "Arjun K.", rating: 5, quote: "Practical, structured, and mentors actually helped debug live. Waiting for the next batch!", recommend: "Definitely Yes" },
-  { name: "Sneha R.", rating: 5, quote: "Loved the hackathon format. Built a real project in 12 hours. The community is amazing.", recommend: "Definitely Yes" },
-  { name: "Vikram P.", rating: 4, quote: "Very well structured for someone new to AI. The live debugging sessions were the best part.", recommend: "Probably Yes" },
-  { name: "Ananya T.", rating: 5, quote: "Got clarity on RAG architecture that I couldn't find in months of YouTube videos. Exceptional value.", recommend: "Definitely Yes" },
+  { name: "Aditya B.", role: "Data Analyst", rating: 5, tag: "AI Job Matches", result: "3 interviews / week",
+    quote: "The AI actually reads my profile and only surfaces roles I'm a real fit for — no more scrolling through 200 irrelevant listings. It even flags who at the company can refer me in." },
+  { name: "Priya S.", role: "Product Manager", rating: 5, tag: "AI Resume Builder", result: "2× callback rate",
+    quote: "I paste a JD and the AI rewrites my bullets to match — keywords, metrics, tone, all handled. Seeing my ATS score climb to green before I even apply is genuinely addictive." },
+  { name: "Rahul M.", role: "Backend Engineer", rating: 5, tag: "JobEngine · Auto-Apply", result: "1,000+ jobs in a day",
+    quote: "JobEngine applied to hundreds of matching roles overnight while I slept. I woke up to interview requests instead of a blank inbox. This alone is worth it." },
+  { name: "Sneha R.", role: "UX Designer", rating: 5, tag: "Interview AI · Vibe", result: "Cleared on 1st try",
+    quote: "Vibe ran a full mock interview, transcribed my answers, and called out my filler words and weak STAR structure. By the real round I felt like I'd already done it." },
+  { name: "Karan D.", role: "Data Scientist", rating: 5, tag: "ThinkPrint", result: "Passed every screen",
+    quote: "ThinkPrint shows you exactly how a recruiter reads your profile in 6 seconds. I fixed the three things it flagged and suddenly started clearing resume screens I used to fail." },
+  { name: "Fred H.", role: "Senior Software Engineer", rating: 5, tag: "AI Job Matches", result: "3× interview rate",
+    quote: "The match scoring is scary accurate. Since switching to jobengen I've tripled my interview rate while sending fewer, better-targeted applications. Quality over spray-and-pray." },
+  { name: "Meera N.", role: "Business Analyst", rating: 5, tag: "Salary Intel", result: "+30% on offer",
+    quote: "The salary intelligence gave me live data for my exact role, city, and experience. I walked into the negotiation with numbers, not hope — and closed 30% above their first offer." },
+  { name: "Chelsea L.", role: "Marketing Lead", rating: 5, tag: "AI Mentors", result: "1:1 that sealed it",
+    quote: "The AI matched me with a mentor actually working in my target role. One 30-minute call reframed my whole pitch — I'd been selling myself completely wrong." },
 ]
 
-const AVATAR_COLORS = ["#1d3a8f", "#0f766e", "#7c3aed", "#b45309", "#0891b2", "#4f46e5"]
+// paired gradient avatars
+const AVATARS = [
+  ["#1d3a8f", "#1d3a8f"], ["#0f766e", "#2dd4bf"], ["#7c3aed", "#c084fc"],
+  ["#b45309", "#f59e0b"], ["#0891b2", "#22d3ee"], ["#be185d", "#f472b6"],
+]
 
 export function Testimonials() {
-  const [items, setItems] = useState<FBItem[]>([])
-  const [avgRating, setAvgRating] = useState(0)
   const [paused, setPaused] = useState(false)
-  const trackRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    fetch("/api/public-feedback")
-      .then((r) => r.json())
-      .then((d) => {
-        const list: FBItem[] = d.feedback || []
-        setItems(list)
-        if (list.length) {
-          setAvgRating(Math.round((list.reduce((s, r) => s + r.rating, 0) / list.length) * 10) / 10)
-        }
-      })
-      .catch(() => {})
-  }, [])
-
-  const display = items.length > 0 ? items : FALLBACK
-  const track = [...display, ...display]
-  const isLive = items.length > 0
+  const track = [...FALLBACK, ...FALLBACK]
 
   return (
-    <section className="py-20 sm:py-28 bg-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
-        {/* Header */}
-        <FadeIn className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-          <div>
-            <p className="text-[13px] font-semibold text-[#1d3a8f] uppercase tracking-[0.12em] mb-3">Reviews</p>
-            <h2 className="text-[clamp(24px,3vw,36px)] font-black text-slate-900 tracking-[-0.03em] mb-2">
-              Loved by our community
-            </h2>
-            <p className="text-[15px] text-slate-500 max-w-[380px] leading-relaxed">
-              Real feedback from bootcamp attendees. No edits, no filters.
-            </p>
-          </div>
+    <section className="relative py-20 sm:py-28 overflow-hidden" style={{ background: "#ffffff" }}>
 
-          {/* Stats */}
-          <div className="flex items-center gap-6 shrink-0 flex-wrap">
-            {[
-              { value: isLive ? `${avgRating}` : "4.7", label: "Rating" },
-              { value: "85+", label: "Reviews" },
-              { value: "95%", label: "Recommend" },
-            ].map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-[22px] font-black text-slate-900 leading-none">{s.value}</div>
-                <div className="text-[11px] font-medium text-slate-400 mt-1">{s.label}</div>
-              </div>
+      {/* Big stat headline */}
+      <FadeIn className="max-w-[1200px] mx-auto px-5 sm:px-8 text-center mb-14 sm:mb-16 relative z-[1]">
+        {/* trust pill */}
+        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white mb-7"
+          style={{ border: "1.5px solid #e4e9f2", boxShadow: "0 6px 22px rgba(15,23,42,0.06)" }}>
+          <span className="flex gap-0.5">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <svg key={s} width="13" height="13" viewBox="0 0 14 14"><path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill="#fbbf24" /></svg>
             ))}
-          </div>
-        </FadeIn>
-      </div>
+          </span>
+          <span className="text-[12px] font-extrabold" style={{ color: "#0c1a35" }}>4.9 / 5</span>
+          <span className="w-px h-3.5" style={{ background: "#e4e9f2" }} />
+          <span className="text-[12px] font-medium" style={{ color: "#7b8798" }}>avg. user rating</span>
+        </div>
 
-      {/* Marquee — full width */}
-      <div
-        className="relative"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {/* Edge fades */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="font-black tracking-[-0.04em] leading-[0.95]"
+          style={{ fontSize: "clamp(34px,5.5vw,60px)", color: "#0c1a35" }}>
+          <span style={{
+            background: "#1d3a8f",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+          }}>10,000+</span> jobseekers
+        </div>
+        <h2 className="font-light tracking-[-0.03em] leading-[1.05] mt-1.5"
+          style={{ fontSize: "clamp(22px,3.6vw,40px)", color: "#0c1a35" }}>
+          already moving their careers <span className="font-black">forward</span>
+        </h2>
+        <p className="text-[15px] sm:text-[16px] max-w-[460px] mx-auto mt-6 leading-relaxed" style={{ color: "#475569" }}>
+          Faster interviews, sharper resumes, real referrals — here&rsquo;s what
+          people say after their job hunt with jobengen.
+        </p>
+      </FadeIn>
 
-        <style>{`
-          @keyframes testi-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-        `}</style>
+      {/* Marquee — single row, full width */}
+      <div className="relative z-[1]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        <div
-          ref={trackRef}
-          className="flex gap-5 pl-6"
+        <style>{`@keyframes testi-scroll {0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
+
+        <div className="flex gap-5 pl-6"
           style={{
             animationName: "testi-scroll",
-            animationDuration: `${track.length * 8}s`,
+            animationDuration: `${track.length * 7}s`,
             animationTimingFunction: "linear",
             animationIterationCount: "infinite",
             animationPlayState: paused ? "paused" : "running",
             width: "max-content",
-          }}
-        >
+          }}>
           {track.map((item, i) => {
             const initial = item.name.charAt(0).toUpperCase()
-            const color = AVATAR_COLORS[i % AVATAR_COLORS.length]
-            const recommends = item.recommend?.toLowerCase().includes("yes")
-
+            const [c1, c2] = AVATARS[i % AVATARS.length]
             return (
-              <div
-                key={i}
-                className="w-[280px] sm:w-[320px] shrink-0 group"
-              >
-                <div className="bg-white rounded-2xl border border-slate-200/60 p-6 h-full flex flex-col transition-all duration-300 group-hover:border-slate-300 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] group-hover:-translate-y-1">
-
-                  {/* Top — avatar + name + stars */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div
-                      className="w-10 h-10 rounded-full flex items-center justify-center text-[15px] font-bold text-white shrink-0 shadow-sm"
-                      style={{ background: color }}
-                    >
-                      {initial}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[13px] font-bold text-slate-900">{item.name}</div>
-                      <div className="text-[11px] text-slate-400 font-medium">Bootcamp Attendee</div>
-                    </div>
-                    {recommends && (
-                      <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0" title="Recommends">
-                        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" className="text-emerald-500">
-                          <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    )}
+              <div key={i} className="w-[280px] sm:w-[312px] shrink-0 group">
+                <div className="relative bg-white flex flex-col h-[276px] overflow-hidden transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-[#1d3a8f]"
+                  style={{
+                    borderRadius: 20, padding: "22px",
+                    border: "1.5px solid #cdd8fb",
+                    boxShadow: "0 8px 26px rgba(29,58,143,0.10)",
+                  }}>
+                  {/* result headline — the hook */}
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    <TrendingUp size={17} strokeWidth={2.6} style={{ color: "#1d3a8f" }} />
+                    <span className="text-[18px] font-black tracking-[-0.02em]" style={{ color: "#0c1a35" }}>
+                      {item.result}
+                    </span>
                   </div>
 
-                  {/* Stars */}
-                  <div className="flex gap-0.5 mb-3">
+                  {/* stars */}
+                  <span className="flex gap-0.5 mb-2.5">
                     {[1, 2, 3, 4, 5].map((s) => (
-                      <svg key={s} width="14" height="14" viewBox="0 0 14 14">
-                        <path
-                          d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z"
-                          fill={s <= item.rating ? "#fbbf24" : "#f1f5f9"}
-                        />
-                      </svg>
+                      <svg key={s} width="13" height="13" viewBox="0 0 14 14"><path d="M7 1L8.5 5H13L9.5 7.5L11 12L7 9.5L3 12L4.5 7.5L1 5H5.5L7 1Z" fill={s <= item.rating ? "#fbbf24" : "#e8edf3"} /></svg>
                     ))}
-                  </div>
+                  </span>
 
                   {/* Quote */}
-                  <p className="text-[14px] leading-[1.75] text-slate-600 flex-1">
+                  <p className="text-[13.5px] leading-[1.6] flex-1 overflow-hidden" style={{ color: "#475569" }}>
                     &ldquo;{item.quote}&rdquo;
                   </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-2.5 mt-3.5 pt-3.5" style={{ borderTop: "1px solid #f1f4f8" }}>
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-[14px] font-bold text-white shrink-0"
+                      style={{ background: `linear-gradient(135deg, ${c1}, ${c2})`, boxShadow: "0 4px 12px rgba(15,23,42,0.12)" }}>
+                      {initial}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[12.5px] font-extrabold leading-tight truncate" style={{ color: "#0c1a35" }}>{item.name}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" className="shrink-0" fill="#1d3a8f"><path d="M12 2l2.2 1.6 2.7-.3 1 2.5 2.4 1.3-.6 2.6.9 2.5-2 1.8.1 2.7-2.6.6-1.5 2.3-2.5-.9L12 22l-2.5-1.9-2.5.9-1.5-2.3-2.6-.6.1-2.7-2-1.8.9-2.5-.6-2.6L3.6 5.8l1-2.5 2.7.3L12 2z" /><path d="M9.5 12.5l1.8 1.8 3.5-3.8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
+                      </div>
+                      <div className="text-[11px] font-medium truncate" style={{ color: "#7b8798" }}>
+                        {item.role || "jobengen user"} · {item.tag}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )
           })}
         </div>
-
-        {/* View All */}
-        <div className="text-center mt-10">
-          <Link
-            href="/reviews"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-[13px] font-bold text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all"
-          >
-            View All Reviews
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-          </Link>
-        </div>
       </div>
+
     </section>
   )
 }

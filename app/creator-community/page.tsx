@@ -156,7 +156,7 @@ export default function CreatorCommunityPage() {
         }
         .cc-btn-primary {
           display:inline-flex; align-items:center; gap:9px; border:none; cursor:pointer; font-family:inherit;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:#1d3a8f;
           color:#fff; padding:14px 32px; border-radius:12px;
           font-size:15px; font-weight:700;
           box-shadow:0 4px 20px rgba(29,58,143,.28);
@@ -421,7 +421,7 @@ export default function CreatorCommunityPage() {
         }
         .cc-submit-btn {
           width:100%; height:52px; border-radius:12px; border:none; cursor:pointer;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:#1d3a8f;
           color:#fff; font-size:15px; font-weight:800; font-family:inherit;
           display:flex; align-items:center; justify-content:center; gap:9px;
           box-shadow:0 4px 20px rgba(29,58,143,.28); transition:all .25s cubic-bezier(.16,1,.3,1);
@@ -441,7 +441,7 @@ export default function CreatorCommunityPage() {
         .cc-nav-next {
           display:inline-flex; align-items:center; gap:7px;
           height:44px; padding:0 26px; border-radius:11px; border:none;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:#1d3a8f;
           color:#fff; font-size:14px; font-weight:800; font-family:inherit;
           cursor:pointer; transition:all .25s cubic-bezier(.16,1,.3,1);
           box-shadow:0 4px 14px rgba(29,58,143,.28); margin-left:auto;

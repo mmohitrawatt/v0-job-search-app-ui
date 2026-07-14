@@ -389,7 +389,7 @@ export default function BecomeMentorPage() {
         </div>
 
         <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 26px", borderRadius: 12, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontWeight: 800, fontSize: 14, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.3)" }}>
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 26px", borderRadius: 12, background: "#1d3a8f", color: "white", fontWeight: 800, fontSize: 14, textDecoration: "none", boxShadow: "0 4px 16px rgba(29,58,143,0.3)" }}>
             Back to Home
           </Link>
           <Link href="/mentors" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 24px", borderRadius: 12, background: "white", border: "1.5px solid #e0e7ff", color: "#1d3a8f", fontWeight: 700, fontSize: 14, textDecoration: "none" }}>

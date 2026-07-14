@@ -132,7 +132,7 @@ export function HowItWorks() {
             {STEPS.map((_, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 8, height: 8, borderRadius: "50%", background: i === 3 ? "#1d3a8f" : "#bfcfff" }} />
-                {i < 3 && <div style={{ width: 40, height: 1.5, background: "linear-gradient(90deg, #bfcfff, #1d3a8f22)" }} />}
+                {i < 3 && <div style={{ width: 40, height: 1.5, background: "#bfcfff" }} />}
               </div>
             ))}
           </div>

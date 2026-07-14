@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
         }
 
         .al-btn{
-          width:100%;background:linear-gradient(135deg,#1d3a8f,#2a4ecf,#3b52f0);
+          width:100%;background:#1d3a8f;
           color:#fff;border:none;padding:15px;
           border-radius:12px;font-size:15px;font-weight:700;
           cursor:pointer;margin-top:20px;font-family:inherit;

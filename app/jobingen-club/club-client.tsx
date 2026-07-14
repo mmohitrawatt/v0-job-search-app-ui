@@ -155,7 +155,7 @@ export function JobingenClubClient() {
         }
         .ca-btn-primary {
           display:inline-flex; align-items:center; gap:9px;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:#1d3a8f;
           color:#fff; padding:14px 32px; border-radius:12px;
           font-size:15px; font-weight:700; text-decoration:none; border:none; cursor:pointer;
           box-shadow:0 4px 20px rgba(29,58,143,0.28);
@@ -313,7 +313,7 @@ export function JobingenClubClient() {
         .ca-form-error { font-size:13px; color:#dc2626; margin-bottom:12px; padding:10px 14px; background:#fef2f2; border-radius:8px; border:1px solid #fecaca; }
         .ca-form-submit {
           width:100%; padding:14px; border-radius:12px;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb); color:white;
+          background:#1d3a8f; color:white;
           font-size:15px; font-weight:700; border:none; cursor:pointer;
           box-shadow:0 4px 16px rgba(29,58,143,0.28);
           transition:opacity .2s, transform .2s; margin-top:8px;

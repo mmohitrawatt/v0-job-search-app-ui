@@ -2,15 +2,13 @@
 
 import { Navbar } from "@/components/landing/navbar"
 import { Hero } from "@/components/landing/hero"
-import { AITools } from "@/components/landing/ai-tools"
+import { LogoMarquee } from "@/components/landing/logo-marquee"
+import { ProductShowcase } from "@/components/landing/product-showcase"
 import { Testimonials } from "@/components/landing/testimonials"
-import { HowItWorks } from "@/components/landing/how-it-works"
-import { FeaturedJobs } from "@/components/landing/featured-jobs"
+import { JobHubStats } from "@/components/landing/job-hub-stats"
+import { JobEngineTrain } from "@/components/landing/job-engine-train"
 
-import { CampusAmbassador } from "@/components/landing/campus-ambassador"
 import { MentorsPreview } from "@/components/landing/mentors-preview"
-import { StudentInsightsBanner } from "@/components/landing/student-insights-banner"
-import { CTASection } from "@/components/landing/cta-section"
 import { Footer } from "@/components/landing/footer"
 
 export default function PreLaunchPage() {
@@ -28,14 +26,12 @@ export default function PreLaunchPage() {
       `}</style>
       <Navbar />
       <Hero />
+      <LogoMarquee />
+      <ProductShowcase />
       <MentorsPreview />
-      <AITools />
-      <HowItWorks />
-      <FeaturedJobs />
+      <JobEngineTrain />
       <Testimonials />
-      <CampusAmbassador />
-      <StudentInsightsBanner />
-      <CTASection />
+      <JobHubStats />
       <Footer />
     </div>
   )

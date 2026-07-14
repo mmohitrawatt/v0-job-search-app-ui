@@ -627,7 +627,7 @@ export function CareersClient() {
         }
         .cr-btn-primary {
           display: inline-flex; align-items: center; gap: 8px;
-          background: linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5);
+          background: #1d3a8f;
           color: #fff; padding: 14px 32px; border-radius: 13px; border: none;
           font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none;
           box-shadow: 0 4px 22px rgba(29,58,143,0.32);
@@ -741,7 +741,7 @@ export function CareersClient() {
         .cr-hk-btn-primary {
           display: inline-flex; align-items: center; gap: 7px;
           padding: 12px 24px; border-radius: 11px; border: none;
-          background: linear-gradient(135deg, #1a3585, #2d4fd4 55%, #4668f5);
+          background: #1d3a8f;
           color: white; font-size: 13.5px; font-weight: 700;
           cursor: pointer; text-decoration: none; font-family: inherit;
           box-shadow: 0 3px 14px rgba(29,58,143,0.28);
@@ -1109,7 +1109,7 @@ export function CareersClient() {
 
         /* submit */
         .cr-submit-btn {
-          background:linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5);
+          background:#1d3a8f;
           color:white; border:none; border-radius:12px;
           padding:13.5px 20px; font-size:14.5px; font-weight:800;
           cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;

@@ -5,7 +5,7 @@ import { FadeIn, motion } from "./motion"
 
 export function CampusAmbassador() {
   return (
-    <section className="py-20 sm:py-28 bg-[#f8fafc]">
+    <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-[900px] mx-auto px-5 sm:px-8">
         <FadeIn>
           <motion.div
@@ -43,7 +43,7 @@ export function CampusAmbassador() {
                 <Link
                   href="/campus-ambassador"
                   className="inline-flex items-center gap-2 text-[13px] font-bold text-white px-6 py-2.5 rounded-xl transition-all duration-200 hover:opacity-90 shadow-[0_2px_8px_rgba(29,58,143,0.25)]"
-                  style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}
+                  style={{ background: "#1d3a8f" }}
                 >
                   Apply Now
                   <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

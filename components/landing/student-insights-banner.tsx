@@ -14,7 +14,7 @@ export function StudentInsightsBanner() {
               className="group flex items-center gap-4 sm:gap-5 bg-[#fafbff] border border-slate-200/60 rounded-2xl px-5 sm:px-7 py-4 sm:py-5 hover:border-[#1d3a8f]/20 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 no-underline"
             >
               {/* Icon */}
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm" style={{ background: "linear-gradient(135deg, #1d3a8f, #3b5bdb)" }}>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm" style={{ background: "#1d3a8f" }}>
                 <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l.572 2.287a.5.5 0 01-.486.613H9.828a.5.5 0 01-.485-.613l.572-2.287z" />
                 </svg>

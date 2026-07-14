@@ -34,7 +34,7 @@ const JOBS = [
     id: 3, title: "Frontend Developer", company: "Cograd",
     location: "Bangalore (Hybrid)", tags: ["Full-time", "Hybrid"], dept: "Engineering",
     salary: "₹4–8 LPA", posted: "1d ago", hot: true,
-    gradient: "linear-gradient(135deg,#1d3a8f,#4668f5)", initials: "CG", slug: "frontend-dev-cograd",
+    gradient: "#1d3a8f", initials: "CG", slug: "frontend-dev-cograd",
     desc: "Build responsive web apps and dashboards for EdTech products. React + TypeScript stack, strong design sensibility needed.",
     skills: ["React", "TypeScript", "Tailwind"],
   },
@@ -64,7 +64,7 @@ function SwipeCard({ job }: { job: Job }) {
     <div style={{ width: "100%", height: "100%", background: "#ffffff", borderRadius: 22, boxShadow: "0 8px 40px rgba(0,0,0,0.10)", overflow: "hidden", display: "flex", flexDirection: "column", border: "1.5px solid #e8edf4" }}>
 
       {/* Top accent bar */}
-      <div style={{ height: 4, background: "linear-gradient(90deg,#1a3585,#4668f5)", flexShrink: 0 }} />
+      <div style={{ height: 4, background: "#1d3a8f", flexShrink: 0 }} />
 
       {/* Header */}
       <div style={{ padding: "18px 20px 16px", flexShrink: 0 }}>
@@ -82,7 +82,7 @@ function SwipeCard({ job }: { job: Job }) {
         <div style={{ fontSize: 13, color: "#64748b", marginBottom: 13 }}>{job.company} · {job.location}</div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 13.5, fontWeight: 800, color: "#1a3585", background: "#eff4ff", borderRadius: 10, padding: "5px 12px", border: "1px solid #c7d4ff" }}>{job.salary}</span>
+          <span style={{ fontSize: 13.5, fontWeight: 800, color: "#1d3a8f", background: "#eff4ff", borderRadius: 10, padding: "5px 12px", border: "1px solid #c7d4ff" }}>{job.salary}</span>
           {job.tags.map(t => (
             <span key={t} style={{ fontSize: 11, fontWeight: 600, color: "#64748b", background: "#f8fafc", borderRadius: 8, padding: "4px 10px", border: "1px solid #e2e8f0" }}>{t}</span>
           ))}
@@ -104,7 +104,7 @@ function SwipeCard({ job }: { job: Job }) {
       {/* Footer */}
       <div style={{ padding: "11px 20px", borderTop: "1px solid #f1f5f9", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, background: "#fafbfc" }}>
         <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>via Jobingen</span>
-        <Link href={`/jobs/${job.slug}`} style={{ fontSize: 12, fontWeight: 700, color: "#1a3585", textDecoration: "none" }}>View Details →</Link>
+        <Link href={`/jobs/${job.slug}`} style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f", textDecoration: "none" }}>View Details →</Link>
       </div>
 
     </div>
@@ -167,7 +167,7 @@ function MobileSwipe() {
   if (topIdx >= JOBS.length) {
     return (
       <div style={{ textAlign: "center", padding: "48px 16px" }}>
-        <Link href="/jobs" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)", color: "white", fontSize: 15, fontWeight: 800, padding: "14px 32px", borderRadius: 14, textDecoration: "none", boxShadow: "0 6px 20px rgba(29,58,143,0.28)" }}>
+        <Link href="/jobs" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#1d3a8f", color: "white", fontSize: 15, fontWeight: 800, padding: "14px 32px", borderRadius: 14, textDecoration: "none", boxShadow: "0 6px 20px rgba(29,58,143,0.28)" }}>
           View More Jobs →
         </Link>
       </div>
@@ -211,7 +211,7 @@ function MobileSwipe() {
           <span style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8" }}>{topIdx + 1} / {JOBS.length}</span>
           <div style={{ display: "flex", gap: 4 }}>
             {JOBS.map((_, i) => (
-              <div key={i} style={{ width: i === topIdx ? 16 : 5, height: 4, borderRadius: 99, background: i < topIdx ? "#1d3a8f" : i === topIdx ? "#4668f5" : "#e2e8f0", transition: "all .25s" }} />
+              <div key={i} style={{ width: i === topIdx ? 16 : 5, height: 4, borderRadius: 99, background: i < topIdx ? "#1d3a8f" : i === topIdx ? "#1d3a8f" : "#e2e8f0", transition: "all .25s" }} />
             ))}
           </div>
         </div>
@@ -226,7 +226,7 @@ function MobileSwipe() {
 
 export function FeaturedJobs() {
   return (
-    <section className="py-8 sm:py-28 bg-[#f8fafc]" id="featured-jobs">
+    <section className="py-8 sm:py-28 bg-white" id="featured-jobs">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8">
 
         {/* Header — desktop only */}
@@ -238,7 +238,7 @@ export function FeaturedJobs() {
               Curated from top portals &amp; direct listings — all in one place.
             </p>
           </div>
-          <Link href="/jobs" className="text-[14px] font-semibold text-[#1d3a8f] hover:text-[#3b5bdb] flex items-center gap-1.5 transition-colors shrink-0">
+          <Link href="/jobs" className="text-[14px] font-semibold text-[#1d3a8f] hover:text-[#1d3a8f] flex items-center gap-1.5 transition-colors shrink-0">
             View all openings
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
           </Link>
@@ -293,7 +293,7 @@ export function FeaturedJobs() {
                     <span className="text-[11px] text-slate-400 font-medium">via Jobingen</span>
                     <div className="flex items-center gap-2">
                       <Link href={`/jobs/${job.slug}`} className="text-[12px] font-semibold text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 transition-all">View Details</Link>
-                      <Link href={`/jobs/${job.slug}`} className="text-[12px] font-bold text-white px-4 py-1.5 rounded-lg shadow-sm hover:opacity-90 transition-all flex items-center gap-1.5" style={{ background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)" }}>
+                      <Link href={`/jobs/${job.slug}`} className="text-[12px] font-bold text-white px-4 py-1.5 rounded-lg shadow-sm hover:opacity-90 transition-all flex items-center gap-1.5" style={{ background: "#1d3a8f" }}>
                         Apply
                         <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                       </Link>

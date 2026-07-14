@@ -382,7 +382,7 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
                 <button key={f} onClick={() => toggleFilter(f)}
                   className="flex-shrink-0 px-3.5 py-[7px] rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none"
                   style={active
-                    ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", border: "1.5px solid transparent" }
+                    ? { background: "#1d3a8f", color: "#fff", border: "1.5px solid transparent" }
                     : { background: "#fff", color: "#64748b", border: "1.5px solid #e8edf2" }
                   }>{f}</button>
               )
@@ -395,7 +395,7 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
                 <button key={t} onClick={() => setActiveTopic(active ? null : t)}
                   className="flex-shrink-0 px-3.5 py-[7px] rounded-full text-[11.5px] font-semibold transition-all btn-press tap-highlight-none"
                   style={active
-                    ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", border: "1.5px solid transparent" }
+                    ? { background: "#1d3a8f", color: "#fff", border: "1.5px solid transparent" }
                     : { background: "#f0f4ff", color: "#1d3a8f", border: "1.5px solid rgba(29,58,143,0.15)" }
                   }>{t}</button>
               )
@@ -410,7 +410,7 @@ function JobList({ onJobClick, onApplyNow }: { onJobClick: (j: Job) => void; onA
             onClick={() => setSidebarOpen((v) => !v)}
             className="relative flex items-center gap-2 px-3 py-2 rounded-[10px] text-[12px] font-semibold transition-all flex-shrink-0"
             style={sidebarOpen
-              ? { background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "#fff", boxShadow: "0 2px 8px rgba(29,58,143,0.3)", border: "1.5px solid transparent" }
+              ? { background: "#1d3a8f", color: "#fff", boxShadow: "0 2px 8px rgba(29,58,143,0.3)", border: "1.5px solid transparent" }
               : { background: "#f8fafc", color: "#64748b", border: "1.5px solid #e8edf2" }
             }
           >

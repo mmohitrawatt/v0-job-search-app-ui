@@ -79,7 +79,7 @@ const CSS = `
   .btn:hover  { transform: translateY(-2px) scale(1.025); }
   .btn:active { transform: translateY(0) scale(.97); }
   .btn-primary {
-    background: linear-gradient(135deg, #1d3a8f 0%, #2548c5 100%);
+    background: #1d3a8f;
     box-shadow: 0 6px 28px rgba(29,58,143,.32);
     color: white;
   }
