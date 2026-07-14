@@ -118,10 +118,14 @@ function logoSources(name: string): string[] {
 const NAVY = "#1d3a8f"
 
 /* Company avatar — real brand logo or coloured monogram in a white rounded tile */
-function CompanyAvatar({ name, size = 46, logo }: { name: string; size?: number; logo?: string }) {
+function CompanyAvatar({ name, size = 46, logo, domain }: { name: string; size?: number; logo?: string; domain?: string }) {
   const [idx, setIdx] = useState(0)
   const color = COMPANY_COLORS[name] || NAVY
-  const sources = logo ? [logo, ...logoSources(name)] : logoSources(name)
+  // A verified domain is guaranteed to load (checked at ingest), so use it
+  // directly — no noisy name-guesses. No domain → straight to a coloured letter.
+  const sources = domain
+    ? [`https://icons.duckduckgo.com/ip3/${domain}.ico`, `https://www.google.com/s2/favicons?domain=${domain}&sz=128`]
+    : logo ? [logo] : []
   const src = sources[idx]
   const letter = name.trim()[0]?.toUpperCase() || "?"
   return (
@@ -140,10 +144,12 @@ function CompanyAvatar({ name, size = 46, logo }: { name: string; size?: number;
 }
 
 /* Small circular logo for the hero badge stack */
-function BadgeLogo({ name, index }: { name: string; index: number }) {
+function BadgeLogo({ name, index, domain }: { name: string; index: number; domain?: string }) {
   const [idx, setIdx] = useState(0)
   const color = COMPANY_COLORS[name] || NAVY
-  const sources = logoSources(name)
+  const sources = domain
+    ? [`https://icons.duckduckgo.com/ip3/${domain}.ico`, `https://www.google.com/s2/favicons?domain=${domain}&sz=128`]
+    : logoSources(name)
   const src = sources[idx]
   return (
     <div title={name} style={{
@@ -218,7 +224,7 @@ function JobCard({ job, index, matchPct }: { job: Job; index: number; matchPct?:
     >
       {/* Header: avatar + company + bookmark */}
       <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
-        <CompanyAvatar name={job.company} logo={job.logo} />
+        <CompanyAvatar name={job.company} logo={job.logo} domain={job.companyDomain} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: "#111827", letterSpacing: "-0.01em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             {job.company}
@@ -366,6 +372,16 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
   const activeCount = types.length + modes.length + (search ? 1 : 0) + (location ? 1 : 0)
 
   const companies = useMemo(() => Array.from(new Set(jobs.map(j => j.company))), [jobs])
+  // Badge shows companies that have a verified logo (real domains).
+  const badgeCompanies = useMemo(() => {
+    const seen = new Set<string>(); const out: { name: string; domain?: string }[] = []
+    for (const j of jobs) {
+      if (!j.companyDomain || seen.has(j.company)) continue
+      seen.add(j.company); out.push({ name: j.company, domain: j.companyDomain })
+      if (out.length >= 5) break
+    }
+    return out.length ? out : companies.slice(0, 5).map((name): { name: string; domain?: string } => ({ name }))
+  }, [jobs, companies])
 
   // Resume matching
   const [profile, setProfile] = useState<ResumeProfile | null>(null)
@@ -403,32 +419,65 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(1.6)} }
+        @keyframes jbspin { to { transform: rotate(360deg) } }
+        .jb-resume{transition:border-color .15s, box-shadow .15s}
+        .jb-resume:hover{border-color:#1d3a8f!important;box-shadow:0 10px 30px rgba(29,58,143,.1)}
         .jb-inp{border:none;background:transparent;font-size:15px;color:#111827;width:100%;}
         .jb-inp:focus{outline:none;}
         .jb-inp::placeholder{color:#9ca3af;}
         .jb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
-        @media(max-width:1200px){ .jb-grid{grid-template-columns:repeat(3,1fr)} }
-        @media(max-width:900px){ .jb-grid{grid-template-columns:repeat(2,1fr)} }
-        @media(max-width:600px){
+
+        /* ── Desktop / large laptop (default = 4 cols) ── */
+        @media(max-width:1280px){ .jb-hero,.jb-results{padding-left:28px!important;padding-right:28px!important} }
+
+        /* ── Small laptop / large tablet ── */
+        @media(max-width:1100px){ .jb-grid{grid-template-columns:repeat(3,1fr)} }
+
+        /* ── Tablet ── */
+        @media(max-width:860px){
+          .jb-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+          .jb-hero{padding:96px 22px 16px!important}
+          .jb-results{padding:32px 22px 80px!important}
+          .jb-hero-h{font-size:clamp(30px,5vw,46px)!important}
+        }
+
+        /* ── Large phone ── */
+        @media(max-width:640px){
           .jb-grid{grid-template-columns:1fr}
-          .jb-hero-h{font-size:38px!important}
-          .jb-search{flex-direction:column!important;padding:12px!important;border-radius:20px!important}
+          .jb-hero{padding:84px 16px 12px!important}
+          .jb-hero-h{font-size:30px!important;line-height:1.12!important}
+          .jb-hero-sub{font-size:15px!important;margin-bottom:26px!important}
+          .jb-hero-badge{margin-bottom:20px!important}
+          .jb-results{padding:26px 14px 64px!important}
+          .jb-search{flex-direction:column!important;padding:12px!important;border-radius:18px!important;gap:4px!important}
           .jb-search-div{display:none!important}
-          .jb-search-btn{width:100%!important;justify-content:center!important}
-          .jb-search-cell{width:100%!important}
+          .jb-search-btn{width:100%!important;justify-content:center!important;padding:13px 0!important}
+          .jb-search-cell{width:100%!important;padding:6px 8px!important}
+          /* resume box → centered stack on phones */
+          .jb-resume{flex-direction:column!important;text-align:center;padding:24px 18px!important;gap:16px!important}
+          .jb-resume-main{flex-direction:column!important;text-align:center;gap:12px!important}
+          .jb-resume-chips{justify-content:center!important}
+          .jb-resume-btn{width:100%!important}
+        }
+
+        /* ── Small phone ── */
+        @media(max-width:400px){
+          .jb-hero{padding:78px 12px 10px!important}
+          .jb-hero-h{font-size:26px!important}
+          .jb-results{padding:22px 12px 56px!important}
         }
       `}</style>
 
-      <div style={{ background: "#fafafa", minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
+      <div style={{ background: "#ffffff", minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
         {/* ══════════════════════════════════════════════════════
             HERO
         ══════════════════════════════════════════════════════ */}
-        <section style={{ maxWidth: 900, margin: "0 auto", padding: "116px 24px 20px", textAlign: "center" }}>
+        <section className="jb-hero" style={{ maxWidth: 900, margin: "0 auto", padding: "116px 24px 20px", textAlign: "center" }}>
           {/* Live badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 11, marginBottom: 26, padding: "6px 16px 6px 8px", borderRadius: 99, background: "white", border: "1px solid #e5e7eb", boxShadow: "0 2px 10px rgba(15,23,42,0.05)", animation: "fadeUp 0.5s ease both" }}>
+          <div className="jb-hero-badge" style={{ display: "inline-flex", alignItems: "center", gap: 11, marginBottom: 26, padding: "6px 16px 6px 8px", borderRadius: 99, background: "white", border: "1px solid #e5e7eb", boxShadow: "0 2px 10px rgba(15,23,42,0.05)", animation: "fadeUp 0.5s ease both", maxWidth: "100%" }}>
             {/* Overlapping company logos */}
             <div style={{ display: "flex", alignItems: "center" }}>
-              {companies.slice(0, 5).map((name, i) => <BadgeLogo key={name} name={name} index={i} />)}
+              {badgeCompanies.map((c, i) => <BadgeLogo key={c.name} name={c.name} domain={c.domain} index={i} />)}
             </div>
             <span style={{ fontSize: 13, fontWeight: 600, color: "#374151", letterSpacing: "-0.01em" }}>
               <span style={{ fontWeight: 800, color: NAVY }}>500+</span> companies hiring now
@@ -445,7 +494,7 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
               fastest-growing companies.
             </span>
           </h1>
-          <p style={{ fontSize: 17, color: "#6b7280", fontWeight: 400, maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.6, letterSpacing: "-0.01em", animation: "fadeUp 0.5s ease 0.16s both" }}>
+          <p className="jb-hero-sub" style={{ fontSize: 17, color: "#6b7280", fontWeight: 400, maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.6, letterSpacing: "-0.01em", animation: "fadeUp 0.5s ease 0.16s both" }}>
             Hand-picked jobs &amp; internships from top startups — no noise, only the roles worth your time.
           </p>
 
@@ -479,30 +528,56 @@ export function JobsClient({ jobs }: { jobs: Job[] }) {
         {/* ══════════════════════════════════════════════════════
             RESULTS
         ══════════════════════════════════════════════════════ */}
-        <section ref={resultsRef} style={{ maxWidth: 1280, margin: "0 auto", padding: "40px 24px 100px" }}>
+        <section ref={resultsRef} className="jb-results" style={{ maxWidth: 1280, margin: "0 auto", padding: "40px 24px 100px" }}>
           {/* ── RESUME MATCH ─────────────────────────────────────── */}
           <input id="jb-resume" type="file" accept=".pdf,.txt" style={{ display: "none" }}
             onChange={e => { const f = e.target.files?.[0]; if (f) onResumeFile(f); e.currentTarget.value = "" }} />
 
           {!profile ? (
-            <div
+            <label htmlFor="jb-resume"
+              className="jb-resume"
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files?.[0]; if (f) onResumeFile(f) }}
-              style={{ background: "white", border: "1.5px dashed #c7d2fe", borderRadius: 20, padding: "22px 24px", marginBottom: 28, display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
-              <div style={{ width: 52, height: 52, borderRadius: 14, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: NAVY }}>
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M12 18v-6M9 15l3-3 3 3" /></svg>
-              </div>
-              <div style={{ flex: 1, minWidth: 220 }}>
-                <div style={{ fontSize: 16.5, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em" }}>Upload your resume — get matched instantly</div>
-                <div style={{ fontSize: 13.5, color: "#6b7280", marginTop: 3, lineHeight: 1.5 }}>
-                  We&rsquo;ll rank all {jobs.length.toLocaleString("en-IN")} jobs by how well they fit your skills. PDF, processed on-device — nothing leaves your browser.
+              style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap", cursor: parsing ? "wait" : "pointer", background: "linear-gradient(135deg,#fbfcff 0%,#f4f7ff 100%)", border: "1.5px dashed #c7d2fe", borderRadius: 20, padding: "22px 26px", marginBottom: 28 }}>
+              <div className="jb-resume-main" style={{ display: "flex", alignItems: "center", gap: 16, flex: 1, minWidth: 0 }}>
+                {/* Icon */}
+                <div style={{ width: 54, height: 54, borderRadius: 15, background: `linear-gradient(135deg, ${NAVY}, #3b5bdb)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", boxShadow: `0 8px 20px ${NAVY}33` }}>
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3m0 0L8 7m4-4 4 4" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>
                 </div>
-                {resumeErr && <div style={{ fontSize: 12.5, color: "#dc2626", marginTop: 6, fontWeight: 600 }}>{resumeErr}</div>}
+                {/* Text */}
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em", lineHeight: 1.25 }}>
+                    Upload your resume — get matched instantly
+                  </div>
+                  <div style={{ fontSize: 13.5, color: "#64748b", marginTop: 4, lineHeight: 1.5 }}>
+                    We&rsquo;ll rank all <strong style={{ color: "#334155" }}>{jobs.length.toLocaleString("en-IN")}</strong> jobs by how well they fit your skills.
+                  </div>
+                  {/* trust chips */}
+                  <div className="jb-resume-chips" style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: NAVY, background: "#eef2ff", border: "1px solid #dbe4ff", padding: "3px 9px", borderRadius: 99 }}>PDF</span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 600, color: "#15803d", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "3px 9px", borderRadius: 99 }}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                      100% private · on-device
+                    </span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", background: "white", border: "1px solid #e5e7eb", padding: "3px 9px", borderRadius: 99 }}>or drag &amp; drop</span>
+                  </div>
+                  {resumeErr && <div style={{ fontSize: 12.5, color: "#dc2626", marginTop: 8, fontWeight: 600 }}>{resumeErr}</div>}
+                </div>
               </div>
-              <label htmlFor="jb-resume" style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 26px", borderRadius: 99, background: parsing ? "#94a3b8" : NAVY, color: "white", fontSize: 14.5, fontWeight: 700, cursor: parsing ? "wait" : "pointer", letterSpacing: "-0.01em" }}>
-                {parsing ? "Reading resume…" : "Upload resume"}
-              </label>
-            </div>
+              <span className="jb-resume-btn" style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 26px", borderRadius: 99, background: parsing ? "#94a3b8" : NAVY, color: "white", fontSize: 14.5, fontWeight: 700, letterSpacing: "-0.01em", boxShadow: parsing ? "none" : `0 6px 18px ${NAVY}33` }}>
+                {parsing ? (
+                  <>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" style={{ animation: "jbspin 0.8s linear infinite" }}><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                    Reading resume…
+                  </>
+                ) : (
+                  <>
+                    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3m0 0L8 7m4-4 4 4" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>
+                    Upload resume
+                  </>
+                )}
+              </span>
+            </label>
           ) : (
             <div style={{ background: "linear-gradient(135deg,#eef4ff,#f6f9ff)", border: "1.5px solid #c7d2fe", borderRadius: 20, padding: "20px 24px", marginBottom: 28, display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
               <div style={{ minWidth: 0 }}>

@@ -55,7 +55,7 @@ export function CampusAmbassadorProgramClient() {
 
         .caa-hero {
           position: relative; overflow: hidden;
-          background: linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
+          background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #f8faff 100%);
           padding: 188px 24px 80px; text-align: center;
         }
         .caa-hero-blob1 { position:absolute; top:-10%; right:5%; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%); pointer-events:none; }
@@ -77,7 +77,7 @@ export function CampusAmbassadorProgramClient() {
           letter-spacing:-0.04em; line-height:1.08; margin-bottom:20px;
           animation: caa-fade-up .7s cubic-bezier(.16,1,.3,1) .06s both;
         }
-        .caa-hero-grad { background: linear-gradient(135deg, #1d3a8f, #3b5bdb); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .caa-hero-grad { background: linear-gradient(135deg, #1d3a8f, #1d3a8f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
         .caa-hero-sub {
           font-size:17px; color:#475569; line-height:1.75; max-width:600px; margin:0 auto 36px;
           animation: caa-fade-up .8s cubic-bezier(.16,1,.3,1) .12s both;
@@ -134,10 +134,10 @@ export function CampusAmbassadorProgramClient() {
           padding:32px 28px; position:relative; overflow:hidden;
           box-shadow:0 2px 16px rgba(29,58,143,0.06);
         }
-        .caa-process-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#1d3a8f,#3b5bdb); }
+        .caa-process-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#1d3a8f,#1d3a8f); }
         .caa-process-num {
           width:44px; height:44px; border-radius:12px;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:linear-gradient(135deg,#1d3a8f,#1d3a8f);
           color:white; font-size:18px; font-weight:900;
           display:flex; align-items:center; justify-content:center;
           margin-bottom:20px; box-shadow:0 4px 12px rgba(29,58,143,0.25);
@@ -145,10 +145,10 @@ export function CampusAmbassadorProgramClient() {
         .caa-process-title { font-size:17px; font-weight:800; color:#0f172a; margin-bottom:8px; letter-spacing:-0.02em; }
         .caa-process-desc { font-size:13px; color:#64748b; line-height:1.7; }
 
-        .caa-form-section { background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 100%); padding:80px 24px; }
+        .caa-form-section { background:linear-gradient(180deg,#ffffff 0%,#ffffff 100%); padding:80px 24px; }
         .caa-form-head { text-align:center; max-width:600px; margin:0 auto 40px; }
 
-        .caa-cta-banner { background:linear-gradient(135deg,#0f2060,#1d3a8f 50%,#2d4fd4); padding:72px 24px; text-align:center; }
+        .caa-cta-banner { background:linear-gradient(135deg,#0f2060,#1d3a8f 50%,#1d3a8f); padding:72px 24px; text-align:center; }
         .caa-cta-h2 { font-size:clamp(26px,4vw,42px); font-weight:900; color:white; letter-spacing:-0.04em; line-height:1.1; margin-bottom:14px; }
         .caa-cta-sub { font-size:16px; color:rgba(255,255,255,0.75); margin-bottom:32px; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7; }
         .caa-cta-btn { display:inline-flex; align-items:center; gap:9px; background:white; color:#1d3a8f; padding:15px 36px; border-radius:12px; font-size:15px; font-weight:800; border:none; cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,0.2); transition:all .25s; }

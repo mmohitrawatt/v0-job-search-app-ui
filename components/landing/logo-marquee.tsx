@@ -6,24 +6,24 @@
 /* `h` = optical height in px — tuned per logo so wordmarks/icons read
    at the same visual weight despite different internal whitespace. */
 const COMPANIES = [
-  { name: "Google",     slug: "google",     h: 36 },
-  { name: "Microsoft",  slug: "microsoft",  h: 36 },
-  { name: "Amazon",     slug: "amazon",     h: 36 },
-  { name: "Adobe",      slug: "adobe",      h: 38 },
-  { name: "Deloitte",   slug: "deloitte",   h: 32 },
-  { name: "TCS",        slug: "tcs",        h: 40 },
-  { name: "KPMG",       slug: "kpmg",       h: 58 },
-  { name: "Dell",       slug: "dell",       h: 40 },
-  { name: "PhonePe",    slug: "phonepe",    h: 36 },
-  { name: "Swiggy",     slug: "swiggy",     h: 44 },
-  { name: "Zomato",     slug: "zomato",     h: 32 },
-  { name: "Razorpay",   slug: "razorpay",   h: 36 },
-  { name: "Zoho",       slug: "zoho",       h: 36 },
-  { name: "Flipkart",   slug: "flipkart",   h: 36 },
-  { name: "Paytm",      slug: "paytm",      h: 40 },
-  { name: "Infosys",    slug: "infosys",    h: 34 },
-  { name: "Wipro",      slug: "wipro",      h: 46 },
-  { name: "Accenture",  slug: "accenture",  h: 40 },
+  { name: "Google",     slug: "google",     h: 34 },
+  { name: "Microsoft",  slug: "microsoft",  h: 32 },
+  { name: "Amazon",     slug: "amazon",     h: 34 },
+  { name: "Adobe",      slug: "adobe",      h: 36 },
+  { name: "Deloitte",   slug: "deloitte",   h: 34 },
+  { name: "TCS",        slug: "tcs",        h: 36 },
+  { name: "KPMG",       slug: "kpmg",       h: 36 },
+  { name: "Dell",       slug: "dell",       h: 36 },
+  { name: "PhonePe",    slug: "phonepe",    h: 34 },
+  { name: "Swiggy",     slug: "swiggy",     h: 38 },
+  { name: "Zomato",     slug: "zomato",     h: 34 },
+  { name: "Razorpay",   slug: "razorpay",   h: 34 },
+  { name: "Zoho",       slug: "zoho",       h: 34 },
+  { name: "Flipkart",   slug: "flipkart",   h: 34 },
+  { name: "Paytm",      slug: "paytm",      h: 36 },
+  { name: "Infosys",    slug: "infosys",    h: 32 },
+  { name: "Wipro",      slug: "wipro",      h: 38 },
+  { name: "Accenture",  slug: "accenture",  h: 36 },
 ]
 
 export function LogoMarquee() {
@@ -53,7 +53,7 @@ export function LogoMarquee() {
           filter: saturate(1);
         }
         .lm-item:hover { transform: scale(1.12); filter: saturate(1.15); }
-        .lm-item img { width: auto; object-fit: contain; display: block; }
+        .lm-item img { width: auto; max-width: 150px; object-fit: contain; display: block; }
         @keyframes lm-scroll {
           from { transform: translateX(0); }
           to   { transform: translateX(-50%); }

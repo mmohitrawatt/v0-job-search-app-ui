@@ -286,11 +286,12 @@ export function MentorsPreview() {
 
         .mn-cta-btn { transition: transform .18s ease, box-shadow .18s ease; }
         .mn-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(29,58,143,0.38) !important; }
+        .mn-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
         .mn-stats > div { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
         .mn-stats > div:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(29,58,143,0.1); border-color: #cdd8fb !important; }
         @keyframes mn-ping { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(2.6); opacity: 0; } }
         .mn-ping { animation: mn-ping 1.8s cubic-bezier(0,0,.2,1) infinite; }
-        @media (max-width: 560px) { .mn-stats { flex-wrap: wrap !important; } .mn-stats > div { flex: 1 1 calc(50% - 5px) !important; } }
+        @media (max-width: 700px) { .mn-stats { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; } }
         @media (max-width: 640px) { .mn-shell { padding: 32px 20px !important; border-radius: 24px !important; } .mn-title { white-space: normal !important; } }
       `}</style>
 
@@ -367,7 +368,7 @@ export function MentorsPreview() {
 
           {/* ── Stats strip ── */}
           <FadeIn direction="up" delay={0.1}>
-          <div className="mn-stats" style={{ marginTop: 30, display: "flex", alignItems: "stretch", gap: 12 }}>
+          <div className="mn-stats" style={{ marginTop: 30 }}>
             {[
               { icon: Users,          val: "60+",  label: "Active Mentors"  },
               { icon: Building2,      val: "50+",  label: "Top Companies"   },
@@ -376,7 +377,7 @@ export function MentorsPreview() {
             ].map((s) => {
               const Ico = s.icon
               return (
-              <div key={s.label} style={{ flex: 1, display: "flex", alignItems: "center", gap: 13, padding: "18px 18px", background: "#ffffff", border: "1px solid #e8ecf3", borderRadius: 16 }}>
+              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 15px", background: "#ffffff", border: "1px solid #e8ecf3", borderRadius: 16 }}>
                 <div style={{ width: 42, height: 42, flexShrink: 0, borderRadius: 12, background: "#eef2ff", display: "grid", placeItems: "center", color: "#1d3a8f", boxShadow: "inset 0 0 0 1px #dbe2f7" }}>
                   <Ico size={19} strokeWidth={2.2} />
                 </div>

@@ -475,6 +475,9 @@ export default function AdminPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
+            <a className="adm-logout" href="/admin/content" style={{ textDecoration: "none", borderColor: "#c7d2fe", color: "#1d3a8f" }}>
+              Content & Popup
+            </a>
             <button className="adm-logout" onClick={logout}>
               Logout
             </button>

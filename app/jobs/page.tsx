@@ -19,6 +19,7 @@ export type Job = {
   duration?: string
   applyUrl?: string
   logo?: string
+  companyDomain?: string
 }
 
 export const revalidate = 60
@@ -255,26 +256,70 @@ function generateExternalJobs(): Job[] {
 
 const STATIC_JOBS: Job[] = [...INTERNAL_JOBS, ...generateExternalJobs()]
 
+const dbRowToJob = (d: any): Job => ({
+  id: d.id,
+  title: d.title,
+  company: d.company,
+  location: d.location || "India",
+  slug: `${d.id}`,
+  type: d.type || undefined,
+  department: d.department || undefined,
+  experience: d.experience || undefined,
+  mode: d.remote ? "Remote" : "On-site",
+  description: d.description || undefined,
+  stipend: d.salary_text || undefined,
+  applyUrl: d.apply_url || undefined,
+  logo: d.logo_url || undefined,
+  companyDomain: d.company_domain || undefined,
+})
+
+// Round-robin interleave so the board shows a MIX of sources at the top,
+// not a wall of one provider.
+function interleaveBySource(rows: any[]): any[] {
+  const groups = new Map<string, any[]>()
+  for (const r of rows) {
+    const s = r.source || "other"
+    if (!groups.has(s)) groups.set(s, [])
+    groups.get(s)!.push(r)
+  }
+  const lists = [...groups.values()]
+  const out: any[] = []
+  for (let i = 0; out.length < rows.length; i++) {
+    for (const list of lists) if (i < list.length) out.push(list[i])
+  }
+  return out
+}
+
 export default async function JobsPage() {
-  let base: Job[] = STATIC_JOBS
+  // 1. Primary: REAL jobs from Supabase (multi-source: Adzuna + Arbeitnow + Remotive + The Muse).
+  let dbJobs: Job[] = []
   try {
     const supabase = createServerClient()
-    const { data } = await supabase
-      .from("jobs")
-      .select("id, title, company, location, slug, type, department, experience, mode, description, stipend, duration")
-      .order("created_at", { ascending: false })
-    if (data && data.length > 0) base = data
+    const cols = "id,title,company,location,type,department,experience,remote,salary_text,description,apply_url,logo_url,company_domain,source,posted_at"
+    const q = () => supabase.from("jobs").select(cols).order("posted_at", { ascending: false, nullsFirst: false })
+    // Supabase caps each request at 1000 rows — fetch two pages to get all sources.
+    const [p1, p2] = await Promise.all([q().range(0, 999), q().range(1000, 2499)])
+    const rows = [...(p1.data || []), ...(p2.data || [])]
+    // Jobs from companies with a real logo float to the top (recognizable first),
+    // keeping recency order within each group.
+    rows.sort((a: any, b: any) => (b.logo_url ? 1 : 0) - (a.logo_url ? 1 : 0))
+    if (rows.length) dbJobs = rows.map(dbRowToJob)
   } catch {
-    // fallback to static
+    // DB not ready yet — fall through to seed/live below
   }
 
-  // Prepend REAL, live jobs scraped from public job-board APIs (cached ~1h).
-  let jobs = base
-  try {
-    const live = await fetchLiveJobs()
-    if (live.length > 0) jobs = [...live, ...base]
-  } catch {
-    // keep base listings
+  // 2. Use DB jobs if we have them; otherwise fall back to seed + live-scraped.
+  let jobs: Job[]
+  if (dbJobs.length > 0) {
+    jobs = dbJobs
+  } else {
+    jobs = STATIC_JOBS
+    try {
+      const live = await fetchLiveJobs()
+      if (live.length > 0) jobs = [...live, ...STATIC_JOBS]
+    } catch {
+      // keep seed listings
+    }
   }
 
   return (

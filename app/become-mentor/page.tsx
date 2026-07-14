@@ -101,7 +101,7 @@ const IconUpload = () => (
   <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="1.6" strokeLinecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
 )
 const IconStar = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="#7c3aed" stroke="#7c3aed" strokeWidth="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="#1d3a8f" stroke="#1d3a8f" strokeWidth="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
 )
 const IconBrain = () => (
   <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
@@ -346,14 +346,14 @@ export default function BecomeMentorPage() {
   /* ── Success State ── */
 
   if (done) return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%)" }}>
+    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif" }}>
       <Navbar />
       <div style={{ height: 100 }} />
       <div style={{ maxWidth: 520, margin: "0 auto", padding: "60px 24px", textAlign: "center" }}>
         {/* Animated checkmark */}
         <div style={{ position: "relative", width: 88, height: 88, margin: "0 auto 28px" }}>
-          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", opacity: 0.15, animation: "bm-ping 2s ease-in-out infinite" }} />
-          <div style={{ position: "relative", width: 88, height: 88, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 28px rgba(29,58,143,0.35)" }}>
+          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#1d3a8f", opacity: 0.15, animation: "bm-ping 2s ease-in-out infinite" }} />
+          <div style={{ position: "relative", width: 88, height: 88, borderRadius: "50%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 28px rgba(29,58,143,0.35)" }}>
             <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
           </div>
         </div>
@@ -379,7 +379,7 @@ export default function BecomeMentorPage() {
             { step: "3", title: "Mentor Dashboard Access", desc: "Start receiving mentorship requests matched to your expertise." },
           ].map(s => (
             <div key={s.step} style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 16 }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", color: "white", fontSize: 12, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{s.step}</div>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#1d3a8f", color: "white", fontSize: 12, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{s.step}</div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a", marginBottom: 2 }}>{s.title}</div>
                 <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.55 }}>{s.desc}</div>
@@ -404,12 +404,12 @@ export default function BecomeMentorPage() {
 
   /* ── Main render ── */
   return (
-    <div style={{ minHeight: "100vh", background: "#fafbff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif" }}>
       <Navbar />
       <div style={{ height: 90 }} />
 
       {/* ── INFO HERO SECTION ── */}
-      <section style={{ background: "linear-gradient(180deg,#eff4ff 0%,#f8faff 100%)", borderBottom: "1px solid #e0e7ff", padding: "56px 24px 60px", textAlign: "center" }}>
+      <section style={{ background: "#ffffff", borderBottom: "1px solid #eef1f6", padding: "56px 24px 60px", textAlign: "center" }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
 
           {/* Badge */}
@@ -420,7 +420,7 @@ export default function BecomeMentorPage() {
 
           <h1 style={{ fontSize: "clamp(28px,4.5vw,48px)", fontWeight: 900, color: "#0f172a", letterSpacing: "-0.04em", lineHeight: 1.1, marginBottom: 18 }}>
             Why Your Profile<br />
-            <span style={{ background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Matters</span>
+            <span style={{ color: "#1d3a8f" }}>Matters</span>
           </h1>
 
           <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.8, maxWidth: 600, margin: "0 auto 48px" }}>
@@ -430,7 +430,7 @@ export default function BecomeMentorPage() {
           {/* How We Match card */}
           <div style={{ background: "white", borderRadius: 22, border: "1.5px solid #e0e7ff", boxShadow: "0 4px 24px rgba(29,58,143,0.08)", padding: "32px 36px", textAlign: "left" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 26 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 13, background: "linear-gradient(135deg,#1d3a8f,#3b5bdb)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(29,58,143,0.25)" }}>
+              <div style={{ width: 40, height: 40, borderRadius: 13, background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(29,58,143,0.25)" }}>
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /></svg>
               </div>
               <h2 style={{ fontSize: 20, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.03em" }}>How We Match Mentors</h2>
@@ -438,7 +438,7 @@ export default function BecomeMentorPage() {
 
             <div className="bm-match-grid">
               {[
-                { icon: <IconDocument />, color: "#7c3aed", bg: "#f5f3ff", border: "#ddd6fe", title: "Resume Analysis", desc: "Your uploaded resume helps us understand your technical skills, work experience, projects, certifications, and career journey." },
+                { icon: <IconDocument />, color: "#1d3a8f", bg: "#eff4ff", border: "#bfcfff", title: "Resume Analysis", desc: "Your uploaded resume helps us understand your technical skills, work experience, projects, certifications, and career journey." },
                 { icon: <IconTarget />,   color: "#1d3a8f", bg: "#eff4ff", border: "#bfcfff", title: "Skills Matching",  desc: "Your skills are matched with students looking for guidance in those specific domains and technologies." },
                 { icon: <IconShield />,   color: "#0f766e", bg: "#f0fdfa", border: "#a7f3d0", title: "Experience Matching", desc: "Your years of experience help us recommend the right mentorship requests at the right seniority level." },
                 { icon: <IconTrendUp />,  color: "#b45309", bg: "#fffbeb", border: "#fde68a", title: "Better Visibility",  desc: "Complete profiles receive higher visibility within the Jobingen mentor ecosystem and are recommended more often." },
@@ -490,7 +490,7 @@ export default function BecomeMentorPage() {
 
               {/* Progress bar */}
               <div style={{ height: 5, background: "#f1f5f9", borderRadius: 99, marginBottom: 16, overflow: "hidden" }}>
-                <div style={{ height: "100%", width: `${completion}%`, background: completion >= 80 ? "linear-gradient(90deg,#16a34a,#22c55e)" : "linear-gradient(90deg,#1d3a8f,#3b5bdb)", borderRadius: 99, transition: "width .5s ease" }} />
+                <div style={{ height: "100%", width: `${completion}%`, background: completion >= 80 ? "linear-gradient(90deg,#16a34a,#22c55e)" : "#1d3a8f", borderRadius: 99, transition: "width .5s ease" }} />
               </div>
 
               {/* Checklist */}
@@ -684,9 +684,9 @@ export default function BecomeMentorPage() {
               />
 
               {/* Strongly Recommended badge */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 99, marginBottom: 16 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", background: "#eff4ff", border: "1.5px solid #bfcfff", borderRadius: 99, marginBottom: 16 }}>
                 <IconStar />
-                <span style={{ fontSize: 11, fontWeight: 800, color: "#7c3aed", textTransform: "uppercase", letterSpacing: ".06em" }}>Strongly Recommended</span>
+                <span style={{ fontSize: 11, fontWeight: 800, color: "#1d3a8f", textTransform: "uppercase", letterSpacing: ".06em" }}>Strongly Recommended</span>
               </div>
 
               <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.7, marginBottom: 18 }}>
@@ -779,34 +779,34 @@ export default function BecomeMentorPage() {
                   <label style={{ fontSize: 12, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: ".05em" }}>Professional Summary</label>
                   {!aiOpen && (
                     <button type="button" onClick={() => { setAiOpen(true); setAiDraft(""); generateAiDraft() }}
-                      style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 8, background: "#f5f3ff", border: "1px solid #ddd6fe", color: "#7c3aed", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+                      style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 8, background: "#eff4ff", border: "1px solid #bfcfff", color: "#1d3a8f", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
                       <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 2L9.5 8.5 3 9.27l5 4.87L6.82 21 12 17.77 17.18 21 16 14.14l5-4.87-6.5-.77L12 2z" /></svg>
                       Write with AI
                     </button>
                   )}
                 </div>
                 {aiOpen && (
-                  <div style={{ borderRadius: 14, border: "1.5px solid #ddd6fe", background: "#faf5ff", padding: "16px", marginBottom: 10 }}>
+                  <div style={{ borderRadius: 14, border: "1.5px solid #bfcfff", background: "#faf5ff", padding: "16px", marginBottom: 10 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>✨ AI Draft</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "#1d3a8f" }}>✨ AI Draft</span>
                       <button type="button" onClick={() => { setAiOpen(false); setAiDraft("") }} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#94a3b8", padding: 0, fontFamily: "inherit" }}>
                         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg>
                       </button>
                     </div>
                     {aiGenerating ? (
                       <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0" }}>
-                        <div style={{ width: 16, height: 16, borderRadius: "50%", border: "2px solid #ddd6fe", borderTopColor: "#7c3aed", animation: "bm-spin .7s linear infinite" }} />
+                        <div style={{ width: 16, height: 16, borderRadius: "50%", border: "2px solid #bfcfff", borderTopColor: "#1d3a8f", animation: "bm-spin .7s linear infinite" }} />
                         <span style={{ fontSize: 12, color: "#64748b" }}>Generating your bio...</span>
                       </div>
                     ) : (
                       <>
                         <textarea value={aiDraft} onChange={e => setAiDraft(e.target.value)} rows={4}
-                          style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #ddd6fe", background: "white", fontSize: 13, lineHeight: 1.7, outline: "none", fontFamily: "inherit", resize: "none", boxSizing: "border-box", marginBottom: 10 }} />
+                          style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #bfcfff", background: "white", fontSize: 13, lineHeight: 1.7, outline: "none", fontFamily: "inherit", resize: "none", boxSizing: "border-box", marginBottom: 10 }} />
                         <div style={{ display: "flex", gap: 8 }}>
                           <button type="button" onClick={() => { setBio(aiDraft); setAiOpen(false); setAiDraft("") }}
-                            style={{ flex: 1, padding: "9px", borderRadius: 10, background: "#7c3aed", color: "white", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>Use this</button>
+                            style={{ flex: 1, padding: "9px", borderRadius: 10, background: "#1d3a8f", color: "white", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>Use this</button>
                           <button type="button" onClick={generateAiDraft}
-                            style={{ padding: "9px 14px", borderRadius: 10, border: "1.5px solid #ddd6fe", background: "white", color: "#7c3aed", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>Regenerate</button>
+                            style={{ padding: "9px 14px", borderRadius: 10, border: "1.5px solid #bfcfff", background: "white", color: "#1d3a8f", cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}>Regenerate</button>
                         </div>
                       </>
                     )}
@@ -941,7 +941,7 @@ export default function BecomeMentorPage() {
                     return (
                       <button key={a} type="button"
                         onClick={() => setAudience(p => sel ? p.filter(x => x !== a) : [...p, a])}
-                        style={{ padding: "7px 16px", borderRadius: 99, border: `1.5px solid ${sel ? "#7c3aed" : "#e2e8f0"}`, background: sel ? "#f5f3ff" : "#f8fafc", color: sel ? "#7c3aed" : "#475569", fontSize: 12.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", transition: "all .15s" }}>
+                        style={{ padding: "7px 16px", borderRadius: 99, border: `1.5px solid ${sel ? "#1d3a8f" : "#e2e8f0"}`, background: sel ? "#eff4ff" : "#f8fafc", color: sel ? "#1d3a8f" : "#475569", fontSize: 12.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", transition: "all .15s" }}>
                         {a}
                       </button>
                     )
@@ -1047,7 +1047,7 @@ export default function BecomeMentorPage() {
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
                   padding: "15px 48px", borderRadius: 14, border: "none", cursor: "pointer",
-                  background: "linear-gradient(135deg,#1a3585,#2d4fd4 55%,#4668f5)",
+                  background: "#1d3a8f",
                   color: "white", fontSize: 16, fontWeight: 800, fontFamily: "inherit",
                   boxShadow: "0 6px 24px rgba(29,58,143,0.35)", transition: "all .2s",
                   opacity: loading ? 0.7 : 1, width: "100%", maxWidth: 340,
@@ -1071,7 +1071,7 @@ export default function BecomeMentorPage() {
             <div style={{ position: "sticky", top: 24 }}>
 
               {/* AI Mentor Matching card */}
-              <div style={{ background: "linear-gradient(160deg,#0f2870 0%,#1d3a8f 50%,#2d4fd4 100%)", borderRadius: 20, padding: "26px 24px", marginBottom: 16, boxShadow: "0 8px 32px rgba(29,58,143,0.22)" }}>
+              <div style={{ background: "#0c1a35", borderRadius: 20, padding: "26px 24px", marginBottom: 16, boxShadow: "0 8px 32px rgba(12,26,53,0.22)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                   <div style={{ width: 38, height: 38, borderRadius: 12, background: "rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="12" r="3" /><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" /></svg>
@@ -1106,7 +1106,7 @@ export default function BecomeMentorPage() {
                   <span style={{ fontSize: 20, fontWeight: 900, color: completion >= 80 ? "#16a34a" : "#1d3a8f" }}>{completion}%</span>
                 </div>
                 <div style={{ height: 6, background: "#f1f5f9", borderRadius: 99, overflow: "hidden", marginBottom: 14 }}>
-                  <div style={{ height: "100%", width: `${completion}%`, background: completion >= 80 ? "linear-gradient(90deg,#16a34a,#22c55e)" : "linear-gradient(90deg,#1d3a8f,#3b5bdb)", borderRadius: 99, transition: "width .5s ease" }} />
+                  <div style={{ height: "100%", width: `${completion}%`, background: completion >= 80 ? "linear-gradient(90deg,#16a34a,#22c55e)" : "#1d3a8f", borderRadius: 99, transition: "width .5s ease" }} />
                 </div>
                 {completionItems.filter(i => !i.done).slice(0, 3).map(item => (
                   <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>

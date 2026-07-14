@@ -438,6 +438,129 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
+/* ─── Rich 1:1 Session card ───────────────────────── */
+const SESSION_OFFERS = [
+  { title: "Professionalize your resume", desc: "Expert feedback to make your resume stand out", icon: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" },
+  { title: "Clarify your target", desc: "Define the exact roles and companies you should aim for", icon: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 12h.01" },
+  { title: "Launch your search", desc: "Leave with the essential assets to start applying today", icon: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" },
+  { title: "Get personalized advice", desc: "Tailored guidance for your specific career goals", icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
+]
+
+function MentorSessionCard({ m }: { m: any }) {
+  const sessions = seededStat(m.name + "s", 62, 480)
+  const reviews = seededStat(m.name + "r", 42, 180)
+  const rating = (46 + seededStat(m.name + "g", 0, 3)) / 10
+  const students = seededStat(m.name + "st", 320, 1200)
+  const price = 199 + seededStat(m.name + "p", 0, 6) * 50
+  const shortCompany = (m.company || "").split(" ")[0]
+  const bio = m.desc || `${m.role} at ${m.company}.`
+
+  return (
+    <div className="session-card">
+      {/* Header strip */}
+      <div className="sc-head">
+        <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#0c1a35", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+        </div>
+        <span style={{ fontSize: 13.5, fontWeight: 800, color: "#0c1a35", letterSpacing: "-0.01em" }}>30-min 1:1 Session with {m.name}</span>
+        <span className="sc-head-avail" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 99, background: "#ecfdf3", border: "1px solid #d1fadf", fontSize: 11.5, fontWeight: 800, color: "#12805c", whiteSpace: "nowrap" }}>
+          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", boxShadow: "0 0 0 3px rgba(22,163,74,0.18)", animation: "livePulse 2s infinite" }} />
+          Available now
+        </span>
+      </div>
+
+      <div className="sc-body">
+        {/* LEFT */}
+        <div className="sc-left">
+          <div style={{ display: "flex", alignItems: "center", gap: 13, marginBottom: 14 }}>
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div style={{ width: 56, height: 56, borderRadius: "50%", overflow: "hidden", background: "#eef1f6", boxShadow: "0 0 0 3px #fff, 0 3px 10px rgba(15,23,42,0.14)" }}>
+                {m.photo ? (
+                  <Image src={m.photo} alt={m.name} width={56} height={56} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }} />
+                ) : (
+                  <div style={{ width: "100%", height: "100%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, fontWeight: 900 }}>{m.initials}</div>
+                )}
+              </div>
+              <span style={{ position: "absolute", bottom: 1, right: 1, width: 13, height: 13, borderRadius: "50%", background: "#16a34a", border: "2.5px solid #fff" }} />
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 17, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.02em" }}>{m.name}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M12 2l2.09 1.52 2.55-.36 1.06 2.35 2.35 1.06-.36 2.55L21.21 12l-1.52 2.09.36 2.55-2.35 1.06-1.06 2.35-2.55-.36L12 21.21l-2.09-1.52-2.55.36-1.06-2.35-2.35-1.06.36-2.55L2.79 12 4.31 9.91l-.36-2.55 2.35-1.06 1.06-2.35 2.55.36z" fill="#1d3a8f" /><path d="M8.5 12l2.3 2.3 4.7-4.9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </div>
+              <div style={{ fontSize: 12.5, fontWeight: 500, color: "#64748b", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.role} <span style={{ color: "#a2acbd" }}>· {m.company}</span></div>
+            </div>
+          </div>
+
+          {/* rating line */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 13 }}>
+            <Stars rating={Math.round(rating)} />
+            <span style={{ fontSize: 12.5, fontWeight: 800, color: "#0c1a35" }}>{rating.toFixed(1)}</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8" }}>· {reviews} reviews</span>
+          </div>
+
+          {/* pills */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 13 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, padding: "4px 10px", borderRadius: 99, background: "#0c1a35", color: "#fff" }}>#{shortCompany}</span>
+            {(m.topics || []).slice(0, 3).map((t: string) => (
+              <span key={t} style={{ fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 99, background: "#eef2ff", color: "#1d3a8f" }}>{t}</span>
+            ))}
+            {(m.topics || []).length > 3 && (
+              <span style={{ fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 99, background: "#f1f5f9", color: "#64748b" }}>+{m.topics.length - 3}</span>
+            )}
+          </div>
+
+          {/* bio */}
+          <p style={{ fontSize: 12.5, color: "#475569", lineHeight: 1.65, margin: "0 0 14px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>{bio}</p>
+
+          {/* meta */}
+          <div style={{ display: "flex", alignItems: "center", gap: 18, paddingTop: 12, borderTop: "1px solid #f1f5f9", fontSize: 12, fontWeight: 600, color: "#64748b" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              {sessions} sessions
+            </span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              {students} students
+            </span>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="sc-right">
+          <div style={{ fontSize: 12.5, fontWeight: 800, color: "#0c1a35", marginBottom: 12 }}>What you&rsquo;ll get</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 11, flex: 1 }}>
+            {SESSION_OFFERS.map((o, k) => (
+              <div key={k} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                <div style={{ width: 22, height: 22, borderRadius: 7, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0c1a35", lineHeight: 1.35 }}>{o.title}</div>
+                  <div style={{ fontSize: 11.5, color: "#94a3b8", lineHeight: 1.4, marginTop: 1 }}>{o.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginTop: 16, paddingTop: 14, borderTop: "1px solid #f1f5f9" }}>
+            <div><span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600 }}>Session fee</span><div style={{ fontSize: 22, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.02em", lineHeight: 1 }}>₹{price}</div></div>
+            <a href="https://ai.jobingen.com/mentors" target="_blank" rel="noopener noreferrer" className="sc-book" style={{
+              display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 26px",
+              background: "#1d3a8f", color: "#fff", borderRadius: 12, border: "none", cursor: "pointer",
+              fontSize: 14, fontWeight: 800, textDecoration: "none",
+              boxShadow: "0 6px 18px rgba(29,58,143,0.3)", transition: "transform .18s, box-shadow .18s, filter .18s",
+            }}>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+              Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function MentorsPage() {
   const avgRating = 4.6
   const [dbMentors, setDbMentors] = useState<DBMentor[]>([])
@@ -472,7 +595,7 @@ export default function MentorsPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#ffffff", overflowX: "hidden", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif" }}>
       <Navbar />
 
       {/* ── Hero (ADPList-style: side photo collage + center content + Mentee/Mentor toggle) ── */}
@@ -635,80 +758,10 @@ export default function MentorsPage() {
           </div>
           <p style={{ fontSize: 13.5, color: "#64748b", marginBottom: 28 }}>Currently taking 1:1 training, mock interviews &amp; mentoring sessions</p>
 
-          <div className="active-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
-            {activeMentors.map((m, i) => {
-              const sessions = seededStat(m.name + "s", 62, 480)
-              const rating = (47 + seededStat(m.name + "g", 0, 3)) / 10
-              return (
-              <div key={i} className="mentor-card-active" style={{
-                background: "white",
-                borderRadius: 16,
-                border: "1px solid #edf0f6",
-                boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 6px 16px rgba(15,23,42,0.05)",
-                overflow: "hidden",
-                transition: "box-shadow .3s cubic-bezier(.2,.7,.2,1), transform .3s cubic-bezier(.2,.7,.2,1)",
-                display: "flex", flexDirection: "column",
-              }}>
-                {/* Photo */}
-                <div style={{ position: "relative", overflow: "hidden" }}>
-                  <div style={{ aspectRatio: "4 / 5", overflow: "hidden", background: "#eef1f6" }}>
-                    {m.photo ? (
-                      <Image src={m.photo} alt={m.name} width={360} height={450} className="m-photo" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 22%", transition: "transform .55s cubic-bezier(.2,.7,.2,1)" }} />
-                    ) : (
-                      <div className="m-photo" style={{ width: "100%", height: "100%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 40, fontWeight: 900, transition: "transform .55s cubic-bezier(.2,.7,.2,1)" }}>{m.initials}</div>
-                    )}
-                  </div>
-                  {/* scrim */}
-                  <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40%", background: "linear-gradient(to top, rgba(12,26,53,0.4), transparent)", pointerEvents: "none" }} />
-
-                  {/* Rating pill top-right */}
-                  <span style={{ position: "absolute", top: 10, right: 10, display: "inline-flex", alignItems: "center", gap: 3, background: "rgba(255,255,255,0.97)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", padding: "4px 8px", borderRadius: 99, fontSize: 11.5, fontWeight: 800, color: "#0c1a35", boxShadow: "0 2px 8px rgba(0,0,0,0.14)" }}>
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#f59e0b"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
-                    {rating.toFixed(1)}
-                  </span>
-
-                  {/* Available badge */}
-                  <span style={{ position: "absolute", bottom: 10, left: 10, display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(12,26,53,0.5)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", padding: "5px 10px", borderRadius: 99, fontSize: 11, fontWeight: 700, color: "#fff", border: "1px solid rgba(255,255,255,0.16)" }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 0 3px rgba(74,222,128,0.28)", animation: "livePulse 2s infinite" }} />
-                    Available
-                  </span>
-                </div>
-
-                {/* Body */}
-                <div style={{ padding: "13px 14px 14px", display: "flex", flexDirection: "column", flex: 1 }}>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: "#0c1a35", letterSpacing: "-0.015em", lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.name}</div>
-                  <div style={{ fontSize: 12, fontWeight: 500, color: "#64748b", marginTop: 4, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                    {m.role} <span style={{ color: "#a2acbd" }}>· {m.company}</span>
-                  </div>
-
-                  {/* stat line */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 10, fontSize: 11.5, fontWeight: 600, color: "#94a3b8" }}>
-                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z" /></svg>
-                    {sessions} sessions
-                  </div>
-
-                  {/* View profile link */}
-                  <div style={{ marginTop: "auto", paddingTop: 13 }}>
-                    {m.linkedin ? (
-                      <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="mentor-view-btn" style={{
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: 6, width: "100%",
-                        fontSize: 12.5, fontWeight: 700, color: "#1d3a8f",
-                        padding: "9px 14px", borderRadius: 10,
-                        background: "#f4f6fd", border: "1px solid #e6ebfa",
-                        textDecoration: "none", transition: "background .18s, color .18s",
-                      }}>
-                        View profile
-                        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                      </a>
-                    ) : (
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", fontSize: 12, fontWeight: 600, color: "#a2acbd", padding: "9px 14px", borderRadius: 10, background: "#f8faff", border: "1px solid #eef1f6" }}>
-                        Profile soon
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )})}
+          <div className="session-stack">
+            {activeMentors.map((m, i) => (
+              <MentorSessionCard key={i} m={m} />
+            ))}
           </div>
         </div>
 
@@ -870,71 +923,6 @@ export default function MentorsPage() {
           </div>
         </div>
 
-        {/* ── Consultancy Live Soon ── */}
-        <div className="consultancy-card" style={{ background: "white", borderRadius: 22, border: "1px solid #edf0f6", boxShadow: "0 1px 2px rgba(15,23,42,0.04), 0 10px 30px rgba(15,23,42,0.05)", padding: "36px 36px 32px", marginBottom: 28 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20, flexWrap: "wrap", marginBottom: 26 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-              <div style={{ width: 50, height: 50, borderRadius: 15, background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 6px 16px rgba(29,58,143,0.28)" }}>
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14" /><rect x="1" y="6" width="14" height="12" rx="2" />
-                </svg>
-              </div>
-              <div>
-                <h3 style={{ fontSize: 20, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.03em", lineHeight: 1.25, marginBottom: 5 }}>
-                  Mentor Consultancy — Live Sessions
-                </h3>
-                <p style={{ fontSize: 13.5, color: "#64748b" }}>Book 1:1 video sessions directly with our mentors</p>
-              </div>
-            </div>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "6px 15px", background: "#f1f4fb", border: "1px solid #e0e7ff", borderRadius: 99, fontSize: 11, fontWeight: 800, color: "#1d3a8f", whiteSpace: "nowrap" }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1d3a8f", display: "inline-block", animation: "livePulse 2s infinite" }} />
-              Coming Soon
-            </span>
-          </div>
-
-          <div className="consultancy-features" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {[
-              { icon: "M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14M1 6h14v12H1Z", title: "Live Video Calls", desc: "Face-to-face via Google Meet or Zoom" },
-              { icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5", title: "Personalized Roadmaps", desc: "Career plan tailored to your goals" },
-              { icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2", title: "Resume & Interview Prep", desc: "Real feedback, mock sessions & more" },
-            ].map((f, j) => (
-              <div key={j} style={{ background: "#f8fafc", borderRadius: 14, padding: "18px 16px", border: "1px solid #eef1f6" }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                  <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={f.icon} /></svg>
-                </div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: "#0c1a35", marginBottom: 4 }}>{f.title}</div>
-                <div style={{ fontSize: 12, color: "#64748b", lineHeight: 1.55 }}>{f.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Become a Mentor CTA ── */}
-        <div className="cta-bar" style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          gap: 20, padding: "30px 40px",
-          background: "#0c1a35",
-          borderRadius: 20, position: "relative", overflow: "hidden",
-          boxShadow: "0 10px 30px rgba(12,26,53,0.2)",
-        }}>
-          {/* subtle decorative glow */}
-          <div style={{ position: "absolute", top: "-40%", right: "-5%", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, rgba(70,104,245,0.28), transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "relative" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#7d93c9", letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 8 }}>For Professionals</div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", marginBottom: 6 }}>Want to mentor students?</div>
-            <div style={{ fontSize: 13.5, color: "#aab8d6", maxWidth: 440, lineHeight: 1.6 }}>Your experience is their shortcut. Your time is their turning point.</div>
-          </div>
-          <Link href="/become-mentor" className="hero-find-btn" style={{
-            position: "relative",
-            display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 28px",
-            background: "#fff", color: "#0c1a35", borderRadius: 12, flexShrink: 0,
-            fontSize: 13.5, fontWeight: 800, textDecoration: "none",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
-          }}>
-            Apply as Mentor
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-          </Link>
-        </div>
 
       </div>
 
@@ -945,8 +933,8 @@ export default function MentorsPage() {
 
         /* Vertical auto-scroll photo marquee */
         .hero-photos { height: 540px; overflow: hidden;
-          -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 13%, #000 87%, transparent 100%); }
+          -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%); }
         .marq-track { display: flex; flex-direction: column; will-change: transform; }
         .marq-tile { aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.10); outline: 3px solid rgba(255,255,255,0.9); outline-offset: -1px; }
         @keyframes marqUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
@@ -990,31 +978,41 @@ export default function MentorsPage() {
         .mentor-card-active:hover { box-shadow:0 1px 2px rgba(15,23,42,0.05), 0 20px 44px rgba(15,23,42,0.14) !important; transform:translateY(-5px); }
         .mentor-card-active:hover .m-photo { transform: scale(1.05); }
         .mentor-view-btn:hover { background:#1d3a8f !important; color:#fff !important; border-color:#1d3a8f !important; }
-        .mentor-card-sm:hover { box-shadow:0 6px 20px rgba(0,0,0,0.07) !important; transform:translateY(-2px); }
-        @media (max-width: 640px) {
-          .nav-spacer { height: 72px !important; }
-          .hero-section { padding: 48px 16px 44px !important; }
-          .m-wrap { padding: 36px 16px 56px !important; }
-          .hero-stats { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; width: calc(100% - 32px) !important; border-radius: 14px !important; margin: 0 auto !important; }
-          .hero-stats > div { border-right: none !important; border-bottom: 1px solid #f1f5f9 !important; padding: 16px 12px !important; }
-          .hero-stats > div:nth-child(1) { border-right: 1px solid #f1f5f9 !important; }
-          .hero-stats > div:nth-child(2) { }
-          .hero-stats > div:nth-child(3) { border-right: 1px solid #f1f5f9 !important; border-bottom: none !important; }
-          .hero-stats > div:nth-child(4) { border-bottom: none !important; }
-          .active-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-          .all-grid { gap: 12px !important; }
-          .quotes-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
-          .reviews-grid { gap: 12px !important; }
-          .consultancy-features { grid-template-columns: 1fr !important; gap: 12px !important; }
-          .consultancy-card { padding: 24px 18px 22px !important; border-radius: 16px !important; }
-          .cta-bar { padding: 22px 20px !important; border-radius: 14px !important; }
-          .cta-bar a { width: 100% !important; justify-content: center !important; }
+
+        /* Rich 1:1 Session card */
+        .session-stack { display: flex; flex-direction: column; gap: 20px; }
+        .session-card { background: #fff; border: 1px solid #e8edf4; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.03); transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease; }
+        .session-card:hover { border-color: #cbd5e1; box-shadow: 0 8px 32px rgba(15,23,42,0.07); transform: translateY(-3px); }
+        .sc-head { display: flex; align-items: center; gap: 11px; padding: 12px 22px; background: #f8fafc; border-bottom: 1px solid #f1f5f9; }
+        .sc-body { display: grid; grid-template-columns: 1fr 1.05fr; }
+        .sc-left { padding: 20px 22px; background: #fff; min-width: 0; }
+        .sc-right { padding: 20px 22px; border-left: 1px solid #f1f5f9; display: flex; flex-direction: column; background: #f8fafc; min-width: 0; }
+        .sc-book:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(29,58,143,0.4); }
+        @media (max-width: 860px) {
+          .sc-body { grid-template-columns: 1fr; }
+          .sc-right { border-left: none; border-top: 1px solid #edf0f6; }
+          .sc-head { padding: 12px 16px; }
+          .sc-left, .sc-right { padding: 18px 16px; }
         }
-        @media (min-width: 641px) and (max-width: 900px) {
-          .active-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .all-grid { gap: 14px !important; }
-          .reviews-grid { gap: 14px !important; }
-          .consultancy-features { grid-template-columns: repeat(2, 1fr) !important; }
+        .mentor-card-sm:hover { box-shadow:0 6px 20px rgba(0,0,0,0.07) !important; transform:translateY(-2px); }
+
+        /* Tablet: quotes to single column, tighten hero photos height */
+        @media (max-width: 900px) {
+          .quotes-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+        }
+        /* Session card header wraps gracefully on small screens */
+        @media (max-width: 560px) {
+          .sc-head { flex-wrap: wrap; gap: 8px 10px; }
+          .sc-head-avail { margin-left: 0 !important; }
+        }
+        /* Mobile */
+        @media (max-width: 640px) {
+          .hero-section { padding-left: 16px !important; padding-right: 16px !important; padding-bottom: 40px !important; }
+          .m-wrap { padding: 32px 16px 56px !important; }
+          .all-grid { gap: 12px !important; }
+          .reviews-grid { gap: 12px !important; }
+          .session-stack { gap: 14px !important; }
+          .sc-left, .sc-right { padding: 16px 15px !important; }
         }
       `}} />
 

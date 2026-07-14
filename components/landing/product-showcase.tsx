@@ -13,17 +13,17 @@ const ACCENT = "#1d3a8f"
 const ACCENT_BG = "#eef2fb"
 const GRAD = "#1d3a8f"
 
-type Feature = { file: string; tab: string; cta: string; icon: React.ReactNode }
+type Feature = { file: string; tab: string; cta: string; href: string; icon: React.ReactNode }
 const ico = (children: React.ReactNode) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{children}</svg>
 )
 
 const FEATURES: Feature[] = [
-  { file: "resume-builder.png", tab: "Resume", cta: "Build a Resume with AI", icon: ico(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></>) },
-  { file: "mock-interview.png", tab: "Interview", cta: "Start a Mock Interview", icon: ico(<><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></>) },
-  { file: "think-print.png", tab: "ThinkPrint", cta: "Take an Assessment", icon: ico(<><path d="M12 2a10 10 0 0 0-4 19.2M12 2a10 10 0 0 1 4 19.2M12 6v6l3 2"/></>) },
-  { file: "mentors.png", tab: "Mentors", cta: "Find a Mentor", icon: ico(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></>) },
-  { file: "jobengine.png", tab: "JobEngine", cta: "Browse Jobs", icon: ico(<><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></>) },
+  { file: "resume-builder.png", tab: "Resume", cta: "Build a Resume with AI", href: "https://ai.jobingen.com/editor/6a564f128eb99890c0bf072a", icon: ico(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></>) },
+  { file: "mock-interview.png", tab: "Interview", cta: "Start a Mock Interview", href: "https://ai.jobingen.com/interview", icon: ico(<><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></>) },
+  { file: "think-print.png", tab: "ThinkPrint", cta: "Take an Assessment", href: "https://ai.jobingen.com/dashboard", icon: ico(<><path d="M12 2a10 10 0 0 0-4 19.2M12 2a10 10 0 0 1 4 19.2M12 6v6l3 2"/></>) },
+  { file: "mentors.png", tab: "Mentors", cta: "Find a Mentor", href: "https://ai.jobingen.com/mentors", icon: ico(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></>) },
+  { file: "jobengine.png", tab: "JobEngine", cta: "Browse Jobs", href: "https://ai.jobingen.com/dashboard", icon: ico(<><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></>) },
 ]
 const N = FEATURES.length
 
@@ -39,6 +39,8 @@ export function ProductShowcase() {
   // Cursor-magnetic tilt: the monitor leans toward the pointer
   useEffect(() => {
     const pin = pinRef.current, mon = monitorRef.current
+    // desktop-only: the pinned monitor is hidden below lg — don't run rAF on mobile
+    if (window.innerWidth < 1024) return
     if (!pin || !mon || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0
     const onMove = (e: MouseEvent) => {
@@ -62,6 +64,8 @@ export function ProductShowcase() {
   useEffect(() => {
     const outer = outerRef.current
     if (!outer) return
+    // desktop-only: the scroll-driven monitor is hidden below lg — skip the rAF loop on mobile
+    if (window.innerWidth < 1024) return
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     let target = 0, cur = 0, raf = 0
     const measure = () => {
@@ -188,7 +192,7 @@ export function ProductShowcase() {
           </div>
 
           <div className="dt-foot">
-            <Link href="/ai-tools" key={`cta-${active}`} className="dt-cta dt-fade">
+            <Link href={f.href} key={`cta-${active}`} className="dt-cta dt-fade">
               {f.cta}
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </Link>
@@ -253,16 +257,22 @@ export function ProductShowcase() {
                     </div>
                   </div>
                   <p style={{ fontSize: 14.5, color: "#566175", lineHeight: 1.55, fontWeight: 500, marginTop: 14 }}>{m.desc}</p>
-                  <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16,
-                    fontSize: 14.5, fontWeight: 700, color: "#fff", background: m.c, padding: "12px 20px", borderRadius: 12,
-                    textDecoration: "none", boxShadow: `0 8px 20px -8px ${m.c}` }}>
+                  <Link href={feat.href} style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 15,
+                    fontSize: 14, fontWeight: 800, color: m.c, textDecoration: "none", letterSpacing: "-0.01em" }}>
                     {feat.cta}
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </Link>
                 </div>
               </div>
             )
           })}
+          {/* single primary CTA for the whole section */}
+          <Link href="/ai-tools" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+            marginTop: 6, fontSize: 16, fontWeight: 800, color: "#fff", background: ACCENT, padding: "16px", borderRadius: 14,
+            textDecoration: "none", boxShadow: "0 12px 26px -8px " + ACCENT }}>
+            Explore all AI tools
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </Link>
         </div>
       </div>
     </section>

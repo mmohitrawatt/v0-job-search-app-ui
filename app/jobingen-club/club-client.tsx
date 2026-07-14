@@ -121,7 +121,7 @@ export function JobingenClubClient() {
         /* ── HERO ── */
         .ca-hero {
           position: relative; overflow: hidden;
-          background: linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
+          background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #f8faff 100%);
           padding: 100px 24px 72px; text-align: center;
         }
         @media(min-width: 768px) { .ca-hero { padding: 188px 24px 88px; } }
@@ -144,7 +144,7 @@ export function JobingenClubClient() {
           letter-spacing:-0.04em; line-height:1.06; margin-bottom:20px;
           animation: ca-fade-up .7s cubic-bezier(.16,1,.3,1) .06s both;
         }
-        .ca-hero-grad { background: linear-gradient(135deg, #1d3a8f, #3b5bdb); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .ca-hero-grad { background: linear-gradient(135deg, #1d3a8f, #1d3a8f); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
         .ca-hero-sub {
           font-size:17px; color:#475569; line-height:1.75; max-width:560px; margin:0 auto 40px;
           animation: ca-fade-up .8s cubic-bezier(.16,1,.3,1) .12s both;
@@ -192,7 +192,7 @@ export function JobingenClubClient() {
         .ca-inner { max-width:1100px; margin:0 auto; padding:0 24px; }
         .ca-sec { padding:80px 24px; }
         .ca-sec-alt { padding:80px 24px; background:#f8faff; }
-        .ca-sec-blue { padding:80px 24px; background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 100%); }
+        .ca-sec-blue { padding:80px 24px; background:linear-gradient(180deg,#ffffff 0%,#ffffff 100%); }
 
         .ca-eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:800; color:#1d3a8f; letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; }
         .ca-eyebrow-line { display:inline-block; width:20px; height:2px; background:#1d3a8f; border-radius:2px; }
@@ -225,10 +225,10 @@ export function JobingenClubClient() {
           padding:32px 28px; position:relative; overflow:hidden;
           box-shadow:0 2px 16px rgba(29,58,143,0.06);
         }
-        .ca-process-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#1d3a8f,#3b5bdb); }
+        .ca-process-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#1d3a8f,#1d3a8f); }
         .ca-process-num {
           width:44px; height:44px; border-radius:12px;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:linear-gradient(135deg,#1d3a8f,#1d3a8f);
           color:white; font-size:18px; font-weight:900;
           display:flex; align-items:center; justify-content:center;
           margin-bottom:20px; box-shadow:0 4px 12px rgba(29,58,143,0.25);
@@ -259,11 +259,11 @@ export function JobingenClubClient() {
         @media(max-width:700px) { .ca-who-layout { grid-template-columns:1fr; gap:32px; } }
         .ca-who-list { display:flex; flex-direction:column; gap:14px; }
         .ca-who-item { display:flex; align-items:flex-start; gap:14px; background:white; border:1.5px solid #eaecf4; border-radius:14px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
-        .ca-who-check { width:22px; height:22px; border-radius:7px; flex-shrink:0; margin-top:1px; background:linear-gradient(135deg,#1d3a8f,#3b5bdb); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(29,58,143,0.2); }
+        .ca-who-check { width:22px; height:22px; border-radius:7px; flex-shrink:0; margin-top:1px; background:linear-gradient(135deg,#1d3a8f,#1d3a8f); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(29,58,143,0.2); }
         .ca-who-text { font-size:14px; color:#334155; line-height:1.6; font-weight:500; }
 
         /* ── FORM ── */
-        .ca-form-section { background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 100%); padding:80px 24px; position:relative; overflow:hidden; }
+        .ca-form-section { background:linear-gradient(180deg,#ffffff 0%,#ffffff 100%); padding:80px 24px; position:relative; overflow:hidden; }
         .ca-form-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1.15fr; gap:64px; align-items:start; }
         @media(max-width:860px) { .ca-form-inner { grid-template-columns:1fr; } }
 
@@ -272,7 +272,7 @@ export function JobingenClubClient() {
         .ca-form-left-sub { font-size:15px; color:#64748b; line-height:1.75; margin-bottom:36px; }
 
         .ca-step { display:flex; align-items:flex-start; gap:16px; margin-bottom:20px; }
-        .ca-step-num { width:36px; height:36px; border-radius:10px; flex-shrink:0; background:linear-gradient(135deg,#1d3a8f,#3b5bdb); color:white; font-size:14px; font-weight:900; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 10px rgba(29,58,143,0.22); }
+        .ca-step-num { width:36px; height:36px; border-radius:10px; flex-shrink:0; background:linear-gradient(135deg,#1d3a8f,#1d3a8f); color:white; font-size:14px; font-weight:900; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 10px rgba(29,58,143,0.22); }
         .ca-step-title { font-size:14px; font-weight:800; color:#0f172a; margin-bottom:3px; }
         .ca-step-desc { font-size:13px; color:#64748b; line-height:1.6; }
 
@@ -328,7 +328,7 @@ export function JobingenClubClient() {
         .ca-form-success p { font-size:14px; color:#64748b; line-height:1.7; max-width:300px; }
 
         /* ── CTA BANNER ── */
-        .ca-cta-banner { background:linear-gradient(135deg,#0f2060,#1d3a8f 50%,#2d4fd4); padding:72px 24px; text-align:center; }
+        .ca-cta-banner { background:linear-gradient(135deg,#0f2060,#1d3a8f 50%,#1d3a8f); padding:72px 24px; text-align:center; }
         .ca-cta-h2 { font-size:clamp(28px,4vw,48px); font-weight:900; color:white; letter-spacing:-0.04em; line-height:1.1; margin-bottom:14px; }
         .ca-cta-sub { font-size:16px; color:rgba(255,255,255,0.75); margin-bottom:36px; max-width:500px; margin-left:auto; margin-right:auto; line-height:1.7; }
         .ca-cta-btn { display:inline-flex; align-items:center; gap:9px; background:white; color:#1d3a8f; padding:15px 36px; border-radius:12px; font-size:15px; font-weight:800; text-decoration:none; border:none; cursor:pointer; box-shadow:0 4px 20px rgba(0,0,0,0.2); transition:all .25s; }

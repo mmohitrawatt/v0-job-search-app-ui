@@ -81,7 +81,7 @@ export function JobHubStats() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
           {/* ── LEFT: value + search ─────────────────────────────── */}
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2 mb-5">
               <span className="w-6 h-[2px] rounded-full" style={{ background: "#1d3a8f" }} />
               <span className="text-[12px] font-extrabold tracking-[0.16em] uppercase" style={{ color: "#1d3a8f" }}>
@@ -90,7 +90,7 @@ export function JobHubStats() {
             </div>
 
             <h2 className="mb-5"
-              style={{ fontSize: "clamp(32px,4.6vw,52px)", fontWeight: 900, lineHeight: 1.05, letterSpacing: "-0.045em", color: "#0c1a35" }}>
+              style={{ fontSize: "clamp(27px,6.5vw,52px)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.04em", color: "#0c1a35" }}>
               Access <span style={{ color: "#1d3a8f" }}>India&rsquo;s largest job hub</span> in one place
             </h2>
 
@@ -152,7 +152,7 @@ export function JobHubStats() {
           </div>
 
           {/* ── RIGHT: live app window ───────────────────────────── */}
-          <div className="relative">
+          <div className="relative min-w-0">
             {/* glow */}
             <div className="absolute -inset-4 rounded-[36px] blur-2xl opacity-60 -z-10"
               style={{ background: "radial-gradient(circle at 60% 30%, rgba(29,58,143,0.16), transparent 70%)" }} />

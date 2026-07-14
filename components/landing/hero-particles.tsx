@@ -29,6 +29,12 @@ export function HeroParticles() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
+    // Desktop-only: this is a cursor-interaction effect. On touch / small
+    // screens it's invisible-value but a constant rAF drain — skip entirely.
+    const isTouchOrSmall = window.innerWidth < 1024 ||
+      (window.matchMedia?.("(hover: none)").matches ?? false)
+    if (isTouchOrSmall) return
+
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
     let W = 0, H = 0, raf = 0, t = 0

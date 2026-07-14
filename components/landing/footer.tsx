@@ -55,7 +55,7 @@ export function Footer() {
           display: grid; place-items: center; color: #64748b; text-decoration: none; transition: all .2s ease; }
         .ft-social:hover { background: ${NAVY}; border-color: ${NAVY}; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(29,58,143,.28); }
         .ft-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-        .ft-mark { height: 40px; width: auto; display: block; }
+        .ft-mark { height: 60px; width: auto; display: block; }
         @media (max-width: 860px) {
           .ft-grid { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
           .ft-brand { grid-column: 1 / -1; }

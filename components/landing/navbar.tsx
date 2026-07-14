@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { JobingenLogo } from "@/components/jobingen-logo"
 import { useWaitlist } from "@/components/waitlist-modal"
+import { StatusRing } from "@/components/landing/status-story"
+import { PromoPopup } from "@/components/landing/promo-popup"
 
 const NAV_BEFORE = [
   { label: "Jobs",     href: "/jobs" },
@@ -45,6 +47,7 @@ export function Navbar() {
 
   return (
     <>
+      <PromoPopup />
       <style>{`
         /* nav link — sliding gradient underline + subtle lift */
         .nav-link { position: relative; transition: color .18s ease, transform .18s cubic-bezier(.22,1,.36,1); }
@@ -83,16 +86,19 @@ export function Navbar() {
       >
         <div
           className="h-[64px] lg:h-[80px] px-4 sm:px-6 lg:px-10"
-          style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", gap: 18 }}
+          style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, position: "relative" }}
         >
 
-          {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0, textDecoration: "none" }}>
-            <JobingenLogo className="h-[68px] lg:h-[104px] w-auto" style={{ height: undefined }} />
-          </a>
+          {/* Logo + daily status ring */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+              <JobingenLogo className="h-[68px] lg:h-[104px] w-auto" style={{ height: undefined }} />
+            </a>
+            <StatusRing />
+          </div>
 
           {/* Nav links — desktop (centered) */}
-          <nav className="hidden lg:flex" style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <nav className="hidden lg:flex" style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", alignItems: "center" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 2, background: "#ffffff", border: "1px solid #e8ebf1", borderRadius: 999, padding: "5px 9px", boxShadow: "0 2px 12px rgba(15,23,42,0.05)" }}>
             {NAV_BEFORE.map(link => {
               const isActive = activePath === link.href || activePath.startsWith(link.href + "/")
@@ -165,12 +171,12 @@ export function Navbar() {
 
           {/* Right CTAs — desktop */}
           <div className="hidden lg:flex" style={{ alignItems: "center", gap: 10, flexShrink: 0 }}>
-            <button onClick={openWaitlist} className="nav-btn nav-cta-outline" style={{
+            <button onClick={() => { window.location.href = "https://ai.jobingen.com/login" }} className="nav-btn nav-cta-outline" style={{
               fontSize: 14.5, fontWeight: 600, color: "#0c1a35",
               padding: "10px 22px", borderRadius: 11, cursor: "pointer",
               border: "1.5px solid #e4e9f2", background: "white",
             }}>Log in</button>
-            <button onClick={openWaitlist} className="nav-btn nav-cta-primary" style={{
+            <button onClick={() => { window.location.href = "https://ai.jobingen.com/login" }} className="nav-btn nav-cta-primary" style={{
               fontSize: 14.5, fontWeight: 700, color: "white",
               padding: "10px 24px", borderRadius: 11, border: "none", cursor: "pointer",
               background: "#1d3a8f",
@@ -236,10 +242,10 @@ export function Navbar() {
                 })}
                 <div style={{ height: 1, background: "#eef0f4", margin: "4px 8px" }} />
                 <div style={{ padding: 8, display: "flex", gap: 8 }}>
-                  <button onClick={() => { openWaitlist(); setMobileOpen(false) }} style={{ flex: 1, fontSize: 14, fontWeight: 600, color: "#0c1a35", textAlign: "center", padding: "12px", borderRadius: 999, border: "1.5px solid #e4e9f2", background: "white", cursor: "pointer" }}>
+                  <button onClick={() => { window.location.href = "https://ai.jobingen.com/login" }} style={{ flex: 1, fontSize: 14, fontWeight: 600, color: "#0c1a35", textAlign: "center", padding: "12px", borderRadius: 999, border: "1.5px solid #e4e9f2", background: "white", cursor: "pointer" }}>
                     Log in
                   </button>
-                  <button onClick={() => { openWaitlist(); setMobileOpen(false) }} style={{ flex: 1, fontSize: 14, fontWeight: 700, color: "white", padding: "12px", borderRadius: 999, border: "none", cursor: "pointer", background: "#1d3a8f", boxShadow: "0 2px 12px rgba(29,58,143,0.28)" }}>
+                  <button onClick={() => { window.location.href = "https://ai.jobingen.com/login" }} style={{ flex: 1, fontSize: 14, fontWeight: 700, color: "white", padding: "12px", borderRadius: 999, border: "none", cursor: "pointer", background: "#1d3a8f", boxShadow: "0 2px 12px rgba(29,58,143,0.28)" }}>
                     Get Started
                   </button>
                 </div>

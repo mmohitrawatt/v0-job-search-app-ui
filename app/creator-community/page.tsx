@@ -35,7 +35,7 @@ const BENEFITS = [
   { icon: "🚀", title: "Build Your Personal Brand", desc: "Get co-branded posts, a verified Creator badge, and featured placement across Jobingen's channels.", color: "#0369a1", bg: "#e0f2fe" },
   { icon: "⚡", title: "Work With a Fast-Growing Startup", desc: "Real startup experience, a portfolio-worthy collaboration, and direct access to the Jobingen founding team.", color: "#0f766e", bg: "#f0fdf4" },
   { icon: "🎯", title: "Early Access to Opportunities", desc: "Creators get first access to job listings, bootcamp launches, and platform events before they go public.", color: "#b45309", bg: "#fffbeb" },
-  { icon: "🤝", title: "Join a Real Creator Network", desc: "Be part of a private community of career content creators. Collaborate, grow, and learn together.", color: "#7c3aed", bg: "#f5f3ff" },
+  { icon: "🤝", title: "Join a Real Creator Network", desc: "Be part of a private community of career content creators. Collaborate, grow, and learn together.", color: "#1d3a8f", bg: "#f5f3ff" },
 ]
 
 function validateStep(step: number, data: FormData): Partial<Record<keyof FormData, string>> {
@@ -114,7 +114,7 @@ export default function CreatorCommunityPage() {
         ══════════════════════════════════════ */
         .cc-hero {
           position:relative; overflow:hidden; text-align:center;
-          background:linear-gradient(180deg, #f0f4ff 0%, #e8edff 60%, #f8faff 100%);
+          background:linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #f8faff 100%);
           padding:164px 24px 96px;
         }
         .cc-hero-blob1 { position:absolute; top:-8%;  right:4%;  width:460px; height:460px; border-radius:50%; background:radial-gradient(circle,rgba(29,58,143,.07) 0%,transparent 70%); pointer-events:none; }
@@ -136,7 +136,7 @@ export default function CreatorCommunityPage() {
           animation:cc-fade-up .7s cubic-bezier(.16,1,.3,1) .06s both;
         }
         .cc-hero-grad {
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:linear-gradient(135deg,#1d3a8f,#1d3a8f);
           -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
         }
         .cc-hero-sub {
@@ -170,7 +170,7 @@ export default function CreatorCommunityPage() {
           border:1.5px solid #dde5ff; box-shadow:0 2px 8px rgba(29,58,143,.06);
           transition:all .25s;
         }
-        .cc-btn-secondary:hover { border-color:#1d3a8f; background:#f0f4ff; }
+        .cc-btn-secondary:hover { border-color:#1d3a8f; background:#ffffff; }
 
 
         /* ══════════════════════════════════════
@@ -184,7 +184,7 @@ export default function CreatorCommunityPage() {
         /* ══════════════════════════════════════
            WHO CAN JOIN
         ══════════════════════════════════════ */
-        .cc-who { padding:88px 24px; background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 100%); }
+        .cc-who { padding:88px 24px; background:linear-gradient(180deg,#ffffff 0%,#ffffff 100%); }
         .cc-who-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:48px; }
         @media(max-width:640px){ .cc-who-grid{ grid-template-columns:1fr; } }
         .cc-who-card {
@@ -270,7 +270,7 @@ export default function CreatorCommunityPage() {
           box-shadow:0 4px 6px rgba(0,0,0,.04), 0 16px 48px rgba(29,58,143,.07);
           overflow:hidden;
         }
-        .cc-card-top { height:4px; background:linear-gradient(90deg,#1d3a8f,#3b5bdb,#6366f1); }
+        .cc-card-top { height:4px; background:linear-gradient(90deg,#1d3a8f,#1d3a8f,#1d3a8f); }
         .cc-form-body { padding:40px 40px 32px; }
         @media(max-width:560px){ .cc-form-body{ padding:28px 22px 24px; } }
 
@@ -284,7 +284,7 @@ export default function CreatorCommunityPage() {
         .cc-step-name { font-size:13px; font-weight:600; color:#64748b; }
 
         .cc-progress-track { height:4px; background:#f1f5f9; border-radius:99px; overflow:hidden; margin-bottom:20px; }
-        .cc-progress-fill  { height:100%; background:linear-gradient(90deg,#1d3a8f,#3b5bdb); border-radius:99px; transition:width .45s cubic-bezier(.16,1,.3,1); }
+        .cc-progress-fill  { height:100%; background:linear-gradient(90deg,#1d3a8f,#1d3a8f); border-radius:99px; transition:width .45s cubic-bezier(.16,1,.3,1); }
 
         .cc-step-dots  { display:flex; align-items:flex-start; justify-content:space-between; }
         .cc-dot-wrap   { display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; }
@@ -294,7 +294,7 @@ export default function CreatorCommunityPage() {
           font-size:11px; font-weight:800; transition:all .3s cubic-bezier(.16,1,.3,1);
           background:#f1f5f9; color:#94a3b8; border:2px solid #f1f5f9;
         }
-        .cc-dot-wrap.done .cc-dot { background:linear-gradient(135deg,#1d3a8f,#3b5bdb); color:#fff; border-color:transparent; }
+        .cc-dot-wrap.done .cc-dot { background:linear-gradient(135deg,#1d3a8f,#1d3a8f); color:#fff; border-color:transparent; }
         .cc-dot-wrap.curr .cc-dot { background:#fff; color:#1d3a8f; border-color:#1d3a8f; box-shadow:0 0 0 4px rgba(29,58,143,.12); }
         .cc-dot-label  { font-size:10px; font-weight:600; color:#cbd5e1; white-space:nowrap; text-align:center; }
         .cc-dot-wrap.done .cc-dot-label { color:#94a3b8; }
@@ -379,7 +379,7 @@ export default function CreatorCommunityPage() {
         }
         .cc-idea-callout-icon  { font-size:18px; flex-shrink:0; margin-top:1px; }
         .cc-idea-callout-title { font-size:13px; font-weight:800; color:#1e3a8a; margin-bottom:4px; }
-        .cc-idea-callout-body  { font-size:12.5px; color:#3b5bdb; line-height:1.65; }
+        .cc-idea-callout-body  { font-size:12.5px; color:#1d3a8f; line-height:1.65; }
 
         /* COLLAB CARDS */
         .cc-collab-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:11px; }
@@ -392,7 +392,7 @@ export default function CreatorCommunityPage() {
         .cc-collab-card.selected { border-color:#1d3a8f; background:#eef2ff; box-shadow:0 0 0 3px rgba(29,58,143,.1); }
         .cc-collab-card-top  { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
         .cc-collab-icon  { font-size:22px; }
-        .cc-collab-check { width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,#1d3a8f,#3b5bdb); display:flex; align-items:center; justify-content:center; }
+        .cc-collab-check { width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,#1d3a8f,#1d3a8f); display:flex; align-items:center; justify-content:center; }
         .cc-collab-title { font-size:14px; font-weight:800; color:#0f172a; margin-bottom:3px; letter-spacing:-0.01em; }
         .cc-collab-desc  { font-size:12px; color:#64748b; line-height:1.5; }
 
@@ -400,7 +400,7 @@ export default function CreatorCommunityPage() {
         .cc-review-card { border:1.5px solid #e0e7ff; border-radius:16px; overflow:hidden; margin-bottom:20px; }
         .cc-review-section { border-bottom:1px solid #f1f5f9; }
         .cc-review-section:last-child { border-bottom:none; }
-        .cc-review-section-title { font-size:10px; font-weight:800; color:#1d3a8f; letter-spacing:.09em; text-transform:uppercase; padding:12px 18px 9px; background:#f0f4ff; border-bottom:1px solid #e0e7ff; }
+        .cc-review-section-title { font-size:10px; font-weight:800; color:#1d3a8f; letter-spacing:.09em; text-transform:uppercase; padding:12px 18px 9px; background:#ffffff; border-bottom:1px solid #e0e7ff; }
         .cc-review-rows { display:flex; flex-direction:column; }
         .cc-review-row { display:flex; gap:14px; padding:10px 18px; border-bottom:1px solid #f8fafc; align-items:flex-start; }
         .cc-review-row:last-child { border-bottom:none; }
@@ -464,11 +464,11 @@ export default function CreatorCommunityPage() {
         .cc-success {
           min-height:100vh; display:flex; flex-direction:column; align-items:center;
           justify-content:center; padding:128px 24px 80px; text-align:center;
-          background:linear-gradient(180deg,#f0f4ff 0%,#e8edff 60%,#f8faff 100%);
+          background:linear-gradient(180deg,#ffffff 0%,#ffffff 60%,#f8faff 100%);
         }
         .cc-success-icon {
           width:72px; height:72px; border-radius:50%;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb);
+          background:linear-gradient(135deg,#1d3a8f,#1d3a8f);
           display:flex; align-items:center; justify-content:center; margin:0 auto 24px;
           box-shadow:0 8px 32px rgba(29,58,143,.28);
           animation:cc-fade-up .5s cubic-bezier(.16,1,.3,1) both;
@@ -493,7 +493,7 @@ export default function CreatorCommunityPage() {
         .cc-success-step  { display:flex; align-items:center; gap:12px; font-size:14px; color:#475569; font-weight:500; line-height:1.4; }
         .cc-success-num   {
           width:26px; height:26px; border-radius:50%; flex-shrink:0;
-          background:linear-gradient(135deg,#1d3a8f,#3b5bdb); color:#fff;
+          background:linear-gradient(135deg,#1d3a8f,#1d3a8f); color:#fff;
           font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;
         }
 

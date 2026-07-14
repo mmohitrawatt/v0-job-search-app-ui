@@ -19,7 +19,7 @@ function Typewriter({ words, color = "#1d3a8f" }: { words: string[]; color?: str
 
     // finished typing → hold, then start deleting
     if (!deleting && sub === current.length) {
-      const t = setTimeout(() => setDeleting(true), 1500)
+      const t = setTimeout(() => setDeleting(true), 950)
       return () => clearTimeout(t)
     }
     // finished deleting → next word
@@ -30,7 +30,7 @@ function Typewriter({ words, color = "#1d3a8f" }: { words: string[]; color?: str
     }
     const t = setTimeout(() => {
       setSub(s => s + (deleting ? -1 : 1))
-    }, deleting ? 45 : 90)
+    }, deleting ? 20 : 42)
     return () => clearTimeout(t)
   }, [sub, deleting, index, words])
 
@@ -58,11 +58,11 @@ function Typewriter({ words, color = "#1d3a8f" }: { words: string[]; color?: str
 }
 
 /* ─── Feature cards data for the animated hero graphic ─── */
-const FEATURE_CARDS = [
+const FEATURE_CARDS: Array<{ icon: typeof FileText; title: string; sub: string; float: number; badge?: string }> = [
   { icon: FileText,    title: "Resumes",      sub: "AI Resume Builder",    float: -5 },
   { icon: Users,       title: "Mentors",      sub: "1:1 Guidance",         float: -4 },
   { icon: AudioLines,  title: "Interview AI", sub: "AI Mock Interview",    float: -5 },
-  { icon: Send,        title: "JobEngine",    sub: "AI Apply to 1000+ Jobs", badge: "NEW", float: -4 },
+  { icon: Send,        title: "JobEngine",    sub: "AI Apply to 1000+ Jobs", float: -4 },
   { icon: Fingerprint, title: "ThinkPrint",   sub: "Think Like Recruiters", float: -5 },
   { icon: Briefcase,   title: "Job Matches",  sub: "AI Job Matches For You", float: -4 },
 ]
@@ -78,6 +78,22 @@ const EMERGE = [
   { x: -205, rank: 1 }, // ThinkPrint
   { x: -330, rank: 2 }, // Job Matches  (far right)
 ]
+
+/* circular score ring (SVG) for the mobile match-card mockup */
+function Ring({ pct, label }: { pct: number; label: string }) {
+  const C = 2 * Math.PI * 20
+  return (
+    <div style={{ textAlign: "center" }}>
+      <svg width="54" height="54" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="#e8ecf3" strokeWidth="4.5" />
+        <circle cx="24" cy="24" r="20" fill="none" stroke="#1d3a8f" strokeWidth="4.5" strokeLinecap="round"
+          strokeDasharray={C} strokeDashoffset={C * (1 - pct / 100)} transform="rotate(-90 24 24)" />
+        <text x="24" y="27.5" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0c1a35">{pct}</text>
+      </svg>
+      <div style={{ fontSize: 9.5, fontWeight: 700, color: "#8492ad", marginTop: 1, letterSpacing: ".02em" }}>{label}</div>
+    </div>
+  )
+}
 
 /* playful mobile feature pills — brand navy + category accent colours */
 const STICKERS = [
@@ -138,10 +154,10 @@ function FeatureCard({
       className="relative"
       style={{ zIndex: 1, minWidth: 0 }}
     >
-      {/* continuous floating wrapper — gentle synced wave across the row */}
+      {/* continuous floating wrapper — gentle synced wave (desktop only; static on mobile for perf) */}
       <motion.div
-        animate={{ y: [0, card.float, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.35 }}
+        animate={noEmerge ? undefined : { y: [0, card.float, 0] }}
+        transition={noEmerge ? undefined : { duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.35 }}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         style={{
@@ -182,8 +198,8 @@ function FeatureCard({
           transition: "transform .25s ease, background .25s ease",
         }}>
           <motion.span
-            animate={im.animate}
-            transition={{ ...im.transition, delay: index * 0.25 } as any}
+            animate={noEmerge ? undefined : im.animate}
+            transition={noEmerge ? undefined : ({ ...im.transition, delay: index * 0.25 } as any)}
             style={{ display: "grid", placeItems: "center", transformOrigin: "center" }}
           >
             <Icon size={26} strokeWidth={1.9} />
@@ -303,84 +319,56 @@ export function Hero() {
       {/* interactive particle field — scatters away from the cursor */}
       <HeroParticles />
 
-      {/* ══════════════ MOBILE HERO — playful (< lg) ══════════════ */}
-      <div className="lg:hidden relative" style={{ zIndex: 1, overflow: "hidden" }}>
+      {/* ══════════════ MOBILE HERO — clean & bold (Jobright-inspired, < lg) ══════════════ */}
+      <div className="lg:hidden relative" style={{ zIndex: 1 }}>
         <style>{`
           @keyframes mh-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-          @keyframes mh-marq-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-          @keyframes mh-marq-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+          @keyframes mh-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
           .mh-anim { animation: mh-up .55s cubic-bezier(.16,1,.3,1) both; }
           .mh-cta { transition: transform .18s ease, box-shadow .18s ease; }
           .mh-cta:active { transform: scale(.97); }
-          .mh-row { overflow:hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-          .mh-track { display:flex; width:max-content; gap:11px; }
-          .mh-track.l { animation: mh-marq-l 22s linear infinite; }
-          .mh-track.r { animation: mh-marq-r 22s linear infinite; }
         `}</style>
 
-        {/* playful soft background blobs */}
-        <div aria-hidden style={{ position:"absolute", top:40, left:-70, width:200, height:200, borderRadius:"50%", background:"#eef2ff", filter:"blur(8px)", opacity:.8 }} />
-        <div aria-hidden style={{ position:"absolute", top:10, right:-60, width:170, height:170, borderRadius:"50%", background:"#f5f3ff", filter:"blur(8px)", opacity:.7 }} />
-        <div aria-hidden style={{ position:"absolute", top:260, right:20, width:120, height:120, borderRadius:"50%", background:"#ecfdf5", filter:"blur(8px)", opacity:.7 }} />
-
-        <div className="px-5 pt-6 pb-1 flex flex-col items-center text-center" style={{ position:"relative", zIndex:1 }}>
-          {/* playful badge */}
-          <div className="mh-anim" style={{ animationDelay:"0s", display:"inline-flex", alignItems:"center", gap:7,
-            background:"#0c1a35", borderRadius:999, padding:"7px 15px" }}>
-            <span style={{ fontSize:13 }}>🚀</span>
-            <span style={{ fontSize:12.5, fontWeight:700, color:"#fff" }}>25,000+ students getting hired</span>
-          </div>
-
-          {/* headline */}
-          <h1 className="mh-anim" style={{ animationDelay:".06s", fontSize:"clamp(38px, 12vw, 58px)", fontWeight:900,
-            lineHeight:1.02, letterSpacing:"-0.05em", color:"#0c1a35", marginTop:18 }}>
-            Everything{" "}
-            <Typewriter words={["Career.", "Resume.", "Interviews.", "Jobs.", "Mentorship."]} />
+        <div className="px-5 pt-10 flex flex-col items-center text-center">
+          {/* big bold premium headline — "Everything" + word always on their own
+             lines so the changing word never reflows the page (no layout shift) */}
+          <h1 className="mh-anim" style={{ animationDelay:"0s", fontSize:"clamp(44px, 14vw, 66px)", fontWeight:900,
+            lineHeight:1.0, letterSpacing:"-0.055em", color:"#0c1a35", marginTop:0 }}>
+            <span style={{ display:"block" }}>Everything</span>
+            <span style={{ display:"block", whiteSpace:"nowrap" }}>
+              <Typewriter words={["Career.", "Resume.", "Jobs.", "Mentors.", "Hired."]} />
+            </span>
           </h1>
 
-          {/* subtext — friendly */}
-          <p className="mh-anim" style={{ animationDelay:".12s", fontSize:16, color:"#475569", lineHeight:1.6,
-            fontWeight:500, marginTop:14, maxWidth:320 }}>
-            One fun AI app to build your resume, ace interviews, meet mentors &amp; land the job. 🎯
+          {/* AI Career Operating System — tagline below the headline */}
+          <div className="mh-anim" style={{ animationDelay:".09s", fontSize:12.5, fontWeight:800, letterSpacing:".13em",
+            textTransform:"uppercase", color:"#8492ad", marginTop:16 }}>
+            The AI Career Operating System
+          </div>
+
+          {/* subtext */}
+          <p className="mh-anim" style={{ animationDelay:".13s", fontSize:16, color:"#475569", lineHeight:1.6,
+            fontWeight:500, marginTop:12, maxWidth:330 }}>
+            Get matched to the right jobs, tailor your resume, ace interviews &amp; land the offer — all with AI.
           </p>
 
-          {/* CTA — playful pill */}
-          <div className="mh-anim" style={{ animationDelay:".18s", width:"100%", maxWidth:340, marginTop:22, display:"flex", flexDirection:"column", gap:11 }}>
-            <button onClick={openWaitlist} className="mh-cta" style={{ width:"100%", fontSize:17, fontWeight:800, color:"#fff",
+          {/* CTA */}
+          <div className="mh-anim" style={{ animationDelay:".16s", width:"100%", maxWidth:340, marginTop:24 }}>
+            <button onClick={() => { window.location.href = "https://ai.jobingen.com/login" }} className="mh-cta" style={{ width:"100%", fontSize:17, fontWeight:800, color:"#fff",
               padding:"17px", borderRadius:999, border:"none", background:"#1d3a8f", cursor:"pointer",
               boxShadow:"0 12px 28px rgba(29,58,143,0.32)" }}>
               Get Started — it&apos;s free
             </button>
-            <a href="/ai-tools" style={{ fontSize:15, fontWeight:700, color:"#1d3a8f", textDecoration:"none",
-              display:"inline-flex", alignItems:"center", justifyContent:"center", gap:7, padding:"6px" }}>
-              Explore features →
-            </a>
           </div>
         </div>
 
-        {/* playful auto-scrolling feature pills — two rows, opposite directions */}
-        <div className="mh-anim" style={{ position:"relative", zIndex:1, marginTop:24, paddingBottom:32, display:"flex", flexDirection:"column", gap:11, animationDelay:".24s" }}>
-          {[{ dir:"l", items: STICKERS.slice(0,3) }, { dir:"r", items: STICKERS.slice(3) }].map((row, ri) => (
-            <div key={ri} className="mh-row">
-              <div className={`mh-track ${row.dir}`} style={{ paddingLeft: 16 }}>
-                {[...row.items, ...row.items, ...row.items].map((s, i) => {
-                  const Icon = s.icon
-                  return (
-                    <div key={i} style={{ flex:"0 0 auto", display:"inline-flex", alignItems:"center", gap:9,
-                      background:s.bg, border:`1.5px solid ${s.bd}`, borderRadius:14, padding:"11px 16px 11px 12px",
-                      boxShadow:"0 6px 16px rgba(15,23,42,0.06)" }}>
-                      <span style={{ width:34, height:34, borderRadius:11, background:"#fff", color:s.c, display:"grid", placeItems:"center", boxShadow:"0 2px 6px rgba(15,23,42,0.08)" }}>
-                        <Icon size={18} strokeWidth={2.2} />
-                      </span>
-                      <span style={{ fontSize:14.5, fontWeight:800, color:"#0c1a35", letterSpacing:"-0.01em", whiteSpace:"nowrap" }}>{s.label}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
+        {/* ── brand feature graphic (compact, clean, animated) ── */}
+        <div className="mh-anim px-4" style={{ animationDelay:".22s", marginTop:26, paddingBottom:8 }}>
+          <div className="grid grid-cols-2" style={{ gap: 11, maxWidth: 440, margin: "0 auto" }}>
+            {FEATURE_CARDS.map((c, i) => (
+              <FeatureCard key={c.title} card={c} index={i} highlight={c.title === "JobEngine"} noEmerge />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -446,7 +434,7 @@ export function Hero() {
           style={{ marginTop: 30 }}
         >
           <button
-            onClick={openWaitlist}
+            onClick={() => { window.location.href = "https://ai.jobingen.com/login" }}
             onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(-1px)"; el.style.boxShadow = "0 10px 30px rgba(29,58,143,0.38)" }}
             onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = ""; el.style.boxShadow = "0 6px 22px rgba(29,58,143,0.28)" }}
             style={{
@@ -460,7 +448,7 @@ export function Hero() {
             Get Started — it&apos;s free
           </button>
           <a
-            href="/ai-tools"
+            href="https://ai.jobingen.com/dashboard"
             style={{
               fontSize: 16, fontWeight: 600, color: "#1d3a8f",
               padding: "15px 26px", borderRadius: 14, textDecoration: "none",
