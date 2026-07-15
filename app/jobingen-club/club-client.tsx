@@ -121,12 +121,12 @@ export function JobingenClubClient() {
         /* ── HERO ── */
         .ca-hero {
           position: relative; overflow: hidden;
-          background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #f8faff 100%);
+          background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #ffffff 100%);
           padding: 100px 24px 72px; text-align: center;
         }
         @media(min-width: 768px) { .ca-hero { padding: 188px 24px 88px; } }
-        .ca-hero-blob1 { position:absolute; top:-10%; right:5%; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle, rgba(29,58,143,0.07) 0%, transparent 70%); pointer-events:none; }
-        .ca-hero-blob2 { position:absolute; bottom:-5%; left:3%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(59,91,219,0.05) 0%, transparent 70%); pointer-events:none; }
+        .ca-hero-blob1 { position:absolute; top:-10%; right:5%; width:440px; height:440px; border-radius:50%; background:radial-gradient(circle, rgba(29,58,143,0) 0%, transparent 70%); pointer-events:none; }
+        .ca-hero-blob2 { position:absolute; bottom:-5%; left:3%; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(59,91,219,0) 0%, transparent 70%); pointer-events:none; }
         .ca-hero-dot-grid { position:absolute; inset:0; background-image:radial-gradient(circle,rgba(29,58,143,0.06) 1px,transparent 1px); background-size:28px 28px; pointer-events:none; }
 
         .ca-hero-badge {

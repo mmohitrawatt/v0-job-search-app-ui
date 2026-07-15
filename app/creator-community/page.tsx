@@ -114,11 +114,11 @@ export default function CreatorCommunityPage() {
         ══════════════════════════════════════ */
         .cc-hero {
           position:relative; overflow:hidden; text-align:center;
-          background:linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #f8faff 100%);
+          background:linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #ffffff 100%);
           padding:164px 24px 96px;
         }
-        .cc-hero-blob1 { position:absolute; top:-8%;  right:4%;  width:460px; height:460px; border-radius:50%; background:radial-gradient(circle,rgba(29,58,143,.07) 0%,transparent 70%); pointer-events:none; }
-        .cc-hero-blob2 { position:absolute; bottom:-6%; left:2%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(59,91,219,.05) 0%,transparent 70%); pointer-events:none; }
+        .cc-hero-blob1 { position:absolute; top:-8%;  right:4%;  width:460px; height:460px; border-radius:50%; background:radial-gradient(circle,rgba(29,58,143,0) 0%,transparent 70%); pointer-events:none; }
+        .cc-hero-blob2 { position:absolute; bottom:-6%; left:2%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(59,91,219,0) 0%,transparent 70%); pointer-events:none; }
 
         .cc-hero-badge {
           display:inline-flex; align-items:center; gap:7px;
@@ -267,7 +267,7 @@ export default function CreatorCommunityPage() {
         .cc-form-card {
           background:#fff; border-radius:24px;
           border:1.5px solid #e2e8f0;
-          box-shadow:0 4px 6px rgba(0,0,0,.04), 0 16px 48px rgba(29,58,143,.07);
+          box-shadow:0 4px 6px rgba(0,0,0,.04), 0 16px 48px rgba(29,58,143,0);
           overflow:hidden;
         }
         .cc-card-top { height:4px; background:linear-gradient(90deg,#1d3a8f,#1d3a8f,#1d3a8f); }
@@ -464,7 +464,7 @@ export default function CreatorCommunityPage() {
         .cc-success {
           min-height:100vh; display:flex; flex-direction:column; align-items:center;
           justify-content:center; padding:128px 24px 80px; text-align:center;
-          background:linear-gradient(180deg,#ffffff 0%,#ffffff 60%,#f8faff 100%);
+          background:linear-gradient(180deg,#ffffff 0%,#ffffff 60%,#ffffff 100%);
         }
         .cc-success-icon {
           width:72px; height:72px; border-radius:50%;
