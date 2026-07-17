@@ -16,6 +16,36 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Jobingen",
+  "url": "https://jobingen.com",
+  "logo": "https://jobingen.com/icon.png",
+  "description":
+    "AI-powered job search, resume builder, and interview preparation platform.",
+  "founder": [
+    {
+      "@type": "Person",
+      "name": "Mohit Rawat",
+      "jobTitle": "Founder",
+      "sameAs": ["https://www.linkedin.com/in/mohitrawat0801/"],
+    },
+    {
+      "@type": "Person",
+      "name": "Aditya Dubey",
+      "jobTitle": "Founder",
+      "sameAs": ["https://www.linkedin.com/in/aditya-dubey-4092b1214/"],
+    },
+    {
+      "@type": "Person",
+      "name": "Priyank Pandey",
+      "jobTitle": "Founder",
+      "sameAs": ["https://www.linkedin.com/in/priyankpandey-devops/"],
+    },
+  ],
+}
+
 export const metadata: Metadata = {
   title: 'Jobingen — Job Search & Preparation',
   description: 'AI-powered job search, resume builder, and interview preparation platform.',
@@ -34,6 +64,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
+        {/* Machine-readable org/founder data — invisible to users, read by crawlers */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <WaitlistProvider>
           {children}
         </WaitlistProvider>
