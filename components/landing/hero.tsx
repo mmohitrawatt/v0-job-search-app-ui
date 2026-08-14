@@ -6,7 +6,7 @@ import { FileText, Users, AudioLines, Send, Fingerprint, Briefcase } from "lucid
 import { JobingenLogo } from "@/components/jobingen-logo"
 import { DotField } from "./dot-field"
 import { useWaitlist } from "@/components/waitlist-modal"
-import { AzaadiBar, ChakraGhost, TricolorThread, useAzaadi } from "./azaadi"
+import { TricolorThread, useAzaadi } from "./azaadi"
 import { AZAADI_COPY } from "@/lib/campaign"
 
 /* ─── Typewriter — types & deletes through a set of words ─── */
@@ -325,9 +325,6 @@ export function Hero() {
       className="mt-[64px] lg:mt-[80px] pt-0 lg:pt-0 pb-0 lg:pb-0"
       style={{ position: "relative", overflow: "hidden", background: "#ffffff" }}
     >
-      {/* Independence Week: slow-rotating Ashoka chakra behind the dot field */}
-      <ChakraGhost />
-
       {/* interactive dot field — dots bulge away from the cursor */}
       <DotField
         dotRadius={1.5}
@@ -338,9 +335,6 @@ export function Hero() {
         gradientTo="rgba(70,104,245,0.16)"
         glowColor="rgba(29,58,143,0.10)"
       />
-
-      {/* Independence Week: 79-Hour Freedom Pass strip (inert outside the window) */}
-      <AzaadiBar />
 
       {/* ══════════════ MOBILE HERO — clean & bold (Jobright-inspired, < lg) ══════════════ */}
       <div className="lg:hidden relative" style={{ zIndex: 1 }}>

@@ -4,14 +4,15 @@
    Azaadi — Independence Week theming primitives.
 
    Restraint is the brief: navy stays the brand, saffron + green
-   are accents only. Every export is inert outside the campaign
+   appear only as a hairline and a popup cap. Every export is inert outside the campaign
    window (see lib/campaign.ts), so these can stay mounted in the
    page permanently and simply stop rendering on 18 Aug.
    ───────────────────────────────────────────────────────────── */
 
 import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
-  AZAADI_COPY, TIRANGA, TRICOLOR_GRADIENT,
+  AZAADI_COPY, AZAADI_NUMBER, TIRANGA, TRICOLOR_GRADIENT, TRICOLOR_LINE,
   azaadiCountdown, isAzaadiLive, pad2,
 } from "@/lib/campaign"
 
@@ -43,7 +44,7 @@ export function useAzaadi() {
   return live
 }
 
-/** Live 79 → 00 countdown. Returns null until mounted. */
+/** Live 80 → 00 countdown. Returns null until mounted. */
 function useCountdown() {
   const [c, setC] = useState<ReturnType<typeof azaadiCountdown> | null>(null)
   useEffect(() => {
@@ -68,7 +69,7 @@ export function TricolorThread({
       <div
         style={{
           height: "100%", width: "100%", borderRadius: 999,
-          background: TRICOLOR_GRADIENT,
+          background: TRICOLOR_LINE,
           boxShadow: "0 1px 6px rgba(255,153,51,0.35)",
           transformOrigin: "left center",
           animation: `az-draw .9s cubic-bezier(.16,1,.3,1) ${delay}s both`,
@@ -78,130 +79,180 @@ export function TricolorThread({
   )
 }
 
-/* ─── Chakra ghost — 24 spokes, brand navy, ~4% opacity, one rotation a
-   minute. You notice it on the second look. That's the point. ─── */
-export function ChakraGhost({ size = 620, opacity = 0.045 }: { size?: number; opacity?: number }) {
+/* ─── The Freedom Pass popup.
+   Fires once per session, a beat after the page paints. Unlike the promo
+   poster this is real markup, not an image — so the countdown is live and
+   it stays sharp and readable on every screen size. ─── */
+
+const POPUP_KEY = "jobingen_azaadi_popup"
+
+export function AzaadiPopup() {
   const live = useAzaadi()
-  const [reduce, setReduce] = useState(false)
+  const c = useCountdown()
+  const [open, setOpen] = useState(false)
+
+  // open once per session, after the hero has had a moment to paint
   useEffect(() => {
-    setReduce(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false)
-  }, [])
+    if (!live) return
+    try {
+      if (sessionStorage.getItem(POPUP_KEY)) return
+      sessionStorage.setItem(POPUP_KEY, "1")
+    } catch {}
+    const t = setTimeout(() => setOpen(true), 900)
+    return () => clearTimeout(t)
+  }, [live])
+
+  // esc to close + scroll lock while it's up
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false) }
+    window.addEventListener("keydown", onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
   if (!live) return null
 
-  const spokes = Array.from({ length: 24 }, (_, i) => i * 15)
   return (
-    <div
-      aria-hidden="true"
-      style={{
-        position: "absolute", top: "-8%", left: "50%", zIndex: 0,
-        width: size, height: size, marginLeft: -size / 2,
-        pointerEvents: "none", opacity,
-      }}
-    >
-      <style>{`@keyframes az-spin { to { transform: rotate(360deg) } }`}</style>
-      <svg
-        viewBox="0 0 200 200"
-        width="100%" height="100%"
-        style={reduce ? undefined : { animation: "az-spin 60s linear infinite" }}
-      >
-        <g stroke={TIRANGA.chakra} fill="none" strokeWidth="1.4">
-          <circle cx="100" cy="100" r="92" strokeWidth="3" />
-          <circle cx="100" cy="100" r="10" strokeWidth="3" />
-          {spokes.map((deg) => (
-            <line key={deg} x1="100" y1="100" x2="100" y2="10" transform={`rotate(${deg} 100 100)`} />
-          ))}
-        </g>
-      </svg>
-    </div>
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22 }}
+          onClick={() => setOpen(false)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 300,
+            background: "rgba(9,13,24,0.72)", backdropFilter: "blur(8px)",
+            display: "grid", placeItems: "center", padding: 16,
+          }}
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 18, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.94, y: 12, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 320, damping: 26 }}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative", width: "100%", maxWidth: 420,
+              maxHeight: "92vh", overflow: "hidden",
+              borderRadius: 22, background: "#fff",
+              boxShadow: "0 30px 90px rgba(0,0,0,0.5)",
+            }}
+          >
+            <div style={{ height: 5, background: TRICOLOR_GRADIENT }} />
+
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close"
+              style={{
+                position: "absolute", top: 16, right: 14, zIndex: 4,
+                width: 30, height: 30, borderRadius: "50%",
+                background: "#f1f4fa", border: "none", cursor: "pointer",
+                color: "#64748b", display: "grid", placeItems: "center",
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div style={{ position: "relative", zIndex: 1, padding: "26px 24px 24px", textAlign: "center" }}>
+              <div style={{
+                fontSize: 10.5, fontWeight: 800, letterSpacing: ".14em",
+                textTransform: "uppercase", color: TIRANGA.saffron,
+              }}>
+                {AZAADI_COPY.eyebrow} · India&apos;s {AZAADI_NUMBER}th
+              </div>
+
+              <div style={{
+                fontSize: 27, fontWeight: 900, color: "#0c1a35",
+                marginTop: 10, lineHeight: 1.12, letterSpacing: "-0.03em",
+              }}>
+                {AZAADI_COPY.passName}
+              </div>
+
+              <p style={{ fontSize: 14, color: "#64748b", marginTop: 10, lineHeight: 1.55 }}>
+                {AZAADI_COPY.passLine}
+              </p>
+
+              {/* live countdown — the number is the whole pitch */}
+              {c && !c.over && (
+                <div style={{ marginTop: 20 }}>
+                  <div className="flex" style={{ gap: 8, justifyContent: "center" }}>
+                    <Unit v={pad2(c.h)} label="HRS" />
+                    <Unit v={pad2(c.m)} label="MIN" />
+                    <Unit v={pad2(c.s)} label="SEC" />
+                  </div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", marginTop: 9, letterSpacing: ".08em" }}>
+                    THEN IT&apos;S GONE
+                  </div>
+                </div>
+              )}
+
+              <a
+                href={AZAADI_COPY.ctaHref}
+                style={{
+                  display: "block", marginTop: 20,
+                  fontSize: 16, fontWeight: 800, color: "#fff", textDecoration: "none",
+                  padding: "15px", borderRadius: 14, background: "#1d3a8f",
+                  boxShadow: "0 10px 26px rgba(29,58,143,0.30)",
+                }}
+              >
+                {AZAADI_COPY.cta}
+              </a>
+
+              <a
+                href={AZAADI_COPY.wallHref}
+                onClick={() => setOpen(false)}
+                style={{
+                  display: "block", marginTop: 10,
+                  fontSize: 14.5, fontWeight: 700, color: "#1d3a8f", textDecoration: "none",
+                  padding: "13px", borderRadius: 14,
+                  background: "#fff", border: "1.5px solid #e4e9f2",
+                }}
+              >
+                {AZAADI_COPY.wallPrompt} →
+              </a>
+
+              <button
+                onClick={() => setOpen(false)}
+                style={{
+                  marginTop: 14, fontSize: 12.5, fontWeight: 600, color: "#94a3b8",
+                  background: "none", border: "none", cursor: "pointer",
+                }}
+              >
+                Maybe later
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
-/* ─── The Freedom Pass strip — eyebrow, live countdown, two CTAs.
-   Sits at the very top of the hero (inside normal flow), so it never
-   fights the fixed navbar for space. ─── */
-export function AzaadiBar() {
-  const live = useAzaadi()
-  const c = useCountdown()
-  if (!live || !c || c.over) return null
-
+function Unit({ v, label }: { v: string; label: string }) {
   return (
-    <div className="px-4 lg:px-8" style={{ position: "relative", zIndex: 2, paddingTop: 14 }}>
-      <div
-        style={{
-          maxWidth: 1080, margin: "0 auto",
-          borderRadius: 18, overflow: "hidden",
-          background: "#fff",
-          border: "1px solid #e8edf7",
-          boxShadow: "0 10px 34px rgba(15,23,42,0.07)",
-        }}
-      >
-        {/* tricolor cap — the only place the flag is literal */}
-        <div style={{ height: 4, background: TRICOLOR_GRADIENT }} />
-
-        <div
-          className="flex flex-col sm:flex-row sm:items-center"
-          style={{ gap: 14, padding: "14px 18px" }}
-        >
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{
-              fontSize: 10.5, fontWeight: 800, letterSpacing: ".14em",
-              textTransform: "uppercase", color: TIRANGA.saffron,
-            }}>
-              {AZAADI_COPY.eyebrow}
-            </div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: "#0c1a35", marginTop: 3, lineHeight: 1.25 }}>
-              {AZAADI_COPY.passName}
-            </div>
-            <div style={{ fontSize: 13, color: "#64748b", marginTop: 3, lineHeight: 1.45 }}>
-              {AZAADI_COPY.passLine}
-            </div>
-          </div>
-
-          {/* countdown — the number IS the story, so give it room */}
-          <div
-            style={{
-              display: "flex", alignItems: "baseline", gap: 3,
-              padding: "8px 14px", borderRadius: 12,
-              background: "#f4f7fd", border: "1px solid #e3eaf7",
-              fontVariantNumeric: "tabular-nums",
-              color: "#0c1a35", fontWeight: 900, fontSize: 20, letterSpacing: "-0.02em",
-              alignSelf: "flex-start",
-            }}
-          >
-            {pad2(c.h)}<Sep />{pad2(c.m)}<Sep />{pad2(c.s)}
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#8492ad", marginLeft: 6, letterSpacing: ".06em" }}>
-              LEFT
-            </span>
-          </div>
-
-          <div className="flex items-center" style={{ gap: 8, flexWrap: "wrap" }}>
-            <a
-              href={AZAADI_COPY.ctaHref}
-              style={{
-                fontSize: 14, fontWeight: 800, color: "#fff", textDecoration: "none",
-                padding: "12px 18px", borderRadius: 12, background: "#1d3a8f",
-                boxShadow: "0 6px 18px rgba(29,58,143,0.26)", whiteSpace: "nowrap",
-              }}
-            >
-              {AZAADI_COPY.cta}
-            </a>
-            <a
-              href={AZAADI_COPY.wallHref}
-              style={{
-                fontSize: 14, fontWeight: 700, color: "#1d3a8f", textDecoration: "none",
-                padding: "12px 16px", borderRadius: 12,
-                background: "#fff", border: "1.5px solid #e4e9f2", whiteSpace: "nowrap",
-              }}
-            >
-              Freedom Wall →
-            </a>
-          </div>
-        </div>
+    <div style={{
+      minWidth: 72, padding: "10px 6px", borderRadius: 13,
+      background: "#f4f7fd", border: "1px solid #e3eaf7",
+    }}>
+      <div style={{
+        fontSize: 26, fontWeight: 900, color: "#0c1a35",
+        fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em", lineHeight: 1,
+      }}>
+        {v}
+      </div>
+      <div style={{ fontSize: 9.5, fontWeight: 800, color: "#94a3b8", marginTop: 5, letterSpacing: ".1em" }}>
+        {label}
       </div>
     </div>
   )
 }
 
-function Sep() {
-  return <span style={{ color: "#c3cee2", fontWeight: 700, margin: "0 1px" }}>:</span>
-}

@@ -11,9 +11,9 @@
 import { useCallback, useEffect, useState } from "react"
 import { Navbar } from "@/components/landing/navbar"
 import { Footer } from "@/components/landing/footer"
-import { ChakraGhost, TricolorThread, useAzaadi } from "@/components/landing/azaadi"
+import { TricolorThread, useAzaadi } from "@/components/landing/azaadi"
 import {
-  AZAADI_COPY, FREEDOM_YEARS, TIRANGA, TRICOLOR_GRADIENT,
+  AZAADI_COPY, AZAADI_NUMBER, TIRANGA, TRICOLOR_GRADIENT,
   azaadiCountdown, pad2,
 } from "@/lib/campaign"
 
@@ -108,14 +108,12 @@ export default function AzaadiWallPage() {
         className="px-4 lg:px-8"
         style={{ position: "relative", overflow: "hidden", background: "#fff", paddingTop: 96, paddingBottom: 8 }}
       >
-        <ChakraGhost size={520} opacity={0.05} />
-
         <div className="text-center" style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto" }}>
           <div style={{
             fontSize: 11, fontWeight: 800, letterSpacing: ".14em",
             textTransform: "uppercase", color: TIRANGA.saffron,
           }}>
-            {AZAADI_COPY.eyebrow} · {FREEDOM_YEARS} Years
+            {AZAADI_COPY.eyebrow} · India&apos;s {AZAADI_NUMBER}th
           </div>
 
           <h1 style={{

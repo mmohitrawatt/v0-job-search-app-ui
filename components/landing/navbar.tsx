@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { JobingenLogo } from "@/components/jobingen-logo"
 import { useWaitlist } from "@/components/waitlist-modal"
-import { StatusRing } from "@/components/landing/status-story"
 import { PromoPopup } from "@/components/landing/promo-popup"
+import { AzaadiPopup } from "@/components/landing/azaadi"
 
 const NAV_BEFORE = [
   { label: "Jobs",     href: "/jobs" },
@@ -47,6 +47,9 @@ export function Navbar() {
 
   return (
     <>
+      {/* Only one modal at a time — PromoPopup stands down while the
+          Independence Week pass is running. */}
+      <AzaadiPopup />
       <PromoPopup />
       <style>{`
         /* nav link — sliding gradient underline + subtle lift */
@@ -89,12 +92,11 @@ export function Navbar() {
           style={{ maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, position: "relative" }}
         >
 
-          {/* Logo + daily status ring */}
+          {/* Logo */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
             <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
               <JobingenLogo className="h-[68px] lg:h-[104px] w-auto" style={{ height: undefined }} />
             </a>
-            <StatusRing />
           </div>
 
           {/* Nav links — desktop (centered) */}

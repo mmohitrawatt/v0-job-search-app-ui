@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { PROMO_POPUP, type PromoPopup as PromoConfig } from "@/lib/promo-popup"
+import { isAzaadiLive } from "@/lib/campaign"
 
 const SESSION_KEY = "jobingen_promo_shown"
 
@@ -25,6 +26,8 @@ export function PromoPopup() {
   // open on mount (after a beat so the page paints first)
   useEffect(() => {
     if (!cfg || !cfg.enabled || !cfg.image) return
+    // Independence Week owns the modal slot — never stack two posters
+    if (isAzaadiLive()) return
     if (cfg.oncePerSession) {
       try {
         if (sessionStorage.getItem(SESSION_KEY)) return
