@@ -4,8 +4,10 @@ import { useState, useEffect } from "react"
 import { motion } from "./motion"
 import { FileText, Users, AudioLines, Send, Fingerprint, Briefcase } from "lucide-react"
 import { JobingenLogo } from "@/components/jobingen-logo"
-import { HeroParticles } from "./hero-particles"
+import { DotField } from "./dot-field"
 import { useWaitlist } from "@/components/waitlist-modal"
+import { AzaadiBar, ChakraGhost, TricolorThread, useAzaadi } from "./azaadi"
+import { AZAADI_COPY } from "@/lib/campaign"
 
 /* ─── Typewriter — types & deletes through a set of words ─── */
 function Typewriter({ words, color = "#1d3a8f" }: { words: string[]; color?: string }) {
@@ -310,14 +312,35 @@ function HeroGraphic() {
 /* ─── Hero — animated cards graphic on top, big bold headline below ─── */
 export function Hero() {
   const { open: openWaitlist } = useWaitlist()
+  const azaadi = useAzaadi()
+
+  // Independence Week swaps the headline's changing word for the campaign
+  // line. Outside the window these fall back to the evergreen copy.
+  const headPrefix = azaadi ? AZAADI_COPY.typewriterPrefix : "Everything"
+  const wordsDesktop = azaadi ? [...AZAADI_COPY.typewriter] : ["Career.", "Resume.", "Interviews.", "Job Search.", "Mentorship."]
+  const wordsMobile = azaadi ? [...AZAADI_COPY.typewriterShort] : ["Career.", "Resume.", "Jobs.", "Mentors.", "Hired."]
 
   return (
     <section
       className="mt-[64px] lg:mt-[80px] pt-0 lg:pt-0 pb-0 lg:pb-0"
       style={{ position: "relative", overflow: "hidden", background: "#ffffff" }}
     >
-      {/* interactive particle field — scatters away from the cursor */}
-      <HeroParticles />
+      {/* Independence Week: slow-rotating Ashoka chakra behind the dot field */}
+      <ChakraGhost />
+
+      {/* interactive dot field — dots bulge away from the cursor */}
+      <DotField
+        dotRadius={1.5}
+        dotSpacing={14}
+        bulgeStrength={67}
+        glowRadius={160}
+        gradientFrom="rgba(29,58,143,0.30)"
+        gradientTo="rgba(70,104,245,0.16)"
+        glowColor="rgba(29,58,143,0.10)"
+      />
+
+      {/* Independence Week: 79-Hour Freedom Pass strip (inert outside the window) */}
+      <AzaadiBar />
 
       {/* ══════════════ MOBILE HERO — clean & bold (Jobright-inspired, < lg) ══════════════ */}
       <div className="lg:hidden relative" style={{ zIndex: 1 }}>
@@ -334,11 +357,14 @@ export function Hero() {
              lines so the changing word never reflows the page (no layout shift) */}
           <h1 className="mh-anim" style={{ animationDelay:"0s", fontSize:"clamp(44px, 14vw, 66px)", fontWeight:900,
             lineHeight:1.0, letterSpacing:"-0.055em", color:"#0c1a35", marginTop:0 }}>
-            <span style={{ display:"block" }}>Everything</span>
+            <span style={{ display:"block" }}>{headPrefix}</span>
             <span style={{ display:"block", whiteSpace:"nowrap" }}>
-              <Typewriter words={["Career.", "Resume.", "Jobs.", "Mentors.", "Hired."]} />
+              <Typewriter words={wordsMobile} />
             </span>
           </h1>
+
+          {/* tricolor thread — draws itself once, left to right */}
+          <TricolorThread width={140} delay={0.45} className="mh-anim mt-5" />
 
           {/* AI Career Operating System — tagline below the headline */}
           <div className="mh-anim" style={{ animationDelay:".09s", fontSize:12.5, fontWeight:800, letterSpacing:".13em",
@@ -404,9 +430,12 @@ export function Hero() {
             maxWidth: "100%",
           }}
         >
-          Everything{" "}
-          <Typewriter words={["Career.", "Resume.", "Interviews.", "Job Search.", "Mentorship."]} />
+          {headPrefix}{" "}
+          <Typewriter words={wordsDesktop} />
         </motion.h1>
+
+        {/* tricolor thread — draws itself once, left to right */}
+        <TricolorThread width={200} delay={0.55} className="order-1 lg:order-2 mt-6" />
 
         {/* ── Subtext ── */}
         <motion.p
