@@ -6,7 +6,6 @@ import { LogoMarquee } from "@/components/landing/logo-marquee"
 import { ProductShowcase } from "@/components/landing/product-showcase"
 import { Testimonials } from "@/components/landing/testimonials"
 import { JobHubStats } from "@/components/landing/job-hub-stats"
-import { JobEngineTrain } from "@/components/landing/job-engine-train"
 
 import { MentorsPreview } from "@/components/landing/mentors-preview"
 import { Footer } from "@/components/landing/footer"
@@ -29,7 +28,6 @@ export default function PreLaunchPage() {
       <LogoMarquee />
       <ProductShowcase />
       <MentorsPreview />
-      <JobEngineTrain />
       <Testimonials />
       <JobHubStats />
       <Footer />
