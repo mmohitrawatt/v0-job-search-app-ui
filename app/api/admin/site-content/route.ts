@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@/lib/supabase"
 
-const BUCKET = "site-content"
-
 function checkAuth(req: NextRequest): NextResponse | null {
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
   if (!ADMIN_PASSWORD) {
@@ -28,55 +26,23 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(data ?? { popup: {}, statuses: [] })
 }
 
-async function uploadImage(
-  supabase: ReturnType<typeof createServerClient>,
-  file: File
-): Promise<string | null> {
-  if (!file || file.size === 0) return null
-  const ext = file.name.split(".").pop() ?? "png"
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-  const buffer = new Uint8Array(await file.arrayBuffer())
-  const { error } = await supabase.storage
-    .from(BUCKET)
-    .upload(fileName, buffer, { contentType: file.type || "image/png", upsert: false })
-  if (error) return null
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(fileName)
-  return data.publicUrl
-}
-
-// Save popup + statuses (with optional image uploads)
+// Save popup + statuses. Images are already in Storage by this point — the
+// browser uploads them directly via /api/admin/site-content/upload-url, so this
+// body stays small JSON and never hits Vercel's request size limit.
 export async function POST(req: NextRequest) {
   const fail = checkAuth(req)
   if (fail) return fail
 
   try {
-    const form = await req.formData()
-    const raw = form.get("data") as string | null
-    if (!raw) return NextResponse.json({ error: "Missing data" }, { status: 400 })
-
-    const { popup, statuses } = JSON.parse(raw) as {
+    const { popup, statuses } = (await req.json()) as {
       popup: Record<string, unknown>
       statuses: Array<Record<string, unknown>>
     }
+    if (!popup || !Array.isArray(statuses)) {
+      return NextResponse.json({ error: "Missing popup or statuses" }, { status: 400 })
+    }
 
     const supabase = createServerClient()
-
-    // Popup image upload (field: popup_image)
-    const popupImage = form.get("popup_image") as File | null
-    if (popupImage && popupImage.size > 0) {
-      const url = await uploadImage(supabase, popupImage)
-      if (url) popup.image = url
-    }
-
-    // Per-status image uploads (field: status_image_<index>)
-    for (let i = 0; i < statuses.length; i++) {
-      const f = form.get(`status_image_${i}`) as File | null
-      if (f && f.size > 0) {
-        const url = await uploadImage(supabase, f)
-        if (url) statuses[i].image = url
-      }
-    }
-
     const { error } = await supabase
       .from("site_content")
       .upsert({ id: "main", popup, statuses, updated_at: new Date().toISOString() })

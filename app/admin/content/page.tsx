@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
 import type { PromoPopup } from "@/lib/promo-popup"
 import { STATUS_GRADIENTS, type StatusUpdate, type StatusGradient } from "@/lib/status-updates"
 
@@ -8,6 +9,49 @@ const GRADIENT_KEYS = Object.keys(STATUS_GRADIENTS) as StatusGradient[]
 
 const EMPTY_POPUP: PromoPopup = {
   enabled: true, image: "", alt: "", href: "", autoCloseSeconds: 20, oncePerSession: true,
+}
+
+const BUCKET = "site-content"
+const MAX_EDGE = 1600 // px — posters never need more, keeps uploads fast
+
+/* Shrink oversized phone photos in the browser before upload. */
+async function downscale(file: File): Promise<Blob> {
+  if (!file.type.startsWith("image/") || file.type === "image/gif") return file
+  if (file.size < 600_000) return file
+  try {
+    const bmp = await createImageBitmap(file)
+    const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height))
+    if (scale === 1 && file.size < 2_000_000) return file
+    const canvas = document.createElement("canvas")
+    canvas.width = Math.round(bmp.width * scale)
+    canvas.height = Math.round(bmp.height * scale)
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return file
+    ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height)
+    const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/jpeg", 0.86))
+    return blob && blob.size < file.size ? blob : file
+  } catch {
+    return file
+  }
+}
+
+/* Upload straight to Supabase Storage via a signed URL — bypasses the
+   ~4.5MB body limit on the API route. Throws with a real message on failure. */
+async function uploadImage(file: File, pwd: string): Promise<string> {
+  const body = await downscale(file)
+  const res = await fetch("/api/admin/site-content/upload-url", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${pwd}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ fileName: body === file ? file.name : "poster.jpg" }),
+  })
+  const d = await res.json().catch(() => ({}))
+  if (!res.ok) throw new Error(d?.error || `Upload failed (${res.status})`)
+
+  const { error } = await supabase.storage
+    .from(BUCKET)
+    .uploadToSignedUrl(d.path, d.token, body, { contentType: body.type || file.type || "image/jpeg" })
+  if (error) throw new Error(error.message)
+  return d.publicUrl as string
 }
 
 function newStatus(): StatusUpdate {
@@ -27,9 +71,8 @@ export default function AdminContentPage() {
   const [popup, setPopup] = useState<PromoPopup>(EMPTY_POPUP)
   const [statuses, setStatuses] = useState<StatusUpdate[]>([])
 
-  // pending image files (not yet uploaded)
-  const [popupFile, setPopupFile] = useState<File | null>(null)
-  const [statusFiles, setStatusFiles] = useState<Record<number, File>>({})
+  // in-flight image uploads, keyed by "popup" or the status id
+  const [uploading, setUploading] = useState<Record<string, boolean>>({})
 
   // auth gate
   useEffect(() => {
@@ -55,29 +98,37 @@ export default function AdminContentPage() {
 
   const save = async () => {
     if (!pwd) return
+    if (Object.values(uploading).some(Boolean)) { flash("Image still uploading — wait a sec"); return }
     setSaving(true)
     try {
-      const fd = new FormData()
-      fd.append("data", JSON.stringify({ popup, statuses }))
-      if (popupFile) fd.append("popup_image", popupFile)
-      Object.entries(statusFiles).forEach(([i, f]) => fd.append(`status_image_${i}`, f))
-
       const res = await fetch("/api/admin/site-content", {
         method: "POST",
-        headers: { Authorization: `Bearer ${pwd}` },
-        body: fd,
+        headers: { Authorization: `Bearer ${pwd}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ popup, statuses }),
       })
-      const d = await res.json()
-      if (!res.ok) throw new Error(d?.error || "Save failed")
-      // reflect uploaded URLs back into the form
+      const d = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(d?.error || `Save failed (${res.status})`)
       if (d.popup) setPopup({ ...EMPTY_POPUP, ...d.popup })
       if (Array.isArray(d.statuses)) setStatuses(d.statuses)
-      setPopupFile(null); setStatusFiles({})
       flash("Saved & live ✓")
     } catch (e) {
       flash(e instanceof Error ? e.message : "Save failed")
     } finally {
       setSaving(false)
+    }
+  }
+
+  // Upload happens the moment a file is picked, so Save only sends JSON.
+  const pickImage = async (key: string, file: File | null, apply: (url: string) => void) => {
+    if (!file || !pwd) return
+    setUploading((u) => ({ ...u, [key]: true }))
+    try {
+      apply(await uploadImage(file, pwd))
+      flash("Image uploaded ✓ — press Save to publish")
+    } catch (e) {
+      flash(e instanceof Error ? e.message : "Upload failed")
+    } finally {
+      setUploading((u) => ({ ...u, [key]: false }))
     }
   }
 
@@ -130,10 +181,7 @@ export default function AdminContentPage() {
             <div>
               <span className="ac-lbl">Poster</span>
               <div style={S.preview}>
-                {popupFile ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img alt="preview" src={URL.createObjectURL(popupFile)} style={S.previewImg} />
-                ) : popup.image ? (
+                {popup.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img alt="poster" src={popup.image} style={S.previewImg} />
                 ) : (
@@ -141,7 +189,9 @@ export default function AdminContentPage() {
                 )}
               </div>
               <input className="ac-file" type="file" accept="image/*" style={{ marginTop: 10 }}
-                onChange={(e) => setPopupFile(e.target.files?.[0] ?? null)} />
+                disabled={uploading.popup}
+                onChange={(e) => pickImage("popup", e.target.files?.[0] ?? null, (url) => setP({ image: url }))} />
+              {uploading.popup && <span style={{ fontSize: 12, color: "#93b0ff" }}>Uploading…</span>}
             </div>
 
             <div style={{ display: "grid", gap: 14 }}>
@@ -234,8 +284,13 @@ export default function AdminContentPage() {
                     <input className="ac-input" value={s.image ?? ""} onChange={(e) => setS(i, { image: e.target.value })} placeholder="Image URL (optional)" />
                   </div>
                   <input className="ac-file" type="file" accept="image/*" style={{ marginTop: 20 }}
-                    onChange={(e) => { const f = e.target.files?.[0]; if (f) setStatusFiles((m) => ({ ...m, [i]: f })) }} />
-                  {statusFiles[i] && <span style={{ fontSize: 12, color: "#4ade80", marginTop: 20 }}>✓ new image ready</span>}
+                    disabled={uploading[s.id]}
+                    onChange={(e) => pickImage(s.id, e.target.files?.[0] ?? null, (url) =>
+                      // match by id, not index — the list can be reordered mid-upload
+                      setStatuses((a) => a.map((x) => (x.id === s.id ? { ...x, image: url } : x))))} />
+                  {uploading[s.id]
+                    ? <span style={{ fontSize: 12, color: "#93b0ff", marginTop: 20 }}>Uploading…</span>
+                    : s.image && <span style={{ fontSize: 12, color: "#4ade80", marginTop: 20 }}>✓ image set</span>}
                 </div>
               </div>
             ))}
