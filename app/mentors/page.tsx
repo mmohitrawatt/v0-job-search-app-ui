@@ -402,26 +402,23 @@ const HERO_PHOTOS_RIGHT = [
   "/mentors/Yukta_manek.jpeg",
 ]
 
-const ALL_HERO_PHOTOS = [...HERO_PHOTOS_LEFT, ...HERO_PHOTOS_RIGHT]
-/* 4 marquee columns — different orderings so it never looks repeated across columns */
-const MARQUEE_COLS = [
-  ALL_HERO_PHOTOS,
-  [...ALL_HERO_PHOTOS].reverse(),
-  [...ALL_HERO_PHOTOS.slice(3), ...ALL_HERO_PHOTOS.slice(0, 3)],
-  [...ALL_HERO_PHOTOS.slice(5), ...ALL_HERO_PHOTOS.slice(0, 5)].reverse(),
+/* Static hero collage — 4 columns, each photo used exactly once (no repeats) */
+const COLLAGE_COLS = [
+  HERO_PHOTOS_LEFT.slice(0, 2),
+  HERO_PHOTOS_LEFT.slice(2, 4),
+  HERO_PHOTOS_RIGHT.slice(0, 2),
+  HERO_PHOTOS_RIGHT.slice(2, 4),
 ]
 
-/* A single vertical auto-scrolling column of photos (content duplicated for seamless loop) */
-function MarqueeColumn({ photos, direction, duration }: { photos: string[]; direction: "up" | "down"; duration: number }) {
+/* A single column of the hero collage */
+function CollageColumn({ photos, offset = 0 }: { photos: string[]; offset?: number }) {
   return (
-    <div style={{ flex: 1, minWidth: 0, height: "100%", overflow: "hidden" }}>
-      <div className="marq-track" style={{ animation: `${direction === "up" ? "marqUp" : "marqDown"} ${duration}s linear infinite` }}>
-        {[...photos, ...photos].map((p, i) => (
-          <div key={i} className="marq-tile">
-            <Image src={p} alt="" width={200} height={200} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }} />
-          </div>
-        ))}
-      </div>
+    <div style={{ flex: 1, minWidth: 0, marginTop: offset }}>
+      {photos.map((p) => (
+        <div key={p} className="collage-tile">
+          <Image src={p} alt="" width={200} height={200} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 20%" }} />
+        </div>
+      ))}
     </div>
   )
 }
@@ -640,8 +637,8 @@ export default function MentorsPage() {
           <div style={{ position: "relative" }}>
             <div className="hero-photos hero-photos-left" aria-hidden>
               <div style={{ display: "flex", gap: 14, height: "100%" }}>
-                <MarqueeColumn photos={MARQUEE_COLS[0]} direction="up" duration={38} />
-                <MarqueeColumn photos={MARQUEE_COLS[1]} direction="down" duration={46} />
+                <CollageColumn photos={COLLAGE_COLS[0]} />
+                <CollageColumn photos={COLLAGE_COLS[1]} offset={48} />
               </div>
             </div>
           </div>
@@ -725,8 +722,8 @@ export default function MentorsPage() {
           <div style={{ position: "relative" }}>
             <div className="hero-photos hero-photos-right" aria-hidden>
               <div style={{ display: "flex", gap: 14, height: "100%" }}>
-                <MarqueeColumn photos={MARQUEE_COLS[2]} direction="down" duration={42} />
-                <MarqueeColumn photos={MARQUEE_COLS[3]} direction="up" duration={50} />
+                <CollageColumn photos={COLLAGE_COLS[2]} offset={48} />
+                <CollageColumn photos={COLLAGE_COLS[3]} />
               </div>
             </div>
           </div>
@@ -931,14 +928,10 @@ export default function MentorsPage() {
         .hero-photos-left { padding-right: 8px; }
         .hero-photos-right { padding-left: 8px; }
 
-        /* Vertical auto-scroll photo marquee */
-        .hero-photos { height: 540px; overflow: hidden;
-          -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 5%, #000 95%, transparent 100%); }
-        .marq-track { display: flex; flex-direction: column; will-change: transform; }
-        .marq-tile { aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.10); outline: 3px solid rgba(255,255,255,0.9); outline-offset: -1px; }
-        @keyframes marqUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-        @keyframes marqDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+        /* Static photo collage (each mentor photo appears once) */
+        .hero-photos { height: auto; }
+        .collage-tile { aspect-ratio: 1; border-radius: 16px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.10); outline: 3px solid rgba(255,255,255,0.9); outline-offset: -1px; }
+        .collage-tile:last-child { margin-bottom: 0; }
 
         .logo-img { opacity: .95; transition: opacity .25s ease, transform .25s ease; }
         .logo-img:hover { opacity: 1; transform: translateY(-1px); }
@@ -969,7 +962,7 @@ export default function MentorsPage() {
           .hero-photos, .hero-card { display: none !important; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero-photo-in, .hero-float, .hero-card, .hero-center, .hero-tile, .marq-track { animation: none !important; opacity: 1 !important; transform: none !important; }
+          .hero-photo-in, .hero-float, .hero-card, .hero-center, .hero-tile { animation: none !important; opacity: 1 !important; transform: none !important; }
         }
         .all-grid::-webkit-scrollbar { display: none; }
         .all-grid { scrollbar-width: none; }
