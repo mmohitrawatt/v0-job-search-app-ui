@@ -123,7 +123,10 @@ function CompanyAvatar({ name, size = 46, logo, domain }: { name: string; size?:
   const color = COMPANY_COLORS[name] || NAVY
   // A verified domain is guaranteed to load (checked at ingest), so use it
   // directly — no noisy name-guesses. No domain → straight to a coloured letter.
-  const sources = domain
+  // Our own postings ship a real logo file in /public — always prefer it.
+  const sources = COMPANY_LOGOS[name]
+    ? [COMPANY_LOGOS[name]]
+    : domain
     ? [`https://icons.duckduckgo.com/ip3/${domain}.ico`, `https://www.google.com/s2/favicons?domain=${domain}&sz=128`]
     : logo ? [logo] : []
   const src = sources[idx]
