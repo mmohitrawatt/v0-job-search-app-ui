@@ -118,6 +118,19 @@ const INTERNAL_JOBS: Job[] = [
     stipend: "₹50K–80K/month",
     description: "Design and maintain scalable, secure, and high-performance database architectures. Create logical and physical data models, design schemas, indexing strategies, and normalization for optimal performance. Evaluate and implement SQL and NoSQL technologies, plan cloud migrations (AWS, Azure, or GCP), and optimize performance through query tuning, partitioning, and replication. Design high-availability, backup, and disaster recovery solutions, implement data governance and security best practices, and architect AI-ready data foundations supporting RAG, vector databases, and semantic search. Collaborate with application, DevOps, data engineering, and AI teams. Compensation ₹50K–80K per month, based on experience and expertise.",
   },
+  {
+    id: "kv-2",
+    title: "Full Stack Developer",
+    company: "Kendriya Vidyalaya",
+    location: "India",
+    slug: "full-stack-developer-kendriya-vidyalaya",
+    type: "Full Time",
+    department: "Engineering",
+    experience: "1–2 yr",
+    mode: "On-site",
+    stipend: "₹30K–45K/month",
+    description: "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records, staff and academic reporting modules used by principals, teachers and regional offices. Work across the stack: responsive React/Next.js interfaces with bilingual (Hindi/English) accessible UI, secure REST APIs in Node.js, and efficient PostgreSQL/MySQL queries. Integrate with government platforms and NEP 2020 data standards including UDISE+, APAAR/ABC IDs and DigiLocker. Implement role-based access control with audit trails, handle peak load during the annual Class I admission window, and meet GIGW 3.0 and WCAG 2.1 AA standards. Prepare releases for CERT-In empanelled security audits (VAPT) and deploy on NIC cloud infrastructure. Ideal for a developer with 1–2 years of experience who wants their code used by lakhs of students and staff nationwide. Compensation ₹30K–45K per month, based on experience and skills.",
+  },
 ]
 
 /* ─────────────────────────────────────────────────────────────────────────────
