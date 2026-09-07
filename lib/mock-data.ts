@@ -288,11 +288,11 @@ export const MOCK_JOBS: Job[] = [
     skills: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "REST APIs"],
     missingSkills: ["Docker", "Accessibility (WCAG)"],
     matchScore: 86,
-    salary: "₹30K–45K/month",
+    salary: "Not disclosed",
     initials: "KV",
     color: "bg-emerald-100 text-emerald-700",
     description:
-      "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records, staff and academic reporting modules. Work across the stack: responsive React/Next.js interfaces with bilingual Hindi–English accessible UI, secure REST APIs in Node.js, and efficient PostgreSQL queries. Integrate with government platforms and NEP 2020 data standards including UDISE+, APAAR/ABC IDs and DigiLocker. Implement role-based access control with audit trails, handle peak load during the annual Class I admission window, and meet GIGW 3.0 and WCAG 2.1 AA standards. Prepare releases for CERT-In empanelled security audits (VAPT) and deploy on NIC cloud infrastructure. 1–2 years of hands-on full stack experience required. Compensation: ₹30K–45K per month based on experience and skills.",
+      "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records and academic reporting. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
     isRemote: false,
     portal: "naukri",
     portalListings: [

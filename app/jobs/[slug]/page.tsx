@@ -115,20 +115,13 @@ Compensation ₹50K–80K per month, based on experience and expertise`,
     company: "Kendriya Vidyalaya",
     location: "India",
     slug: "full-stack-developer-kendriya-vidyalaya",
-    description: `Build and maintain the web applications used across Kendriya Vidyalaya schools — admission, student records, staff and academic reporting modules
-Develop responsive front-end interfaces in React / Next.js with clean, reusable components and a bilingual Hindi–English UI
-Build secure REST APIs and server-side services in Node.js, and write efficient queries against PostgreSQL / MySQL
-Integrate with government platforms and NEP 2020 data standards — UDISE+, APAAR / ABC IDs, DigiLocker and DIKSHA content
-Implement role-based access control for principals, teachers, clerks and regional office users, with audit trails on every sensitive action
-Handle peak traffic during the annual Class I admission window through caching, queueing, rate limiting and graceful degradation
-Follow GIGW 3.0 and WCAG 2.1 AA accessibility standards, keeping pages usable on low-bandwidth connections and entry-level Android devices
-Prepare releases for CERT-In empanelled security audits (VAPT) — input validation, secure file uploads, session handling and OWASP Top 10 fixes
-Write database migrations, seed scripts and automated tests; deploy to NIC cloud infrastructure using Docker and CI/CD pipelines
-Debug production issues reported from schools across the country, reproduce them, fix root causes and document the resolution
-Maintain technical documentation, API contracts and release notes for the KVS IT team
-Requirements: 1–2 years of hands-on full stack experience, strong JavaScript / TypeScript fundamentals, comfort with Git, and the ability to own a feature end to end
-Good to have: experience with government or education-sector projects, exposure to Redis, Docker, or Linux server administration
-Compensation ₹30K–45K per month, based on experience and skills`,
+    description: `Build and maintain the web applications used across Kendriya Vidyalaya schools — admission, student records and academic reporting modules
+Develop responsive front-end interfaces in React / Next.js with a bilingual Hindi–English, accessible UI
+Build secure REST APIs and server-side services in Node.js, backed by PostgreSQL / MySQL
+Integrate with government platforms and NEP 2020 data standards — UDISE+, APAAR / ABC IDs and DigiLocker
+Implement role-based access for principals, teachers and regional offices, and keep releases audit and VAPT ready
+Debug production issues reported from schools, own features end to end, and maintain clear technical documentation
+1–2 years of hands-on full stack experience with strong JavaScript / TypeScript fundamentals`,
     apply_type: "direct",
   },
 ]
