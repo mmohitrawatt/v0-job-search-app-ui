@@ -38,6 +38,18 @@ const indeed = (q: string) =>
 ───────────────────────────────────────────────────────────────────────────── */
 const INTERNAL_JOBS: Job[] = [
   {
+    id: "kv-2",
+    title: "Full Stack Developer",
+    company: "Kendriya Vidyalaya",
+    location: "India",
+    slug: "full-stack-developer-kendriya-vidyalaya",
+    type: "Full Time",
+    department: "Engineering",
+    experience: "1–2 yr",
+    mode: "On-site",
+    description: "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records and academic reporting. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
+  },
+  {
     id: "tw-1",
     title: "Sales Executive",
     company: "Tapwave",
@@ -117,18 +129,6 @@ const INTERNAL_JOBS: Job[] = [
     mode: "On-site",
     stipend: "₹50K–80K/month",
     description: "Design and maintain scalable, secure, and high-performance database architectures. Create logical and physical data models, design schemas, indexing strategies, and normalization for optimal performance. Evaluate and implement SQL and NoSQL technologies, plan cloud migrations (AWS, Azure, or GCP), and optimize performance through query tuning, partitioning, and replication. Design high-availability, backup, and disaster recovery solutions, implement data governance and security best practices, and architect AI-ready data foundations supporting RAG, vector databases, and semantic search. Collaborate with application, DevOps, data engineering, and AI teams. Compensation ₹50K–80K per month, based on experience and expertise.",
-  },
-  {
-    id: "kv-2",
-    title: "Full Stack Developer",
-    company: "Kendriya Vidyalaya",
-    location: "India",
-    slug: "full-stack-developer-kendriya-vidyalaya",
-    type: "Full Time",
-    department: "Engineering",
-    experience: "1–2 yr",
-    mode: "On-site",
-    description: "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records and academic reporting. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
   },
 ]
 
