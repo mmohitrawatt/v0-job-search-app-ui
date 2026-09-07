@@ -324,7 +324,9 @@ export default async function JobsPage() {
   // 2. Use DB jobs if we have them; otherwise fall back to seed + live-scraped.
   let jobs: Job[]
   if (dbJobs.length > 0) {
-    jobs = dbJobs
+    // Our own openings have dedicated detail + apply pages, so they must always
+    // be listed — the DB feed is aggregated jobs, not a replacement for them.
+    jobs = [...INTERNAL_JOBS, ...dbJobs]
   } else {
     jobs = STATIC_JOBS
     try {
