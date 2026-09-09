@@ -39,7 +39,7 @@ const indeed = (q: string) =>
 const INTERNAL_JOBS: Job[] = [
   {
     id: "kv-2",
-    title: "Full Stack Developer",
+    title: "AI Native Full Stack Developer",
     company: "Kendriya Vidyalaya",
     location: "India",
     slug: "full-stack-developer-kendriya-vidyalaya",
@@ -47,7 +47,7 @@ const INTERNAL_JOBS: Job[] = [
     department: "Engineering",
     experience: "1–2 yr",
     mode: "On-site",
-    description: "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records and academic reporting. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
+    description: "Build and maintain the web platforms that run Kendriya Vidyalaya schools, and ship AI-powered features on top of them — LLM integrations, RAG over school data, and assistants that cut repetitive work. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
   },
   {
     id: "tw-1",

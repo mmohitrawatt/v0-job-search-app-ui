@@ -281,18 +281,18 @@ export const MOCK_JOBS: Job[] = [
   },
   {
     id: "11",
-    title: "Full Stack Developer",
+    title: "AI Native Full Stack Developer",
     company: "Kendriya Vidyalaya",
     location: "India",
     type: "Full-time",
-    skills: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "REST APIs"],
-    missingSkills: ["Docker", "Accessibility (WCAG)"],
+    skills: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "LLM APIs"],
+    missingSkills: ["RAG Pipelines", "Vector Databases"],
     matchScore: 86,
     salary: "Not disclosed",
     initials: "KV",
     color: "bg-emerald-100 text-emerald-700",
     description:
-      "Build and maintain the web platforms that run Kendriya Vidyalaya schools — admission, student records and academic reporting. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
+      "Build and maintain the web platforms that run Kendriya Vidyalaya schools, and ship AI-powered features on top of them — LLM integrations, RAG over school data, and assistants that cut repetitive work. Work across React/Next.js, Node.js and PostgreSQL, integrate government platforms like UDISE+, APAAR and DigiLocker, and own features end to end. 1–2 years of full stack experience required.",
     isRemote: false,
     portal: "naukri",
     portalListings: [

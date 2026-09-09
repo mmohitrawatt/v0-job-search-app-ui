@@ -111,16 +111,16 @@ Compensation ₹50K–80K per month, based on experience and expertise`,
   },
   {
     id: "kv-2",
-    title: "Full Stack Developer",
+    title: "AI Native Full Stack Developer",
     company: "Kendriya Vidyalaya",
     location: "India",
     slug: "full-stack-developer-kendriya-vidyalaya",
     description: `Build and maintain the web applications used across Kendriya Vidyalaya schools — admission, student records and academic reporting modules
+Ship AI-powered features end to end — LLM integrations, RAG over school data, and assistants that cut repetitive work for staff
 Develop responsive front-end interfaces in React / Next.js with a bilingual Hindi–English, accessible UI
 Build secure REST APIs and server-side services in Node.js, backed by PostgreSQL / MySQL
 Integrate with government platforms and NEP 2020 data standards — UDISE+, APAAR / ABC IDs and DigiLocker
-Implement role-based access for principals, teachers and regional offices, and keep releases audit and VAPT ready
-Debug production issues reported from schools, own features end to end, and maintain clear technical documentation
+Use AI tools daily to move fast on code, review and testing, while owning the quality and security of what ships
 1–2 years of hands-on full stack experience with strong JavaScript / TypeScript fundamentals`,
     apply_type: "direct",
   },
