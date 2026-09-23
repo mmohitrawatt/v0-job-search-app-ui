@@ -117,6 +117,11 @@ function logoSources(name: string): string[] {
   return guessDomains(name).map(ddg)
 }
 const NAVY = "#1d3a8f"
+const OWN_JOB_SLUGS = new Set([
+  "ai-trainer-gati-shiksha",
+  "full-stack-developer-kendriya-vidyalaya",
+  "database-architect-kendriya-vidyalaya",
+])
 
 /* Company avatar — real brand logo or coloured monogram in a white rounded tile */
 function CompanyAvatar({ name, size = 46, logo, domain }: { name: string; size?: number; logo?: string; domain?: string }) {
@@ -201,13 +206,13 @@ function JobCard({ job, index, matchPct }: { job: Job; index: number; matchPct?:
   const visible = tags.slice(0, 3)
   const extra = tags.length - visible.length
 
-  const href = job.applyUrl ?? `/jobs/${job.slug}`
-  const external = Boolean(job.applyUrl)
+  const hasOwnJobPage = OWN_JOB_SLUGS.has(job.slug)
+  const href = hasOwnJobPage ? `/jobs/${job.slug}` : "https://ai.jobingen.com"
 
   return (
     <Link
       href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      aria-label={`${job.title} at ${job.company} — ${hasOwnJobPage ? "view job details" : "open Jobingen AI"}`}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
@@ -313,7 +318,7 @@ function JobCard({ job, index, matchPct }: { job: Job; index: number; matchPct?:
           border: `1.5px solid ${hov ? NAVY : "rgba(17,24,39,0.12)"}`,
           fontSize: 13, fontWeight: 700, transition: "all 0.2s ease",
         }}>
-          View role
+          {hasOwnJobPage ? "View role" : "Open Jobingen AI"}
           <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </span>
       </div>
