@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight, FileText, FileVideo } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, Check, FileText, FileVideo } from "lucide-react"
 
 const choices = ["Junior Innovation Challenge (VI–VIII)", "Emerging Innovator Challenge (IX–X)", "Advanced Innovation Challenge (XI–XII)"]
 
@@ -32,13 +33,18 @@ export default function GatiApplyForm() {
     }
   }
 
-  if (success) return <div className="gj-form-success" role="status"><strong>Application submitted!</strong><br />Gati Shiksha will review your CV and preferred track(s){" "}along with your sample video, if provided.</div>
+  if (success) return <div className="gj-form-success" role="status">
+    <div className="gj-success-icon"><Check size={23} strokeWidth={2.8} /></div>
+    <h3>Application submitted</h3>
+    <p>Your application for Gati Shiksha&apos;s AI Trainer role has been received. Gati Shiksha will screen applications and invite shortlisted candidates for a studio screen test in Delhi.</p>
+    <div className="gj-success-next"><strong>Keep exploring with Jobingen</strong><p>Find more opportunities that match your skills while your application is reviewed.</p><Link href="/jobs" className="gj-success-link">Explore more jobs <ArrowRight size={15} /></Link></div>
+  </div>
 
   return <form className="gj-form" onSubmit={submit}>
     {error && <div className="gj-form-error" role="alert">{error}</div>}
     <div className="gj-form-row"><div className="gj-field"><label htmlFor="gj-name">Full Name *</label><input id="gj-name" name="name" type="text" autoComplete="name" placeholder="Your full name" required /></div><div className="gj-field"><label htmlFor="gj-email">Email Address *</label><input id="gj-email" name="email" type="email" autoComplete="email" placeholder="you@email.com" required /></div></div>
     <div className="gj-field"><label htmlFor="gj-phone">Phone Number *</label><input id="gj-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" required /></div>
-    <fieldset className="gj-field gj-fieldset"><legend>Preferred Curriculum Track(s) *</legend><div className="gj-track-options">{choices.map(choice => <label key={choice}><input type="checkbox" checked={tracks.includes(choice)} onChange={event => setTracks(current => event.target.checked ? [...current, choice] : current.filter(track => track !== choice))} />{choice}</label>)}</div><small>Choose one or more tracks that match your skills.</small></fieldset>
+    <fieldset className="gj-field gj-fieldset"><legend>Preferred Curriculum Track(s) *</legend><div className="gj-track-options">{choices.map(choice => <label key={choice}><input type="checkbox" checked={tracks.includes(choice)} onChange={event => setTracks(current => event.target.checked ? [...current, choice] : current.filter(track => track !== choice))} />{choice}</label>)}</div><small>Choose one or more tracks that match your skills. <a href="#tracks">View track topics</a></small></fieldset>
     <div className="gj-field"><label htmlFor="gj-resume">Upload Resume * <small>PDF, DOC or DOCX — max 10 MB</small></label><label className={`gj-upload${resume ? " has-file" : ""}`} htmlFor="gj-resume"><FileText size={23} /><span><strong>{resume ? resume.name : "Click to upload your resume"}</strong><small>{resume ? "Click to change file" : "PDF, DOC or DOCX accepted"}</small></span><input id="gj-resume" name="resume" type="file" accept=".pdf,.doc,.docx" required onChange={event => setResume(event.target.files?.[0] ?? null)} /></label></div>
     <div className="gj-field"><label htmlFor="gj-video">2–3 Minute Sample Teaching Video <small>(optional)</small></label><div className="gj-video-field"><FileVideo size={19} /><input id="gj-video" name="sample_video_url" type="url" placeholder="Paste your shareable video link, if available" /></div><small>If you add a video, explain any one curriculum topic and ensure the hiring team can view the link.</small></div>
     <button type="submit" className="gj-primary gj-form-submit" disabled={submitting}>{submitting ? "Submitting…" : "Submit Application"}<ArrowRight size={17} /></button>
