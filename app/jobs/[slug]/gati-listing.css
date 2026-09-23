@@ -75,7 +75,8 @@
 @media(prefers-reduced-motion:reduce){.gj-primary,.gj-track-chevron{transition:none}}
 
 /* Post-application next steps. */
-.gj-promo-card{margin-top:23px;padding:21px;border-radius:14px;background:linear-gradient(145deg,#112b67 0%,#204ed8 100%);color:#fff;box-shadow:0 10px 25px #173eae26}
+.gj-promo-card{display:block;margin-top:23px;padding:21px;border-radius:14px;background:linear-gradient(145deg,#112b67 0%,#204ed8 100%);color:#fff;text-decoration:none;box-shadow:0 10px 25px #173eae26;transition:transform .15s,box-shadow .15s}
+.gj-promo-card:hover{transform:translateY(-2px);box-shadow:0 14px 30px #173eae36}
 .gj-promo-brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:850;letter-spacing:.11em}
 .gj-promo-brand span{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:#ffffff29}
 .gj-promo-card h4{font-size:20px;line-height:1.2;letter-spacing:-.025em;margin:18px 0 8px}
@@ -83,10 +84,5 @@
 .gj-promo-features{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 19px}
 .gj-promo-features span{border:1px solid #ffffff45;background:#ffffff16;border-radius:999px;padding:6px 8px;color:#fff;font-size:10px;font-weight:700}
 .gj-promo-link{min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;background:#fff;color:#163b9e;text-decoration:none;font-size:12px;font-weight:850}
-.gj-promo-link:hover{background:#f0f5ff}
-.gj-receipt-link{padding-top:19px;margin-top:21px;border-top:1px solid #e4eaf2}
-.gj-receipt-link strong{font-size:13px;display:block;margin-bottom:5px}
-.gj-receipt-link p{font-size:12px;line-height:1.55;color:#61748e;margin:0 0 12px}
-.gj-receipt-link a{display:inline-flex;align-items:center;gap:7px;color:#204ed8;font-size:13px;font-weight:800;text-decoration:none;min-height:36px}
-.gj-receipt-link a:hover{text-decoration:underline}
-@media(max-width:680px){.gj-promo-card{padding:21px 19px}.gj-promo-card p,.gj-receipt-link p{font-size:13px}.gj-promo-link{min-height:48px;font-size:14px}}
+.gj-promo-card:hover .gj-promo-link{background:#f0f5ff}
+@media(max-width:680px){.gj-promo-card{padding:21px 19px}.gj-promo-card p{font-size:13px}.gj-promo-link{min-height:48px;font-size:14px}}

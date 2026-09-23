@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@/lib/supabase"
-import { signGatiApplicationId } from "@/lib/gati-application-receipt"
 
 const validTracks = new Set([
   "Junior Innovation Challenge (VI–VIII)",
@@ -49,12 +48,11 @@ export async function POST(request: NextRequest) {
     const application = {
       name, email, phone, preferred_tracks: tracks, sample_video_url: videoUrl?.toString() ?? null, resume_url: data.publicUrl,
     }
-    let { data: inserted, error: insertError } = await supabase.from("gati_video_educator_applications").insert(application).select("id").single()
+    let { error: insertError } = await supabase.from("gati_video_educator_applications").insert(application)
     // Older deployments of this table still require a value for sample_video_url.
     // An empty string represents no video until the nullable-column migration is applied.
     if (insertError?.code === "23502" && !videoUrl) {
-      const retry = await supabase.from("gati_video_educator_applications").insert({ ...application, sample_video_url: "" }).select("id").single()
-      inserted = retry.data
+      const retry = await supabase.from("gati_video_educator_applications").insert({ ...application, sample_video_url: "" })
       insertError = retry.error
     }
     if (insertError) {
@@ -62,8 +60,7 @@ export async function POST(request: NextRequest) {
       await supabase.storage.from("resumes").remove([path])
       return NextResponse.json({ error: "Could not submit your application. Please try again." }, { status: 500 })
     }
-    if (!inserted?.id) throw new Error("Application insert returned no ID")
-    return NextResponse.json({ success: true, receiptUrl: `/gati-application/${signGatiApplicationId(inserted.id)}` }, { status: 201 })
+    return NextResponse.json({ success: true }, { status: 201 })
   } catch (error) {
     console.error("Gati application request failed:", error)
     return NextResponse.json({ error: "Could not submit your application. Please try again." }, { status: 500 })

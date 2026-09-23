@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
 import { ArrowRight, ArrowUpRight, Check, FileText, FileVideo, Sparkles } from "lucide-react"
 
 const choices = ["Junior Innovation Challenge (VI–VIII)", "Emerging Innovator Challenge (IX–X)", "Advanced Innovation Challenge (XI–XII)"]
@@ -13,7 +12,6 @@ export default function GatiApplyForm() {
   const [fieldError, setFieldError] = useState<"tracks" | "resume" | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [receiptUrl, setReceiptUrl] = useState<string | null>(null)
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -36,7 +34,6 @@ export default function GatiApplyForm() {
       const response = await fetch("/api/jobs/gati-video-educator", { method: "POST", body: form })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || "Could not submit your application.")
-      if (typeof result.receiptUrl === "string" && result.receiptUrl.startsWith("/gati-application/")) setReceiptUrl(result.receiptUrl)
       setSuccess(true)
       requestAnimationFrame(() => document.getElementById("apply")?.scrollIntoView({ behavior: "smooth", block: "start" }))
     } catch (cause) {
@@ -50,15 +47,14 @@ export default function GatiApplyForm() {
   if (success) return <div className="gj-form-success" role="status">
     <div className="gj-success-icon"><Check size={23} strokeWidth={2.8} /></div>
     <h3>Application submitted</h3>
-    <p>Your application for Gati Shiksha&apos;s AI Trainer role has been received. Gati Shiksha will screen applications and invite shortlisted candidates for a studio screen test in Delhi.</p>
-    <div className="gj-promo-card">
+    <p>Your application for Gati Shiksha&apos;s AI Trainer role has been received.</p>
+    <a className="gj-promo-card" href="https://ai.jobingen.com">
       <div className="gj-promo-brand"><span><Sparkles size={18} /></span> JOBINGEN AI</div>
       <h4>Get ready for what&apos;s next</h4>
       <p>Practice with an AI interview, work on your resume, and explore more opportunities on Jobingen.</p>
       <div className="gj-promo-features"><span>AI interview</span><span>Resume tools</span><span>Job search</span></div>
-      <a href="https://ai.jobingen.com" target="_blank" rel="noopener noreferrer" className="gj-promo-link">Explore Jobingen AI <ArrowUpRight size={17} /></a>
-    </div>
-    {receiptUrl && <div className="gj-receipt-link"><div><strong>Your application</strong><p>Keep a copy of the details you submitted. Save this private link to revisit them.</p></div><Link href={receiptUrl}>View your application <ArrowRight size={16} /></Link></div>}
+      <span className="gj-promo-link">Explore Jobingen AI <ArrowUpRight size={17} /></span>
+    </a>
   </div>
 
   return <form className="gj-form" onSubmit={submit}>
