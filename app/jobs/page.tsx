@@ -44,7 +44,7 @@ const INTERNAL_JOBS: Job[] = [
     location: "Delhi Studio",
     slug: "ai-trainer-gati-shiksha",
     type: "Freelance",
-    department: "Technology & AI Bootcamp",
+    department: "Computer Science / Engineering",
     experience: "Freshers welcome",
     mode: "On-site",
     stipend: "Competitive per-day pay",

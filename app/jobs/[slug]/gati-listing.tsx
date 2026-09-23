@@ -65,7 +65,7 @@ export default function GatiListing() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/gati-shiksha-logo.png" alt="Gati Shiksha" className="gj-company-logo" />
             </div>
-            <span className="gj-company-name">Gati Shiksha <span className="gj-dot">·</span> Technology & AI Bootcamp</span>
+            <span className="gj-company-name">Gati Shiksha</span>
           </div>
           <h1 id="gj-title">AI Trainer</h1>
           <p className="gj-hero-copy">Teach technology and AI to students in Classes VI–XII through clear, engaging video lessons.</p>
