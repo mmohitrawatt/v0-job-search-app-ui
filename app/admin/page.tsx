@@ -25,6 +25,7 @@ type JobApplication = {
   id: string; name: string; email: string; phone: string
   linkedin?: string; resume_url?: string; job_slug: string; job_title: string; created_at: string
   college?: string; degree?: string; quiz_answers?: QuizAnswer[]
+  preferred_tracks?: string[]; sample_video_url?: string | null; source_table?: string
 }
 type HackathonSubmission = {
   id: string; team_name: string; leader_name: string; email: string
@@ -236,7 +237,7 @@ export default function AdminPage() {
       else if (tbl === "ml_masterclass_registrations") setMlMasterclass(p => p.filter(r => r.id !== id))
       else if (tbl === "bootcamp_feedback") setFeedback(p => p.filter(r => r.id !== id))
       else if (tbl === "jobingen_club_applications") setAmbassadors(p => p.filter(r => r.id !== id))
-      else if (tbl === "job_applications") setJobApplications(p => p.filter(r => r.id !== id))
+      else if (tbl === "job_applications" || tbl === "gati_video_educator_applications") setJobApplications(p => p.filter(r => r.id !== id || (r.source_table ?? "job_applications") !== tbl))
       else if (tbl === "hackathon_submissions") setHackathonSubs(p => p.filter(r => r.id !== id))
       else if (tbl === "student_insights") setStudentInsights(p => p.filter(r => r.id !== id))
       else if (tbl === "interview_feedback") setInterviewFeedback(p => p.filter(r => r.id !== id))
@@ -772,7 +773,14 @@ export default function AdminPage() {
                       <div className="adm-sec-badge">{jaFiltered.length} applications</div>
                     </div>
                     <div className="adm-sec-actions">
-                      <button className="adm-csv" onClick={() => exportCSV(jaFiltered.map(a => ({ ...a, quiz_answers: a.quiz_answers ? JSON.stringify(a.quiz_answers) : "" })) as unknown as Record<string, unknown>[], "job-applications.csv")}>
+                      <button className="adm-csv" onClick={() => exportCSV(jaFiltered.map(a => ({
+                        name: a.name, email: a.email, phone: a.phone, job_title: a.job_title,
+                        college: a.college ?? "", degree: a.degree ?? "", linkedin: a.linkedin ?? "",
+                        preferred_tracks: a.preferred_tracks?.join("; ") ?? "",
+                        sample_video_url: a.sample_video_url ?? "", resume_url: a.resume_url ?? "",
+                        quiz_answers: a.quiz_answers ? JSON.stringify(a.quiz_answers) : "",
+                        created_at: a.created_at,
+                      })), "job-applications.csv")}>
                         <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         Export CSV
                       </button>
@@ -784,7 +792,7 @@ export default function AdminPage() {
                     ) : (
                       <table>
                         <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Degree</th><th>Job Title</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th><th></th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Degree</th><th>Job Title</th><th>Tracks</th><th>Sample Video</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th><th></th></tr>
                         </thead>
                         <tbody>
                           {jaFiltered.map((a, i) => (
@@ -796,6 +804,8 @@ export default function AdminPage() {
                               <td style={{ fontSize: 13 }}>{a.college || "—"}</td>
                               <td style={{ fontSize: 12, color: "#64748b" }}>{a.degree || "—"}</td>
                               <td><span className="c-tag">{a.job_title}</span></td>
+                              <td style={{ fontSize: 12, color: "#475569", minWidth: 160 }}>{a.preferred_tracks?.length ? a.preferred_tracks.join(", ") : "—"}</td>
+                              <td>{a.sample_video_url ? <a className="c-link" href={a.sample_video_url} target="_blank" rel="noopener noreferrer">Watch</a> : "—"}</td>
                               <td>
                                 {a.linkedin
                                   ? <a className="c-link" href={a.linkedin.startsWith("http") ? a.linkedin : `https://${a.linkedin}`} target="_blank" rel="noopener noreferrer">View</a>
@@ -817,7 +827,7 @@ export default function AdminPage() {
                                   : "—"}
                               </td>
                               <td className="c-date">{fmt(a.created_at)}</td>
-                              <td><DelBtn table="job_applications" id={a.id} name={a.name} /></td>
+                              <td><DelBtn table={a.source_table ?? "job_applications"} id={a.id} name={a.name} /></td>
                             </tr>
                           ))}
                         </tbody>

@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, jobsRes, hs, si, ifb, ma, paf, cc, eaply, hireReq, careersRes, hrAICE, flagship, bugBash, campusAmb] = await Promise.all([
+  const [ea, hr1, hr2, hr3, hrRec, hrML, fb, ca, ja, gatiApps, jobsRes, hs, si, ifb, ma, paf, cc, eaply, hireReq, careersRes, hrAICE, flagship, bugBash, campusAmb] = await Promise.all([
     supabase.from("early_access").select("*").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_1").order("created_at", { ascending: false }),
     supabase.from("hackathon_registrations").select("*").eq("bootcamp", "bootcamp_2").order("created_at", { ascending: false }),
@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
     supabase.from("bootcamp_feedback").select("*").order("created_at", { ascending: false }),
     supabase.from("jobingen_club_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("job_applications").select("*").order("created_at", { ascending: false }),
+    supabase.from("gati_video_educator_applications").select("*").order("created_at", { ascending: false }),
     supabase.from("jobs").select("slug, title"),
     supabase.from("hackathon_submissions").select("*").order("created_at", { ascending: false }),
     supabase.from("student_insights").select("*").order("created_at", { ascending: false }),
@@ -43,10 +44,19 @@ export async function GET(req: NextRequest) {
   const jobTitleMap: Record<string, string> = Object.fromEntries(
     (jobsRes.data ?? []).map((j: { slug: string; title: string }) => [j.slug, j.title])
   )
-  const jobApplications = (ja.data ?? []).map((a: Record<string, unknown>) => ({
+  const standardJobApplications = (ja.data ?? []).map((a: Record<string, unknown>) => ({
     ...a,
     job_title: jobTitleMap[a.job_slug as string] ?? (a.job_slug as string),
+    source_table: "job_applications",
   }))
+  const gatiJobApplications = (gatiApps.data ?? []).map((a: Record<string, unknown>) => ({
+    ...a,
+    job_slug: "freelance-video-educator-gati-shiksha",
+    job_title: "Freelance Video Educator · Gati Shiksha",
+    source_table: "gati_video_educator_applications",
+  }))
+  const jobApplications: Record<string, unknown>[] = [...standardJobApplications, ...gatiJobApplications]
+    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)))
 
   return NextResponse.json({
     earlyAccess: ea.data || [],

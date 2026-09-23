@@ -7,6 +7,7 @@ const ALLOWED_TABLES = [
   "bootcamp_feedback",
   "campus_ambassador_applications",
   "job_applications",
+  "gati_video_educator_applications",
   "hackathon_submissions",
   "student_insights",
   "interview_feedback",
