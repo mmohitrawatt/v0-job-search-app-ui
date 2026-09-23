@@ -38,6 +38,19 @@ const indeed = (q: string) =>
 ───────────────────────────────────────────────────────────────────────────── */
 const INTERNAL_JOBS: Job[] = [
   {
+    id: "gati-video-educator",
+    title: "Freelance Video Educator",
+    company: "Gati Shiksha",
+    location: "Delhi Studio",
+    slug: "freelance-video-educator-gati-shiksha",
+    type: "Freelance",
+    department: "Technology & AI Bootcamp",
+    experience: "Freshers welcome",
+    mode: "On-site",
+    stipend: "Competitive per-day pay",
+    description: "Record scripted technology and AI lessons for Classes VI–XII at Gati Shiksha's Delhi studio. Explain concepts clearly, demonstrate live coding, and choose the curriculum tracks that match your strengths. Freshers and final-year students are welcome; prior teaching experience is not required. Apply with a CV and preferred track(s); a 2–3 minute sample teaching video is optional.",
+  },
+  {
     id: "kv-2",
     title: "AI Native Full Stack Developer",
     company: "Kendriya Vidyalaya",

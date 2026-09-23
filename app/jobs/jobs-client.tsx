@@ -43,6 +43,7 @@ const COMPANY_COLORS: Record<string, string> = {
   "Udaan": "#2E2E86", "Ninjacart": "#2E9E45", "MPL": "#E52D27", "MakeMyTrip": "#EB2226", "ixigo": "#E05A00", "OYO": "#EE2E24",
 }
 const COMPANY_LOGOS: Record<string, string> = {
+  "Gati Shiksha": "/gati-shiksha-logo.png",
   "Tapwave": "/tapwave.jpeg",
   "Trippyway": "/trippyway-logo.jpg",
   "Kendriya Vidyalaya": "/kendriya-vidyalaya-logo.svg",
@@ -133,7 +134,7 @@ function CompanyAvatar({ name, size = 46, logo, domain }: { name: string; size?:
   const letter = name.trim()[0]?.toUpperCase() || "?"
   return (
     <div style={{
-      width: size, height: size, borderRadius: 13, flexShrink: 0,
+      width: name === "Gati Shiksha" ? 82 : size, height: size, borderRadius: 13, flexShrink: 0,
       background: "white", border: "1px solid rgba(17,24,39,0.08)",
       boxShadow: "0 2px 8px rgba(15,23,42,0.06)",
       display: "flex", alignItems: "center", justifyContent: "center",
