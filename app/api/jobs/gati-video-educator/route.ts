@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@/lib/supabase"
 
 const validTracks = new Set([
+  "AI & Generative AI",
+  "Prompt engineering",
+  "Programming (Python / JavaScript)",
+  "Web development",
+  "APIs & backend",
+  "Software development",
+  "Innovation & project building",
+  // Accept submissions from an older page version that may still be open in a browser.
   "Junior Innovation Challenge (VI–VIII)",
   "Emerging Innovator Challenge (IX–X)",
   "Advanced Innovation Challenge (XI–XII)",
@@ -23,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Enter your name, a valid email address and phone number." }, { status: 400 })
     }
     if (!Array.isArray(tracks) || tracks.length === 0 || tracks.some(track => typeof track !== "string" || !validTracks.has(track))) {
-      return NextResponse.json({ error: "Choose at least one valid curriculum track." }, { status: 400 })
+      return NextResponse.json({ error: "Choose at least one valid teaching topic." }, { status: 400 })
     }
     let videoUrl: URL | null = null
     if (sampleVideoUrl) {

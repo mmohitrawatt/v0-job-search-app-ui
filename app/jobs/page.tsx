@@ -39,16 +39,16 @@ const indeed = (q: string) =>
 const INTERNAL_JOBS: Job[] = [
   {
     id: "gati-video-educator",
-    title: "AI Trainer",
+    title: "AI Trainer / Technical Educator",
     company: "Gati Shiksha",
-    location: "Delhi Studio",
+    location: "MNNIT Allahabad · Delhi · Multiple locations",
     slug: "ai-trainer-gati-shiksha",
     type: "Freelance",
-    department: "Computer Science / Engineering",
-    experience: "Freshers welcome",
+    department: "AI & Technology Education",
+    experience: "Students & professionals",
     mode: "On-site",
-    stipend: "Competitive per-day pay",
-    description: "Record scripted technology and AI lessons for Classes VI–XII at Gati Shiksha's Delhi studio. Explain concepts clearly, demonstrate live coding, and choose the curriculum tracks that match your strengths. Freshers and final-year students are welcome; prior teaching experience is not required. Apply with a CV and preferred track(s); a 2–3 minute sample teaching video is optional.",
+    stipend: "Per-session stipend",
+    description: "Deliver recorded AI and technology learning sessions for school and college students. Topics include Generative AI, prompt engineering, Python or JavaScript, web development, APIs, software development and project building. Open to 3rd- and 4th-year students, M.Tech and PhD scholars, and industry professionals with teaching interest. Flexible scheduling, 2–3 hours per day. Applications close 25 September 2026 at 8:00 PM.",
   },
   {
     id: "kv-2",

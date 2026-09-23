@@ -10,8 +10,8 @@ export const revalidate = 60
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   if (slug === "ai-trainer-gati-shiksha") return {
-    title: "AI Trainer at Gati Shiksha | JOBINGEN",
-    description: "Teach technology and AI for Classes VI–XII from Gati Shiksha's Delhi studio. Apply with your CV and preferred tracks; a sample teaching video is optional.",
+    title: "AI Trainer / Technical Educator | JOBINGEN × Gati Shiksha",
+    description: "Teach AI, programming and development to school and college students. MNNIT Allahabad, Delhi and multiple locations. Apply by 25 September 2026, 8:00 PM.",
   }
   return {}
 }

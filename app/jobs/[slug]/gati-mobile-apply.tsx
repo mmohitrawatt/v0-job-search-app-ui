@@ -26,5 +26,5 @@ export default function GatiMobileApply() {
     return () => observer.disconnect()
   }, [])
 
-  return <a href="#apply" className={`gj-mobile-apply${visible ? " is-visible" : ""}`}>Apply for AI Trainer <ArrowRight size={18} /></a>
+  return <a href="#apply" className={`gj-mobile-apply${visible ? " is-visible" : ""}`}>Apply for this role <ArrowRight size={18} /></a>
 }

@@ -792,7 +792,7 @@ export default function AdminPage() {
                     ) : (
                       <table>
                         <thead>
-                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Degree</th><th>Job Title</th><th>Tracks</th><th>Sample Video</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th><th></th></tr>
+                          <tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Degree</th><th>Job Title</th><th>Topics / Tracks</th><th>Sample Video</th><th>LinkedIn</th><th>Resume</th><th>Quiz</th><th>Date</th><th></th></tr>
                         </thead>
                         <tbody>
                           {jaFiltered.map((a, i) => (

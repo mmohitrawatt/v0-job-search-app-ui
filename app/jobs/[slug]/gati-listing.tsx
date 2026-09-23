@@ -4,37 +4,20 @@ import GatiApplyForm from "./gati-apply-form"
 import GatiMobileApply from "./gati-mobile-apply"
 import "./gati-listing.css"
 
-const tracks = [
-  {
-    number: "01", title: "Junior Innovation Challenge", grades: "Classes VI–VIII",
-    focus: "Computing, creative coding and first projects",
-    topics: ["Computers, internet & websites", "Programming logic: sequences, conditions & loops", "Scratch: events, motion & interaction", "HTML, CSS & basic JavaScript", "AI & Generative AI basics and prompt writing", "Project planning, prototyping, testing & presentation"],
-  },
-  {
-    number: "02", title: "Emerging Innovator Challenge", grades: "Classes IX–X",
-    focus: "Web development, data and AI applications",
-    topics: ["Frontend, backend & data concepts", "JavaScript fundamentals: variables, data types, operators & functions", "HTML, CSS, responsive design & DOM", "APIs, HTTP, JSON & database fundamentals", "AI, Generative AI & prompt engineering", "App architecture, feature planning, testing & debugging"],
-  },
-  {
-    number: "03", title: "Advanced Innovation Challenge", grades: "Classes XI–XII",
-    focus: "Full stack applications and AI assisted development",
-    topics: ["Client-server & modern application architecture", "Semantic HTML, responsive CSS, JavaScript & DOM", "Node.js, Express, REST APIs, HTTP & databases", "LLM concepts, prompt engineering & AI-assisted development", "Git, GitHub, system design & stack selection", "Team project planning, integration & testing"],
-  },
-]
+const topics = ["AI & Generative AI", "Prompt engineering", "Programming (Python / JavaScript)", "Web development", "APIs & backend", "Software development", "Innovation & project building"]
 
 const responsibilities = [
-  "Record scripted lessons at the Delhi studio for students in Classes VI–XII.",
-  "Explain technical topics clearly through live coding and screen demonstrations.",
-  "Review scripts for technical accuracy and suggest clearer examples.",
-  "Coordinate with the production team on retakes and corrections.",
+  "Deliver engaging technology sessions for school and college students.",
+  "Break down AI, programming and development concepts into clear, practical explanations.",
+  "Use demonstrations and project examples to help learners apply what they learn.",
+  "Take part in sessions recorded for learning content.",
 ]
 
 const qualifications = [
-  "Pursuing or completed B.Tech/B.E., BCA/MCA or B.Sc/M.Sc in CS or IT.",
-  "Strong CS fundamentals, practical programming and web development skills, including HTML, CSS and JavaScript.",
-  "Familiarity with Generative AI tools and prompt engineering. Node.js/backend knowledge for the advanced track.",
-  "Clear spoken English, confident on camera, and able to simplify concepts for school students.",
-  "Able to travel to the Delhi studio on scheduled shoot days.",
+  "3rd-year and 4th-year students.",
+  "M.Tech and PhD scholars.",
+  "Industry professionals with an interest in teaching.",
+  "People who can explain technical concepts clearly to students.",
 ]
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -56,7 +39,7 @@ export default function GatiListing() {
     </div></header>
 
     <main className="gj-main">
-      <nav className="gj-breadcrumb" aria-label="Breadcrumb"><Link href="/jobs">Jobs</Link><ChevronRight size={13} /><span>AI Trainer</span></nav>
+      <nav className="gj-breadcrumb" aria-label="Breadcrumb"><Link href="/jobs">Jobs</Link><ChevronRight size={13} /><span>AI Trainer / Technical Educator</span></nav>
 
       <section className="gj-hero" id="gj-hero" aria-labelledby="gj-title">
         <div className="gj-hero-main">
@@ -65,37 +48,37 @@ export default function GatiListing() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/gati-shiksha-logo.png" alt="Gati Shiksha" className="gj-company-logo" />
             </div>
-            <span className="gj-company-name">Gati Shiksha</span>
+            <span className="gj-company-name">Jobingen × Gati Shiksha</span>
           </div>
-          <h1 id="gj-title">AI Trainer</h1>
-          <p className="gj-hero-copy">Teach technology and AI to students in Classes VI–XII through clear, engaging video lessons.</p>
+          <h1 id="gj-title">AI Trainer / Technical Educator</h1>
+          <p className="gj-hero-copy">Simplify AI, programming and software development for school and college students through engaging learning sessions.</p>
           <div className="gj-facts" aria-label="Role details">
-            <span><MapPin size={15} /> Delhi studio</span>
-            <span>Freelance</span>
-            <span>Competitive per-day pay</span>
+            <span><MapPin size={15} /> MNNIT Allahabad · Delhi · Multiple locations</span>
+            <span>Flexible scheduling</span>
+            <span>Per-session stipend</span>
           </div>
           <div className="gj-hero-actions"><a href="#apply" className="gj-primary">Apply now <ArrowRight size={17} /></a><a href="#role-details" className="gj-text-link">Read the role <ChevronDown size={16} /></a></div>
         </div>
-        <div className="gj-hero-aside"><span className="gj-aside-label">Eligibility</span><strong>Freshers and final-year students are welcome.</strong><p>Teaching experience is not required. Choose the curriculum track that fits your skills.</p></div>
+        <div className="gj-hero-aside"><span className="gj-aside-label">Applications close</span><strong><time dateTime="2026-09-25T20:00">25 September 2026</time></strong><p>8:00 PM</p></div>
       </section>
 
       <div className="gj-layout">
         <div className="gj-details gj-details-primary" id="role-details">
-          <section className="gj-card gj-summary"><SectionTitle>The role</SectionTitle><p>Visit Gati Shiksha&apos;s Delhi studio to record lessons from scripts prepared by its curriculum team. You&apos;ll make technical ideas easy for school students to understand with explanations, live coding and screen demonstrations.</p><div className="gj-summary-foot"><span>Scripted content</span><span>Studio setup</span><span>Shoot days planned in advance</span></div></section>
+          <section className="gj-card gj-summary"><SectionTitle>The role</SectionTitle><p>Jobingen is hiring AI trainers and technical educators to make complex technology topics easy to understand. Sessions are for school and college students and are recorded for learning content.</p><div className="gj-summary-foot"><span>School & college learners</span><span>Recorded sessions</span><span>Flexible schedule</span></div></section>
 
-          <section className="gj-card" id="tracks"><SectionTitle>Choose your curriculum track</SectionTitle><p className="gj-section-intro">You only need to select the track or tracks you know best. Open a track to see its topics.</p><div className="gj-tracks">{tracks.map(track => <details className="gj-track" key={track.number}><summary><span className="gj-track-number">{track.number}</span><span className="gj-track-title"><strong>{track.title}</strong><small>{track.grades} · {track.focus}</small></span><ChevronDown className="gj-track-chevron" size={17} /></summary><ul>{track.topics.map(topic => <li key={topic}>{topic}</li>)}</ul></details>)}</div></section>
+          <section className="gj-card" id="tracks"><SectionTitle>Topics you may teach</SectionTitle><p className="gj-section-intro">Choose the areas that match your expertise when you apply.</p><ul className="gj-topic-list">{topics.map(topic => <li key={topic}><Check size={15} aria-hidden="true" />{topic}</li>)}</ul></section>
 
-          <section className="gj-card"><SectionTitle>Who can apply</SectionTitle><Checklist items={qualifications} /><p className="gj-eligibility-note">Freshers, final-year students, recent graduates and professionals in software, web or AI development are welcome. Prior teaching experience is not required.</p></section>
+          <section className="gj-card"><SectionTitle>Who can apply</SectionTitle><Checklist items={qualifications} /></section>
         </div>
 
-        <section className="gj-card gj-apply" id="apply"><div className="gj-form-heading"><span className="gj-form-step">APPLICATION</span><SectionTitle>Apply for this role</SectionTitle><p>Submit your details, preferred track and CV. A sample teaching video can be added if available.</p></div><GatiApplyForm /></section>
+        <section className="gj-card gj-apply" id="apply"><div className="gj-form-heading"><span className="gj-form-step">APPLICATION</span><SectionTitle>Apply for this role</SectionTitle><p>Submit your details, teaching topics and CV. A sample teaching video can be added if available.</p></div><GatiApplyForm /></section>
 
         <div className="gj-details gj-details-secondary">
           <section className="gj-card"><SectionTitle>What you&apos;ll do</SectionTitle><Checklist items={responsibilities} /></section>
 
-          <section className="gj-card"><SectionTitle>Pay & work setup</SectionTitle><p>Competitive pay per shoot day, a flexible freelance schedule, fully scripted content and a professional studio setup. Educators may be featured across Gati Shiksha bootcamps.</p></section>
+          <section className="gj-card"><SectionTitle>Session format & stipend</SectionTitle><p>Flexible scheduling, with sessions of 2–3 hours per day. Sessions are recorded for learning content. A stipend is paid per session; details are shared after selection based on expertise and topic.</p></section>
 
-          <section className="gj-card"><SectionTitle>After you apply</SectionTitle><ol className="gj-process"><li><span>01</span><p>Submit your CV and preferred track(s) on Jobingen. You may include a 2–3 minute sample teaching video explaining any one curriculum topic.</p></li><li><span>02</span><p>Gati Shiksha screens applications and profiles.</p></li><li><span>03</span><p>Shortlisted candidates attend a short screen test at the Delhi studio.</p></li><li><span>04</span><p>Gati Shiksha makes the final selection.</p></li></ol></section>
+          <section className="gj-card"><SectionTitle>How to apply</SectionTitle><p>Submit your CV and preferred teaching topics through the form. You may include a 2–3 minute sample video explaining a topic you know well. You can also send your CV to <a href="mailto:connect.jobingen@gmail.com">connect.jobingen@gmail.com</a>.</p><p className="gj-deadline-note">Application deadline: <strong>25 September 2026, 8:00 PM</strong></p></section>
         </div>
       </div>
     </main>

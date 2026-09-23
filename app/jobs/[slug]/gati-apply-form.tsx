@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ArrowRight, ArrowUpRight, Check, FileText, FileVideo, Sparkles } from "lucide-react"
 
-const choices = ["Junior Innovation Challenge (VI–VIII)", "Emerging Innovator Challenge (IX–X)", "Advanced Innovation Challenge (XI–XII)"]
+const choices = ["AI & Generative AI", "Prompt engineering", "Programming (Python / JavaScript)", "Web development", "APIs & backend", "Software development", "Innovation & project building"]
 
 export default function GatiApplyForm() {
   const [tracks, setTracks] = useState<string[]>([])
@@ -47,7 +47,7 @@ export default function GatiApplyForm() {
   if (success) return <div className="gj-form-success" role="status">
     <div className="gj-success-icon"><Check size={23} strokeWidth={2.8} /></div>
     <h3>Application submitted</h3>
-    <p>Your application for Gati Shiksha&apos;s AI Trainer role has been received.</p>
+    <p>Your application for the AI Trainer / Technical Educator role has been received.</p>
     <a className="gj-promo-card" href="https://ai.jobingen.com">
       <div className="gj-promo-brand"><span><Sparkles size={18} /></span> JOBINGEN AI</div>
       <h4>Get ready for what&apos;s next</h4>
@@ -61,9 +61,9 @@ export default function GatiApplyForm() {
     {error && <div className="gj-form-error" id="gj-form-error" role="alert">{error}</div>}
     <div className="gj-form-row"><div className="gj-field"><label htmlFor="gj-name">Full Name *</label><input id="gj-name" name="name" type="text" autoComplete="name" placeholder="Your full name" required /></div><div className="gj-field"><label htmlFor="gj-email">Email Address *</label><input id="gj-email" name="email" type="email" autoComplete="email" placeholder="you@email.com" required /></div></div>
     <div className="gj-field"><label htmlFor="gj-phone">Phone Number *</label><input id="gj-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" required /></div>
-    <fieldset className="gj-field gj-fieldset" id="gj-tracks-field" aria-invalid={fieldError === "tracks"}><legend>Preferred Curriculum Track(s) *</legend><div className="gj-track-options">{choices.map(choice => <label key={choice}><input type="checkbox" checked={tracks.includes(choice)} onChange={event => { setTracks(current => event.target.checked ? [...current, choice] : current.filter(track => track !== choice)); setFieldError(null) }} />{choice}</label>)}</div><small>Choose one or more tracks that match your skills. <a href="#tracks">View track topics</a></small>{fieldError === "tracks" && <span className="gj-field-error" role="alert">Select at least one track to continue.</span>}</fieldset>
+    <fieldset className="gj-field gj-fieldset" id="gj-tracks-field" aria-invalid={fieldError === "tracks"}><legend>Preferred Teaching Topic(s) *</legend><div className="gj-track-options">{choices.map(choice => <label key={choice}><input type="checkbox" checked={tracks.includes(choice)} onChange={event => { setTracks(current => event.target.checked ? [...current, choice] : current.filter(track => track !== choice)); setFieldError(null) }} />{choice}</label>)}</div><small>Choose one or more topics that match your skills. <a href="#tracks">View topics</a></small>{fieldError === "tracks" && <span className="gj-field-error" role="alert">Select at least one topic to continue.</span>}</fieldset>
     <div className="gj-field" id="gj-resume-field"><label htmlFor="gj-resume">Upload Resume * <small>PDF, DOC or DOCX — max 10 MB</small></label><label className={`gj-upload${resume ? " has-file" : ""}`} htmlFor="gj-resume"><FileText size={23} /><span><strong>{resume ? resume.name : "Choose your resume"}</strong><small>{resume ? "Choose a different file" : "PDF, DOC or DOCX accepted"}</small></span><input id="gj-resume" name="resume" type="file" accept=".pdf,.doc,.docx" aria-required="true" aria-invalid={fieldError === "resume"} onChange={event => { setResume(event.target.files?.[0] ?? null); setFieldError(null) }} /></label>{fieldError === "resume" && <span className="gj-field-error" role="alert">Attach a PDF, DOC or DOCX resume under 10 MB.</span>}</div>
-    <div className="gj-field"><label htmlFor="gj-video">2–3 Minute Sample Teaching Video <small>(optional)</small></label><div className="gj-video-field"><FileVideo size={19} /><input id="gj-video" name="sample_video_url" type="url" placeholder="Paste your shareable video link, if available" /></div><small>If you add a video, explain any one curriculum topic and ensure the hiring team can view the link.</small></div>
+    <div className="gj-field"><label htmlFor="gj-video">2–3 Minute Sample Teaching Video <small>(optional)</small></label><div className="gj-video-field"><FileVideo size={19} /><input id="gj-video" name="sample_video_url" type="url" placeholder="Paste your shareable video link, if available" /></div><small>If you add a video, explain one topic you know well and ensure the hiring team can view the link.</small></div>
     <button type="submit" className="gj-primary gj-form-submit" disabled={submitting}>{submitting ? "Submitting…" : "Submit Application"}<ArrowRight size={17} /></button>
   </form>
 }
