@@ -39,18 +39,30 @@ export async function POST(request: NextRequest) {
     if (!extension || !["pdf", "doc", "docx"].includes(extension)) return NextResponse.json({ error: "Attach a PDF, DOC or DOCX resume." }, { status: 400 })
     const path = `freelance-video-educator-gati-shiksha/${crypto.randomUUID()}.${extension}`
     const { error: uploadError } = await supabase.storage.from("resumes").upload(path, await resume.arrayBuffer(), { contentType: resume.type, upsert: false })
-    if (uploadError) return NextResponse.json({ error: "Could not upload your resume. Please try again." }, { status: 500 })
+    if (uploadError) {
+      console.error("Gati application resume upload failed:", uploadError)
+      return NextResponse.json({ error: "Could not upload your resume. Please try again." }, { status: 500 })
+    }
 
     const { data } = supabase.storage.from("resumes").getPublicUrl(path)
-    const { error: insertError } = await supabase.from("gati_video_educator_applications").insert({
+    const application = {
       name, email, phone, preferred_tracks: tracks, sample_video_url: videoUrl?.toString() ?? null, resume_url: data.publicUrl,
-    })
+    }
+    let { error: insertError } = await supabase.from("gati_video_educator_applications").insert(application)
+    // Older deployments of this table still require a value for sample_video_url.
+    // An empty string represents no video until the nullable-column migration is applied.
+    if (insertError?.code === "23502" && !videoUrl) {
+      const retry = await supabase.from("gati_video_educator_applications").insert({ ...application, sample_video_url: "" })
+      insertError = retry.error
+    }
     if (insertError) {
+      console.error("Gati application insert failed:", insertError)
       await supabase.storage.from("resumes").remove([path])
       return NextResponse.json({ error: "Could not submit your application. Please try again." }, { status: 500 })
     }
     return NextResponse.json({ success: true }, { status: 201 })
-  } catch {
+  } catch (error) {
+    console.error("Gati application request failed:", error)
     return NextResponse.json({ error: "Could not submit your application. Please try again." }, { status: 500 })
   }
 }
