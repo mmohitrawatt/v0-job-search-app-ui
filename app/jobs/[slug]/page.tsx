@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { createServerClient } from "@/lib/supabase"
 import ApplyForm from "./apply-form"
 import GatiListing from "./gati-listing"
@@ -9,8 +9,8 @@ export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  if (slug === "freelance-video-educator-gati-shiksha") return {
-    title: "Freelance Video Educator at Gati Shiksha | JOBINGEN",
+  if (slug === "ai-trainer-gati-shiksha") return {
+    title: "AI Trainer at Gati Shiksha | JOBINGEN",
     description: "Teach technology and AI for Classes VI–XII from Gati Shiksha's Delhi studio. Apply with your CV and preferred tracks; a sample teaching video is optional.",
   }
   return {}
@@ -146,7 +146,8 @@ const COMPANY_LOGOS: Record<string, string> = {
 export default async function JobDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  if (slug === "freelance-video-educator-gati-shiksha") return <GatiListing />
+  if (slug === "freelance-video-educator-gati-shiksha") permanentRedirect("/jobs/ai-trainer-gati-shiksha")
+  if (slug === "ai-trainer-gati-shiksha") return <GatiListing />
 
   let job: Job | null = null
   try {

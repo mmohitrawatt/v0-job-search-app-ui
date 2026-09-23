@@ -1,4 +1,4 @@
--- Apply before accepting applications for the Gati Shiksha video educator listing.
+-- Apply before accepting applications for the Gati Shiksha AI Trainer listing.
 create table if not exists public.gati_video_educator_applications (
   id uuid primary key default gen_random_uuid(),
   name text not null,

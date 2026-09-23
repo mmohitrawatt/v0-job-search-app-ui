@@ -51,12 +51,12 @@ export async function GET(req: NextRequest) {
   }))
   const gatiJobApplications = (gatiApps.data ?? []).map((a: Record<string, unknown>) => ({
     ...a,
-    job_slug: "freelance-video-educator-gati-shiksha",
-    job_title: "Freelance Video Educator · Gati Shiksha",
+    job_slug: "ai-trainer-gati-shiksha",
+    job_title: "AI Trainer · Gati Shiksha",
     source_table: "gati_video_educator_applications",
   }))
   const jobApplications: Record<string, unknown>[] = [...standardJobApplications, ...gatiJobApplications]
-    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)))
+  jobApplications.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)))
 
   return NextResponse.json({
     earlyAccess: ea.data || [],

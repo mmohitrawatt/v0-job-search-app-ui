@@ -47,14 +47,14 @@ export default function GatiListing() {
     </div></header>
 
     <main className="gj-main">
-      <div className="gj-breadcrumb"><Link href="/jobs">All jobs</Link><ChevronRight size={13} /><span>Freelance Video Educator</span></div>
+      <div className="gj-breadcrumb"><Link href="/jobs">All jobs</Link><ChevronRight size={13} /><span>AI Trainer</span></div>
 
       <section className="gj-card gj-intro">
         <div className="gj-intro-top">
           <div className="gj-brand"><div className="gj-company-logo-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/gati-shiksha-logo.png" alt="Gati Shiksha logo" className="gj-company-logo" />
-          </div><div><h1>Freelance Video Educator</h1><div className="gj-meta"><span className="gj-company-pill">Gati Shiksha</span><span className="gj-location"><MapPin size={15} /> Delhi Studio</span></div></div></div>
+          </div><div><h1>AI Trainer</h1><div className="gj-meta"><span className="gj-company-pill">Gati Shiksha</span><span className="gj-location"><MapPin size={15} /> Delhi Studio</span></div></div></div>
           <a href="#apply" className="gj-primary gj-header-apply">Apply Now <ArrowRight size={16} /></a>
         </div>
         <p className="gj-tagline">Teach Technology & AI. Build the next generation of young innovators.</p>
@@ -62,7 +62,7 @@ export default function GatiListing() {
         <div className="gj-required"><FileVideo size={19} /><span>Have a teaching sample? You can share a 2–3 minute video with your application.</span><a href="#apply">Apply below →</a></div>
       </section>
 
-      <section className="gj-card"><Heading>About the role</Heading><p className="gj-lead">Gati Shiksha is looking for sharp, confident engineers and technology professionals to teach school students in Classes VI–XII through its technology and innovation bootcamps.</p><p>You&apos;ll visit the Delhi studio to record teaching videos from scripts prepared by the curriculum team. The role calls for clear explanations, live coding and screen demonstrations that make complex technology concepts easy for students to understand.</p><p>Freshers and final-year students are welcome. Skill matters more than prior experience, and teaching experience is not required.</p></section>
+      <section className="gj-card"><Heading>About the role</Heading><p className="gj-lead">Gati Shiksha is looking for a confident AI Trainer with engineering and technology skills to teach school students in Classes VI–XII through its technology and innovation bootcamps.</p><p>You&apos;ll visit the Delhi studio to record teaching videos from scripts prepared by the curriculum team. The role calls for clear explanations, live coding and screen demonstrations that make complex technology concepts easy for students to understand.</p><p>Freshers and final-year students are welcome. Skill matters more than prior experience, and teaching experience is not required.</p></section>
 
       <section className="gj-card"><Heading>What you&apos;ll do</Heading><Checklist items={responsibilities} /></section>
 

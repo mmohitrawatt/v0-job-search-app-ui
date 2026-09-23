@@ -39,10 +39,10 @@ const indeed = (q: string) =>
 const INTERNAL_JOBS: Job[] = [
   {
     id: "gati-video-educator",
-    title: "Freelance Video Educator",
+    title: "AI Trainer",
     company: "Gati Shiksha",
     location: "Delhi Studio",
-    slug: "freelance-video-educator-gati-shiksha",
+    slug: "ai-trainer-gati-shiksha",
     type: "Freelance",
     department: "Technology & AI Bootcamp",
     experience: "Freshers welcome",

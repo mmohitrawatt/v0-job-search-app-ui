@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const supabase = createServerClient()
     const extension = resume.name.split(".").pop()?.toLowerCase()
     if (!extension || !["pdf", "doc", "docx"].includes(extension)) return NextResponse.json({ error: "Attach a PDF, DOC or DOCX resume." }, { status: 400 })
-    const path = `freelance-video-educator-gati-shiksha/${crypto.randomUUID()}.${extension}`
+    const path = `ai-trainer-gati-shiksha/${crypto.randomUUID()}.${extension}`
     const { error: uploadError } = await supabase.storage.from("resumes").upload(path, await resume.arrayBuffer(), { contentType: resume.type, upsert: false })
     if (uploadError) {
       console.error("Gati application resume upload failed:", uploadError)
