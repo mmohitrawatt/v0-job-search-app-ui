@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Check, ChevronDown, ChevronRight, MapPin } from "lucide-react"
 import GatiApplyForm from "./gati-apply-form"
+import GatiMobileApply from "./gati-mobile-apply"
 import "./gati-listing.css"
 
 const tracks = [
@@ -57,7 +58,7 @@ export default function GatiListing() {
     <main className="gj-main">
       <nav className="gj-breadcrumb" aria-label="Breadcrumb"><Link href="/jobs">Jobs</Link><ChevronRight size={13} /><span>AI Trainer</span></nav>
 
-      <section className="gj-hero" aria-labelledby="gj-title">
+      <section className="gj-hero" id="gj-hero" aria-labelledby="gj-title">
         <div className="gj-hero-main">
           <div className="gj-company-row">
             <div className="gj-company-logo-wrap">
@@ -75,20 +76,22 @@ export default function GatiListing() {
           </div>
           <div className="gj-hero-actions"><a href="#apply" className="gj-primary">Apply now <ArrowRight size={17} /></a><a href="#role-details" className="gj-text-link">Read the role <ChevronDown size={16} /></a></div>
         </div>
-        <div className="gj-hero-aside"><span className="gj-aside-label">Good to know</span><strong>Freshers and final-year students are welcome.</strong><p>Teaching experience is not required. Choose the curriculum track that fits your skills.</p></div>
+        <div className="gj-hero-aside"><span className="gj-aside-label">Eligibility</span><strong>Freshers and final-year students are welcome.</strong><p>Teaching experience is not required. Choose the curriculum track that fits your skills.</p></div>
       </section>
 
       <div className="gj-layout">
-        <section className="gj-card gj-apply" id="apply"><div className="gj-form-heading"><span className="gj-form-step">APPLICATION</span><SectionTitle>Apply for this role</SectionTitle><p>Submit your details, preferred track and CV. A sample teaching video can be added if available.</p></div><GatiApplyForm /></section>
-
-        <div className="gj-details" id="role-details">
+        <div className="gj-details gj-details-primary" id="role-details">
           <section className="gj-card gj-summary"><SectionTitle>The role</SectionTitle><p>Visit Gati Shiksha&apos;s Delhi studio to record lessons from scripts prepared by its curriculum team. You&apos;ll make technical ideas easy for school students to understand with explanations, live coding and screen demonstrations.</p><div className="gj-summary-foot"><span>Scripted content</span><span>Studio setup</span><span>Shoot days planned in advance</span></div></section>
 
-          <section className="gj-card"><SectionTitle>What you&apos;ll do</SectionTitle><Checklist items={responsibilities} /></section>
-
-          <section className="gj-card" id="tracks"><SectionTitle>Choose your curriculum track</SectionTitle><p className="gj-section-intro">You only need to select the track or tracks you know best. Open a track to see its topics.</p><div className="gj-tracks">{tracks.map(track => <details className="gj-track" key={track.number}><summary><span className="gj-track-number">{track.number}</span><span className="gj-track-title"><strong>{track.title}</strong><small>{track.focus}</small></span><span className="gj-grade">{track.grades}</span><ChevronDown className="gj-track-chevron" size={17} /></summary><ul>{track.topics.map(topic => <li key={topic}>{topic}</li>)}</ul></details>)}</div></section>
+          <section className="gj-card" id="tracks"><SectionTitle>Choose your curriculum track</SectionTitle><p className="gj-section-intro">You only need to select the track or tracks you know best. Open a track to see its topics.</p><div className="gj-tracks">{tracks.map(track => <details className="gj-track" key={track.number}><summary><span className="gj-track-number">{track.number}</span><span className="gj-track-title"><strong>{track.title}</strong><small>{track.grades} · {track.focus}</small></span><ChevronDown className="gj-track-chevron" size={17} /></summary><ul>{track.topics.map(topic => <li key={topic}>{topic}</li>)}</ul></details>)}</div></section>
 
           <section className="gj-card"><SectionTitle>Who can apply</SectionTitle><Checklist items={qualifications} /><p className="gj-eligibility-note">Freshers, final-year students, recent graduates and professionals in software, web or AI development are welcome. Prior teaching experience is not required.</p></section>
+        </div>
+
+        <section className="gj-card gj-apply" id="apply"><div className="gj-form-heading"><span className="gj-form-step">APPLICATION</span><SectionTitle>Apply for this role</SectionTitle><p>Submit your details, preferred track and CV. A sample teaching video can be added if available.</p></div><GatiApplyForm /></section>
+
+        <div className="gj-details gj-details-secondary">
+          <section className="gj-card"><SectionTitle>What you&apos;ll do</SectionTitle><Checklist items={responsibilities} /></section>
 
           <section className="gj-card"><SectionTitle>Pay & work setup</SectionTitle><p>Competitive pay per shoot day, a flexible freelance schedule, fully scripted content and a professional studio setup. Educators may be featured across Gati Shiksha bootcamps.</p></section>
 
@@ -96,7 +99,7 @@ export default function GatiListing() {
         </div>
       </div>
     </main>
-    <a href="#apply" className="gj-mobile-apply">Apply for AI Trainer <ArrowRight size={17} /></a>
+    <GatiMobileApply />
     <footer className="gj-footer">© {new Date().getFullYear()} Jobingen. All rights reserved.</footer>
   </div>
 }

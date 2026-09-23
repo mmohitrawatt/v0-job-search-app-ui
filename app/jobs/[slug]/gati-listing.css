@@ -2,3 +2,74 @@
 @media(max-width:900px){.gj-hero{grid-template-columns:1fr}.gj-hero-aside{border-left:0;border-top:1px solid #e5eaf2;padding:17px 0 0}.gj-layout{grid-template-columns:1fr;grid-template-areas:'apply' 'details'}.gj-apply{position:static}.gj-form-row{grid-template-columns:1fr 1fr}.gj-track-options{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:680px){.gj-header-inner{padding:0 18px}.gj-jobingen-logo{height:58px}.gj-main{padding:20px 14px 100px}.gj-breadcrumb{margin-bottom:12px}.gj-hero{padding:23px 20px;border-radius:15px;gap:17px;margin-bottom:13px}.gj-company-logo-wrap{width:66px;height:54px}.gj-company-name{font-size:11px}.gj-hero h1{font-size:37px;margin-top:17px}.gj-hero-copy{font-size:14px}.gj-hero-actions{margin-top:22px}.gj-hero-actions .gj-primary{flex:1}.gj-hero-aside{padding-top:15px}.gj-layout{gap:13px}.gj-details{gap:13px}.gj-card,.gj-apply{padding:21px 19px;border-radius:13px}.gj-form-row,.gj-track-options,.gj-track ul{grid-template-columns:1fr}.gj-grade{display:none}.gj-mobile-apply{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:18;align-items:center;justify-content:center;gap:8px;background:#204ed8;color:#fff;text-decoration:none;font-size:14px;font-weight:800;min-height:58px;box-shadow:0 -5px 20px #10213b26;padding-bottom:env(safe-area-inset-bottom)}.gj-footer{padding-bottom:80px}}
 .gj-page:has(.gj-form-success) .gj-mobile-apply{display:none}
+
+/* Keep the application beside the description on desktop and after the essentials on mobile. */
+.gj-layout{grid-template-areas:"primary apply" "secondary apply"}
+.gj-details-primary{grid-area:primary}
+.gj-details-secondary{grid-area:secondary}
+.gj-apply{grid-area:apply}
+.gj-field-error{display:block;color:#b42337;font-size:12px;font-weight:700;line-height:1.4}
+.gj-upload:focus-within,.gj-track summary:focus-visible,.gj-primary:focus-visible,.gj-mobile-apply:focus-visible{outline:3px solid #8db2ff;outline-offset:3px}
+.gj-page a:focus-visible{outline:3px solid #8db2ff;outline-offset:3px}
+
+@media(max-width:900px){
+  .gj-layout{grid-template-areas:"primary" "apply" "secondary"}
+  .gj-apply{position:static}
+}
+
+@media(max-width:680px){
+  .gj-header{height:58px}
+  .gj-header-inner{padding:0 16px}
+  .gj-jobingen-logo{height:58px}
+  .gj-all-jobs{min-height:44px;font-size:12px}
+  .gj-main{padding:16px 12px 96px}
+  .gj-breadcrumb{margin-bottom:10px}
+  .gj-hero{padding:22px 20px;margin-bottom:12px;gap:18px}
+  .gj-hero h1{font-size:clamp(34px,10vw,42px)}
+  .gj-hero-copy{font-size:15px;line-height:1.55}
+  .gj-hero-aside strong{font-size:14px}
+  .gj-hero-aside p{font-size:13px;margin-top:6px}
+  .gj-facts span{font-size:12px;line-height:1.4}
+  .gj-hero-actions{gap:13px}
+  .gj-hero-actions .gj-primary{min-height:48px}
+  .gj-text-link{min-height:44px;white-space:nowrap}
+  .gj-layout,.gj-details{gap:12px}
+  .gj-card,.gj-apply{padding:22px 20px}
+  .gj-heading{font-size:19px;margin-bottom:13px}
+  .gj-card p,.gj-checklist li,.gj-process li p{font-size:14px;line-height:1.62}
+  .gj-checklist{gap:15px}
+  .gj-summary-foot span{font-size:11px}
+  .gj-track summary{min-height:72px;padding:13px 12px;gap:10px}
+  .gj-track-number{font-size:12px}
+  .gj-track-title strong{font-size:14px}
+  .gj-track-title small{font-size:12px;line-height:1.4}
+  .gj-track li{font-size:13px;line-height:1.5}
+  .gj-track ul{padding:15px 16px 15px 32px;gap:10px}
+  .gj-form-heading p{font-size:13px}
+  .gj-form{gap:18px}
+  .gj-field label,.gj-field legend{font-size:13px}
+  .gj-field input[type=text],.gj-field input[type=email],.gj-field input[type=tel],.gj-field input[type=url]{height:48px;font-size:16px}
+  .gj-field small{font-size:12px}
+  .gj-track-options{gap:8px}
+  .gj-track-options label{min-height:50px;align-items:center;padding:11px 12px;font-size:13px}
+  .gj-track-options input{width:18px;height:18px;margin:0}
+  .gj-upload{min-height:72px;padding:14px}
+  .gj-upload strong{font-size:13px}
+  .gj-video-field svg{top:15px}
+  .gj-form-submit{min-height:52px;font-size:15px}
+  .gj-mobile-apply{display:none;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));min-height:54px;border-radius:12px;box-shadow:0 8px 28px #10213b40;padding:0 14px;font-size:14px}
+  .gj-mobile-apply.is-visible{display:flex}
+  .gj-footer{padding-bottom:24px}
+}
+
+@media(max-width:360px){
+  .gj-company-row{gap:10px}
+  .gj-company-logo-wrap{width:58px;height:50px}
+  .gj-company-name{font-size:10px}
+  .gj-hero-actions{gap:9px}
+  .gj-text-link{font-size:12px}
+  .gj-card,.gj-apply{padding:20px 16px}
+}
+
+@media(max-height:500px) and (max-width:680px){.gj-mobile-apply{display:none!important}}
+@media(prefers-reduced-motion:reduce){.gj-primary,.gj-track-chevron{transition:none}}
