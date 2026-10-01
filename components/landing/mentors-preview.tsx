@@ -244,8 +244,19 @@ export function MentorsPreview() {
       .then(r => r.json())
       .then((data: DBMentor[]) => {
         if (!Array.isArray(data)) return
+        const publishedByName = new Map(data.map(m => [m.full_name.trim().toLowerCase(), m]))
+        const current = HARDCODED.map(m => {
+          const update = publishedByName.get(m.name.toLowerCase())
+          if (!update) return m
+          return {
+            ...m,
+            role: update.job_title || m.role,
+            photo: update.photo_url || m.photo,
+            skills: update.mentorship_topics?.length ? update.mentorship_topics.slice(0, 3) : m.skills,
+          }
+        })
         const extra = data.map(dbToCard).filter(m => !HARDCODED_NAMES.has(m.name.toLowerCase()))
-        if (extra.length) setMentors([...HARDCODED, ...extra])
+        setMentors([...current, ...extra])
       })
       .catch(() => {})
   }, [])

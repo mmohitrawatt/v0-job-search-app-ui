@@ -11,7 +11,7 @@ type DBMentor = {
   id: string; full_name: string; job_title: string; domain: string; experience: string
   linkedin?: string; short_intro?: string; professional_bio?: string
   mentorship_topics: string[]; photo_url?: string; location?: string
-  session_price?: number; session_duration?: string
+  session_duration?: string
   mentorship_format: string[]; available_days?: string[]
 }
 
@@ -35,13 +35,6 @@ function domainStyle(domain: string) {
   return { color: "#1d3a8f", bg: "#eef1fd" }
 }
 
-/* Deterministic pseudo-stat from a seed string — stable across renders (no Math.random) */
-function seededStat(seed: string, min: number, max: number) {
-  let h = 2166136261
-  for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619) }
-  return min + (Math.abs(h) % (max - min + 1))
-}
-
 function initials(name: string) {
   const parts = name.trim().split(" ")
   return parts.length >= 2
@@ -62,6 +55,10 @@ function dbToMentor(m: DBMentor) {
     desc: m.professional_bio || m.short_intro || "",
     linkedin: m.linkedin || "",
     topics: m.mentorship_topics || [],
+    experience: m.experience || "",
+    location: m.location || "",
+    duration: m.session_duration || "",
+    formats: m.mentorship_format || [],
     active: true,
   }
 }
@@ -437,18 +434,13 @@ function Stars({ rating }: { rating: number }) {
 
 /* ─── Rich 1:1 Session card ───────────────────────── */
 const SESSION_OFFERS = [
-  { title: "Professionalize your resume", desc: "Expert feedback to make your resume stand out", icon: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" },
-  { title: "Clarify your target", desc: "Define the exact roles and companies you should aim for", icon: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 12h.01" },
-  { title: "Launch your search", desc: "Leave with the essential assets to start applying today", icon: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" },
-  { title: "Get personalized advice", desc: "Tailored guidance for your specific career goals", icon: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" },
+  { title: "Professionalize your resume", desc: "Expert feedback to make your resume stand out" },
+  { title: "Clarify your target", desc: "Define the roles and companies you should aim for" },
+  { title: "Launch your search", desc: "Leave with practical next steps for your applications" },
+  { title: "Get personalized advice", desc: "Guidance tailored to your career goals" },
 ]
 
 function MentorSessionCard({ m }: { m: any }) {
-  const sessions = seededStat(m.name + "s", 62, 480)
-  const reviews = seededStat(m.name + "r", 42, 180)
-  const rating = (46 + seededStat(m.name + "g", 0, 3)) / 10
-  const students = seededStat(m.name + "st", 320, 1200)
-  const price = 199 + seededStat(m.name + "p", 0, 6) * 50
   const shortCompany = (m.company || "").split(" ")[0]
   const bio = m.desc || `${m.role} at ${m.company}.`
 
@@ -459,10 +451,9 @@ function MentorSessionCard({ m }: { m: any }) {
         <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#0c1a35", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
         </div>
-        <span style={{ fontSize: 13.5, fontWeight: 800, color: "#0c1a35", letterSpacing: "-0.01em" }}>30-min 1:1 Session with {m.name}</span>
-        <span className="sc-head-avail" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 99, background: "#ecfdf3", border: "1px solid #d1fadf", fontSize: 11.5, fontWeight: 800, color: "#12805c", whiteSpace: "nowrap" }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", boxShadow: "0 0 0 3px rgba(22,163,74,0.18)", animation: "livePulse 2s infinite" }} />
-          Available now
+        <span style={{ fontSize: 13.5, fontWeight: 800, color: "#0c1a35", letterSpacing: "-0.01em" }}>{m.duration || "30-min"} 1:1 Session with {m.name}</span>
+        <span className="sc-head-avail" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 99, background: "#eef2ff", border: "1px solid #dbe4ff", fontSize: 11.5, fontWeight: 800, color: "#1d3a8f", whiteSpace: "nowrap" }}>
+          Mentor profile
         </span>
       </div>
 
@@ -478,7 +469,6 @@ function MentorSessionCard({ m }: { m: any }) {
                   <div style={{ width: "100%", height: "100%", background: "#1d3a8f", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, fontWeight: 900 }}>{m.initials}</div>
                 )}
               </div>
-              <span style={{ position: "absolute", bottom: 1, right: 1, width: 13, height: 13, borderRadius: "50%", background: "#16a34a", border: "2.5px solid #fff" }} />
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -487,13 +477,6 @@ function MentorSessionCard({ m }: { m: any }) {
               </div>
               <div style={{ fontSize: 12.5, fontWeight: 500, color: "#64748b", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{m.role} <span style={{ color: "#a2acbd" }}>· {m.company}</span></div>
             </div>
-          </div>
-
-          {/* rating line */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 13 }}>
-            <Stars rating={Math.round(rating)} />
-            <span style={{ fontSize: 12.5, fontWeight: 800, color: "#0c1a35" }}>{rating.toFixed(1)}</span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8" }}>· {reviews} reviews</span>
           </div>
 
           {/* pills */}
@@ -508,41 +491,44 @@ function MentorSessionCard({ m }: { m: any }) {
           </div>
 
           {/* bio */}
-          <p style={{ fontSize: 12.5, color: "#475569", lineHeight: 1.65, margin: "0 0 14px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>{bio}</p>
+          <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.7, margin: "0 0 14px" }}>{bio}</p>
 
           {/* meta */}
           <div style={{ display: "flex", alignItems: "center", gap: 18, paddingTop: 12, borderTop: "1px solid #f1f5f9", fontSize: 12, fontWeight: 600, color: "#64748b" }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-              {sessions} sessions
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" /></svg>
+              {m.experience || m.role}
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-              {students} students
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+              {m.location || m.company}
             </span>
           </div>
+          {m.linkedin && <a href={m.linkedin} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 14, color: "#1d3a8f", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>View LinkedIn profile <span aria-hidden="true">↗</span></a>}
         </div>
 
         {/* RIGHT */}
         <div className="sc-right">
           <div style={{ fontSize: 12.5, fontWeight: 800, color: "#0c1a35", marginBottom: 12 }}>What you&rsquo;ll get</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 11, flex: 1 }}>
-            {SESSION_OFFERS.map((o, k) => (
-              <div key={k} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            {SESSION_OFFERS.map((offer) => (
+              <div key={offer.title} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                 <div style={{ width: 22, height: 22, borderRadius: 7, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                   <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#1d3a8f" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
                 </div>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0c1a35", lineHeight: 1.35 }}>{o.title}</div>
-                  <div style={{ fontSize: 11.5, color: "#94a3b8", lineHeight: 1.4, marginTop: 1 }}>{o.desc}</div>
+                <div>
+                  <div style={{ fontSize: 12.5, fontWeight: 700, color: "#0c1a35", lineHeight: 1.5 }}>{offer.title}</div>
+                  <div style={{ fontSize: 11.5, color: "#94a3b8", lineHeight: 1.4, marginTop: 1 }}>{offer.desc}</div>
                 </div>
               </div>
             ))}
+            {m.topics?.length > 0 && <div style={{ fontSize: 12, color: "#64748b", paddingTop: 8 }}>Focus: {m.topics.join(" · ")}</div>}
+            {m.formats?.length > 0 && <div style={{ fontSize: 12, color: "#64748b", paddingTop: 8 }}>Formats: {m.formats.join(" · ")}</div>}
+            {m.duration && <div style={{ fontSize: 12, color: "#64748b" }}>Session length: {m.duration}</div>}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginTop: 16, paddingTop: 14, borderTop: "1px solid #f1f5f9" }}>
-            <div><span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600 }}>Session fee</span><div style={{ fontSize: 22, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.02em", lineHeight: 1 }}>₹{price}</div></div>
-            <a href="https://ai.jobingen.com/mentors" target="_blank" rel="noopener noreferrer" className="sc-book" style={{
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16, paddingTop: 14, borderTop: "1px solid #f1f5f9" }}>
+            <a href="https://ai.jobingen.com/mentors" className="sc-book" style={{
               display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 26px",
               background: "#1d3a8f", color: "#fff", borderRadius: 12, border: "none", cursor: "pointer",
               fontSize: 14, fontWeight: 800, textDecoration: "none",
@@ -574,11 +560,27 @@ export default function MentorsPage() {
       .catch(() => {})
   }, [])
 
-  /* Hardcoded mentors always shown + new DB published mentors (skip duplicates by name) */
+  /* Published profile edits take precedence over the initial mentor directory. */
   const hardcodedActive = MENTORS.filter(m => m.active)
   const hardcodedNames = new Set(hardcodedActive.map(m => m.name.toLowerCase()))
+  const publishedByName = new Map(dbMentors.map(m => [m.full_name.trim().toLowerCase(), m]))
   const activeMentors = [
-    ...hardcodedActive,
+    ...hardcodedActive.map(m => {
+      const update = publishedByName.get(m.name.toLowerCase())
+      if (!update) return m
+      return {
+        ...m,
+        role: update.job_title || m.role,
+        desc: update.professional_bio || update.short_intro || m.desc,
+        photo: update.photo_url || m.photo,
+        linkedin: update.linkedin || m.linkedin,
+        topics: update.mentorship_topics?.length ? update.mentorship_topics : m.topics,
+        experience: update.experience || "",
+        location: update.location || "",
+        duration: update.session_duration || "",
+        formats: update.mentorship_format || [],
+      }
+    }),
     ...dbMentors.map(dbToMentor).filter(m => !hardcodedNames.has(m.name.toLowerCase())),
   ]
 
@@ -753,7 +755,7 @@ export default function MentorsPage() {
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#16a34a", display: "inline-block", animation: "livePulse 2s infinite" }} />
             <h2 style={{ fontSize: 24, fontWeight: 900, color: "#0c1a35", letterSpacing: "-0.03em" }}>Active Mentors</h2>
           </div>
-          <p style={{ fontSize: 13.5, color: "#64748b", marginBottom: 28 }}>Currently taking 1:1 training, mock interviews &amp; mentoring sessions</p>
+          <p style={{ fontSize: 13.5, color: "#64748b", marginBottom: 28 }}>Explore each mentor&rsquo;s experience, areas of guidance and session details.</p>
 
           <div className="session-stack">
             {activeMentors.map((m, i) => (
