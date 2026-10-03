@@ -21,6 +21,7 @@ const ALLOWED_TABLES = [
   "early_apply",
   "careers_applications",
   "campus_ambassadors",
+  "academy_survey_responses",
 ]
 
 export async function DELETE(req: NextRequest) {

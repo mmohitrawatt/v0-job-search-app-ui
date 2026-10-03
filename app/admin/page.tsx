@@ -123,7 +123,13 @@ type FlagshipReg = {
   upi_transaction_id?: string; payment_screenshot_url?: string; created_at: string
 }
 
-type TabKey = "flagship" | "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "campus-ambassador" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent" | "careers" | "bug-bash"
+type AcademySurveyResponse = {
+  id: string; name?: string; email?: string; college: string; specialization: string
+  ai_topics: string[]; ai_topics_other?: string; biggest_challenge: string
+  session_type: string; build_goal: string; specific_topic?: string; created_at: string
+}
+
+type TabKey = "flagship" | "ml" | "recursion" | "bootcamp3" | "bootcamp2" | "bootcamp1" | "jobs" | "hackathon" | "ambassadors" | "campus-ambassador" | "early-access" | "insights" | "feedback" | "interview-fb" | "mentors" | "patent-fb" | "creators" | "early-apply" | "hire-talent" | "careers" | "bug-bash" | "academy-survey"
 
 const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "flagship",     label: "Flagship Bootcamp", icon: "M12 2L2 7l10 5 10-5-10-5Z M2 17l10 5 10-5 M2 12l10 5 10-5", color: "#1d3a8f" },
@@ -147,6 +153,7 @@ const TABS: { key: TabKey; label: string; icon: string; color: string }[] = [
   { key: "hire-talent", label: "Hiring Requests",    icon: "M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", color: "#0891b2" },
   { key: "careers",     label: "Careers (Intern)",   icon: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75", color: "#1d3a8f" },
   { key: "bug-bash",    label: "Bug Bash",           icon: "M14.5 3H9.5a1 1 0 0 0-.9.55L7 6H4a1 1 0 0 0 0 2h1v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h1a1 1 0 0 0 0-2h-3l-1.6-2.45A1 1 0 0 0 14.5 3Z", color: "#dc2626" },
+  { key: "academy-survey", label: "Academy Survey",  icon: "M12 2l8 4-8 4-8-4 8-4z M4 10v6c0 1 3.5 3 8 3s8-2 8-3v-6", color: "#0d9488" },
 ]
 
 function fmt(iso: string) {
@@ -192,6 +199,7 @@ export default function AdminPage() {
   const [aiContentEngineRegs, setAiContentEngineRegs] = useState<HackathonReg[]>([])
   const [bugBashReports, setBugBashReports] = useState<BugBashReport[]>([])
   const [campusAmbassadors, setCampusAmbassadors] = useState<CampusAmbassador[]>([])
+  const [academySurvey, setAcademySurvey] = useState<AcademySurveyResponse[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -206,7 +214,7 @@ export default function AdminPage() {
     setAuthChecked(true)
     fetch("/api/admin/data", { headers: { Authorization: `Bearer ${pwd}` } })
       .then(r => { if (r.status === 401) { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" } return r.json() })
-      .then(d => { setFlagshipRegs(d.flagshipTraining || []); setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []); setAiContentEngineRegs(d.aiContentEngineHackathon || []); setBugBashReports(d.bugBashReports || []); setCampusAmbassadors(d.campusAmbassadors || []) })
+      .then(d => { setFlagshipRegs(d.flagshipTraining || []); setEarlyAccess(d.earlyAccess || []); setBootcamp1(d.bootcamp1 || []); setBootcamp2(d.bootcamp2 || []); setBootcamp3(d.bootcamp3 || []); setRecursionBootcamp(d.recursionBootcamp || []); setMlMasterclass(d.mlMasterclass || []); setFeedback(d.feedback || []); setAmbassadors(d.clubApplications || []); setJobApplications(d.jobApplications || []); setHackathonSubs(d.hackathonSubmissions || []); setStudentInsights(d.studentInsights || []); setInterviewFeedback(d.interviewFeedback || []); setMentorApps(d.mentorApplications || []); setPatentFeedback(d.patentAnalystFeedback || []); setCreatorApps(d.creatorApplications || []); setEarlyApply(d.earlyApply || []); setHiringRequests(d.hiringRequests || []); setCareersApps(d.careersApplications || []); setAiContentEngineRegs(d.aiContentEngineHackathon || []); setBugBashReports(d.bugBashReports || []); setCampusAmbassadors(d.campusAmbassadors || []); setAcademySurvey(d.academySurvey || []) })
       .catch(() => setError("Failed to load data. Refresh to retry."))
       .finally(() => setLoading(false))
   }, [])
@@ -249,6 +257,7 @@ export default function AdminPage() {
       else if (tbl === "careers_applications") setCareersApps(p => p.filter(r => r.id !== id))
       else if (tbl === "bug_bash_reports") setBugBashReports(p => p.filter(r => r.id !== id))
       else if (tbl === "campus_ambassadors") setCampusAmbassadors(p => p.filter(r => r.id !== id))
+      else if (tbl === "academy_survey_responses") setAcademySurvey(p => p.filter(r => r.id !== id))
     } catch (err) {
       alert(`Delete failed: ${err instanceof Error ? err.message : "Unknown error"}`)
     } finally {
@@ -313,6 +322,17 @@ export default function AdminPage() {
     return campusAmbassadors.filter(r => r.full_name.toLowerCase().includes(s) || r.email.toLowerCase().includes(s) || r.college.toLowerCase().includes(s))
   }, [campusAmbassadors, search])
 
+  const asFiltered = useMemo(() => {
+    if (!search.trim()) return academySurvey
+    const s = search.toLowerCase()
+    return academySurvey.filter(r =>
+      (r.name ?? "").toLowerCase().includes(s) ||
+      (r.email ?? "").toLowerCase().includes(s) ||
+      r.college.toLowerCase().includes(s) ||
+      r.specialization.toLowerCase().includes(s)
+    )
+  }, [academySurvey, search])
+
   const tabCounts: Record<TabKey, number> = {
     flagship: flagshipRegs.length,
     ml: mlMasterclass.length,
@@ -335,6 +355,7 @@ export default function AdminPage() {
     "hire-talent": hiringRequests.length,
     "careers": careersApps.length,
     "bug-bash": bugBashReports.length,
+    "academy-survey": academySurvey.length,
   }
 
   const logout = () => { sessionStorage.removeItem("adm_auth"); window.location.href = "/admin-login" }
@@ -478,6 +499,9 @@ export default function AdminPage() {
             />
             <a className="adm-logout" href="/admin/content" style={{ textDecoration: "none", borderColor: "#c7d2fe", color: "#1d3a8f" }}>
               Content & Popup
+            </a>
+            <a className="adm-logout" href="/admin/birthday" style={{ textDecoration: "none", borderColor: "#c7d2fe", color: "#1d3a8f" }}>
+              Birthday Treat
             </a>
             <button className="adm-logout" onClick={logout}>
               Logout
@@ -1822,6 +1846,83 @@ export default function AdminPage() {
                                 </button>
                               </td>
                               <td><DelBtn table="bug_bash_reports" id={r.id} name={r.tester_name} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Jobingen Academy Survey ── */}
+              {activeTab === "academy-survey" && (
+                <div className="adm-sec">
+                  <div className="adm-sec-head">
+                    <div className="adm-sec-hl">
+                      <div className="adm-sec-title">Jobingen Academy Survey</div>
+                      <div className="adm-sec-badge">{asFiltered.length} responses</div>
+                    </div>
+                    <div className="adm-sec-actions">
+                      <button className="adm-csv" onClick={() => exportCSV(
+                        asFiltered.map(r => ({
+                          id: r.id,
+                          name: r.name || "",
+                          email: r.email || "",
+                          college: r.college,
+                          specialization: r.specialization,
+                          ai_topics: (r.ai_topics || []).join("; "),
+                          ai_topics_other: r.ai_topics_other || "",
+                          biggest_challenge: r.biggest_challenge,
+                          session_type: r.session_type,
+                          build_goal: r.build_goal,
+                          specific_topic: r.specific_topic || "",
+                          created_at: r.created_at,
+                        })) as unknown as Record<string, unknown>[],
+                        "academy-survey-responses.csv"
+                      )}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Export CSV
+                      </button>
+                    </div>
+                  </div>
+                  <div className="adm-tbl-wrap">
+                    {asFiltered.length === 0 ? (
+                      <div className="adm-empty"><div className="adm-empty-ico">🎓</div>{search ? `No results for "${search}"` : "No survey responses yet"}</div>
+                    ) : (
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>#</th><th>Name</th><th>Email</th><th>College</th><th>Specialization</th>
+                            <th>AI Topics</th><th>Biggest Challenge</th><th>Session Type</th><th>Build Goal</th><th>Specific Topic</th><th>Date</th><th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {asFiltered.map((r, i) => (
+                            <tr key={r.id}>
+                              <td className="c-num">{i + 1}</td>
+                              <td className="c-name">{r.name || "—"}</td>
+                              <td className="c-email">{r.email || "—"}</td>
+                              <td style={{ fontSize: 13 }}>{r.college}</td>
+                              <td style={{ fontSize: 13 }}>{r.specialization}</td>
+                              <td>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 4, maxWidth: 220 }}>
+                                  {(r.ai_topics || []).map(t => (
+                                    <span key={t} className="c-tag" style={{ background: "#eef2ff", color: "#1d3a8f", borderColor: "#dde5ff" }}>{t}</span>
+                                  ))}
+                                  {r.ai_topics_other && <span className="c-tag" style={{ background: "#fffbeb", color: "#d97706", borderColor: "#fde68a" }}>{r.ai_topics_other}</span>}
+                                </div>
+                              </td>
+                              <td><span className="c-why" title={r.biggest_challenge}>{r.biggest_challenge}</span></td>
+                              <td>
+                                <span className="c-tag" style={{ background: "#f0fdf4", color: "#16a34a", borderColor: "#bbf7d0" }}>
+                                  {r.session_type}
+                                </span>
+                              </td>
+                              <td><span className="c-why" title={r.build_goal}>{r.build_goal}</span></td>
+                              <td><span className="c-why" title={r.specific_topic || ""}>{r.specific_topic || "—"}</span></td>
+                              <td className="c-date">{fmt(r.created_at)}</td>
+                              <td><DelBtn table="academy_survey_responses" id={r.id} name={r.name || r.college} /></td>
                             </tr>
                           ))}
                         </tbody>
