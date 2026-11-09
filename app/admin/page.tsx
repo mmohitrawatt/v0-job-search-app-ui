@@ -500,9 +500,6 @@ export default function AdminPage() {
             <a className="adm-logout" href="/admin/content" style={{ textDecoration: "none", borderColor: "#c7d2fe", color: "#1d3a8f" }}>
               Content & Popup
             </a>
-            <a className="adm-logout" href="/admin/birthday" style={{ textDecoration: "none", borderColor: "#c7d2fe", color: "#1d3a8f" }}>
-              Birthday Treat
-            </a>
             <button className="adm-logout" onClick={logout}>
               Logout
             </button>
